@@ -650,6 +650,7 @@
             if (type === 'papers') {
                 document.getElementById('editModalTitle').textContent = 'Edit Paper';
                 descGroup.style.display = 'none';
+                document.getElementById('editDesc').required = false;
                 extraDiv.style.display = 'block';
                 extraDiv.innerHTML = `
                     <div class="form-group">
@@ -668,6 +669,7 @@
             } else if (type === 'announcements') {
                 document.getElementById('editModalTitle').textContent = 'Edit Announcement';
                 descGroup.style.display = 'block';
+                document.getElementById('editDesc').required = true;
                 extraDiv.style.display = 'block';
                 extraDiv.innerHTML = `
                     <div class="form-group">
