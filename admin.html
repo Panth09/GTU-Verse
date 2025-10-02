@@ -363,7 +363,11 @@
     <div class="login-container" id="loginContainer">
         <div class="login-box">
             <h2>Admin Login</h2>
-            <p class="error" id="loginError">Invalid password. Please try again.</p>
+            <p class="error" id="loginError">Invalid credentials. Please try again.</p>
+            <div class="form-group">
+                <label for="adminEmail">Email</label>
+                <input type="email" id="adminEmail" placeholder="admin@gtuverse.com" required aria-required="true">
+            </div>
             <div class="form-group">
                 <label for="adminPassword">Password</label>
                 <input type="password" id="adminPassword" placeholder="Enter admin password" required aria-required="true">
@@ -441,9 +445,9 @@
     </div>
 
     <script type="module">
-        import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-auth.js";
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js";
         import { getFirestore, collection, addDoc, getDocs, updateDoc, deleteDoc, doc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-firestore.js";
+        import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-auth.js";
 
         // Firebase configuration
         const firebaseConfig = {
@@ -457,51 +461,74 @@
         };
 
         // Initialize Firebase with error handling
-        let db;
+        let db, auth;
         try {
             const app = initializeApp(firebaseConfig);
             db = getFirestore(app);
+            auth = getAuth(app);
         } catch (error) {
             console.error('Firebase initialization failed:', error);
             alert('Failed to connect to Firebase. Please check your Firebase configuration and try again.');
         }
 
-        // Hardcoded admin password (replace with Firebase Auth in production)
-        const ADMIN_PASSWORD = 'Panth@IJ#09';
+        // Admin email verification
+        const ADMIN_EMAIL = 'admin@gtuverse.com';  // Replace with your actual admin email
+
+        // Auth State Listener
+        if (auth) {
+            onAuthStateChanged(auth, (user) => {
+                if (user && user.email === ADMIN_EMAIL) {
+                    document.getElementById('loginContainer').style.display = 'none';
+                    document.getElementById('adminContainer').style.display = 'block';
+                    document.getElementById('logoutBtn').style.display = 'inline-block';
+                    loadPapers();
+                    loadAnnouncements();
+                } else {
+                    document.getElementById('loginContainer').style.display = 'block';
+                    document.getElementById('adminContainer').style.display = 'none';
+                    document.getElementById('logoutBtn').style.display = 'none';
+                    document.getElementById('loginError').style.display = 'none';
+                }
+            });
+        }
 
         // Login Function
-        function login() {
-            const passwordInput = document.getElementById('adminPassword');
+        async function login() {
+            const email = document.getElementById('adminEmail').value.trim();
+            const password = document.getElementById('adminPassword').value;
             const loginError = document.getElementById('loginError');
-            if (!passwordInput) {
-                console.error('Password input element not found');
-                alert('Login form error. Check console for details.');
+            if (!email || !password) {
+                loginError.textContent = 'Please enter both email and password.';
+                loginError.style.display = 'block';
                 return;
             }
-            const password = passwordInput.value;
-            if (password === ADMIN_PASSWORD) {
-                localStorage.setItem('adminLoggedIn', 'true');
-                document.getElementById('loginContainer').style.display = 'none';
-                document.getElementById('adminContainer').style.display = 'block';
-                document.getElementById('logoutBtn').style.display = 'inline-block';
-                loginError.style.display = 'none';
-                loadPapers();
-                loadAnnouncements();
-            } else {
-                loginError.textContent = 'Invalid password. Please try again.';
+            if (email !== ADMIN_EMAIL) {
+                loginError.textContent = 'Access denied. Only admin email allowed.';
                 loginError.style.display = 'block';
-                passwordInput.value = '';
+                return;
+            }
+            try {
+                await signInWithEmailAndPassword(auth, email, password);
+                // onAuthStateChanged will handle the rest
+                loginError.style.display = 'none';
+            } catch (error) {
+                console.error('Login error:', error);
+                loginError.textContent = 'Invalid credentials. Please try again.';
+                loginError.style.display = 'block';
+                document.getElementById('adminPassword').value = '';
             }
         }
 
         // Logout Function
-        function logout() {
-            localStorage.removeItem('adminLoggedIn');
-            document.getElementById('loginContainer').style.display = 'block';
-            document.getElementById('adminContainer').style.display = 'none';
-            document.getElementById('logoutBtn').style.display = 'none';
-            document.getElementById('adminPassword').value = '';
-            document.getElementById('loginError').style.display = 'none';
+        async function logout() {
+            if (auth) {
+                try {
+                    await signOut(auth);
+                    // onAuthStateChanged will handle UI reset
+                } catch (error) {
+                    console.error('Logout error:', error);
+                }
+            }
         }
 
         // Dark Mode Toggle
@@ -691,14 +718,6 @@
 
         // Initialize
         window.addEventListener('load', () => {
-            // Check if already logged in
-            if (localStorage.getItem('adminLoggedIn') === 'true') {
-                document.getElementById('loginContainer').style.display = 'none';
-                document.getElementById('adminContainer').style.display = 'block';
-                document.getElementById('logoutBtn').style.display = 'inline-block';
-                loadPapers();
-                loadAnnouncements();
-            }
             // Add login button listener
             document.getElementById('loginBtn').addEventListener('click', login);
             // Add Enter key listener for login
