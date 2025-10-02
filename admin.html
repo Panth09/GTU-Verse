@@ -261,8 +261,20 @@
         .list {
             list-style: none;
             margin-top: 1rem;
-            max-height: 400px;
+        }
+
+        .list-container {
+            position: relative;
+        }
+
+        .list.top-items {
+            max-height: none;
+        }
+
+        .list.all-items {
+            max-height: 300px;
             overflow-y: auto;
+            display: none;
         }
 
         .list-item {
@@ -323,6 +335,26 @@
         }
 
         .edit-btn:hover {
+            background: var(--secondary-dark);
+            transform: translateY(-1px);
+        }
+
+        .show-more-btn {
+            background: var(--secondary);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            margin-top: 1rem;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            transition: var(--transition);
+        }
+
+        .show-more-btn:hover {
             background: var(--secondary-dark);
             transform: translateY(-1px);
         }
@@ -462,7 +494,11 @@
                     <input type="url" placeholder="PDF URL" required>
                     <button type="submit" class="add-btn">Add Paper</button>
                 </form>
-                <ul class="list" id="papersList"></ul>
+                <div class="list-container">
+                    <ul class="list top-items" id="papersListTop"></ul>
+                    <ul class="list all-items" id="papersListAll"></ul>
+                    <button class="show-more-btn" id="papersShowMore" onclick="toggleShowMore('papers')">Show More</button>
+                </div>
             </div>
 
             <div class="section">
@@ -472,7 +508,11 @@
                     <textarea placeholder="Description" rows="3" required></textarea>
                     <button type="submit" class="add-btn">Add Announcement & Notify</button>
                 </form>
-                <ul class="list" id="announcementsList"></ul>
+                <div class="list-container">
+                    <ul class="list top-items" id="announcementsListTop"></ul>
+                    <ul class="list all-items" id="announcementsListAll"></ul>
+                    <button class="show-more-btn" id="announcementsShowMore" onclick="toggleShowMore('announcements')">Show More</button>
+                </div>
             </div>
         </div>
     </div>
@@ -540,32 +580,78 @@
             // Load Papers
             let papers = JSON.parse(localStorage.getItem('papers') || '[]');
             papers.sort((a, b) => b.id - a.id); // Sort latest first by id
-            document.getElementById('papersList').innerHTML = papers.map(p => `
-                <li class="list-item">
-                    <span>${p.title} (${p.type.toUpperCase()}) (${p.branch} Sem ${p.sem}, ${p.college}) - <a href="${p.url}" target="_blank">View</a></span>
-                    <div>
-                        <button class="edit-btn" onclick="editItem('papers', ${p.id})">Edit</button>
-                        <button class="delete-btn" onclick="deleteItem('papers', ${p.id})">Delete</button>
-                    </div>
-                </li>
-            `).join('');
+            const papersListTop = document.getElementById('papersListTop');
+            const papersListAll = document.getElementById('papersListAll');
+            const papersShowMore = document.getElementById('papersShowMore');
+            if (papers.length > 0) {
+                papersListTop.innerHTML = papers.slice(0, 5).map(p => `
+                    <li class="list-item">
+                        <span>${p.title} (${p.type.toUpperCase()}) (${p.branch} Sem ${p.sem}, ${p.college}) - <a href="${p.url}" target="_blank">View</a></span>
+                        <div>
+                            <button class="edit-btn" onclick="editItem('papers', ${p.id})">Edit</button>
+                            <button class="delete-btn" onclick="deleteItem('papers', ${p.id})">Delete</button>
+                        </div>
+                    </li>
+                `).join('');
+                papersListAll.innerHTML = papers.slice(5).map(p => `
+                    <li class="list-item">
+                        <span>${p.title} (${p.type.toUpperCase()}) (${p.branch} Sem ${p.sem}, ${p.college}) - <a href="${p.url}" target="_blank">View</a></span>
+                        <div>
+                            <button class="edit-btn" onclick="editItem('papers', ${p.id})">Edit</button>
+                            <button class="delete-btn" onclick="deleteItem('papers', ${p.id})">Delete</button>
+                        </div>
+                    </li>
+                `).join('');
+                papersShowMore.style.display = papers.length > 5 ? 'block' : 'none';
+            } else {
+                papersListTop.innerHTML = '<p>No papers added yet.</p>';
+                papersListAll.innerHTML = '';
+                papersShowMore.style.display = 'none';
+            }
 
             // Load Announcements
             let announcements = JSON.parse(localStorage.getItem('announcements') || '[]');
             announcements.sort((a, b) => new Date(b.date) - new Date(a.date)); // Sort latest first by date
-            document.getElementById('announcementsList').innerHTML = announcements.map(a => `
-                <li class="list-item">
-                    <span>${a.title}: ${a.desc} (${a.date})</span>
-                    <div>
-                        <button class="edit-btn" onclick="editItem('announcements', ${a.id})">Edit</button>
-                        <button class="delete-btn" onclick="deleteItem('announcements', ${a.id})">Delete</button>
-                    </div>
-                </li>
-            `).join('');
+            const announcementsListTop = document.getElementById('announcementsListTop');
+            const announcementsListAll = document.getElementById('announcementsListAll');
+            const announcementsShowMore = document.getElementById('announcementsShowMore');
+            if (announcements.length > 0) {
+                announcementsListTop.innerHTML = announcements.slice(0, 5).map(a => `
+                    <li class="list-item">
+                        <span>${a.title}: ${a.desc} (${a.date})</span>
+                        <div>
+                            <button class="edit-btn" onclick="editItem('announcements', ${a.id})">Edit</button>
+                            <button class="delete-btn" onclick="deleteItem('announcements', ${a.id})">Delete</button>
+                        </div>
+                    </li>
+                `).join('');
+                announcementsListAll.innerHTML = announcements.slice(5).map(a => `
+                    <li class="list-item">
+                        <span>${a.title}: ${a.desc} (${a.date})</span>
+                        <div>
+                            <button class="edit-btn" onclick="editItem('announcements', ${a.id})">Edit</button>
+                            <button class="delete-btn" onclick="deleteItem('announcements', ${a.id})">Delete</button>
+                        </div>
+                    </li>
+                `).join('');
+                announcementsShowMore.style.display = announcements.length > 5 ? 'block' : 'none';
+            } else {
+                announcementsListTop.innerHTML = '<p>No announcements added yet.</p>';
+                announcementsListAll.innerHTML = '';
+                announcementsShowMore.style.display = 'none';
+            }
 
             // Update Stats
             document.getElementById('totalPapers').textContent = papers.length;
             document.getElementById('totalAnnouncements').textContent = announcements.length;
+        }
+
+        function toggleShowMore(type) {
+            const listAll = document.getElementById(`${type}ListAll`);
+            const button = document.getElementById(`${type}ShowMore`);
+            const isHidden = listAll.style.display === 'none' || listAll.style.display === '';
+            listAll.style.display = isHidden ? 'block' : 'none';
+            button.textContent = isHidden ? 'Show Less' : 'Show More';
         }
 
         function addPaper(e) {
