@@ -165,7 +165,11 @@
             border: 1px solid var(--border);
         }
 
-        body.dark-mode .login-box { background: var(--white); border-color: var(--border); }
+        body.dark-mode .login-box { 
+            background: var(--white); 
+            border-color: var(--border);
+            color: var(--dark);
+        }
 
         .login-box h2 {
             font-family: 'Poppins', sans-serif;
@@ -193,6 +197,14 @@
             border-radius: 12px;
             font-size: 1rem;
             transition: var(--transition);
+            background: var(--white);
+            color: var(--dark);
+        }
+
+        body.dark-mode .form-group input {
+            background: var(--white);
+            color: var(--dark);
+            border-color: var(--border);
         }
 
         .form-group input:focus {
@@ -245,7 +257,11 @@
             margin-bottom: 2rem;
         }
 
-        body.dark-mode .admin-form { background: var(--white); border-color: var(--border); }
+        body.dark-mode .admin-form { 
+            background: var(--white); 
+            border-color: var(--border);
+            color: var(--dark);
+        }
 
         .admin-form .form-group {
             margin-bottom: 1rem;
@@ -259,6 +275,16 @@
             border: 1px solid var(--border);
             border-radius: 8px;
             font-size: 1rem;
+            background: var(--white);
+            color: var(--dark);
+        }
+
+        body.dark-mode .admin-form input,
+        body.dark-mode .admin-form select,
+        body.dark-mode .admin-form textarea {
+            background: var(--white);
+            color: var(--dark);
+            border-color: var(--border);
         }
 
         .admin-form textarea { resize: vertical; min-height: 100px; }
@@ -292,9 +318,14 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            color: var(--dark);
         }
 
-        body.dark-mode .admin-item { background: var(--white); border-color: var(--border); }
+        body.dark-mode .admin-item { 
+            background: var(--white); 
+            border-color: var(--border);
+            color: var(--dark);
+        }
 
         .admin-item span {
             font-weight: 500;
@@ -366,7 +397,7 @@
             <p class="error" id="loginError">Invalid credentials. Please try again.</p>
             <div class="form-group">
                 <label for="adminEmail">Email</label>
-                <input type="email" id="adminEmail" placeholder="admin@gtuverse.com" required aria-required="true">
+                <input type="email" id="adminEmail" placeholder="Enter admin email" required aria-required="true">
             </div>
             <div class="form-group">
                 <label for="adminPassword">Password</label>
@@ -471,13 +502,13 @@
             alert('Failed to connect to Firebase. Please check your Firebase configuration and try again.');
         }
 
-        // Admin email verification
-        const ADMIN_EMAIL = 'dax@gtuverse.com';  // Replace with your actual admin email
+        // Admin emails verification (multiple admins)
+        const ADMIN_EMAILS = ['dax@gtuverse.com', 'prachipp@gtuverse.com', 'simran@gtuverse.com'];
 
         // Auth State Listener
         if (auth) {
             onAuthStateChanged(auth, (user) => {
-                if (user && user.email === ADMIN_EMAIL) {
+                if (user && ADMIN_EMAILS.includes(user.email)) {
                     document.getElementById('loginContainer').style.display = 'none';
                     document.getElementById('adminContainer').style.display = 'block';
                     document.getElementById('logoutBtn').style.display = 'inline-block';
@@ -502,7 +533,7 @@
                 loginError.style.display = 'block';
                 return;
             }
-            if (email !== ADMIN_EMAIL) {
+            if (!ADMIN_EMAILS.includes(email)) {
                 loginError.textContent = 'Access denied. Only admin email allowed.';
                 loginError.style.display = 'block';
                 return;
@@ -519,14 +550,22 @@
             }
         }
 
-        // Logout Function
+        // Logout Function (with manual UI reset for reliability)
         async function logout() {
             if (auth) {
                 try {
                     await signOut(auth);
-                    // onAuthStateChanged will handle UI reset
+                    // Manual UI reset to ensure immediate response
+                    document.getElementById('loginContainer').style.display = 'block';
+                    document.getElementById('adminContainer').style.display = 'none';
+                    document.getElementById('logoutBtn').style.display = 'none';
+                    document.getElementById('adminEmail').value = '';
+                    document.getElementById('adminPassword').value = '';
+                    document.getElementById('loginError').style.display = 'none';
+                    // onAuthStateChanged will confirm the state
                 } catch (error) {
                     console.error('Logout error:', error);
+                    alert('Logout failed. Please refresh the page.');
                 }
             }
         }
@@ -535,11 +574,15 @@
         function toggleDarkMode() {
             document.body.classList.toggle('dark-mode');
             const isDark = document.body.classList.contains('dark-mode');
-            document.getElementById('darkToggleIcon').classList.toggle('fa-moon', !isDark);
-            document.getElementById('darkToggleIcon').classList.toggle('fa-sun', isDark);
+            const icon = document.getElementById('darkToggleIcon');
+            if (icon) {
+                icon.classList.toggle('fa-moon', !isDark);
+                icon.classList.toggle('fa-sun', isDark);
+            }
             localStorage.setItem('darkMode', isDark);
         }
 
+        // Load Dark Mode on Init
         if (localStorage.getItem('darkMode') === 'true') {
             toggleDarkMode();
         }
@@ -547,7 +590,9 @@
         // Header Scroll Effect (matching main site)
         window.addEventListener('scroll', () => {
             const header = document.getElementById('header');
-            header.classList.toggle('scrolled', window.scrollY > 50);
+            if (header) {
+                header.classList.toggle('scrolled', window.scrollY > 50);
+            }
         });
 
         // Paper Management
@@ -561,15 +606,17 @@
                 const snapshot = await getDocs(q);
                 const papers = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
                 const list = document.getElementById('paperList');
-                list.innerHTML = papers.map(p => `
-                    <li class="admin-item">
-                        <span>${p.title} (${p.type.toUpperCase()}, ${p.branch} Sem ${p.sem}, ${p.college})</span>
-                        <div class="actions">
-                            <button class="edit-btn" onclick="editPaper('${p.id}', '${p.title}', '${p.type}', '${p.branch}', ${p.sem}, '${p.college}', '${p.url}')">Edit</button>
-                            <button class="delete-btn" onclick="deletePaper('${p.id}')">Delete</button>
-                        </div>
-                    </li>
-                `).join('');
+                if (list) {
+                    list.innerHTML = papers.map(p => `
+                        <li class="admin-item">
+                            <span>${p.title} (${p.type.toUpperCase()}, ${p.branch} Sem ${p.sem}, ${p.college})</span>
+                            <div class="actions">
+                                <button class="edit-btn" onclick="editPaper('${p.id}', '${p.title}', '${p.type}', '${p.branch}', ${p.sem}, '${p.college}', '${p.url}')">Edit</button>
+                                <button class="delete-btn" onclick="deletePaper('${p.id}')">Delete</button>
+                            </div>
+                        </li>
+                    `).join('');
+                }
             } catch (error) {
                 console.error('Error loading papers:', error);
                 alert('Error loading papers. Check Firebase configuration and console for details.');
@@ -647,15 +694,17 @@
                 const snapshot = await getDocs(q);
                 const announcements = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
                 const list = document.getElementById('announcementList');
-                list.innerHTML = announcements.map(a => `
-                    <li class="admin-item">
-                        <span>${a.title} (${a.date})</span>
-                        <div class="actions">
-                            <button class="edit-btn" onclick="editAnnouncement('${a.id}', '${a.title}', '${a.desc}', '${a.date}')">Edit</button>
-                            <button class="delete-btn" onclick="deleteAnnouncement('${a.id}')">Delete</button>
-                        </div>
-                    </li>
-                `).join('');
+                if (list) {
+                    list.innerHTML = announcements.map(a => `
+                        <li class="admin-item">
+                            <span>${a.title} (${a.date})</span>
+                            <div class="actions">
+                                <button class="edit-btn" onclick="editAnnouncement('${a.id}', '${a.title}', '${a.desc}', '${a.date}')">Edit</button>
+                                <button class="delete-btn" onclick="deleteAnnouncement('${a.id}')">Delete</button>
+                            </div>
+                        </li>
+                    `).join('');
+                }
             } catch (error) {
                 console.error('Error loading announcements:', error);
                 alert('Error loading announcements. Check Firebase configuration and console for details.');
