@@ -1387,9 +1387,7 @@
                 <option value="ME">ME</option>
                 <option value="EC">EC</option>
                 <option value="EE">EE</option>
-                <option value="CS">CS</option>
-                <option value="CH">CH</option>
-                <option value="IN">IN</option>
+                
             </select></label>
             <button onclick="window.filterBooks()">Filter</button>
         </div>
@@ -1466,18 +1464,39 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // Typewriter Effect for Hero
-        const typewriterText = 'GTU Journey';
-        const typewriterEl = document.getElementById('typewriter');
-        let i = 0;
-        function typeWriter() {
-            if (i < typewriterText.length) {
-                typewriterEl.innerHTML += typewriterText.charAt(i);
-                i++;
-                setTimeout(typeWriter, 100);
-            }
-        }
-        window.addEventListener('load', typeWriter);
+       // Typewriter Effect for Hero
+const typewriterWords = ['GTU Journey', 'Success', 'Excellence', 'Mastery', 'Achievement'];
+const typewriterEl = document.getElementById('typewriter');
+let wordIndex = 0;
+let charIndex = 0;
+let isDeleting = false;
+
+function typeWriter() {
+    const currentWord = typewriterWords[wordIndex];
+    if (!isDeleting && charIndex < currentWord.length) {
+        // Typing characters
+        typewriterEl.innerHTML = currentWord.substring(0, charIndex + 1);
+        charIndex++;
+        setTimeout(typeWriter, 100);
+    } else if (isDeleting && charIndex > 0) {
+        // Deleting characters
+        typewriterEl.innerHTML = currentWord.substring(0, charIndex - 1);
+        charIndex--;
+        setTimeout(typeWriter, 50);
+    } else if (!isDeleting && charIndex === currentWord.length) {
+        // Pause at end of word
+        setTimeout(() => {
+            isDeleting = true;
+            typeWriter();
+        }, 1000);
+    } else if (isDeleting && charIndex === 0) {
+        // Move to next word
+        isDeleting = false;
+        wordIndex = (wordIndex + 1) % typewriterWords.length;
+        setTimeout(typeWriter, 200);
+    }
+}
+window.addEventListener('load', typeWriter);
 
         // Dark Mode Toggle with Local Storage
         window.toggleDarkMode = function() {
