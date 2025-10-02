@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GTUverse - Your Ultimate GTU Study Hub: Papers, Points & Updates</title>
-    <meta name="description" content="Empower your GTU journey with instant access to midsem papers, easy activity points, real-time announcements, and a thriving student community. Join 1000+ GTU students today!">
-    <meta name="keywords" content="GTU, midsem papers, activity points, GTU announcements, GTU study resources, GTU community">
+    <meta name="description" content="Empower your GTU journey with instant access to midsem papers, books, activity points, real-time announcements, and a thriving student community. Join 1000+ GTU students today!">
+    <meta name="keywords" content="GTU, midsem papers, books, activity points, GTU announcements, GTU study resources, GTU community">
     <link rel="canonical" href="https://gtuverse.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -769,14 +769,14 @@
 
         .resource-body li i { color: var(--secondary); font-size: 1rem; width: 20px; }
 
-        .papers {
+        .papers, .announcements, .books {
             padding: 6rem 2rem;
             max-width: 1280px;
             margin: 0 auto;
             background: var(--light);
         }
 
-        body.dark-mode .papers { background: #0f172a; }
+        body.dark-mode .papers, body.dark-mode .announcements, body.dark-mode .books { background: #0f172a; }
 
         .filters {
             display: flex;
@@ -808,11 +808,11 @@
             font-weight: 600;
         }
 
-        .papers-list {
+        .papers-list, .announcements-list, .books-list {
             list-style: none;
         }
 
-        .paper-item {
+        .paper-item, .announcement-item, .book-item {
             background: var(--white);
             padding: 1.5rem;
             border-radius: 12px;
@@ -822,70 +822,32 @@
             transition: var(--transition);
         }
 
-        body.dark-mode .paper-item { 
+        body.dark-mode .paper-item, body.dark-mode .announcement-item, body.dark-mode .book-item { 
             background: var(--white); 
             border-color: var(--border);
         }
 
-        .paper-item:hover {
+        .paper-item:hover, .announcement-item:hover, .book-item:hover {
             box-shadow: var(--shadow-md);
             transform: translateY(-1px);
         }
 
-        .paper-title {
+        .paper-title, .announcement-title, .book-title {
             font-weight: 600;
             color: var(--primary);
             margin-bottom: 0.5rem;
             font-size: 1.1rem;
         }
 
-        .paper-desc {
+        .paper-desc, .announcement-desc, .book-desc {
             color: var(--medium);
             margin-bottom: 1rem;
         }
 
-        .paper-link {
+        .paper-link, .book-link {
             color: var(--secondary);
             text-decoration: none;
             font-weight: 500;
-        }
-
-        .announcements {
-            padding: 6rem 2rem;
-            max-width: 1280px;
-            margin: 0 auto;
-            background: var(--light);
-        }
-
-        body.dark-mode .announcements { background: #0f172a; }
-
-        .announcements-list {
-            list-style: none;
-            max-height: 600px;
-            overflow-y: auto;
-            padding: 1rem;
-            border: 1px solid var(--border);
-            border-radius: 12px;
-        }
-
-        .announcement-item {
-            background: var(--white);
-            padding: 1.5rem;
-            border-radius: 12px;
-            margin-bottom: 1rem;
-            box-shadow: var(--shadow-sm);
-            border: 1px solid var(--border);
-            transition: var(--transition);
-        }
-
-        body.dark-mode .announcement-item { 
-            background: var(--white); 
-            border-color: var(--border);
-        }
-
-        .announcement-item:hover {
-            box-shadow: var(--shadow-md);
-            transform: translateY(-1px);
         }
 
         .announcement-item.top-ann {
@@ -893,22 +855,29 @@
             border-left: 4px solid var(--primary);
         }
 
-        .announcement-title {
-            font-weight: 600;
-            color: var(--primary);
-            margin-bottom: 0.5rem;
-            font-size: 1.1rem;
-        }
-
-        .announcement-desc {
-            color: var(--medium);
-            margin-bottom: 0.5rem;
-        }
-
         .announcement-date {
             color: var(--medium);
             font-size: 0.9rem;
             margin-bottom: 1rem;
+        }
+
+        .show-more {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--gradient-primary);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 1.5rem;
+            transition: var(--transition);
+        }
+
+        .show-more:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
         }
 
         .contact {
@@ -1210,7 +1179,7 @@
 
     <header id="header">
         <nav>
-            <a href="#home" class="logo">
+            <a href="index.html" class="logo">
                 <i class="fas fa-graduation-cap"></i>
                 <span>GTUverse</span>
             </a>
@@ -1218,13 +1187,14 @@
                 <li><a href="#home">Home</a></li>
                 <li><a href="#features">Features</a></li>
                 <li><a href="#resources">Resources</a></li>
-                <li><a href="#papers">Papers</a></li>
-                <li><a href="#announcements">Announcements</a></li>
+                <li><a href="papers.html">Papers</a></li>
+                <li><a href="announcements.html">Announcements</a></li>
+                <li><a href="books.html">Books</a></li>
                 <li><a href="#contact" onclick="openModal(event)">Contact</a></li>
                 <li><a href="https://chat.whatsapp.com/LLq6Sn0gvqwHHIJxxNaNaM" target="_blank" class="whatsapp-btn">
                     <i class="fab fa-whatsapp"></i> Join Community
                 </a></li>
-                
+                <li><a href="admin.html" class="admin-link">Admin</a></li>
                 <li><button class="dark-toggle" onclick="toggleDarkMode()" aria-label="Toggle Dark Mode">
                     <i class="fas fa-moon" id="darkToggleIcon"></i>
                 </button></li>
@@ -1240,12 +1210,17 @@
     <section class="hero" id="home">
         <div class="hero-content">
             <h1>Empower Your <span class="typewriter" id="typewriter"></span></h1>
-            <p class="hero-subtitle">Access midsem papers, earn 100 activity points effortlessly, stay updated with instant announcements, and join 1000+ students excelling together in GTU.</p>
+            <p class="hero-subtitle">Access midsem papers, books, earn 100 activity points effortlessly, stay updated with instant announcements, and join 1000+ students excelling together in GTU.</p>
             <a href="https://chat.whatsapp.com/LLq6Sn0gvqwHHIJxxNaNaM" target="_blank" class="cta-button" aria-label="Join WhatsApp Community">
                 <i class="fab fa-whatsapp"></i>
                 Join & Start Winning Points
             </a>
-            
+            <div class="quick-links">
+                <a href="papers.html" class="quick-link"><i class="fas fa-file-alt"></i> Papers</a>
+                <a href="books.html" class="quick-link"><i class="fas fa-book"></i> Books</a>
+                <a href="announcements.html" class="quick-link"><i class="fas fa-bullhorn"></i> Announcements</a>
+                <a href="https://chat.whatsapp.com/LLq6Sn0gvqwHHIJxxNaNaM" target="_blank" class="quick-link"><i class="fab fa-whatsapp"></i> Community</a>
+            </div>
         </div>
     </section>
 
@@ -1299,7 +1274,20 @@
                     <li><i class="fas fa-check"></i> Instant PDF downloads</li>
                     <li><i class="fas fa-check"></i> AI-powered search & tags</li>
                 </ul>
-                <a href="#papers" class="feature-link"><i class="fas fa-arrow-right"></i> View All Papers</a>
+                <a href="papers.html" class="feature-link"><i class="fas fa-arrow-right"></i> View All Papers</a>
+            </div>
+            <div class="feature-card fade-in">
+                <div class="feature-icon">
+                    <i class="fas fa-book"></i>
+                </div>
+                <h3>Textbook Library</h3>
+                <p>Access a wide range of GTU-recommended textbooks and reference materials for all branches and semesters.</p>
+                <ul class="feature-list">
+                    <li><i class="fas fa-check"></i> Curated book collection</li>
+                    <li><i class="fas fa-check"></i> Branch-specific resources</li>
+                    <li><i class="fas fa-check"></i> Free PDF downloads</li>
+                </ul>
+                <a href="books.html" class="feature-link"><i class="fas fa-arrow-right"></i> Explore Books</a>
             </div>
             <div class="feature-card fade-in">
                 <div class="feature-icon">
@@ -1325,7 +1313,7 @@
                     <li><i class="fas fa-check"></i> Categorized feeds</li>
                     <li><i class="fas fa-check"></i> 1-year archive</li>
                 </ul>
-                <a href="#announcements" class="feature-link"><i class="fas fa-arrow-right"></i> View Alerts</a>
+                <a href="announcements.html" class="feature-link"><i class="fas fa-arrow-right"></i> View Alerts</a>
             </div>
             <div class="feature-card fade-in">
                 <div class="feature-icon">
@@ -1352,7 +1340,6 @@
         </a>
     </div>
 
-    
     <section class="papers" id="papers">
         <div class="section-header fade-in">
             <h2 class="section-title">All GTU Papers</h2>
@@ -1375,8 +1362,34 @@
         </div>
         <h3>Midsem Papers</h3>
         <ul class="papers-list" id="midsemList"></ul>
+        <a href="papers.html" class="show-more">Show More Papers</a>
         <h3>GTU Exam Papers</h3>
         <ul class="papers-list" id="gtuList"></ul>
+        <a href="papers.html" class="show-more">Show More Papers</a>
+    </section>
+
+    <section class="books" id="books">
+        <div class="section-header fade-in">
+            <h2 class="section-title">Textbook Library</h2>
+            <p class="section-subtitle">Access GTU-recommended textbooks and reference materials for all branches and semesters.</p>
+        </div>
+        <div class="filters">
+            <label>College: <input id="filterBookCollege" placeholder="e.g., LDCE"></label>
+            <label>Branch: <select id="filterBookBranch">
+                <option value="">All</option>
+                <option value="CE">CE</option>
+                <option value="IT">IT</option>
+                <option value="ME">ME</option>
+                <option value="EC">EC</option>
+                <option value="EE">EE</option>
+                <option value="CS">CS</option>
+                <option value="CH">CH</option>
+                <option value="IN">IN</option>
+            </select></label>
+            <button onclick="filterBooks()">Filter</button>
+        </div>
+        <ul class="books-list" id="booksList"></ul>
+        <a href="books.html" class="show-more">Show More Books</a>
     </section>
 
     <section class="announcements" id="announcements">
@@ -1385,6 +1398,7 @@
             <p class="section-subtitle">Stay updated with the latest GTU news and alerts.</p>
         </div>
         <ul class="announcements-list" id="allAnnouncementsList"></ul>
+        <a href="announcements.html" class="show-more">Show More Announcements</a>
     </section>
 
     <section class="contact" id="contact">
@@ -1398,6 +1412,13 @@
 
     <footer>
         <p>&copy; 2025 GTUverse. Built by GTU students, for GTU students. Empowering futures, one paper at a time.</p>
+        <div class="footer-links">
+            <a href="#home">Home</a>
+            <a href="papers.html">Papers</a>
+            <a href="books.html">Books</a>
+            <a href="announcements.html">Announcements</a>
+            <a href="#contact" onclick="openModal(event)">Contact</a>
+        </div>
     </footer>
 
     <div id="contactModal" class="modal" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
@@ -1424,21 +1445,18 @@
     </div>
 
     <script type="module">
-        import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-auth.js";
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js";
-        import { getFirestore, collection, getDocs, query, orderBy, where } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-firestore.js";
+        import { getFirestore, collection, getDocs, query, orderBy, where, limit } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-firestore.js";
 
-        // Replace with your actual Firebase config from Firebase Console
-        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyC0QTiJoEIkS7rGDFrd057Kx3nMz7_s2EI",
-  authDomain: "gtu-verse.firebaseapp.com",
-  projectId: "gtu-verse",
-  storageBucket: "gtu-verse.firebasestorage.app",
-  messagingSenderId: "99377635087",
-  appId: "1:99377635087:web:05ba93798e36040cfe287a",
-  measurementId: "G-YV4W2LT96S"
-};
+        const firebaseConfig = {
+            apiKey: "AIzaSyC0QTiJoEIkS7rGDFrd057Kx3nMz7_s2EI",
+            authDomain: "gtu-verse.firebaseapp.com",
+            projectId: "gtu-verse",
+            storageBucket: "gtu-verse.firebasestorage.app",
+            messagingSenderId: "99377635087",
+            appId: "1:99377635087:web:05ba93798e36040cfe287a",
+            measurementId: "G-YV4W2LT96S"
+        };
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
@@ -1524,49 +1542,18 @@ const firebaseConfig = {
 
         document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 
-        // Show Branch Papers
-        async function showBranchPapers(branch) {
-            const resultsEl = document.getElementById('searchResults');
-            try {
-                const q = query(collection(db, 'papers'), where('branch', '==', branch));
-                const snapshot = await getDocs(q);
-                const filtered = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
-                if (filtered.length > 0) {
-                    resultsEl.innerHTML = filtered.map(p => `
-                        <div class="search-result-item">
-                            <span class="search-result-title">${p.title} (${p.type.toUpperCase()}) (Sem ${p.sem}, ${p.college})</span>
-                            <p class="search-result-desc">Download the paper and solutions.</p>
-                            <a href="${p.url}" target="_blank" class="search-result-link">Download PDF <i class="fas fa-download"></i></a>
-                        </div>
-                    `).join('');
-                } else {
-                    resultsEl.innerHTML = '<p>No papers for this branch yet. Add via admin panel.</p>';
-                }
-                resultsEl.style.display = 'block';
-                resultsEl.scrollIntoView({ behavior: 'smooth' });
-            } catch (error) {
-                console.error('Error loading branch papers:', error);
-                alert('Error loading branch papers. Check Firebase configuration and console for details.');
-            }
-        }
-
-        // Load All Papers with Filters (Client-side filtering for case-insensitivity)
+        // Load Papers with Limit
         async function filterPapers() {
             const collegeInput = document.getElementById('filterCollege').value.trim().toLowerCase();
             const branch = document.getElementById('filterBranch').value;
             try {
-                const snapshot = await getDocs(collection(db, 'papers'));
+                let q = query(collection(db, 'papers'), orderBy('id', 'desc'), limit(5));
+                if (branch) q = query(q, where('branch', '==', branch));
+                const snapshot = await getDocs(q);
                 let filtered = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
-                
-                // Client-side case-insensitive filtering
                 if (collegeInput) {
                     filtered = filtered.filter(p => p.college.toLowerCase().includes(collegeInput));
                 }
-                if (branch) {
-                    filtered = filtered.filter(p => p.branch === branch);
-                }
-                
-                filtered.sort((a, b) => b.sem - a.sem);
                 const midsem = filtered.filter(p => p.type === 'midsem');
                 const gtu = filtered.filter(p => p.type === 'gtu');
                 document.getElementById('midsemList').innerHTML = midsem.length > 0 ? midsem.map(p => `
@@ -1589,16 +1576,41 @@ const firebaseConfig = {
             }
         }
 
-        // Load All Announcements
+        // Load Books with Limit
+        async function filterBooks() {
+            const collegeInput = document.getElementById('filterBookCollege').value.trim().toLowerCase();
+            const branch = document.getElementById('filterBookBranch').value;
+            try {
+                let q = query(collection(db, 'books'), orderBy('id', 'desc'), limit(5));
+                if (branch) q = query(q, where('branch', '==', branch));
+                const snapshot = await getDocs(q);
+                let filtered = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+                if (collegeInput) {
+                    filtered = filtered.filter(b => b.college.toLowerCase().includes(collegeInput));
+                }
+                document.getElementById('booksList').innerHTML = filtered.length > 0 ? filtered.map(b => `
+                    <li class="book-item">
+                        <span class="book-title">${b.title} (${b.branch} Sem ${b.sem}, ${b.college})</span>
+                        <p class="book-desc">Download the textbook or reference material.</p>
+                        <a href="${b.url}" target="_blank" class="book-link">Download PDF <i class="fas fa-download"></i></a>
+                    </li>
+                `).join('') : '<p>No books match the filters.</p>';
+            } catch (error) {
+                console.error('Error filtering books:', error);
+                alert('Error filtering books. Check Firebase configuration and console for details.');
+            }
+        }
+
+        // Load Announcements with Limit
         async function loadAllAnnouncements() {
             try {
-                const annQuery = query(collection(db, 'announcements'), orderBy('id', 'desc'));
+                const annQuery = query(collection(db, 'announcements'), orderBy('id', 'desc'), limit(5));
                 const snapshot = await getDocs(annQuery);
                 let anns = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
                 const list = document.getElementById('allAnnouncementsList');
                 if (anns.length > 0) {
                     list.innerHTML = anns.map((a, index) => `
-                        <li class="announcement-item ${index < 5 ? 'top-ann' : ''}">
+                        <li class="announcement-item ${index < 3 ? 'top-ann' : ''}">
                             <span class="announcement-title">${a.title}</span>
                             <p class="announcement-desc">${a.desc}</p>
                             <div class="announcement-date">Posted on: ${a.date}</div>
@@ -1656,6 +1668,7 @@ const firebaseConfig = {
         // Initialize on Load
         window.addEventListener('load', async () => {
             await filterPapers();
+            await filterBooks();
             await loadAllAnnouncements();
         });
     </script>
