@@ -241,9 +241,9 @@
             box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
         }
 
-        .form-group textarea {
-            min-height: 100px;
-            resize: vertical;
+        .form-group textarea { 
+            min-height: 100px; 
+            resize: vertical; 
         }
 
         .add-btn {
@@ -380,10 +380,12 @@
             margin: 10% auto;
             padding: 2rem;
             border-radius: 12px;
-            max-width: 500px;
+            max-width: 600px;
             width: 90%;
             position: relative;
             border: 1px solid var(--border);
+            max-height: 80vh;
+            overflow-y: auto;
         }
 
         body.dark-mode .edit-modal-content {
@@ -452,28 +454,36 @@
 
             <div class="section">
                 <h3>Manage Papers</h3>
-                <form onsubmit="addPaper(event)" class="form-group">
-                    <input type="text" placeholder="Title (e.g., DBMS Sem 5)" required>
-                    <select required>
-                        <option value="">Select Type</option>
-                        <option value="midsem">Midsem</option>
-                        <option value="gtu">GTU Exam</option>
-                    </select>
-                    <input type="text" placeholder="Branch (e.g., CE)" required>
-                    <input type="number" placeholder="Semester (e.g., 5)" min="1" max="8" required>
-                    <input type="text" placeholder="College (e.g., LDCE)" required>
-                    <input type="url" placeholder="PDF URL" required>
-                    <button type="submit" class="add-btn">Add Paper</button>
+                <form onsubmit="addPaper(event)" id="paperForm">
+                    <div class="form-group">
+                        <input type="text" placeholder="Title (e.g., DBMS Sem 5)" required>
+                        <select required>
+                            <option value="">Select Type</option>
+                            <option value="midsem">Midsem</option>
+                            <option value="gtu">GTU Exam</option>
+                        </select>
+                        <input type="text" placeholder="Branch (e.g., CE)" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="number" placeholder="Semester (e.g., 5)" min="1" max="8" required>
+                        <input type="text" placeholder="College (e.g., LDCE)" required>
+                        <input type="url" placeholder="PDF URL" required>
+                        <button type="submit" class="add-btn">Add Paper</button>
+                    </div>
                 </form>
                 <ul class="list" id="papersList"></ul>
             </div>
 
             <div class="section">
                 <h3>Manage Announcements</h3>
-                <form onsubmit="addAnnouncement(event)" class="form-group">
-                    <input type="text" placeholder="Title (e.g., Exam Schedule Released)" required>
-                    <textarea placeholder="Description" rows="3" required></textarea>
-                    <button type="submit" class="add-btn">Add Announcement</button>
+                <form onsubmit="addAnnouncement(event)" id="announcementForm">
+                    <div class="form-group">
+                        <input type="text" placeholder="Title (e.g., Exam Schedule Released)" required>
+                    </div>
+                    <div class="form-group">
+                        <textarea placeholder="Description" rows="3" required></textarea>
+                        <button type="submit" class="add-btn">Add Announcement</button>
+                    </div>
                 </form>
                 <ul class="list" id="announcementsList"></ul>
             </div>
@@ -519,7 +529,8 @@
 
         function login(e) {
             e.preventDefault();
-            if (document.getElementById('password').value === PASSWORD) {
+            const pw = document.getElementById('password').value;
+            if (pw === PASSWORD) {
                 document.getElementById('loginForm').style.display = 'none';
                 document.getElementById('dashboard').style.display = 'block';
                 loadData();
@@ -537,11 +548,12 @@
 
         function loadData() {
             // Ensure DB is initialized
-            if (!localStorage.getItem('papers')) localStorage.setItem('papers', '[]');
-            if (!localStorage.getItem('announcements')) localStorage.setItem('announcements', '[]');
+            if (!localStorage.getItem('papers')) localStorage.setItem('papers', JSON.stringify([]));
+            if (!localStorage.getItem('announcements')) localStorage.setItem('announcements', JSON.stringify([]));
 
             // Load Papers
-            const papers = JSON.parse(localStorage.getItem('papers') || '[]');
+            let papers = JSON.parse(localStorage.getItem('papers') || '[]');
+            papers = papers.sort((a, b) => b.id - a.id); // Sort by ID descending
             document.getElementById('papersList').innerHTML = papers.map(p => `
                 <li class="list-item">
                     <span>${p.title} (${p.type.toUpperCase()}) (${p.branch} Sem ${p.sem}, ${p.college}) - <a href="${p.url}" target="_blank">View</a></span>
@@ -553,7 +565,8 @@
             `).join('');
 
             // Load Announcements
-            const announcements = JSON.parse(localStorage.getItem('announcements') || '[]');
+            let announcements = JSON.parse(localStorage.getItem('announcements') || '[]');
+            announcements = announcements.sort((a, b) => new Date(b.date) - new Date(a.date)); // Sort by date descending
             document.getElementById('announcementsList').innerHTML = announcements.map(a => `
                 <li class="list-item">
                     <span>${a.title}: ${a.desc} (${a.date})</span>
@@ -571,36 +584,42 @@
 
         function addPaper(e) {
             e.preventDefault();
-            const elements = e.target.querySelectorAll('input, select');
-            const [title, typeEl, branch, sem, college, url] = elements;
-            if (!title.value.trim() || !typeEl.value || !branch.value.trim() || !sem.value || !college.value.trim() || !url.value.trim()) {
+            const form = e.target;
+            const title = form.querySelector('input[placeholder="Title (e.g., DBMS Sem 5)"]').value.trim();
+            const typeEl = form.querySelector('select');
+            const branch = form.querySelector('input[placeholder="Branch (e.g., CE)"]').value.trim();
+            const sem = form.querySelector('input[type="number"]').value;
+            const college = form.querySelector('input[placeholder="College (e.g., LDCE)"]').value.trim();
+            const url = form.querySelector('input[type="url"]').value.trim();
+            if (!title || !typeEl.value || !branch || !sem || !college || !url) {
                 alert('Please fill all fields.');
                 return;
             }
-            const papers = JSON.parse(localStorage.getItem('papers') || '[]');
+            let papers = JSON.parse(localStorage.getItem('papers') || '[]');
             const newId = papers.length ? Math.max(...papers.map(p => p.id)) + 1 : 1;
-            papers.push({ id: newId, title: title.value.trim(), type: typeEl.value, branch: branch.value.trim().toUpperCase(), sem: parseInt(sem.value), college: college.value.trim(), url: url.value.trim() });
+            papers.push({ id: newId, title, type: typeEl.value, branch: branch.toUpperCase(), sem: parseInt(sem), college, url });
             localStorage.setItem('papers', JSON.stringify(papers));
             alert('Paper added successfully! Live on site now.');
             loadData();
-            e.target.reset();
+            form.reset();
         }
 
         function addAnnouncement(e) {
             e.preventDefault();
-            const inputs = e.target.querySelectorAll('input, textarea');
-            const [title, desc] = inputs;
-            if (!title.value.trim() || !desc.value.trim()) {
+            const form = e.target;
+            const title = form.querySelector('input[placeholder="Title (e.g., Exam Schedule Released)"]').value.trim();
+            const desc = form.querySelector('textarea').value.trim();
+            if (!title || !desc) {
                 alert('Please fill all fields.');
                 return;
             }
-            const announcements = JSON.parse(localStorage.getItem('announcements') || '[]');
+            let announcements = JSON.parse(localStorage.getItem('announcements') || '[]');
             const newId = announcements.length ? Math.max(...announcements.map(a => a.id)) + 1 : 1;
-            announcements.push({ id: newId, title: title.value.trim(), desc: desc.value.trim(), date: new Date().toLocaleString() });
+            announcements.push({ id: newId, title, desc, date: new Date().toLocaleString() });
             localStorage.setItem('announcements', JSON.stringify(announcements));
             alert('Announcement added! Live on site now.');
             loadData();
-            e.target.reset();
+            form.reset();
         }
 
         function deleteItem(type, id) {
@@ -635,21 +654,27 @@
                 descGroup.style.display = 'none';
                 extraDiv.style.display = 'flex';
                 extraDiv.innerHTML = `
-                    <select id="editTypeSelect" required>
-                        <option value="midsem" ${item.type === 'midsem' ? 'selected' : ''}>Midsem</option>
-                        <option value="gtu" ${item.type === 'gtu' ? 'selected' : ''}>GTU Exam</option>
-                    </select>
-                    <input type="text" id="editBranch" placeholder="Branch" value="${item.branch || ''}" required>
-                    <input type="number" id="editSem" placeholder="Semester" value="${item.sem || ''}" min="1" max="8" required>
-                    <input type="text" id="editCollege" placeholder="College" value="${item.college || ''}" required>
-                    <input type="url" id="editUrl" placeholder="URL" value="${item.url || ''}" required>
+                    <div class="form-group">
+                        <select id="editTypeSelect" required>
+                            <option value="midsem" ${item.type === 'midsem' ? 'selected' : ''}>Midsem</option>
+                            <option value="gtu" ${item.type === 'gtu' ? 'selected' : ''}>GTU Exam</option>
+                        </select>
+                        <input type="text" id="editBranch" placeholder="Branch" value="${item.branch || ''}" required>
+                        <input type="number" id="editSem" placeholder="Semester" value="${item.sem || ''}" min="1" max="8" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="editCollege" placeholder="College" value="${item.college || ''}" required>
+                        <input type="url" id="editUrl" placeholder="URL" value="${item.url || ''}" required>
+                    </div>
                 `;
             } else if (type === 'announcements') {
                 document.getElementById('editModalTitle').textContent = 'Edit Announcement';
                 descGroup.style.display = 'block';
                 extraDiv.style.display = 'flex';
                 extraDiv.innerHTML = `
-                    <input type="text" id="editDate" placeholder="Date" value="${item.date || ''}" required>
+                    <div class="form-group">
+                        <input type="text" id="editDate" placeholder="Date" value="${item.date || ''}" required>
+                    </div>
                 `;
             }
 
@@ -710,7 +735,9 @@
         });
 
         // Initialize on load
-        window.addEventListener('load', loadData);
+        window.addEventListener('load', () => {
+            loadData();
+        });
     </script>
 </body>
 </html>
