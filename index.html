@@ -60,7 +60,7 @@
             align-items: center; 
             max-width: 1200px; 
             margin: 0 auto; 
-            padding: 0 2rem;
+            padding: 0 1rem;
         }
         nav h1 { 
             font-family: 'Poppins', sans-serif;
@@ -75,7 +75,8 @@
         nav ul { 
             display: flex; 
             list-style: none; 
-            gap: 1.5rem; 
+            gap: 1rem; 
+            flex-wrap: wrap;
         }
         nav a { 
             color: var(--white); 
@@ -86,6 +87,7 @@
             font-weight: 400;
             position: relative;
             overflow: hidden;
+            font-size: 0.9rem;
         }
         nav a::before {
             content: '';
@@ -119,6 +121,18 @@
             transition: all 0.3s;
         }
         .dark-toggle:hover { background: rgba(255,255,255,0.3); }
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+        }
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: white;
+            margin: 3px 0;
+            transition: 0.3s;
+        }
         
         .hero { 
             background: linear-gradient(135deg, rgba(0,123,255,0.85), rgba(40,167,69,0.85)), url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600"><rect fill="%23f0f0f0" width="1200" height="600"/><path fill="%23007BFF" d="M0 300Q300 0 600 300T1200 300V600H0z"/><circle fill="%2328A745" cx="400" cy="200" r="50"/><circle fill="%23FD7E14" cx="800" cy="150" r="30"/><circle fill="%23E74C3C" cx="200" cy="400" r="40"/><path fill="%23FFFFFF" opacity="0.3" d="M600 100Q700 50 800 100Q900 150 1000 100V200H600z"/></svg>'); 
@@ -126,7 +140,7 @@
             background-attachment: fixed;
             color: var(--white); 
             text-align: center; 
-            padding: 150px 2rem 100px; 
+            padding: 150px 1rem 80px; 
             position: relative;
             animation: heroSlide 1s ease-out;
         }
@@ -141,11 +155,11 @@
             background: inherit;
             opacity: 0.1;
         }
-        .hero-content { position: relative; z-index: 1; animation: fadeInUp 1s ease-out 0.5s both; }
+        .hero-content { position: relative; z-index: 1; animation: fadeInUp 1s ease-out 0.5s both; max-width: 1200px; margin: 0 auto; }
         @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
         .hero h2 { 
             font-family: 'Poppins', sans-serif;
-            font-size: clamp(2.5rem, 6vw, 4rem); 
+            font-size: clamp(2rem, 5vw, 4rem); 
             margin-bottom: 1rem; 
             font-weight: 300;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
@@ -226,12 +240,12 @@
         .features { 
             max-width: 1200px; 
             margin: 5rem auto; 
-            padding: 0 2rem;
+            padding: 0 1rem;
         }
         .section-title { 
             text-align: center; 
             font-family: 'Poppins', sans-serif;
-            font-size: 2.8rem; 
+            font-size: clamp(1.8rem, 4vw, 2.8rem); 
             margin-bottom: 3rem; 
             color: var(--primary);
             position: relative;
@@ -253,12 +267,12 @@
         @keyframes expand { from { width: 0; } to { width: 100px; } }
         .features-grid { 
             display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); 
-            gap: 2.5rem; 
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+            gap: 2rem; 
         }
         .card { 
             background: var(--white); 
-            padding: 2.5rem 2rem; 
+            padding: 2rem; 
             border-radius: 20px; 
             box-shadow: var(--shadow); 
             transition: all 0.4s ease; 
@@ -288,7 +302,7 @@
             border-color: var(--primary);
         }
         .card i { 
-            font-size: 3.5rem; 
+            font-size: 3rem; 
             color: var(--primary); 
             margin-bottom: 1rem;
             transition: transform 0.3s ease;
@@ -309,14 +323,31 @@
         .card:hover i { transform: scale(1.2) rotate(360deg); }
         .card h3 { 
             font-family: 'Poppins', sans-serif;
-            font-size: 1.6rem; 
+            font-size: 1.4rem; 
             margin-bottom: 1rem; 
             color: var(--dark);
         }
         .card p { 
             margin-bottom: 1.5rem; 
             opacity: 0.85;
-            font-size: 1.05rem;
+            font-size: 1rem;
+        }
+        .card ul {
+            text-align: left;
+            list-style: none;
+            padding: 0;
+        }
+        .card ul li {
+            padding: 0.5rem 0;
+            position: relative;
+            padding-left: 1.5rem;
+        }
+        .card ul li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-weight: bold;
         }
         .card a { 
             color: var(--primary); 
@@ -324,6 +355,8 @@
             font-weight: 500;
             transition: all 0.3s;
             position: relative;
+            display: inline-block;
+            margin: 0.5rem;
         }
         .card a::after {
             content: '';
@@ -341,9 +374,9 @@
         .activity-section { 
             background: linear-gradient(135deg, var(--secondary) 0%, #20C997 100%); 
             color: var(--white); 
-            padding: 5rem 2rem; 
+            padding: 4rem 1rem; 
             text-align: center; 
-            margin: 5rem 0;
+            margin: 4rem 0;
             position: relative;
             overflow: hidden;
             clip-path: polygon(0 10%, 100% 0, 100% 90%, 0 100%);
@@ -361,73 +394,38 @@
         @keyframes float { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-20px) rotate(180deg); } }
         .activity-content { position: relative; z-index: 1; }
         .activity-counter { 
-            font-size: 2.5rem; 
+            font-size: 2rem; 
             margin-bottom: 1rem;
             font-family: 'Poppins', sans-serif;
             transition: all 0.5s ease;
         }
-        .progress-bar {
-            width: 100%;
-            max-width: 300px;
-            height: 10px;
-            background: rgba(255,255,255,0.3);
-            border-radius: 5px;
-            margin: 1rem auto;
-            overflow: hidden;
+        .sources-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
         }
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--accent), var(--danger));
-            border-radius: 5px;
-            transition: width 0.5s ease;
-            width: 0%;
-        }
-        .counter-btn { 
-            background: var(--accent); 
-            color: var(--white); 
-            border: none; 
-            padding: 1rem 2rem; 
-            border-radius: 50px; 
-            cursor: pointer; 
-            font-size: 1.1rem; 
+        .source-link {
+            background: rgba(255,255,255,0.2);
+            padding: 1rem;
+            border-radius: 10px;
+            text-decoration: none;
+            color: white;
             transition: all 0.3s;
-            margin: 0 0.5rem;
-            position: relative;
-            overflow: hidden;
-            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
-        .counter-btn::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
+        .source-link:hover {
             background: rgba(255,255,255,0.3);
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            transition: width 0.3s, height 0.3s;
+            transform: translateX(10px);
         }
-        .counter-btn:active::after {
-            width: 300px;
-            height: 300px;
-        }
-        .counter-btn:hover { 
-            background: var(--danger); 
-            transform: scale(1.1);
-        }
-        .reset-btn { background: #6C757D; }
-        .reset-btn:hover { background: #5A6268; }
-        .contribute-btn {
-            background: linear-gradient(45deg, var(--secondary), #20C997);
-            margin-left: 1rem;
-        }
-        .contribute-btn:hover { background: linear-gradient(45deg, #20C997, var(--secondary)); }
+        .source-link i { font-size: 1.2rem; }
 
         .dynamic-updates {
             max-width: 1200px;
             margin: 5rem auto;
-            padding: 0 2rem;
+            padding: 0 1rem;
             text-align: center;
         }
         .updates-carousel {
@@ -440,7 +438,7 @@
         }
         .carousel-slide {
             min-width: 100%;
-            padding: 2.5rem;
+            padding: 2rem;
             transition: transform 0.5s ease;
             display: flex;
             align-items: center;
@@ -448,15 +446,15 @@
             flex-direction: column;
             gap: 1rem;
         }
-        .carousel-slide i { font-size: 2.5rem; color: var(--secondary); animation: bounce 2s infinite; }
+        .carousel-slide i { font-size: 2rem; color: var(--secondary); animation: bounce 2s infinite; }
         @keyframes bounce { 0%, 20%, 50%, 80%, 100% { transform: translateY(0); } 40% { transform: translateY(-10px); } 60% { transform: translateY(-5px); } }
-        .carousel-slide h4 { color: var(--primary); font-family: 'Poppins', sans-serif; font-size: 1.4rem; }
-        .carousel-slide p { opacity: 0.85; font-size: 1.05rem; }
+        .carousel-slide h4 { color: var(--primary); font-family: 'Poppins', sans-serif; font-size: 1.2rem; }
+        .carousel-slide p { opacity: 0.85; font-size: 1rem; }
 
         .testimonials {
             background: var(--white);
-            padding: 5rem 2rem;
-            margin: 5rem 0;
+            padding: 4rem 1rem;
+            margin: 4rem 0;
             text-align: center;
         }
         .testimonials-grid {
@@ -481,10 +479,10 @@
             background: var(--dark); 
             color: var(--white); 
             text-align: center; 
-            padding: 3rem 2rem; 
-            margin-top: 5rem;
+            padding: 3rem 1rem; 
+            margin-top: 4rem;
         }
-        footer p { opacity: 0.8; font-size: 1.05rem; }
+        footer p { opacity: 0.8; font-size: 1rem; }
         
         .modal {
             display: none;
@@ -510,12 +508,32 @@
         .close:hover { color: #000; }
         
         @media (max-width: 768px) {
-            nav ul { gap: 1rem; flex-wrap: wrap; justify-content: center; }
-            .hero { padding: 120px 1rem 80px; background-attachment: scroll; }
+            .hamburger { display: flex; }
+            nav ul { 
+                display: none; 
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: rgba(0,123,255,0.98);
+                flex-direction: column;
+                padding: 1rem;
+                gap: 0.5rem;
+            }
+            nav ul.active { display: flex; }
+            .hero { padding: 120px 1rem 60px; background-attachment: scroll; }
             .features-grid { grid-template-columns: 1fr; }
+            .quick-search { flex-direction: column; padding: 0.8rem; }
+            .activity-section { clip-path: none; padding: 3rem 1rem; }
+            .sources-grid { grid-template-columns: 1fr; }
             .updates-carousel { flex-direction: column; }
-            .quick-search { flex-direction: column; }
-            .activity-section { clip-path: none; }
+            .testimonials-grid { grid-template-columns: 1fr; }
+            nav { padding: 0 1rem; }
+        }
+        @media (max-width: 480px) {
+            .hero h2 { font-size: 2rem; }
+            .card { padding: 1.5rem; }
+            .carousel-slide { padding: 1.5rem; }
         }
     </style>
 </head>
@@ -523,7 +541,7 @@
     <header id="header">
         <nav>
             <h1><i class="fas fa-university"></i> GTUverse</h1>
-            <ul>
+            <ul id="navUl">
                 <li><a href="index.html">Home</a></li>
                 <li><a href="papers.html">Papers</a></li>
                 <li><a href="updates.html">Updates</a></li>
@@ -531,19 +549,24 @@
                 <li><a href="https://chat.whatsapp.com/LLq6Sn0gvqwHHIJxxNaNaM" target="_blank" class="whatsapp-link"><i class="fab fa-whatsapp"></i> Join WhatsApp</a></li>
                 <li><button class="dark-toggle" onclick="toggleDarkMode()"><i class="fas fa-moon"></i></button></li>
             </ul>
+            <div class="hamburger" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
         </nav>
     </header>
 
     <section class="hero">
         <div class="hero-content">
             <h2 id="welcomeMsg">Empower Your GTU Journey</h2>
-            <p>Discover midsem papers, unlock 100 activity points with zero hassle, and get real-time updates – all crafted by fellow students to keep you ahead without the grind.</p>
+            <p>Discover midsem papers, sources for 100 activity points, direct group announcements, exciting events, and more – join our growing community and hit the biggest count!</p>
             <div class="quick-search">
                 <input type="text" id="quickSearch" placeholder="Quick search for papers (e.g., DBMS Sem 5)...">
                 <button onclick="quickSearchPapers()"><i class="fas fa-search"></i></button>
             </div>
             <a href="https://chat.whatsapp.com/LLq6Sn0gvqwHHIJxxNaNaM" target="_blank" class="cta-button">
-                <i class="fab fa-whatsapp"></i> Join Community Now
+                <i class="fab fa-whatsapp"></i> Join & Hit the Count
             </a>
         </div>
     </section>
@@ -559,34 +582,40 @@
             </div>
             <div class="card">
                 <i class="fas fa-trophy"></i>
-                <h3>100 Activity Points</h3>
-                <p>Smart, low-effort strategies to max out your activity points. Track your progress, get tips, and celebrate milestones right here on the dashboard.</p>
-                <div class="activity-counter" id="activitySection">
-                    <p>Your Points: <span id="points">0</span>/100</p>
-                    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
-                    <button class="counter-btn" onclick="addPoints()">+10 Pts</button>
-                    <button class="counter-btn reset-btn" onclick="resetPoints()">Reset</button>
-                    <button class="contribute-btn" onclick="openModal()">Contribute</button>
-                </div>
+                <h3>Sources for 100 Activity Points</h3>
+                <p>We guide you to the best resources for earning full 100 activity points with low effort. Check these trusted sources:</p>
+                <ul>
+                    <li>GTU Official Portal: Syllabus & Events</li>
+                    <li>Student Forums: Reddit r/GTU</li>
+                    <li>Activity Guidelines: GTU Handbook PDF</li>
+                    <li>Event Listings: Campus Notices</li>
+                </ul>
+                <a href="https://www.gtu.ac.in/" target="_blank">GTU Official</a>
+                <a href="https://www.reddit.com/r/GTU/" target="_blank">Reddit r/GTU</a>
             </div>
             <div class="card">
                 <i class="fas fa-bell"></i>
-                <h3>Timely Updates</h3>
-                <p>Never miss exam schedules, syllabus tweaks, or campus buzz. Delivered fresh via our WhatsApp channel for instant, actionable alerts.</p>
-                <a href="updates.html">Latest Updates</a>
+                <h3>Timely Updates & Events</h3>
+                <p>Direct announcements in our WhatsApp group: exam schedules, syllabus changes, campus events, and more. Join for instant notifications and community vibes!</p>
+                <a href="https://chat.whatsapp.com/LLq6Sn0gvqwHHIJxxNaNaM" target="_blank" class="whatsapp-link">Join for Updates</a>
             </div>
         </div>
     </section>
 
     <section class="activity-section">
         <div class="activity-content">
-            <h2>Quick Activity Boost</h2>
-            <p>Log your contributions and watch the points stack up dynamically – stay motivated!</p>
-            <div id="activitySectionMobile">
-                <p>Your Points: <span id="pointsMobile">0</span>/100</p>
-                <div class="progress-bar"><div class="progress-fill" id="progressFillMobile"></div></div>
-                <button class="counter-btn" onclick="addPoints()">+10 Pts</button>
-                <button class="counter-btn reset-btn" onclick="resetPoints()">Reset</button>
+            <h2>Upcoming Features</h2>
+            <p>More tools on the way: Interactive event calendar, peer Q&A, and exclusive study guides. Join now to stay in the loop!</p>
+            <div class="sources-grid">
+                <a href="https://chat.whatsapp.com/LLq6Sn0gvqwHHIJxxNaNaM" target="_blank" class="source-link">
+                    <i class="fab fa-whatsapp"></i> Group Announcements
+                </a>
+                <a href="#" class="source-link" onclick="openModal()">
+                    <i class="fas fa-calendar"></i> Event Calendar (Coming Soon)
+                </a>
+                <a href="#" class="source-link" onclick="openModal()">
+                    <i class="fas fa-comments"></i> Peer Q&A Forum (Coming Soon)
+                </a>
             </div>
         </div>
     </section>
@@ -603,105 +632,44 @@
         <div class="testimonials-grid">
             <div class="testimonial">
                 <i class="fas fa-quote-left"></i>
-                <p>"GTUverse saved my midsems! The papers section is a game-changer."</p>
+                <p>"GTUverse saved my midsems! The papers and sources are spot on."</p>
                 <cite>- Priya, CSE Sem 5</cite>
             </div>
             <div class="testimonial">
                 <i class="fas fa-quote-left"></i>
-                <p>"Easily hit 100 activity points with their low-effort tips. Highly recommend!"</p>
+                <p>"Found all the links for 100 pts easily. Group updates are timely!"</p>
                 <cite>- Arjun, ME Sem 3</cite>
             </div>
             <div class="testimonial">
                 <i class="fas fa-quote-left"></i>
-                <p>"Timely updates via WhatsApp keep me on track. Student-made magic!"</p>
+                <p>"Events shared in WhatsApp – joined and hit the biggest count already!"</p>
                 <cite>- Sneha, ECE Sem 7</cite>
             </div>
         </div>
     </section>
 
     <footer>
-        <p>&copy; 2025 GTUverse. A student-led initiative to simplify academics. <i class="fas fa-heart" style="color: var(--danger);"></i> Made with passion by GTU peers.</p>
+        <p>&copy; 2025 GTUverse. A student-led initiative to simplify academics. <i class="fas fa-heart" style="color: var(--danger);"></i> Join us – more coming soon!</p>
     </footer>
 
     <!-- Modal for Contribute -->
     <div id="contributeModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeModal()">&times;</span>
-            <h3>Contribute to GTUverse</h3>
-            <p>Share your midsem papers or tips! Upload via our WhatsApp channel or email us at gtuverse@example.com.</p>
-            <a href="https://chat.whatsapp.com/LLq6Sn0gvqwHHIJxxNaNaM" target="_blank" class="cta-button">Share on WhatsApp</a>
+            <h3>Excited for More?</h3>
+            <p>We're building interactive features like event calendars and Q&A. Share your ideas in the WhatsApp group!</p>
+            <a href="https://chat.whatsapp.com/LLq6Sn0gvqwHHIJxxNaNaM" target="_blank" class="cta-button">Share Ideas</a>
         </div>
     </div>
 
     <script>
-        let points = 0;
         const carouselSlides = [
-            { icon: 'fas fa-lightbulb', title: 'Pro Tip 1', text: 'Submit assignments early for +20 activity pts – low effort, high reward! Set reminders in our updates.' },
-            { icon: 'fas fa-users', title: 'Pro Tip 2', text: 'Join study groups via WhatsApp for collaborative +15 pts sessions. Connect with peers instantly.' },
-            { icon: 'fas fa-clock', title: 'Pro Tip 3', text: 'Track deadlines in our updates section to avoid last-minute rushes and earn consistency pts. Stay ahead!' },
-            { icon: 'fas fa-star', title: 'Pro Tip 4', text: 'Contribute a paper to the archive for bonus pts and help your fellow GTU students.' }
+            { icon: 'fas fa-lightbulb', title: 'Pro Tip 1', text: 'Check GTU portal for official events to rack up activity points easily.' },
+            { icon: 'fas fa-users', title: 'Pro Tip 2', text: 'Join Reddit r/GTU for peer-shared resources and discussion threads.' },
+            { icon: 'fas fa-clock', title: 'Pro Tip 3', text: 'Monitor group announcements for timely event invites and deadlines.' },
+            { icon: 'fas fa-star', title: 'Pro Tip 4', text: 'Contribute to the community – share papers in WhatsApp for shoutouts!' }
         ];
         let currentSlide = 0;
-
-        function updatePoints() {
-            const pointEl = document.getElementById('points');
-            const pointElMobile = document.getElementById('pointsMobile');
-            const progressFill = document.getElementById('progressFill');
-            const progressFillMobile = document.getElementById('progressFillMobile');
-            pointEl.textContent = points;
-            pointElMobile.textContent = points;
-            const percentage = (points / 100) * 100;
-            progressFill.style.width = percentage + '%';
-            progressFillMobile.style.width = percentage + '%';
-            pointEl.style.color = points >= 50 ? 'var(--secondary)' : 'var(--accent)';
-            pointElMobile.style.color = points >= 50 ? 'var(--secondary)' : 'var(--accent)';
-            // Animate counter
-            pointEl.style.transform = 'scale(1.2)';
-            setTimeout(() => pointEl.style.transform = 'scale(1)', 200);
-            pointElMobile.style.transform = 'scale(1.2)';
-            setTimeout(() => pointElMobile.style.transform = 'scale(1)', 200);
-        }
-
-        function addPoints() {
-            if (points < 100) {
-                points = Math.min(points + 10, 100);
-                updatePoints();
-                if (points === 100) {
-                    // Enhanced confetti
-                    for (let i = 0; i < 100; i++) {
-                        setTimeout(() => createConfetti(), i * 10);
-                    }
-                    alert('🎉 Congrats! You\'ve unlocked full 100 activity points! Share your success story.');
-                }
-            }
-        }
-
-        function resetPoints() {
-            points = 0;
-            updatePoints();
-        }
-
-        function createConfetti() {
-            const confetti = document.createElement('div');
-            confetti.style.cssText = `
-                position: fixed;
-                left: ${Math.random() * 100}vw;
-                top: -10px;
-                width: 10px;
-                height: 10px;
-                background: hsl(${Math.random() * 360}, 100%, 50%);
-                pointer-events: none;
-                z-index: 9999;
-                animation: fall 3s linear forwards;
-                border-radius: 50%;
-            `;
-            document.body.appendChild(confetti);
-            setTimeout(() => confetti.remove(), 3000);
-        }
-
-        const style = document.createElement('style');
-        style.textContent = '@keyframes fall { to { transform: translateY(100vh) rotate(720deg); opacity: 0; } }';
-        document.head.appendChild(style);
 
         function renderCarousel() {
             const carousel = document.getElementById('carousel');
@@ -759,10 +727,10 @@
             icon.classList.toggle('fa-sun');
         }
 
-        // Load saved points
-        points = localStorage.getItem('gtuPoints') ? parseInt(localStorage.getItem('gtuPoints')) : 0;
-        updatePoints();
-        document.addEventListener('beforeunload', () => localStorage.setItem('gtuPoints', points));
+        function toggleMenu() {
+            const ul = document.getElementById('navUl');
+            ul.classList.toggle('active');
+        }
 
         // Scroll animations
         function handleScroll() {
