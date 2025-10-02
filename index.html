@@ -1568,22 +1568,7 @@
     <script>
         // Mock Database using localStorage
         function initDB() {
-            if (!localStorage.getItem('papers')) {
-                localStorage.setItem('papers', JSON.stringify([
-                    { id: 1, title: 'DBMS Sem 5', type: 'midsem', branch: 'CE', sem: 5, college: 'LDCE', url: 'https://example.com/dbms.pdf' },
-                    { id: 2, title: 'OS Sem 3', type: 'gtu', branch: 'CE', sem: 3, college: 'Nirma', url: 'https://example.com/os.pdf' },
-                    { id: 3, title: 'Web Tech Sem 5', type: 'midsem', branch: 'IT', sem: 5, college: 'LDCE', url: 'https://example.com/webtech.pdf' },
-                    { id: 4, title: 'SOM Sem 4', type: 'gtu', branch: 'ME', sem: 4, college: 'VGEC', url: 'https://example.com/som.pdf' },
-                    { id: 5, title: 'DSP Sem 5', type: 'midsem', branch: 'EC', sem: 5, college: 'LDCE', url: 'https://example.com/dsp.pdf' }
-                ]));
             }
-            if (!localStorage.getItem('announcements')) {
-                localStorage.setItem('announcements', JSON.stringify([
-                    { id: 1, title: 'Exam Schedule Released', desc: 'Midsems start on Oct 10, 2025', date: new Date().toLocaleString() },
-                    { id: 2, title: 'New Syllabus Update', desc: 'Changes in Sem 5 subjects', date: new Date().toLocaleString() }
-                ]));
-            }
-        }
         initDB();
 
         // Typewriter Effect for Hero
