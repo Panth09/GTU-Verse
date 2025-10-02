@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GTUverse Admin Panel</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --danger: #ef4444;
+            --success: #10b981;
+            --dark: #1e293b;
+            --medium: #475569;
+            --light: #f8fafc;
+            --white: #ffffff;
+            --border: #e2e8f0;
+            --gradient-primary: linear-gradient(135deg, var(--primary) 0%, #1e40af 100%);
+            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--light);
+            color: var(--dark);
+            line-height: 1.7;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .login-form {
+            max-width: 400px;
+            margin: 4rem auto;
+            text-align: center;
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: var(--shadow-md);
+        }
+
+        .login-form input {
+            width: 100%;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .login-btn {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 1rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            width: 100%;
+        }
+
+        .dashboard {
+            display: none;
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            background: var(--white);
+            padding: 1rem;
+            border-radius: 8px;
+            box-shadow: var(--shadow-md);
+        }
+
+        .logout-btn {
+            background: var(--danger);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .section {
+            background: var(--white);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-radius: 12px;
+            box-shadow: var(--shadow-md);
+        }
+
+        .section h3 {
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .form-group {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .form-group input, .form-group textarea {
+            flex: 1;
+            min-width: 200px;
+            padding: 0.75rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+        }
+
+        .add-btn {
+            background: var(--success);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .list {
+            list-style: none;
+        }
+
+        .list-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .delete-btn {
+            background: var(--danger);
+            color: white;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .stat {
+            background: var(--light);
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="login-form" id="loginForm">
+            <h2>Admin Login</h2>
+            <form onsubmit="login(event)">
+                <input type="password" id="password" placeholder="Enter password (admin123)" required>
+                <button type="submit" class="login-btn">Login</button>
+            </form>
+        </div>
+
+        <div class="dashboard" id="dashboard">
+            <div class="dashboard-header">
+                <h1>GTUverse Admin Panel</h1>
+                <button class="logout-btn" onclick="logout()">Logout</button>
+            </div>
+
+            <div class="section">
+                <h3>Site Stats</h3>
+                <div class="stats-grid">
+                    <div class="stat">
+                        <div class="stat-value" id="totalPapers">0</div>
+                        <div>Total Papers</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value" id="totalAnnouncements">0</div>
+                        <div>Total Announcements</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value" id="totalQuizzes">0</div>
+                        <div>Total Quizzes</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value" id="totalPoints">0</div>
+                        <div>Total Points Earned</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h3>Manage Papers</h3>
+                <form onsubmit="addPaper(event)" class="form-group">
+                    <input type="text" placeholder="Title (e.g., DBMS Sem 5)" required>
+                    <input type="text" placeholder="Branch (e.g., CE)" required>
+                    <input type="number" placeholder="Semester (e.g., 5)" required>
+                    <input type="url" placeholder="PDF URL" required>
+                    <button type="submit" class="add-btn">Add Paper</button>
+                </form>
+                <ul class="list" id="papersList"></ul>
+            </div>
+
+            <div class="section">
+                <h3>Manage Announcements (Triggers Notifications)</h3>
+                <form onsubmit="addAnnouncement(event)" class="form-group">
+                    <input type="text" placeholder="Title (e.g., Exam Schedule Released)" required>
+                    <textarea placeholder="Description" rows="3" required></textarea>
+                    <button type="submit" class="add-btn">Add Announcement & Notify</button>
+                </form>
+                <ul class="list" id="announcementsList"></ul>
+            </div>
+
+            <div class="section">
+                <h3>Manage Quizzes</h3>
+                <form onsubmit="addQuiz(event)" class="form-group">
+                    <input type="text" placeholder="Question (e.g., What is DBMS?)" required>
+                    <input type="text" placeholder="Answer (e.g., Database Management System)" required>
+                    <input type="number" placeholder="Points (e.g., 10)" required>
+                    <button type="submit" class="add-btn">Add Quiz</button>
+                </form>
+                <ul class="list" id="quizzesList"></ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const PASSWORD = 'admin123'; // Change for production
+
+        function login(e) {
+            e.preventDefault();
+            if (document.getElementById('password').value === PASSWORD) {
+                document.getElementById('loginForm').style.display = 'none';
+                document.getElementById('dashboard').style.display = 'block';
+                loadData();
+            } else {
+                alert('Invalid password');
+            }
+        }
+
+        function logout() {
+            document.getElementById('loginForm').style.display = 'block';
+            document.getElementById('dashboard').style.display = 'none';
+            document.getElementById('password').value = '';
+        }
+
+        function loadData() {
+            // Load Papers
+            const papers = JSON.parse(localStorage.getItem('papers') || '[]');
+            document.getElementById('papersList').innerHTML = papers.map(p => `
+                <li class="list-item">
+                    <span>${p.title} (${p.branch} Sem ${p.sem}) - <a href="${p.url}" target="_blank">View</a></span>
+                    <button class="delete-btn" onclick="deleteItem('papers', ${p.id})">Delete</button>
+                </li>
+            `).join('');
+
+            // Load Announcements
+            const announcements = JSON.parse(localStorage.getItem('announcements') || '[]');
+            document.getElementById('announcementsList').innerHTML = announcements.map(a => `
+                <li class="list-item">
+                    <span>${a.title}: ${a.desc}</span>
+                    <button class="delete-btn" onclick="deleteItem('announcements', ${a.id})">Delete</button>
+                </li>
+            `).join('');
+
+            // Load Quizzes
+            const quizzes = JSON.parse(localStorage.getItem('quizzes') || '[]');
+            document.getElementById('quizzesList').innerHTML = quizzes.map(q => `
+                <li class="list-item">
+                    <span>${q.question} (Answer: ${q.answer}, Points: ${q.points})</span>
+                    <button class="delete-btn" onclick="deleteItem('quizzes', ${q.id})">Delete</button>
+                </li>
+            `).join('');
+
+            // Update Stats
+            document.getElementById('totalPapers').textContent = papers.length;
+            document.getElementById('totalAnnouncements').textContent = announcements.length;
+            document.getElementById('totalQuizzes').textContent = quizzes.length;
+            document.getElementById('totalPoints').textContent = localStorage.getItem('points') || 0;
+        }
+
+        function addPaper(e) {
+            e.preventDefault();
+            const inputs = e.target.querySelectorAll('input');
+            const [title, branch, sem, url] = inputs;
+            const papers = JSON.parse(localStorage.getItem('papers') || '[]');
+            const newId = papers.length ? Math.max(...papers.map(p => p.id)) + 1 : 1;
+            papers.push({ id: newId, title: title.value, branch: branch.value, sem: parseInt(sem.value), url: url.value });
+            localStorage.setItem('papers', JSON.stringify(papers));
+            alert('Paper added! Live on site now.');
+            loadData();
+            e.target.reset();
+        }
+
+        function addAnnouncement(e) {
+            e.preventDefault();
+            const inputs = e.target.querySelectorAll('input, textarea');
+            const [title, desc] = inputs;
+            const announcements = JSON.parse(localStorage.getItem('announcements') || '[]');
+            const newId = announcements.length ? Math.max(...announcements.map(a => a.id)) + 1 : 1;
+            announcements.push({ id: newId, title: title.value, desc: desc.value });
+            localStorage.setItem('announcements', JSON.stringify(announcements));
+            alert('Announcement added & notification triggered! Live on site now.');
+            // Simulate notification trigger (main site will show on load/view)
+            loadData();
+            e.target.reset();
+        }
+
+        function addQuiz(e) {
+            e.preventDefault();
+            const inputs = e.target.querySelectorAll('input');
+            const [question, answer, points] = inputs;
+            const quizzes = JSON.parse(localStorage.getItem('quizzes') || '[]');
+            const newId = quizzes.length ? Math.max(...quizzes.map(q => q.id)) + 1 : 1;
+            quizzes.push({ id: newId, question: question.value, answer: answer.value, points: parseInt(points.value) });
+            localStorage.setItem('quizzes', JSON.stringify(quizzes));
+            alert('Quiz added! Live on site now.');
+            loadData();
+            e.target.reset();
+        }
+
+        function deleteItem(type, id) {
+            let items = JSON.parse(localStorage.getItem(type) || '[]');
+            items = items.filter(i => i.id !== id);
+            localStorage.setItem(type, JSON.stringify(items));
+            alert(`${type} item deleted! Changes live on site.`);
+            loadData();
+        }
+    </script>
+</body>
+</html>
