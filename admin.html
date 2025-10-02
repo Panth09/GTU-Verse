@@ -652,7 +652,7 @@
             if (type === 'papers') {
                 document.getElementById('editModalTitle').textContent = 'Edit Paper';
                 descGroup.style.display = 'none';
-                extraDiv.style.display = 'flex';
+                extraDiv.style.display = 'block';
                 extraDiv.innerHTML = `
                     <div class="form-group">
                         <select id="editTypeSelect" required>
@@ -670,7 +670,7 @@
             } else if (type === 'announcements') {
                 document.getElementById('editModalTitle').textContent = 'Edit Announcement';
                 descGroup.style.display = 'block';
-                extraDiv.style.display = 'flex';
+                extraDiv.style.display = 'block';
                 extraDiv.innerHTML = `
                     <div class="form-group">
                         <input type="text" id="editDate" placeholder="Date" value="${item.date || ''}" required>
