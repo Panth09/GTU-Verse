@@ -860,130 +860,6 @@
 
         .resource-body li i { color: var(--secondary); font-size: 1rem; width: 20px; }
 
-        .quizzes {
-            padding: 6rem 2rem;
-            max-width: 1280px;
-            margin: 0 auto;
-            background: var(--light);
-        }
-
-        body.dark-mode .quizzes { background: #0f172a; }
-
-        .quizzes-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-        }
-
-        .quiz-card {
-            background: var(--white);
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: var(--shadow-md);
-            transition: var(--transition);
-            border: 1px solid var(--border);
-        }
-
-        body.dark-mode .quiz-card { 
-            background: var(--white); 
-            border-color: var(--border);
-        }
-
-        .quiz-card:hover {
-            transform: translateY(-6px);
-            box-shadow: var(--shadow-xl);
-        }
-
-        .quiz-header {
-            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
-            padding: 1.5rem;
-            text-align: center;
-            color: white;
-        }
-
-        .quiz-header h3 {
-            font-family: 'Poppins', sans-serif;
-            font-size: 1.2rem;
-            font-weight: 600;
-            margin-bottom: 0.25rem;
-        }
-
-        .quiz-body {
-            padding: 1.5rem;
-        }
-
-        .quiz-question {
-            font-weight: 600;
-            color: var(--dark);
-            margin-bottom: 1rem;
-            font-size: 1.1rem;
-        }
-
-        body.dark-mode .quiz-question { color: var(--dark); }
-
-        .quiz-input-wrapper {
-            position: relative;
-            margin-bottom: 1rem;
-        }
-
-        .quiz-input-wrapper input {
-            width: 100%;
-            padding: 0.75rem;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            font-size: 1rem;
-        }
-
-        .quiz-input-wrapper input:focus {
-            outline: none;
-            border-color: var(--primary);
-        }
-
-        .quiz-submit {
-            background: var(--gradient-primary);
-            color: white;
-            padding: 0.75rem 1.5rem;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            width: 100%;
-        }
-
-        .quiz-submit:hover {
-            transform: translateY(-1px);
-        }
-
-        .quiz-feedback {
-            margin-top: 1rem;
-            padding: 0.75rem;
-            border-radius: 8px;
-            text-align: center;
-            font-weight: 600;
-        }
-
-        .quiz-feedback.success {
-            background: rgba(16, 185, 129, 0.1);
-            color: var(--secondary);
-            border: 1px solid var(--secondary);
-        }
-
-        .quiz-feedback.error {
-            background: rgba(239, 68, 68, 0.1);
-            color: var(--danger);
-            border: 1px solid var(--danger);
-        }
-
-        .points-earned {
-            background: var(--success);
-            color: white;
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            margin-top: 0.5rem;
-            display: inline-block;
-        }
-
         .papers {
             padding: 6rem 2rem;
             max-width: 1280px;
@@ -1458,8 +1334,7 @@
 
             .stats-grid,
             .features-grid,
-            .resources-grid,
-            .quizzes-grid { grid-template-columns: 1fr; }
+            .resources-grid { grid-template-columns: 1fr; }
 
             .cta-banner { 
                 margin: 3rem 1rem; 
@@ -1497,12 +1372,8 @@
                 <li><a href="#home">Home</a></li>
                 <li><a href="#features">Features</a></li>
                 <li><a href="#resources">Resources</a></li>
-                <li><a href="#quizzes">Quizzes</a></li>
                 <li><a href="#papers">Papers</a></li>
                 <li><a href="#announcements">Announcements</a></li>
-                <li><a href="admin.html" target="_blank" class="admin-link">
-                    <i class="fas fa-cog"></i> Admin Panel
-                </a></li>
                 <li><a href="#contact" onclick="openModal(event)">Contact</a></li>
                 <li><a href="https://chat.whatsapp.com/LLq6Sn0gvqwHHIJxxNaNaM" target="_blank" class="whatsapp-btn">
                     <i class="fab fa-whatsapp"></i> Join Community
@@ -1712,17 +1583,6 @@
         </div>
     </section>
 
-    <section class="quizzes" id="quizzes">
-        <div class="section-header fade-in">
-            <h2 class="section-title">Earn Activity Points with Quizzes</h2>
-            <p class="section-subtitle">Test your knowledge, earn points instantly, and track your progress. Each correct answer boosts your GTU activity score!</p>
-        </div>
-        <div class="quizzes-grid" id="quizzesGrid"></div>
-        <div style="text-align: center; margin-top: 2rem;">
-            <p><strong>Your Total Points: <span id="userPoints">0</span></strong></p>
-        </div>
-    </section>
-
     <section class="papers" id="papers">
         <div class="section-header fade-in">
             <h2 class="section-title">All GTU Papers</h2>
@@ -1813,19 +1673,6 @@
                     { id: 2, title: 'New Syllabus Update', desc: 'Changes in Sem 5 subjects', date: new Date().toLocaleString() }
                 ]));
             }
-            if (!localStorage.getItem('quizzes')) {
-                localStorage.setItem('quizzes', JSON.stringify([
-                    { id: 1, question: 'What does DBMS stand for?', answer: 'Database Management System', points: 10 },
-                    { id: 2, question: 'Which OS is Unix-like?', answer: 'Linux', points: 5 },
-                    { id: 3, question: 'What is OOP?', answer: 'Object Oriented Programming', points: 15 }
-                ]));
-            }
-            if (!localStorage.getItem('totalPoints')) {
-                localStorage.setItem('totalPoints', '0');
-            }
-            if (!localStorage.getItem('userPoints')) {
-                localStorage.setItem('userPoints', '0');
-            }
         }
         initDB();
 
@@ -1909,52 +1756,6 @@
         }, observerOptions);
 
         document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
-
-        // Load Quizzes
-        function loadQuizzes() {
-            const quizzes = JSON.parse(localStorage.getItem('quizzes') || '[]');
-            const grid = document.getElementById('quizzesGrid');
-            grid.innerHTML = quizzes.map(q => `
-                <div class="quiz-card fade-in">
-                    <div class="quiz-header">
-                        <h3>Quiz #${q.id} - ${q.points} Points</h3>
-                    </div>
-                    <div class="quiz-body">
-                        <div class="quiz-question">${q.question}</div>
-                        <div class="quiz-input-wrapper">
-                            <input type="text" id="quizAnswer${q.id}" placeholder="Enter your answer..." aria-label="Answer for quiz ${q.id}">
-                        </div>
-                        <button class="quiz-submit" onclick="submitQuiz(${q.id}, '${q.answer}', ${q.points})">Submit Answer</button>
-                        <div id="feedback${q.id}" class="quiz-feedback" style="display: none;"></div>
-                    </div>
-                </div>
-            `).join('');
-            document.querySelectorAll('.quiz-card').forEach(el => observer.observe(el));
-            updateUserPoints();
-        }
-
-        function submitQuiz(id, correctAnswer, points) {
-            const answer = document.getElementById(`quizAnswer${id}`).value.trim().toLowerCase();
-            const feedback = document.getElementById(`feedback${id}`);
-            const totalPoints = parseInt(localStorage.getItem('totalPoints') || 0);
-            const userPoints = parseInt(localStorage.getItem('userPoints') || 0);
-            if (answer === correctAnswer.toLowerCase()) {
-                feedback.textContent = 'Correct! Great job!';
-                feedback.className = 'quiz-feedback success';
-                localStorage.setItem('totalPoints', (totalPoints + points).toString());
-                localStorage.setItem('userPoints', (userPoints + points).toString());
-                feedback.innerHTML += `<div class="points-earned">+${points} Points Earned!</div>`;
-            } else {
-                feedback.textContent = `Wrong! Correct answer: ${correctAnswer}`;
-                feedback.className = 'quiz-feedback error';
-            }
-            feedback.style.display = 'block';
-            updateUserPoints();
-        }
-
-        function updateUserPoints() {
-            document.getElementById('userPoints').textContent = localStorage.getItem('userPoints') || 0;
-        }
 
         // Paper Search
         function handleSearch(e) {
@@ -2125,7 +1926,6 @@
         window.addEventListener('load', () => {
             filterPapers();
             loadAllAnnouncements();
-            loadQuizzes();
         });
 
         // Performance: Preload critical resources
