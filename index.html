@@ -1296,6 +1296,65 @@
             50% { border-color: var(--primary); }
         }
 
+        /* Admin Panel Styles */
+        .admin-panel {
+            padding: 6rem 2rem;
+            max-width: 1280px;
+            margin: 0 auto;
+            display: none; /* Hidden by default */
+        }
+
+        .admin-login {
+            max-width: 400px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .admin-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .admin-button {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 1rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .admin-section {
+            margin-top: 2rem;
+        }
+
+        .admin-section h3 {
+            margin-bottom: 1rem;
+        }
+
+        .admin-list {
+            list-style: none;
+        }
+
+        .admin-item {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .admin-item button {
+            background: var(--danger);
+            color: white;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
         @media (max-width: 768px) {
             .hamburger { display: flex; }
 
@@ -1374,6 +1433,7 @@
                 <li><a href="#resources">Resources</a></li>
                 <li><a href="#testimonials">Reviews</a></li>
                 <li><a href="#contact" onclick="openModal(event)">Contact</a></li>
+                <li><a href="#admin" onclick="showAdminLogin()">Admin</a></li>
                 <li><a href="https://chat.whatsapp.com/LLq6Sn0gvqwHHIJxxNaNaM" target="_blank" class="whatsapp-btn">
                     <i class="fab fa-whatsapp"></i> Join Community
                 </a></li>
@@ -1477,7 +1537,7 @@
                     <li><i class="fas fa-check"></i> Live leaderboards</li>
                     <li><i class="fas fa-check"></i> Verified submissions</li>
                 </ul>
-                <a href="#" class="feature-link" onclick="simulatePoints()"><i class="fas fa-arrow-right"></i> Earn Now</a>
+                <a href="#" class="feature-link" onclick="startQuiz()"><i class="fas fa-arrow-right"></i> Earn Now</a>
             </div>
             <div class="feature-card fade-in">
                 <div class="feature-icon">
@@ -1490,7 +1550,7 @@
                     <li><i class="fas fa-check"></i> Categorized feeds</li>
                     <li><i class="fas fa-check"></i> 1-year archive</li>
                 </ul>
-                <a href="#" class="feature-link" onclick="simulateAlert()"><i class="fas fa-arrow-right"></i> Enable Alerts</a>
+                <a href="#" class="feature-link" onclick="showAnnouncements()"><i class="fas fa-arrow-right"></i> View Alerts</a>
             </div>
             <div class="feature-card fade-in">
                 <div class="feature-icon">
@@ -1523,7 +1583,7 @@
             <p class="section-subtitle">Jump straight to what you need. Updated for Sem 1-8 across all GTU branches.</p>
         </div>
         <div class="resources-grid">
-            <div class="resource-card fade-in">
+            <div class="resource-card fade-in" onclick="showBranchPapers('CE')">
                 <div class="resource-header">
                     <h3>Computer Engineering</h3>
                     <p>Sem 1-8 Papers & Notes</p>
@@ -1537,7 +1597,7 @@
                     </ul>
                 </div>
             </div>
-            <div class="resource-card fade-in">
+            <div class="resource-card fade-in" onclick="showBranchPapers('IT')">
                 <div class="resource-header">
                     <h3>Information Technology</h3>
                     <p>Sem 1-8 Papers & Notes</p>
@@ -1551,7 +1611,7 @@
                     </ul>
                 </div>
             </div>
-            <div class="resource-card fade-in">
+            <div class="resource-card fade-in" onclick="showBranchPapers('ME')">
                 <div class="resource-header">
                     <h3>Mechanical Engineering</h3>
                     <p>Sem 1-8 Papers & Notes</p>
@@ -1565,7 +1625,7 @@
                     </ul>
                 </div>
             </div>
-            <div class="resource-card fade-in">
+            <div class="resource-card fade-in" onclick="showBranchPapers('EC')">
                 <div class="resource-header">
                     <h3>Electronics & Comm</h3>
                     <p>Sem 1-8 Papers & Notes</p>
@@ -1648,6 +1708,50 @@
         </form>
     </div>
 
+    <section class="admin-panel" id="admin">
+        <div class="admin-login" id="adminLogin">
+            <h2>Admin Login</h2>
+            <form class="admin-form" onsubmit="adminLogin(event)">
+                <input type="password" id="adminPassword" placeholder="Enter admin password" required>
+                <button type="submit" class="admin-button">Login</button>
+            </form>
+        </div>
+        <div class="admin-dashboard" id="adminDashboard" style="display: none;">
+            <h2>Admin Panel</h2>
+            <button onclick="adminLogout()" class="admin-button" style="background: var(--danger); margin-bottom: 2rem;">Logout</button>
+            <div class="admin-section">
+                <h3>Manage Papers</h3>
+                <form onsubmit="addPaper(event)">
+                    <input type="text" id="paperTitle" placeholder="Paper Title" required>
+                    <input type="text" id="paperBranch" placeholder="Branch (e.g., CE)" required>
+                    <input type="text" id="paperSem" placeholder="Semester (e.g., 5)" required>
+                    <input type="text" id="paperUrl" placeholder="Paper URL" required>
+                    <button type="submit" class="admin-button">Add Paper</button>
+                </form>
+                <ul id="paperList" class="admin-list"></ul>
+            </div>
+            <div class="admin-section">
+                <h3>Manage Announcements</h3>
+                <form onsubmit="addAnnouncement(event)">
+                    <input type="text" id="annTitle" placeholder="Announcement Title" required>
+                    <textarea id="annDesc" placeholder="Description" required></textarea>
+                    <button type="submit" class="admin-button">Add Announcement</button>
+                </form>
+                <ul id="annList" class="admin-list"></ul>
+            </div>
+            <div class="admin-section">
+                <h3>Manage Quizzes</h3>
+                <form onsubmit="addQuiz(event)">
+                    <input type="text" id="quizQuestion" placeholder="Question" required>
+                    <input type="text" id="quizAnswer" placeholder="Correct Answer" required>
+                    <input type="number" id="quizPoints" placeholder="Points" required>
+                    <button type="submit" class="admin-button">Add Quiz</button>
+                </form>
+                <ul id="quizList" class="admin-list"></ul>
+            </div>
+        </div>
+    </section>
+
     <footer>
         <p>&copy; 2025 GTUverse. Built by GTU students, for GTU students. Empowering futures, one paper at a time.</p>
         <div class="footer-links">
@@ -1682,7 +1786,54 @@
         </div>
     </div>
 
+    <div id="quizModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeQuizModal()">&times;</span>
+            <h3>Daily Quiz Challenge</h3>
+            <p id="quizQuestion"></p>
+            <input type="text" id="quizUserAnswer" placeholder="Your answer" required>
+            <button onclick="submitQuizAnswer()" class="modal-submit">Submit</button>
+        </div>
+    </div>
+
+    <div id="annModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeAnnModal()">&times;</span>
+            <h3>Latest Announcements</h3>
+            <ul id="annDisplayList"></ul>
+        </div>
+    </div>
+
     <script>
+        // Mock Database using localStorage
+        function initDB() {
+            if (!localStorage.getItem('papers')) {
+                localStorage.setItem('papers', JSON.stringify([
+                    { id: 1, title: 'DBMS Sem 5', branch: 'CE', sem: 5, url: 'https://example.com/dbms.pdf' },
+                    { id: 2, title: 'OS Sem 3', branch: 'CE', sem: 3, url: 'https://example.com/os.pdf' },
+                    { id: 3, title: 'Web Tech Sem 5', branch: 'IT', sem: 5, url: 'https://example.com/webtech.pdf' },
+                    { id: 4, title: 'SOM Sem 4', branch: 'ME', sem: 4, url: 'https://example.com/som.pdf' },
+                    { id: 5, title: 'DSP Sem 5', branch: 'EC', sem: 5, url: 'https://example.com/dsp.pdf' }
+                ]));
+            }
+            if (!localStorage.getItem('announcements')) {
+                localStorage.setItem('announcements', JSON.stringify([
+                    { id: 1, title: 'Exam Schedule Released', desc: 'Midsems start on Oct 10, 2025' },
+                    { id: 2, title: 'New Syllabus Update', desc: 'Changes in Sem 5 subjects' }
+                ]));
+            }
+            if (!localStorage.getItem('quizzes')) {
+                localStorage.setItem('quizzes', JSON.stringify([
+                    { id: 1, question: 'What is the full form of DBMS?', answer: 'Database Management System', points: 10 },
+                    { id: 2, question: 'What is OS?', answer: 'Operating System', points: 15 }
+                ]));
+            }
+            if (!localStorage.getItem('points')) {
+                localStorage.setItem('points', 0);
+            }
+        }
+        initDB();
+
         // Typewriter Effect for Hero
         const typewriterText = 'GTU Journey';
         const typewriterEl = document.getElementById('typewriter');
@@ -1764,53 +1915,215 @@
 
         document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 
-        // Enhanced Search with Mock Results
-        const mockResults = {
-            'dbms': [{ title: 'DBMS Sem 5 CE Midsem Paper 2024', desc: 'Full solution with model answers', link: '#' }],
-            'os': [{ title: 'OS Sem 3 IT Endsems 2023', desc: 'Previous year questions + tips', link: '#' }],
-            'default': [{ title: 'No exact match. Try "DBMS Sem 5" or "OS Sem 3"', desc: 'Explore quick links above for popular searches.', link: '#' }]
-        };
-
+        // Paper Search
         function handleSearch(e) {
             e?.preventDefault();
             const query = document.getElementById('searchInput').value.toLowerCase().trim();
             const resultsEl = document.getElementById('searchResults');
-            if (query) {
-                const key = Object.keys(mockResults).find(k => query.includes(k)) || 'default';
-                resultsEl.innerHTML = mockResults[key].map(r => `
+            const papers = JSON.parse(localStorage.getItem('papers'));
+            const filtered = papers.filter(p => p.title.toLowerCase().includes(query) || p.branch.toLowerCase().includes(query) || p.sem.toString().includes(query));
+            if (filtered.length > 0) {
+                resultsEl.innerHTML = filtered.map(p => `
                     <div class="search-result-item">
-                        <a href="${r.link}" class="search-result-title">${r.title}</a>
-                        <p class="search-result-desc">${r.desc}</p>
-                        <a href="${r.link}" class="search-result-link">Download PDF <i class="fas fa-download"></i></a>
+                        <span class="search-result-title">${p.title} (${p.branch} Sem ${p.sem})</span>
+                        <p class="search-result-desc">Download the paper and solutions.</p>
+                        <a href="${p.url}" target="_blank" class="search-result-link">Download PDF <i class="fas fa-download"></i></a>
                     </div>
                 `).join('');
-                resultsEl.style.display = 'block';
-                resultsEl.scrollIntoView({ behavior: 'smooth' });
             } else {
-                resultsEl.style.display = 'none';
+                resultsEl.innerHTML = '<p>No results found. Try different keywords or add via admin panel.</p>';
+            }
+            resultsEl.style.display = 'block';
+            resultsEl.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Show Branch Papers
+        function showBranchPapers(branch) {
+            const papers = JSON.parse(localStorage.getItem('papers'));
+            const filtered = papers.filter(p => p.branch === branch);
+            const resultsEl = document.getElementById('searchResults');
+            if (filtered.length > 0) {
+                resultsEl.innerHTML = filtered.map(p => `
+                    <div class="search-result-item">
+                        <span class="search-result-title">${p.title} (Sem ${p.sem})</span>
+                        <p class="search-result-desc">Download the paper and solutions.</p>
+                        <a href="${p.url}" target="_blank" class="search-result-link">Download PDF <i class="fas fa-download"></i></a>
+                    </div>
+                `).join('');
+            } else {
+                resultsEl.innerHTML = '<p>No papers for this branch yet. Add via admin panel.</p>';
+            }
+            resultsEl.style.display = 'block';
+            resultsEl.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Quiz Functionality
+        let currentQuiz;
+        function startQuiz() {
+            const quizzes = JSON.parse(localStorage.getItem('quizzes'));
+            if (quizzes.length > 0) {
+                currentQuiz = quizzes[Math.floor(Math.random() * quizzes.length)];
+                document.getElementById('quizQuestion').textContent = currentQuiz.question;
+                document.getElementById('quizModal').style.display = 'block';
+            } else {
+                alert('No quizzes available. Add via admin panel.');
             }
         }
 
-        // Quick Link Simulation
+        function submitQuizAnswer() {
+            const userAnswer = document.getElementById('quizUserAnswer').value.trim().toLowerCase();
+            if (userAnswer === currentQuiz.answer.toLowerCase()) {
+                let points = parseInt(localStorage.getItem('points')) || 0;
+                points += currentQuiz.points;
+                localStorage.setItem('points', points);
+                alert(`Correct! Earned ${currentQuiz.points} points. Total: ${points}`);
+            } else {
+                alert('Incorrect. Try again next time!');
+            }
+            closeQuizModal();
+        }
+
+        function closeQuizModal() {
+            document.getElementById('quizModal').style.display = 'none';
+            document.getElementById('quizUserAnswer').value = '';
+        }
+
+        // Announcements
+        function showAnnouncements() {
+            const anns = JSON.parse(localStorage.getItem('announcements'));
+            const list = document.getElementById('annDisplayList');
+            list.innerHTML = anns.map(a => `<li><strong>${a.title}</strong>: ${a.desc}</li>`).join('');
+            document.getElementById('annModal').style.display = 'block';
+        }
+
+        function closeAnnModal() {
+            document.getElementById('annModal').style.display = 'none';
+        }
+
+        // Admin Panel
+        const adminPass = 'admin123'; // Simple password for demo
+
+        function showAdminLogin() {
+            document.getElementById('admin').style.display = 'block';
+            document.getElementById('admin').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function adminLogin(e) {
+            e.preventDefault();
+            const pass = document.getElementById('adminPassword').value;
+            if (pass === adminPass) {
+                document.getElementById('adminLogin').style.display = 'none';
+                document.getElementById('adminDashboard').style.display = 'block';
+                loadAdminData();
+            } else {
+                alert('Incorrect password');
+            }
+        }
+
+        function adminLogout() {
+            document.getElementById('adminLogin').style.display = 'block';
+            document.getElementById('adminDashboard').style.display = 'none';
+            document.getElementById('adminPassword').value = '';
+        }
+
+        function loadAdminData() {
+            // Papers
+            const papers = JSON.parse(localStorage.getItem('papers'));
+            const paperList = document.getElementById('paperList');
+            paperList.innerHTML = papers.map(p => `
+                <li class="admin-item">
+                    ${p.title} (${p.branch} Sem ${p.sem})
+                    <button onclick="deleteItem('papers', ${p.id})">Delete</button>
+                </li>
+            `).join('');
+
+            // Announcements
+            const anns = JSON.parse(localStorage.getItem('announcements'));
+            const annList = document.getElementById('annList');
+            annList.innerHTML = anns.map(a => `
+                <li class="admin-item">
+                    ${a.title}
+                    <button onclick="deleteItem('announcements', ${a.id})">Delete</button>
+                </li>
+            `).join('');
+
+            // Quizzes
+            const quizzes = JSON.parse(localStorage.getItem('quizzes'));
+            const quizList = document.getElementById('quizList');
+            quizList.innerHTML = quizzes.map(q => `
+                <li class="admin-item">
+                    ${q.question}
+                    <button onclick="deleteItem('quizzes', ${q.id})">Delete</button>
+                </li>
+            `).join('');
+        }
+
+        function addPaper(e) {
+            e.preventDefault();
+            const title = document.getElementById('paperTitle').value;
+            const branch = document.getElementById('paperBranch').value;
+            const sem = document.getElementById('paperSem').value;
+            const url = document.getElementById('paperUrl').value;
+            const papers = JSON.parse(localStorage.getItem('papers'));
+            const newId = papers.length + 1;
+            papers.push({ id: newId, title, branch, sem: parseInt(sem), url });
+            localStorage.setItem('papers', JSON.stringify(papers));
+            alert('Paper added!');
+            loadAdminData();
+            e.target.reset();
+        }
+
+        function addAnnouncement(e) {
+            e.preventDefault();
+            const title = document.getElementById('annTitle').value;
+            const desc = document.getElementById('annDesc').value;
+            const anns = JSON.parse(localStorage.getItem('announcements'));
+            const newId = anns.length + 1;
+            anns.push({ id: newId, title, desc });
+            localStorage.setItem('announcements', JSON.stringify(anns));
+            alert('Announcement added!');
+            loadAdminData();
+            e.target.reset();
+        }
+
+        function addQuiz(e) {
+            e.preventDefault();
+            const question = document.getElementById('quizQuestion').value;
+            const answer = document.getElementById('quizAnswer').value;
+            const points = parseInt(document.getElementById('quizPoints').value);
+            const quizzes = JSON.parse(localStorage.getItem('quizzes'));
+            const newId = quizzes.length + 1;
+            quizzes.push({ id: newId, question, answer, points });
+            localStorage.setItem('quizzes', JSON.stringify(quizzes));
+            alert('Quiz added!');
+            loadAdminData();
+            e.target.reset();
+        }
+
+        function deleteItem(type, id) {
+            let items = JSON.parse(localStorage.getItem(type));
+            items = items.filter(i => i.id !== id);
+            localStorage.setItem(type, JSON.stringify(items));
+            loadAdminData();
+        }
+
+        // Quick Link Simulation (now using real data)
         function simulateDownload(branch) {
-            alert(`Downloading ${branch} papers... Redirecting to secure download (Demo). Join community for real access!`);
+            showBranchPapers(branch);
         }
 
         // Feature Simulations
+        function simulateSearch(type) {
+            document.getElementById('searchInput').value = type;
+            handleSearch();
+        }
+
         function simulatePoints() {
-            alert('Challenge unlocked! Complete this quiz to earn 20 points instantly. (Demo - Full in app)');
+            startQuiz();
         }
 
         function simulateAlert() {
-            alert('Alerts enabled! You\'ll get a test notification now. (Demo)');
-            // Simulate notification
-            if (Notification.permission === 'granted') {
-                new Notification('GTUverse Alert', { body: 'New paper added: DBMS Sem 5!' });
-            }
-        }
-
-        function simulateSearch(type) {
-            alert(`${type.charAt(0).toUpperCase() + type.slice(1)} search initiated! Results loading... (Demo)`);
+            showAnnouncements();
         }
 
         // Modal Functions
@@ -1856,7 +2169,8 @@
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
+                const targetId = this.getAttribute('href');
+                const target = document.querySelector(targetId);
                 if (target) {
                     target.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }
