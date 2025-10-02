@@ -556,7 +556,7 @@
             papers = papers.sort((a, b) => b.id - a.id); // Sort by ID descending
             document.getElementById('papersList').innerHTML = papers.map(p => `
                 <li class="list-item">
-                    <span>${p.title} (${p.type.toUpperCase()}) (${p.branch} Sem ${p.sem}, ${p.college}) - <a href="${p.url}" target="_blank">View</a></span>
+                    <span>${p.title} (${(p.type || '').toUpperCase()}) (${p.branch} Sem ${p.sem}, ${p.college}) - <a href="${p.url}" target="_blank">View</a></span>
                     <div>
                         <button class="edit-btn" onclick="editItem('papers', ${p.id})">Edit</button>
                         <button class="delete-btn" onclick="deleteItem('papers', ${p.id})">Delete</button>
