@@ -1676,7 +1676,7 @@
             <a href="#terms">Terms of Service</a>
             <a href="#features">Features</a>
             <a href="#resources">Resources</a>
-            <a href="admin.html">Admin Panel</a>
+            <a href="admin.html" class="admin-link">Admin Panel</a>
             <a href="https://chat.whatsapp.com/LLq6Sn0gvqwHHIJxxNaNaM" target="_blank">Community</a>
         </div>
     </footer>
@@ -1748,6 +1748,9 @@
             }
             if (!localStorage.getItem('points')) {
                 localStorage.setItem('points', 0);
+            }
+            if (!localStorage.getItem('totalPoints')) {
+                localStorage.setItem('totalPoints', 0);
             }
         }
         initDB();
@@ -1838,7 +1841,7 @@
             e?.preventDefault();
             const query = document.getElementById('searchInput').value.toLowerCase().trim();
             const resultsEl = document.getElementById('searchResults');
-            const papers = JSON.parse(localStorage.getItem('papers'));
+            const papers = JSON.parse(localStorage.getItem('papers') || '[]');
             const filtered = papers.filter(p => p.title.toLowerCase().includes(query) || p.branch.toLowerCase().includes(query) || p.sem.toString().includes(query));
             if (filtered.length > 0) {
                 resultsEl.innerHTML = filtered.map(p => `
@@ -1857,7 +1860,7 @@
 
         // Show Branch Papers
         function showBranchPapers(branch) {
-            const papers = JSON.parse(localStorage.getItem('papers'));
+            const papers = JSON.parse(localStorage.getItem('papers') || '[]');
             const filtered = papers.filter(p => p.branch === branch);
             const resultsEl = document.getElementById('searchResults');
             if (filtered.length > 0) {
@@ -1878,7 +1881,7 @@
         // Quiz Functionality
         let currentQuiz;
         function startQuiz() {
-            const quizzes = JSON.parse(localStorage.getItem('quizzes'));
+            const quizzes = JSON.parse(localStorage.getItem('quizzes') || '[]');
             if (quizzes.length > 0) {
                 currentQuiz = quizzes[Math.floor(Math.random() * quizzes.length)];
                 document.getElementById('quizQuestion').textContent = currentQuiz.question;
@@ -1894,6 +1897,9 @@
                 let points = parseInt(localStorage.getItem('points')) || 0;
                 points += currentQuiz.points;
                 localStorage.setItem('points', points);
+                let totalPoints = parseInt(localStorage.getItem('totalPoints')) || 0;
+                totalPoints += currentQuiz.points;
+                localStorage.setItem('totalPoints', totalPoints);
                 alert(`Correct! Earned ${currentQuiz.points} points. Total: ${points}`);
             } else {
                 alert('Incorrect. Try again next time!');
@@ -1908,7 +1914,7 @@
 
         // Announcements with Notifications
         async function showAnnouncements() {
-            const anns = JSON.parse(localStorage.getItem('announcements'));
+            const anns = JSON.parse(localStorage.getItem('announcements') || '[]');
             const list = document.getElementById('annDisplayList');
             list.innerHTML = anns.map(a => `<li><strong>${a.title}</strong>: ${a.desc}</li>`).join('');
             document.getElementById('annModal').style.display = 'block';
