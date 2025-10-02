@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GTUverse Admin Panel</title>
-    <meta name="description" content="Admin panel for GTUverse to manage papers and announcements.">
+    <meta name="description" content="Admin panel for GTUverse to manage papers, books, and announcements.">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎓</text></svg>">
@@ -165,7 +165,10 @@
             border: 1px solid var(--border);
         }
 
-        body.dark-mode .login-box { background: var(--white); border-color: var(--border); }
+        body.dark-mode .login-box { 
+            background: var(--white); 
+            border-color: var(--border); 
+        }
 
         .login-box h2 {
             font-family: 'Poppins', sans-serif;
@@ -177,66 +180,66 @@
 
         .form-group {
             margin-bottom: 1.5rem;
+            text-align: left;
         }
 
         .form-group label {
             display: block;
-            font-weight: 500;
             margin-bottom: 0.5rem;
+            font-weight: 500;
             color: var(--dark);
         }
 
-        .form-group input {
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
             width: 100%;
             padding: 1rem;
             border: 2px solid var(--border);
             border-radius: 12px;
             font-size: 1rem;
             transition: var(--transition);
+            background: var(--white);
+            color: var(--dark);
         }
 
-        .form-group input:focus {
+        body.dark-mode .form-group input,
+        body.dark-mode .form-group select,
+        body.dark-mode .form-group textarea {
+            background: var(--white);
+            border-color: var(--border);
+            color: var(--dark);
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
             outline: none;
             border-color: var(--primary);
             box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
         }
 
-        .login-btn {
+        .form-group textarea { resize: vertical; min-height: 100px; }
+
+        .submit-btn {
             background: var(--gradient-primary);
             color: white;
-            padding: 1rem;
+            padding: 1.2rem 3rem;
             border: none;
             border-radius: 12px;
-            width: 100%;
-            font-weight: 600;
             cursor: pointer;
+            font-weight: 600;
+            font-size: 1.1rem;
             transition: var(--transition);
+            width: 100%;
         }
 
-        .login-btn:hover {
+        .submit-btn:hover {
             transform: translateY(-2px);
-            box-shadow: var(--shadow-md);
-        }
-
-        .error {
-            color: var(--danger);
-            text-align: center;
-            margin-bottom: 1rem;
-            display: none;
+            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);
         }
 
         .admin-section {
-            margin-bottom: 3rem;
-        }
-
-        .admin-section h2 {
-            font-family: 'Poppins', sans-serif;
-            font-size: 1.8rem;
-            color: var(--primary);
-            margin-bottom: 1rem;
-        }
-
-        .admin-form {
             background: var(--white);
             padding: 2rem;
             border-radius: 12px;
@@ -245,89 +248,41 @@
             margin-bottom: 2rem;
         }
 
-        body.dark-mode .admin-form { background: var(--white); border-color: var(--border); }
-
-        .admin-form .form-group {
-            margin-bottom: 1rem;
+        body.dark-mode .admin-section { 
+            background: var(--white); 
+            border-color: var(--border); 
         }
 
-        .admin-form input,
-        .admin-form select,
-        .admin-form textarea {
-            width: 100%;
-            padding: 0.75rem;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            font-size: 1rem;
+        .admin-section h2 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.8rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
         }
 
-        .admin-form textarea { resize: vertical; min-height: 100px; }
-
-        .admin-form button {
-            background: var(--gradient-primary);
-            color: white;
-            padding: 0.75rem 1.5rem;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-        }
-
-        .admin-form button:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-md);
-        }
-
-        .admin-list {
+        .resource-list {
             list-style: none;
+            margin-top: 1rem;
         }
 
-        .admin-item {
-            background: var(--white);
-            padding: 1.5rem;
-            border-radius: 12px;
-            margin-bottom: 1rem;
-            box-shadow: var(--shadow-sm);
-            border: 1px solid var(--border);
+        .resource-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            padding: 1rem;
+            border-bottom: 1px solid var(--border);
         }
 
-        body.dark-mode .admin-item { background: var(--white); border-color: var(--border); }
-
-        .admin-item span {
-            font-weight: 500;
-            color: var(--primary);
-        }
-
-        .admin-item .actions {
-            display: flex;
-            gap: 1rem;
-        }
-
-        .edit-btn, .delete-btn {
-            padding: 0.5rem 1rem;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 500;
-            transition: var(--transition);
-        }
-
-        .edit-btn {
-            background: var(--secondary);
-            color: white;
-        }
-
-        .edit-btn:hover {
-            background: var(--secondary-dark);
-            transform: translateY(-2px);
-        }
+        .resource-item:last-child { border-bottom: none; }
 
         .delete-btn {
             background: var(--danger);
             color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
         }
 
         .delete-btn:hover {
@@ -336,11 +291,9 @@
         }
 
         @media (max-width: 768px) {
-            .admin-container { padding: 1rem; }
-            .admin-form { padding: 1.5rem; }
-            .admin-item { flex-direction: column; align-items: flex-start; gap: 1rem; }
-            .admin-item .actions { width: 100%; justify-content: flex-end; }
             nav { padding: 1rem; }
+            .login-container, .admin-container { padding: 1rem; }
+            .admin-section { padding: 1.5rem; }
         }
     </style>
 </head>
@@ -349,13 +302,13 @@
         <nav>
             <a href="index.html" class="logo">
                 <i class="fas fa-graduation-cap"></i>
-                <span>GTUverse Admin</span>
+                <span>GTUverse</span>
             </a>
             <div>
                 <button class="dark-toggle" onclick="toggleDarkMode()" aria-label="Toggle Dark Mode">
                     <i class="fas fa-moon" id="darkToggleIcon"></i>
                 </button>
-                <button class="logout-btn" onclick="logout()" style="display: none;" id="logoutBtn">Logout</button>
+                <a href="#" class="logout-btn" onclick="signOut()">Logout</a>
             </div>
         </nav>
     </header>
@@ -363,44 +316,43 @@
     <div class="login-container" id="loginContainer">
         <div class="login-box">
             <h2>Admin Login</h2>
-            <p class="error" id="loginError">Invalid credentials. Please try again.</p>
-            <div class="form-group">
-                <label for="adminEmail">Email</label>
-                <input type="email" id="adminEmail" placeholder="admin@gtuverse.com" required aria-required="true">
-            </div>
-            <div class="form-group">
-                <label for="adminPassword">Password</label>
-                <input type="password" id="adminPassword" placeholder="Enter admin password" required aria-required="true">
-            </div>
-            <button class="login-btn" id="loginBtn">Login</button>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" required aria-required="true">
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" required aria-required="true">
+                </div>
+                <button type="submit" class="submit-btn">Login</button>
+            </form>
         </div>
     </div>
 
     <div class="admin-container" id="adminContainer" style="display: none;">
         <div class="admin-section">
-            <h2>Manage Papers</h2>
-            <form id="paperForm" class="admin-form">
-                <input type="hidden" id="paperDocId">
-                <input type="hidden" id="paperNumId">
+            <h2>Add Paper</h2>
+            <form id="paperForm">
                 <div class="form-group">
                     <label for="paperTitle">Paper Title</label>
-                    <input type="text" id="paperTitle" placeholder="e.g., DBMS Midsem 2023" required>
+                    <input type="text" id="paperTitle" required aria-required="true">
                 </div>
                 <div class="form-group">
                     <label for="paperType">Type</label>
-                    <select id="paperType" required>
+                    <select id="paperType" required aria-required="true">
                         <option value="midsem">Midsem</option>
-                        <option value="gtu">GTU Exam</option>
+                        <option value="gtu">GTU</option>
                     </select>
                 </div>
                 <div class="form-group">
                     <label for="paperBranch">Branch</label>
-                    <select id="paperBranch" required>
+                    <select id="paperBranch" required aria-required="true">
                         <option value="CE">CE</option>
+                        <option value="IT">IT</option>
                         <option value="ME">ME</option>
                         <option value="EC">EC</option>
                         <option value="EE">EE</option>
-                        <option value="IT">IT</option>
                         <option value="CS">CS</option>
                         <option value="CH">CH</option>
                         <option value="IN">IN</option>
@@ -408,50 +360,84 @@
                 </div>
                 <div class="form-group">
                     <label for="paperSem">Semester</label>
-                    <input type="number" id="paperSem" min="1" max="8" required>
+                    <input type="number" id="paperSem" min="1" max="8" required aria-required="true">
                 </div>
                 <div class="form-group">
                     <label for="paperCollege">College</label>
-                    <input type="text" id="paperCollege" placeholder="e.g., LDCE" required>
+                    <input type="text" id="paperCollege" required aria-required="true">
                 </div>
                 <div class="form-group">
                     <label for="paperUrl">PDF URL</label>
-                    <input type="url" id="paperUrl" placeholder="e.g., https://drive.google.com/..." required>
+                    <input type="url" id="paperUrl" required aria-required="true">
                 </div>
-                <button type="submit">Add Paper</button>
+                <button type="submit" class="submit-btn">Add Paper</button>
             </form>
-            <ul class="admin-list" id="paperList"></ul>
+            <ul class="resource-list" id="paperList"></ul>
         </div>
 
         <div class="admin-section">
-            <h2>Manage Announcements</h2>
-            <form id="announcementForm" class="admin-form">
-                <input type="hidden" id="announcementDocId">
-                <input type="hidden" id="announcementNumId">
+            <h2>Add Book</h2>
+            <form id="bookForm">
                 <div class="form-group">
-                    <label for="announcementTitle">Title</label>
-                    <input type="text" id="announcementTitle" placeholder="e.g., Exam Schedule Update" required>
+                    <label for="bookTitle">Book Title</label>
+                    <input type="text" id="bookTitle" required aria-required="true">
                 </div>
                 <div class="form-group">
-                    <label for="announcementDesc">Description</label>
-                    <textarea id="announcementDesc" placeholder="Enter announcement details" required></textarea>
+                    <label for="bookBranch">Branch</label>
+                    <select id="bookBranch" required aria-required="true">
+                        <option value="CE">CE</option>
+                        <option value="IT">IT</option>
+                        <option value="ME">ME</option>
+                        <option value="EC">EC</option>
+                        <option value="EE">EE</option>
+                        <option value="CS">CS</option>
+                        <option value="CH">CH</option>
+                        <option value="IN">IN</option>
+                    </select>
                 </div>
                 <div class="form-group">
-                    <label for="announcementDate">Date</label>
-                    <input type="date" id="announcementDate" required>
+                    <label for="bookSem">Semester</label>
+                    <input type="number" id="bookSem" min="1" max="8" required aria-required="true">
                 </div>
-                <button type="submit">Add Announcement</button>
+                <div class="form-group">
+                    <label for="bookCollege">College</label>
+                    <input type="text" id="bookCollege" required aria-required="true">
+                </div>
+                <div class="form-group">
+                    <label for="bookUrl">PDF URL</label>
+                    <input type="url" id="bookUrl" required aria-required="true">
+                </div>
+                <button type="submit" class="submit-btn">Add Book</button>
             </form>
-            <ul class="admin-list" id="announcementList"></ul>
+            <ul class="resource-list" id="bookList"></ul>
+        </div>
+
+        <div class="admin-section">
+            <h2>Add Announcement</h2>
+            <form id="announcementForm">
+                <div class="form-group">
+                    <label for="annTitle">Title</label>
+                    <input type="text" id="annTitle" required aria-required="true">
+                </div>
+                <div class="form-group">
+                    <label for="annDesc">Description</label>
+                    <textarea id="annDesc" required aria-required="true"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="annDate">Date</label>
+                    <input type="date" id="annDate" required aria-required="true">
+                </div>
+                <button type="submit" class="submit-btn">Add Announcement</button>
+            </form>
+            <ul class="resource-list" id="announcementList"></ul>
         </div>
     </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js";
-        import { getFirestore, collection, addDoc, getDocs, updateDoc, deleteDoc, doc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-firestore.js";
-        import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-auth.js";
+        import { getAuth, signInWithEmailAndPassword, signOut as firebaseSignOut } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-auth.js";
+        import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-firestore.js";
 
-        // Firebase configuration
         const firebaseConfig = {
             apiKey: "AIzaSyC0QTiJoEIkS7rGDFrd057Kx3nMz7_s2EI",
             authDomain: "gtu-verse.firebaseapp.com",
@@ -462,85 +448,16 @@
             measurementId: "G-YV4W2LT96S"
         };
 
-        // Initialize Firebase with error handling
-        let db, auth;
-        try {
-            const app = initializeApp(firebaseConfig);
-            db = getFirestore(app);
-            auth = getAuth(app);
-        } catch (error) {
-            console.error('Firebase initialization failed:', error);
-            alert('Failed to connect to Firebase. Please check your Firebase configuration and try again.');
-        }
-
-        // Admin email verification
-        const ADMIN_EMAIL = 'dax@gtuverse.com';  // Replace with your actual admin email
-
-        // Auth State Listener
-        if (auth) {
-            onAuthStateChanged(auth, (user) => {
-                if (user && user.email === ADMIN_EMAIL) {
-                    document.getElementById('loginContainer').style.display = 'none';
-                    document.getElementById('adminContainer').style.display = 'block';
-                    document.getElementById('logoutBtn').style.display = 'inline-block';
-                    loadPapers();
-                    loadAnnouncements();
-                } else {
-                    document.getElementById('loginContainer').style.display = 'block';
-                    document.getElementById('adminContainer').style.display = 'none';
-                    document.getElementById('logoutBtn').style.display = 'none';
-                    document.getElementById('loginError').style.display = 'none';
-                }
-            });
-        }
-
-        // Login Function
-        async function login() {
-            const email = document.getElementById('adminEmail').value.trim();
-            const password = document.getElementById('adminPassword').value;
-            const loginError = document.getElementById('loginError');
-            if (!email || !password) {
-                loginError.textContent = 'Please enter both email and password.';
-                loginError.style.display = 'block';
-                return;
-            }
-            if (email !== ADMIN_EMAIL) {
-                loginError.textContent = 'Access denied. Only admin email allowed.';
-                loginError.style.display = 'block';
-                return;
-            }
-            try {
-                await signInWithEmailAndPassword(auth, email, password);
-                // onAuthStateChanged will handle the rest
-                loginError.style.display = 'none';
-            } catch (error) {
-                console.error('Login error:', error);
-                loginError.textContent = 'Invalid credentials. Please try again.';
-                loginError.style.display = 'block';
-                document.getElementById('adminPassword').value = '';
-            }
-        }
-
-        // Logout Function
-        async function logout() {
-            if (auth) {
-                try {
-                    await signOut(auth);
-                    // onAuthStateChanged will handle UI reset
-                } catch (error) {
-                    console.error('Logout error:', error);
-                    alert('Logout failed. Please try again.');
-                }
-            }
-        }
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
 
         // Dark Mode Toggle
         function toggleDarkMode() {
             document.body.classList.toggle('dark-mode');
             const isDark = document.body.classList.contains('dark-mode');
-            const icon = document.getElementById('darkToggleIcon');
-            icon.classList.remove('fa-moon', 'fa-sun');
-            icon.classList.add(isDark ? 'fa-sun' : 'fa-moon');
+            document.getElementById('darkToggleIcon').classList.toggle('fa-moon', !isDark);
+            document.getElementById('darkToggleIcon').classList.toggle('fa-sun', isDark);
             localStorage.setItem('darkMode', isDark);
         }
 
@@ -548,48 +465,93 @@
             toggleDarkMode();
         }
 
-        // Header Scroll Effect (matching main site)
+        // Header Scroll Effect
         window.addEventListener('scroll', () => {
             const header = document.getElementById('header');
             header.classList.toggle('scrolled', window.scrollY > 50);
         });
 
-        // Paper Management
-        async function loadPapers() {
-            if (!db) {
-                alert('Firestore not initialized. Check Firebase configuration.');
-                return;
-            }
+        // Login
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
             try {
-                const q = query(collection(db, 'papers'), orderBy('id', 'desc'));
-                const snapshot = await getDocs(q);
-                const papers = snapshot.docs.map(d => ({ docId: d.id, ...d.data() }));
-                const list = document.getElementById('paperList');
-                list.innerHTML = papers.map(p => `
-                    <li class="admin-item">
-                        <span>${p.title} (${p.type.toUpperCase()}, ${p.branch} Sem ${p.sem}, ${p.college})</span>
-                        <div class="actions">
-                            <button class="edit-btn" onclick="editPaper('${p.docId}', ${p.id}, '${p.title}', '${p.type}', '${p.branch}', ${p.sem}, '${p.college}', '${p.url}')">Edit</button>
-                            <button class="delete-btn" onclick="deletePaper('${p.docId}')">Delete</button>
-                        </div>
-                    </li>
-                `).join('');
+                await signInWithEmailAndPassword(auth, email, password);
+                document.getElementById('loginContainer').style.display = 'none';
+                document.getElementById('adminContainer').style.display = 'block';
+                loadResources();
             } catch (error) {
-                console.error('Error loading papers:', error);
-                alert('Error loading papers. Check Firebase configuration and console for details.');
+                alert('Login failed: ' + error.message);
+            }
+        });
+
+        // Logout
+        window.signOut = async () => {
+            try {
+                await firebaseSignOut(auth);
+                document.getElementById('loginContainer').style.display = 'block';
+                document.getElementById('adminContainer').style.display = 'none';
+            } catch (error) {
+                alert('Logout failed: ' + error.message);
+            }
+        };
+
+        // Load Resources
+        async function loadResources() {
+            try {
+                // Papers
+                const paperQuery = query(collection(db, 'papers'), orderBy('id', 'desc'));
+                const paperSnapshot = await getDocs(paperQuery);
+                const paperList = document.getElementById('paperList');
+                paperList.innerHTML = paperSnapshot.docs.length > 0 ? paperSnapshot.docs.map(d => {
+                    const p = d.data();
+                    return `
+                        <li class="resource-item">
+                            <span>${p.title} (${p.branch} Sem ${p.sem}, ${p.college}, ${p.type})</span>
+                            <button class="delete-btn" onclick="deleteResource('papers', '${d.id}')">Delete</button>
+                        </li>
+                    `;
+                }).join('') : '<li>No papers available.</li>';
+
+                // Books
+                const bookQuery = query(collection(db, 'books'), orderBy('id', 'desc'));
+                const bookSnapshot = await getDocs(bookQuery);
+                const bookList = document.getElementById('bookList');
+                bookList.innerHTML = bookSnapshot.docs.length > 0 ? bookSnapshot.docs.map(d => {
+                    const b = d.data();
+                    return `
+                        <li class="resource-item">
+                            <span>${b.title} (${b.branch} Sem ${b.sem}, ${b.college})</span>
+                            <button class="delete-btn" onclick="deleteResource('books', '${d.id}')">Delete</button>
+                        </li>
+                    `;
+                }).join('') : '<li>No books available.</li>';
+
+                // Announcements
+                const annQuery = query(collection(db, 'announcements'), orderBy('id', 'desc'));
+                const annSnapshot = await getDocs(annQuery);
+                const annList = document.getElementById('announcementList');
+                annList.innerHTML = annSnapshot.docs.length > 0 ? annSnapshot.docs.map(d => {
+                    const a = d.data();
+                    return `
+                        <li class="resource-item">
+                            <span>${a.title} (${a.date})</span>
+                            <button class="delete-btn" onclick="deleteResource('announcements', '${d.id}')">Delete</button>
+                        </li>
+                    `;
+                }).join('') : '<li>No announcements available.</li>';
+            } catch (error) {
+                console.error('Error loading resources:', error);
+                alert('Error loading resources. Check console for details.');
             }
         }
 
+        // Add Paper
         document.getElementById('paperForm').addEventListener('submit', async (e) => {
             e.preventDefault();
-            if (!db) {
-                alert('Firestore not initialized. Check Firebase configuration.');
-                return;
-            }
-            const docId = document.getElementById('paperDocId').value;
-            const numId = docId ? parseInt(document.getElementById('paperNumId').value) : Date.now();
             const paper = {
-                id: numId,
+                id: Date.now(),
                 title: document.getElementById('paperTitle').value,
                 type: document.getElementById('paperType').value,
                 branch: document.getElementById('paperBranch').value,
@@ -598,148 +560,82 @@
                 url: document.getElementById('paperUrl').value
             };
             try {
-                if (docId) {
-                    await updateDoc(doc(db, 'papers', docId), paper);
-                    alert('Paper updated successfully!');
-                } else {
-                    await addDoc(collection(db, 'papers'), paper);
-                    alert('Paper added successfully!');
-                }
+                await addDoc(collection(db, 'papers'), paper);
+                alert('Paper added successfully!');
                 document.getElementById('paperForm').reset();
-                document.getElementById('paperDocId').value = '';
-                document.getElementById('paperNumId').value = '';
-                loadPapers();
+                loadResources();
             } catch (error) {
-                console.error('Error saving paper:', error);
-                alert('Error saving paper. Check Firebase configuration and console for details.');
+                console.error('Error adding paper:', error);
+                alert('Error adding paper. Check console for details.');
             }
         });
 
-        window.editPaper = (docId, numId, title, type, branch, sem, college, url) => {
-            document.getElementById('paperDocId').value = docId;
-            document.getElementById('paperNumId').value = numId;
-            document.getElementById('paperTitle').value = title;
-            document.getElementById('paperType').value = type;
-            document.getElementById('paperBranch').value = branch;
-            document.getElementById('paperSem').value = sem;
-            document.getElementById('paperCollege').value = college;
-            document.getElementById('paperUrl').value = url;
-        };
-
-        window.deletePaper = async (docId) => {
-            if (!db) {
-                alert('Firestore not initialized. Check Firebase configuration.');
-                return;
-            }
-            if (confirm('Are you sure you want to delete this paper?')) {
-                try {
-                    await deleteDoc(doc(db, 'papers', docId));
-                    alert('Paper deleted successfully!');
-                    loadPapers();
-                } catch (error) {
-                    console.error('Error deleting paper:', error);
-                    alert('Error deleting paper. Check console for details.');
-                }
-            }
-        };
-
-        // Announcement Management
-        async function loadAnnouncements() {
-            if (!db) {
-                alert('Firestore not initialized. Check Firebase configuration.');
-                return;
-            }
-            try {
-                const q = query(collection(db, 'announcements'), orderBy('id', 'desc'));
-                const snapshot = await getDocs(q);
-                const announcements = snapshot.docs.map(d => ({ docId: d.id, ...d.data() }));
-                const list = document.getElementById('announcementList');
-                list.innerHTML = announcements.map(a => `
-                    <li class="admin-item">
-                        <span>${a.title} (${a.date})</span>
-                        <div class="actions">
-                            <button class="edit-btn" onclick="editAnnouncement('${a.docId}', ${a.id}, '${a.title}', '${a.desc}', '${a.date}')">Edit</button>
-                            <button class="delete-btn" onclick="deleteAnnouncement('${a.docId}')">Delete</button>
-                        </div>
-                    </li>
-                `).join('');
-            } catch (error) {
-                console.error('Error loading announcements:', error);
-                alert('Error loading announcements. Check Firebase configuration and console for details.');
-            }
-        }
-
-        document.getElementById('announcementForm').addEventListener('submit', async (e) => {
+        // Add Book
+        document.getElementById('bookForm').addEventListener('submit', async (e) => {
             e.preventDefault();
-            if (!db) {
-                alert('Firestore not initialized. Check Firebase configuration.');
-                return;
-            }
-            const docId = document.getElementById('announcementDocId').value;
-            const numId = docId ? parseInt(document.getElementById('announcementNumId').value) : Date.now();
-            const announcement = {
-                id: numId,
-                title: document.getElementById('announcementTitle').value,
-                desc: document.getElementById('announcementDesc').value,
-                date: document.getElementById('announcementDate').value
+            const book = {
+                id: Date.now(),
+                title: document.getElementById('bookTitle').value,
+                branch: document.getElementById('bookBranch').value,
+                sem: parseInt(document.getElementById('bookSem').value),
+                college: document.getElementById('bookCollege').value,
+                url: document.getElementById('bookUrl').value
             };
             try {
-                if (docId) {
-                    await updateDoc(doc(db, 'announcements', docId), announcement);
-                    alert('Announcement updated successfully!');
-                } else {
-                    await addDoc(collection(db, 'announcements'), announcement);
-                    alert('Announcement added successfully!');
-                }
-                document.getElementById('announcementForm').reset();
-                document.getElementById('announcementDocId').value = '';
-                document.getElementById('announcementNumId').value = '';
-                loadAnnouncements();
+                await addDoc(collection(db, 'books'), book);
+                alert('Book added successfully!');
+                document.getElementById('bookForm').reset();
+                loadResources();
             } catch (error) {
-                console.error('Error saving announcement:', error);
-                alert('Error saving announcement. Check Firebase configuration and console for details.');
+                console.error('Error adding book:', error);
+                alert('Error adding book. Check console for details.');
             }
         });
 
-        window.editAnnouncement = (docId, numId, title, desc, date) => {
-            document.getElementById('announcementDocId').value = docId;
-            document.getElementById('announcementNumId').value = numId;
-            document.getElementById('announcementTitle').value = title;
-            document.getElementById('announcementDesc').value = desc;
-            document.getElementById('announcementDate').value = date;
-        };
-
-        window.deleteAnnouncement = async (docId) => {
-            if (!db) {
-                alert('Firestore not initialized. Check Firebase configuration.');
-                return;
+        // Add Announcement
+        document.getElementById('announcementForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const announcement = {
+                id: Date.now(),
+                title: document.getElementById('annTitle').value,
+                desc: document.getElementById('annDesc').value,
+                date: document.getElementById('annDate').value
+            };
+            try {
+                await addDoc(collection(db, 'announcements'), announcement);
+                alert('Announcement added successfully!');
+                document.getElementById('announcementForm').reset();
+                loadResources();
+            } catch (error) {
+                console.error('Error adding announcement:', error);
+                alert('Error adding announcement. Check console for details.');
             }
-            if (confirm('Are you sure you want to delete this announcement?')) {
+        });
+
+        // Delete Resource
+        window.deleteResource = async (collectionName, docId) => {
+            if (confirm('Are you sure you want to delete this item?')) {
                 try {
-                    await deleteDoc(doc(db, 'announcements', docId));
-                    alert('Announcement deleted successfully!');
-                    loadAnnouncements();
+                    await deleteDoc(doc(db, collectionName, docId));
+                    alert('Item deleted successfully!');
+                    loadResources();
                 } catch (error) {
-                    console.error('Error deleting announcement:', error);
-                    alert('Error deleting announcement. Check console for details.');
+                    console.error('Error deleting resource:', error);
+                    alert('Error deleting resource. Check console for details.');
                 }
             }
         };
-
-        // Expose functions to global scope
-        window.toggleDarkMode = toggleDarkMode;
-        window.logout = logout;
 
         // Initialize
-        window.addEventListener('load', () => {
-            // Add login button listener
-            document.getElementById('loginBtn').addEventListener('click', login);
-            // Add Enter key listener for login
-            document.getElementById('adminPassword').addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') {
-                    login();
-                }
-            });
+        auth.onAuthStateChanged(user => {
+            if (user) {
+                document.getElementById('loginContainer').style.display = 'none';
+                document.getElementById('adminContainer').style.display = 'block';
+                loadResources();
+            } else {
+                document.getElementById('loginContainer').style.display = 'block';
+                document.getElementById('adminContainer').style.display = 'none';
+            }
         });
     </script>
 </body>
