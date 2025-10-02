@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GTUverse - All Papers</title>
+    <meta name="description" content="Browse and download all GTU midsem and exam papers with filters by college, branch, and semester.">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎓</text></svg>">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1e40af;
+            --secondary: #10b981;
+            --secondary-dark: #059669;
+            --danger: #ef4444;
+            --dark: #1e293b;
+            --medium: #475569;
+            --light: #f8fafc;
+            --white: #ffffff;
+            --border: #e2e8f0;
+            --gradient-primary: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            --shadow-sm: 0 1px 2px 0 rgba(0,0,0,0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--light);
+            color: var(--dark);
+            line-height: 1.7;
+            overflow-x: hidden;
+            transition: var(--transition);
+        }
+
+        body.dark-mode {
+            --light: #0f172a;
+            --white: #1e293b;
+            --dark: #f1f5f9;
+            --medium: #cbd5e1;
+            --border: #334155;
+            background: #0f172a;
+            color: #f1f5f9;
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px) saturate(180%);
+            border-bottom: 1px solid var(--border);
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+        }
+
+        body.dark-mode header {
+            background: rgba(15, 23, 42, 0.95);
+            border-bottom-color: var(--border);
+        }
+
+        header.scrolled { 
+            box-shadow: var(--shadow-md);
+            background: rgba(255, 255, 255, 0.98);
+        }
+
+        body.dark-mode header.scrolled { 
+            background: rgba(15, 23, 42, 0.98);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+        }
+
+        .logo:hover { transform: scale(1.05); }
+
+        .logo i {
+            font-size: 1.8rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.05); }
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--dark);
+            text-decoration: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 12px;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        body.dark-mode .nav-links a { color: var(--dark); }
+
+        .nav-links a:hover {
+            background: rgba(37, 99, 235, 0.08);
+            color: var(--primary);
+            transform: translateY(-1px);
+        }
+
+        .whatsapp-btn, .admin-link {
+            background: linear-gradient(135deg, #25d366 0%, #128c7e 100%);
+            color: white !important;
+            padding: 0.7rem 1.5rem !important;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+            border-radius: 12px;
+        }
+
+        .admin-link {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+        }
+
+        .whatsapp-btn:hover, .admin-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4);
+        }
+
+        .admin-link:hover {
+            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
+        }
+
+        .dark-toggle {
+            background: rgba(37, 99, 235, 0.08);
+            border: 1px solid rgba(37, 99, 235, 0.2);
+            color: var(--primary);
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+        }
+
+        .dark-toggle:hover {
+            background: rgba(37, 99, 235, 0.15);
+            transform: rotate(180deg) scale(1.05);
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 4px;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: var(--dark);
+            border-radius: 3px;
+            transition: var(--transition);
+        }
+
+        body.dark-mode .hamburger span { background: var(--dark); }
+
+        .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(6px, 6px); }
+        .hamburger.active span:nth-child(2) { opacity: 0; }
+        .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(6px, -6px); }
+
+        .papers {
+            padding: 6rem 2rem;
+            max-width: 1280px;
+            margin: 0 auto;
+            background: var(--light);
+            margin-top: 70px;
+        }
+
+        body.dark-mode .papers { background: #0f172a; }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: clamp(2.2rem, 5vw, 3.5rem);
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.2;
+        }
+
+        .section-subtitle {
+            font-size: 1.25rem;
+            color: var(--medium);
+            max-width: 600px;
+            margin: 0 auto;
+            font-weight: 400;
+        }
+
+        .filters {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .filters label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .filters input, .filters select {
+            padding: 0.75rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .filters button {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .papers-list {
+            list-style: none;
+        }
+
+        .paper-item {
+            background: var(--white);
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border);
+            transition: var(--transition);
+        }
+
+        body.dark-mode .paper-item { 
+            background: var(--white); 
+            border-color: var(--border);
+        }
+
+        .paper-item:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-1px);
+        }
+
+        .paper-title {
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .paper-desc {
+            color: var(--medium);
+            margin-bottom: 1rem;
+        }
+
+        .paper-link {
+            color: var(--secondary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .show-more {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--gradient-primary);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 1.5rem;
+            transition: var(--transition);
+        }
+
+        .show-more:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @media (max-width: 768px) {
+            .hamburger { display: flex; }
+
+            .nav-links {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: rgba(255, 255, 255, 0.98);
+                backdrop-filter: blur(20px);
+                flex-direction: column;
+                padding: 1.5rem;
+                gap: 1rem;
+                box-shadow: var(--shadow-lg);
+                transform: translateY(-100%);
+                opacity: 0;
+                visibility: hidden;
+                transition: var(--transition);
+            }
+
+            body.dark-mode .nav-links { background: rgba(15, 23, 42, 0.98); }
+
+            .nav-links.active {
+                transform: translateY(0);
+                opacity: 1;
+                visibility: visible;
+            }
+
+            .papers { padding: 4rem 1rem; }
+
+            .filters { flex-direction: column; align-items: stretch; }
+        }
+    </style>
+</head>
+<body>
+    <header id="header">
+        <nav>
+            <a href="index.html" class="logo">
+                <i class="fas fa-graduation-cap"></i>
+                <span>GTUverse</span>
+            </a>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="index.html#home">Home</a></li>
+                <li><a href="index.html#features">Features</a></li>
+                <li><a href="index.html#resources">Resources</a></li>
+                <li><a href="papers.html">Papers</a></li>
+                <li><a href="announcements.html">Announcements</a></li>
+                <li><a href="books.html">Books</a></li>
+                <li><a href="index.html#contact" onclick="openModal(event)">Contact</a></li>
+                <li><a href="https://chat.whatsapp.com/LLq6Sn0gvqwHHIJxxNaNaM" target="_blank" class="whatsapp-btn">
+                    <i class="fab fa-whatsapp"></i> Join Community
+                </a></li>
+                <li><a href="admin.html" class="admin-link">Admin</a></li>
+                <li><button class="dark-toggle" onclick="toggleDarkMode()" aria-label="Toggle Dark Mode">
+                    <i class="fas fa-moon" id="darkToggleIcon"></i>
+                </button></li>
+            </ul>
+            <div class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Toggle Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+    </header>
+
+    <section class="papers">
+        <div class="section-header fade-in">
+            <h2 class="section-title">All GTU Papers</h2>
+            <p class="section-subtitle">Browse and download all available GTU midsem and exam papers. Filter by college, branch, semester, and type.</p>
+        </div>
+        <div class="filters">
+            <label>College: <input id="filterCollege" placeholder="e.g., LDCE"></label>
+            <label>Branch: <select id="filterBranch">
+                <option value="">All</option>
+                <option value="CE">CE</option>
+                <option value="IT">IT</option>
+                <option value="ME">ME</option>
+                <option value="EC">EC</option>
+                <option value="EE">EE</option>
+                <option value="CS">CS</option>
+                <option value="CH">CH</option>
+                <option value="IN">IN</option>
+            </select></label>
+            <label>Semester: <input type="number" id="filterSem" min="1" max="8" placeholder="1-8"></label>
+            <label>Type: <select id="filterType">
+                <option value="">All</option>
+                <option value="midsem">Midsem</option>
+                <option value="gtu">GTU</option>
+            </select></label>
+            <button onclick="filterPapers()">Filter</button>
+        </div>
+        <ul class="papers-list" id="papersList"></ul>
+        <a href="#" class="show-more" id="showMoreBtn" onclick="loadMorePapers()">Show More Papers</a>
+    </section>
+
+    <div id="contactModal" class="modal" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()" aria-label="Close modal">&times;</span>
+            <h3 id="modalTitle">Let's Connect!</h3>
+            <p>Share your thoughts, suggest resources, or report issues. We respond within 24 hours.</p>
+            <form id="contactForm" action="mailto:gtu.versebyij@gmail.com" method="post" enctype="text/plain">
+                <div class="form-group">
+                    <label for="name">Your Name</label>
+                    <input type="text" id="name" name="name" required aria-required="true">
+                </div>
+                <div class="form-group">
+                    <label for="email">Your Email</label>
+                    <input type="email" id="email" name="email" required aria-required="true">
+                </div>
+                <div class="form-group">
+                    <label for="message">Your Message</label>
+                    <textarea id="message" name="message" required aria-required="true"></textarea>
+                </div>
+                <button type="submit" class="modal-submit">Send Message</button>
+            </form>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js";
+        import { getFirestore, collection, getDocs, query, orderBy, where, limit, startAfter } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyC0QTiJoEIkS7rGDFrd057Kx3nMz7_s2EI",
+            authDomain: "gtu-verse.firebaseapp.com",
+            projectId: "gtu-verse",
+            storageBucket: "gtu-verse.firebasestorage.app",
+            messagingSenderId: "99377635087",
+            appId: "1:99377635087:web:05ba93798e36040cfe287a",
+            measurementId: "G-YV4W2LT96S"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        let lastDoc = null;
+        const pageSize = 5;
+
+        // Dark Mode Toggle
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const isDark = document.body.classList.contains('dark-mode');
+            document.getElementById('darkToggleIcon').classList.toggle('fa-moon', !isDark);
+            document.getElementById('darkToggleIcon').classList.toggle('fa-sun', isDark);
+            localStorage.setItem('darkMode', isDark);
+        }
+
+        if (localStorage.getItem('darkMode') === 'true') {
+            toggleDarkMode();
+        }
+
+        // Mobile Menu Toggle
+        function toggleMenu() {
+            const navLinks = document.getElementById('navLinks');
+            const hamburger = document.getElementById('hamburger');
+            navLinks.classList.toggle('active');
+            hamburger.classList.toggle('active');
+        }
+
+        // Header Scroll Effect
+        window.addEventListener('scroll', () => {
+            const header = document.getElementById('header');
+            header.classList.toggle('scrolled', window.scrollY > 50);
+        });
+
+        // Intersection Observer for Animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+        // Modal Functions
+        function openModal(e) {
+            e?.preventDefault();
+            document.getElementById('contactModal').style.display = 'block';
+            document.getElementById('contactModal').setAttribute('aria-hidden', 'false');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            document.getElementById('contactModal').style.display = 'none';
+            document.getElementById('contactModal').setAttribute('aria-hidden', 'true');
+            document.body.style.overflow = 'auto';
+        }
+
+        window.onclick = (event) => {
+            const modal = document.getElementById('contactModal');
+            if (event.target === modal) closeModal();
+        };
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeModal();
+        });
+
+        // Load Papers
+        async function filterPapers(reset = true) {
+            const collegeInput = document.getElementById('filterCollege').value.trim().toLowerCase();
+            const branch = document.getElementById('filterBranch').value;
+            const sem = document.getElementById('filterSem').value;
+            const type = document.getElementById('filterType').value;
+            try {
+                let q = query(collection(db, 'papers'), orderBy('id', 'desc'), limit(pageSize));
+                if (branch) q = query(q, where('branch', '==', branch));
+                if (sem) q = query(q, where('sem', '==', parseInt(sem)));
+                if (type) q = query(q, where('type', '==', type));
+                if (!reset) q = query(q, startAfter(lastDoc));
+                const snapshot = await getDocs(q);
+                let papers = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+                if (collegeInput) {
+                    papers = papers.filter(p => p.college.toLowerCase().includes(collegeInput));
+                }
+                lastDoc = snapshot.docs[snapshot.docs.length - 1];
+                document.getElementById('showMoreBtn').style.display = snapshot.docs.length < pageSize ? 'none' : 'inline-flex';
+                const list = document.getElementById('papersList');
+                if (reset) list.innerHTML = '';
+                list.innerHTML += papers.length > 0 ? papers.map(p => `
+                    <li class="paper-item fade-in">
+                        <span class="paper-title">${p.title} (${p.branch} Sem ${p.sem}, ${p.college}, ${p.type.toUpperCase()})</span>
+                        <p class="paper-desc">Download the paper and solutions.</p>
+                        <a href="${p.url}" target="_blank" class="paper-link">Download PDF <i class="fas fa-download"></i></a>
+                    </li>
+                `).join('') : '<p>No papers match the filters.</p>';
+                document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+            } catch (error) {
+                console.error('Error filtering papers:', error);
+                alert('Error filtering papers. Check Firebase configuration and console for details.');
+            }
+        }
+
+        // Load More Papers
+        window.loadMorePapers = () => filterPapers(false);
+
+        // Initialize
+        window.addEventListener('load', () => filterPapers());
+    </script>
+</body>
+</html>
