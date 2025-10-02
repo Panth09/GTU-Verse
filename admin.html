@@ -507,6 +507,7 @@
                     <input type="number" id="editSem" placeholder="Semester">
                     <input type="url" id="editUrl" placeholder="URL">
                     <input type="number" id="editPoints" placeholder="Points">
+                    <input type="text" id="editDate" placeholder="Date">
                 </div>
                 <button type="submit" class="add-btn">Save Changes</button>
             </form>
@@ -571,7 +572,7 @@
             const announcements = JSON.parse(localStorage.getItem('announcements') || '[]');
             document.getElementById('announcementsList').innerHTML = announcements.map(a => `
                 <li class="list-item">
-                    <span>${a.title}: ${a.desc}</span>
+                    <span>${a.title}: ${a.desc} (${a.date})</span>
                     <div>
                         <button class="edit-btn" onclick="editItem('announcements', ${a.id})">Edit</button>
                         <button class="delete-btn" onclick="deleteItem('announcements', ${a.id})">Delete</button>
@@ -625,7 +626,7 @@
             }
             const announcements = JSON.parse(localStorage.getItem('announcements') || '[]');
             const newId = announcements.length ? Math.max(...announcements.map(a => a.id)) + 1 : 1;
-            announcements.push({ id: newId, title: title.value.trim(), desc: desc.value.trim() });
+            announcements.push({ id: newId, title: title.value.trim(), desc: desc.value.trim(), date: new Date().toLocaleString() });
             localStorage.setItem('announcements', JSON.stringify(announcements));
             alert('Announcement added & notification triggered! Live on site now.');
             loadData();
@@ -674,22 +675,28 @@
 
             const extraDiv = document.getElementById('editExtra');
             extraDiv.style.display = 'none';
+            extraDiv.innerHTML = '';
             if (type === 'papers') {
                 document.getElementById('editModalTitle').textContent = 'Edit Paper';
                 extraDiv.style.display = 'flex';
-                document.getElementById('editBranch').value = item.branch || '';
-                document.getElementById('editSem').value = item.sem || '';
-                document.getElementById('editUrl').value = item.url || '';
+                extraDiv.innerHTML = `
+                    <input type="text" id="editBranch" placeholder="Branch" value="${item.branch || ''}" required>
+                    <input type="number" id="editSem" placeholder="Semester" value="${item.sem || ''}" required>
+                    <input type="url" id="editUrl" placeholder="URL" value="${item.url || ''}" required>
+                `;
             } else if (type === 'announcements') {
                 document.getElementById('editModalTitle').textContent = 'Edit Announcement';
                 document.getElementById('editTitle').placeholder = 'Title';
                 document.getElementById('editDesc').placeholder = 'Description';
+                extraDiv.style.display = 'flex';
+                extraDiv.innerHTML = `
+                    <input type="text" id="editDate" placeholder="Date" value="${item.date || ''}" required>
+                `;
             } else if (type === 'quizzes') {
                 document.getElementById('editModalTitle').textContent = 'Edit Quiz';
                 document.getElementById('editTitle').placeholder = 'Question';
                 document.getElementById('editDesc').placeholder = 'Answer';
                 extraDiv.style.display = 'flex';
-                document.getElementById('editPoints').value = item.points || '';
                 extraDiv.innerHTML = `
                     <input type="number" id="editPoints" placeholder="Points" value="${item.points || ''}" required>
                 `;
@@ -728,7 +735,8 @@
                 items[index] = {
                     ...items[index],
                     title: document.getElementById('editTitle').value.trim(),
-                    desc: document.getElementById('editDesc').value.trim()
+                    desc: document.getElementById('editDesc').value.trim(),
+                    date: document.getElementById('editDate').value.trim() || new Date().toLocaleString()
                 };
             } else if (type === 'quizzes') {
                 items[index] = {
@@ -759,4 +767,4 @@
         window.addEventListener('load', loadData);
     </script>
 </body>
-</html>
+</html>7.6sExpert
