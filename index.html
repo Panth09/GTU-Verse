@@ -10,26 +10,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎓</text></svg>">
-    <script type="module">
-      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
-      import { getFirestore, collection, getDocs, addDoc, updateDoc, deleteDoc, doc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
-      import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-analytics.js";
-
-      const firebaseConfig = {
-        apiKey: "AIzaSyC0QTiJoEIkS7rGDFrd057Kx3nMz7_s2EI",
-        authDomain: "gtu-verse.firebaseapp.com",
-        projectId: "gtu-verse",
-        storageBucket: "gtu-verse.firebasestorage.app",
-        messagingSenderId: "99377635087",
-        appId: "1:99377635087:web:05ba93798e36040cfe287a",
-        measurementId: "G-YV4W2LT96S"
-      };
-
-      const app = initializeApp(firebaseConfig);
-      const analytics = getAnalytics(app);
-      const db = getFirestore(app);
-      window.db = db;
-    </script>
     <style>
         :root {
             --primary: #2563eb;
@@ -1021,22 +1001,6 @@
             margin-bottom: 1rem;
         }
 
-        .share-btn {
-            background: var(--secondary);
-            color: white;
-            padding: 0.5rem 1rem;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: var(--transition);
-        }
-
-        .share-btn:hover {
-            background: var(--secondary-dark);
-            transform: translateY(-1px);
-        }
-
         .contact {
             padding: 6rem 2rem;
             max-width: 1280px;
@@ -1676,12 +1640,25 @@
     </div>
 
     <script>
-        // Firestore helpers
-        async function loadFromDB(coll) {
-            const q = query(collection(db, coll), orderBy('id', 'desc'));
-            const snapshot = await getDocs(q);
-            return snapshot.docs.map(docSnap => ({ id: docSnap.id, ...docSnap.data() }));
+        // Mock Database using localStorage
+        function initDB() {
+            if (!localStorage.getItem('papers')) {
+                localStorage.setItem('papers', JSON.stringify([
+                    { id: 1, title: 'DBMS Sem 5', type: 'midsem', branch: 'CE', sem: 5, college: 'LDCE', url: 'https://example.com/dbms.pdf' },
+                    { id: 2, title: 'OS Sem 3', type: 'gtu', branch: 'CE', sem: 3, college: 'Nirma', url: 'https://example.com/os.pdf' },
+                    { id: 3, title: 'Web Tech Sem 5', type: 'midsem', branch: 'IT', sem: 5, college: 'LDCE', url: 'https://example.com/webtech.pdf' },
+                    { id: 4, title: 'SOM Sem 4', type: 'gtu', branch: 'ME', sem: 4, college: 'VGEC', url: 'https://example.com/som.pdf' },
+                    { id: 5, title: 'DSP Sem 5', type: 'midsem', branch: 'EC', sem: 5, college: 'LDCE', url: 'https://example.com/dsp.pdf' }
+                ]));
+            }
+            if (!localStorage.getItem('announcements')) {
+                localStorage.setItem('announcements', JSON.stringify([
+                    { id: 1, title: 'Exam Schedule Released', desc: 'Midsems start on Oct 10, 2025', date: new Date().toLocaleString() },
+                    { id: 2, title: 'New Syllabus Update', desc: 'Changes in Sem 5 subjects', date: new Date().toLocaleString() }
+                ]));
+            }
         }
+        initDB();
 
         // Typewriter Effect for Hero
         const typewriterText = 'GTU Journey';
@@ -1765,11 +1742,11 @@
         document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 
         // Paper Search
-        async function handleSearch(e) {
+        function handleSearch(e) {
             e?.preventDefault();
             const query = document.getElementById('searchInput').value.toLowerCase().trim();
             const resultsEl = document.getElementById('searchResults');
-            const papers = await loadFromDB('papers');
+            const papers = JSON.parse(localStorage.getItem('papers') || '[]');
             const filtered = papers.filter(p => p.title.toLowerCase().includes(query) || p.branch.toLowerCase().includes(query) || p.sem.toString().includes(query) || p.college.toLowerCase().includes(query));
             if (filtered.length > 0) {
                 resultsEl.innerHTML = filtered.map(p => `
@@ -1787,8 +1764,8 @@
         }
 
         // Show Branch Papers
-        async function showBranchPapers(branch) {
-            const papers = await loadFromDB('papers');
+        function showBranchPapers(branch) {
+            const papers = JSON.parse(localStorage.getItem('papers') || '[]');
             const filtered = papers.filter(p => p.branch === branch);
             const resultsEl = document.getElementById('searchResults');
             if (filtered.length > 0) {
@@ -1807,10 +1784,10 @@
         }
 
         // Load All Papers with Filters
-        async function filterPapers() {
+        function filterPapers() {
             const college = document.getElementById('filterCollege').value.toLowerCase().trim();
             const branch = document.getElementById('filterBranch').value;
-            let papers = await loadFromDB('papers');
+            const papers = JSON.parse(localStorage.getItem('papers') || '[]');
             let filtered = papers;
             if (college) filtered = filtered.filter(p => p.college.toLowerCase().includes(college));
             if (branch) filtered = filtered.filter(p => p.branch === branch);
@@ -1834,8 +1811,8 @@
         }
 
         // Load All Announcements
-        async function loadAllAnnouncements() {
-            let anns = await loadFromDB('announcements');
+        function loadAllAnnouncements() {
+            let anns = JSON.parse(localStorage.getItem('announcements') || '[]');
             anns.sort((a, b) => new Date(b.date) - new Date(a.date));
             const list = document.getElementById('allAnnouncementsList');
             if (anns.length > 0) {
@@ -1844,31 +1821,10 @@
                         <span class="announcement-title">${a.title}</span>
                         <p class="announcement-desc">${a.desc}</p>
                         <div class="announcement-date">Posted on: ${a.date}</div>
-                        <button class="share-btn" onclick="shareAnnouncement('${a.id}')">Share <i class="fas fa-share-alt"></i></button>
                     </li>
                 `).join('');
             } else {
                 list.innerHTML = '<p>No announcements available yet. Add via admin panel.</p>';
-            }
-        }
-
-        async function shareAnnouncement(id) {
-            const anns = await loadFromDB('announcements');
-            const ann = anns.find(a => a.id === id);
-            if (!ann) return;
-            const shareData = {
-                title: ann.title,
-                text: ann.desc + '\nPosted on: ' + ann.date,
-                url: window.location.href + '#announcements'
-            };
-            try {
-                if (navigator.share) {
-                    await navigator.share(shareData);
-                } else {
-                    alert('Share not supported. Copy link: ' + shareData.url);
-                }
-            } catch (err) {
-                console.error('Share failed:', err);
             }
         }
 
@@ -1924,15 +1880,10 @@
             if (e.key === 'Enter') handleSearch(e);
         });
 
-        // Notification Permission (Optional)
-        if ('Notification' in window && Notification.permission === 'default') {
-            // Request on first interaction, but skip for now
-        }
-
         // Load data on page load
-        window.addEventListener('load', async () => {
-            await filterPapers();
-            await loadAllAnnouncements();
+        window.addEventListener('load', () => {
+            filterPapers();
+            loadAllAnnouncements();
         });
     </script>
 </body>
