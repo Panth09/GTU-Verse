@@ -1340,6 +1340,24 @@
     </style>
 </head>
 <body>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
+        import { getFirestore, collection, getDocs, query, orderBy, where } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyC0QTiJoEIkS7rGDFrd057Kx3nMz7_s2EI",
+            authDomain: "gtu-verse.firebaseapp.com",
+            projectId: "gtu-verse",
+            storageBucket: "gtu-verse.firebasestorage.app",
+            messagingSenderId: "99377635087",
+            appId: "1:99377635087:web:05ba93798e36040cfe287a",
+            measurementId: "G-YV4W2LT96S"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+    </script>
+
     <div class="bg-animation">
         <div class="bg-shape"></div>
         <div class="bg-shape"></div>
@@ -1565,11 +1583,8 @@
         </div>
     </div>
 
-    <script>
-        // Mock Database using localStorage
-        function initDB() {
-            }
-        initDB();
+    <script type="module">
+        import { collection, getDocs, query, orderBy, where } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
 
         // Typewriter Effect for Hero
         const typewriterText = 'GTU Journey';
@@ -1653,89 +1668,119 @@
         document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 
         // Paper Search
-        function handleSearch(e) {
+        async function handleSearch(e) {
             e?.preventDefault();
-            const query = document.getElementById('searchInput').value.toLowerCase().trim();
+            const queryStr = document.getElementById('searchInput').value.toLowerCase().trim();
             const resultsEl = document.getElementById('searchResults');
-            const papers = JSON.parse(localStorage.getItem('papers') || '[]');
-            const filtered = papers.filter(p => p.title.toLowerCase().includes(query) || p.branch.toLowerCase().includes(query) || p.sem.toString().includes(query) || p.college.toLowerCase().includes(query));
-            if (filtered.length > 0) {
-                resultsEl.innerHTML = filtered.map(p => `
-                    <div class="search-result-item">
-                        <span class="search-result-title">${p.title} (${p.type.toUpperCase()}) (${p.branch} Sem ${p.sem}, ${p.college})</span>
-                        <p class="search-result-desc">Download the paper and solutions.</p>
-                        <a href="${p.url}" target="_blank" class="search-result-link">Download PDF <i class="fas fa-download"></i></a>
-                    </div>
-                `).join('');
-            } else {
-                resultsEl.innerHTML = '<p>No results found. Try different keywords or add via admin panel.</p>';
+            try {
+                const papersSnapshot = await getDocs(collection(db, 'papers'));
+                const papers = papersSnapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+                const filtered = papers.filter(p => 
+                    p.title.toLowerCase().includes(queryStr) || 
+                    p.branch.toLowerCase().includes(queryStr) || 
+                    p.sem.toString().includes(queryStr) || 
+                    p.college.toLowerCase().includes(queryStr)
+                );
+                if (filtered.length > 0) {
+                    resultsEl.innerHTML = filtered.map(p => `
+                        <div class="search-result-item">
+                            <span class="search-result-title">${p.title} (${p.type.toUpperCase()}) (${p.branch} Sem ${p.sem}, ${p.college})</span>
+                            <p class="search-result-desc">Download the paper and solutions.</p>
+                            <a href="${p.url}" target="_blank" class="search-result-link">Download PDF <i class="fas fa-download"></i></a>
+                        </div>
+                    `).join('');
+                } else {
+                    resultsEl.innerHTML = '<p>No results found. Try different keywords or add via admin panel.</p>';
+                }
+                resultsEl.style.display = 'block';
+                resultsEl.scrollIntoView({ behavior: 'smooth' });
+            } catch (error) {
+                console.error('Error searching papers:', error);
+                alert('Error searching papers');
             }
-            resultsEl.style.display = 'block';
-            resultsEl.scrollIntoView({ behavior: 'smooth' });
         }
 
         // Show Branch Papers
-        function showBranchPapers(branch) {
-            const papers = JSON.parse(localStorage.getItem('papers') || '[]');
-            const filtered = papers.filter(p => p.branch === branch);
+        async function showBranchPapers(branch) {
             const resultsEl = document.getElementById('searchResults');
-            if (filtered.length > 0) {
-                resultsEl.innerHTML = filtered.map(p => `
-                    <div class="search-result-item">
-                        <span class="search-result-title">${p.title} (${p.type.toUpperCase()}) (Sem ${p.sem}, ${p.college})</span>
-                        <p class="search-result-desc">Download the paper and solutions.</p>
-                        <a href="${p.url}" target="_blank" class="search-result-link">Download PDF <i class="fas fa-download"></i></a>
-                    </div>
-                `).join('');
-            } else {
-                resultsEl.innerHTML = '<p>No papers for this branch yet. Add via admin panel.</p>';
+            try {
+                const q = query(collection(db, 'papers'), where('branch', '==', branch));
+                const snapshot = await getDocs(q);
+                const filtered = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+                if (filtered.length > 0) {
+                    resultsEl.innerHTML = filtered.map(p => `
+                        <div class="search-result-item">
+                            <span class="search-result-title">${p.title} (${p.type.toUpperCase()}) (Sem ${p.sem}, ${p.college})</span>
+                            <p class="search-result-desc">Download the paper and solutions.</p>
+                            <a href="${p.url}" target="_blank" class="search-result-link">Download PDF <i class="fas fa-download"></i></a>
+                        </div>
+                    `).join('');
+                } else {
+                    resultsEl.innerHTML = '<p>No papers for this branch yet. Add via admin panel.</p>';
+                }
+                resultsEl.style.display = 'block';
+                resultsEl.scrollIntoView({ behavior: 'smooth' });
+            } catch (error) {
+                console.error('Error loading branch papers:', error);
+                alert('Error loading branch papers');
             }
-            resultsEl.style.display = 'block';
-            resultsEl.scrollIntoView({ behavior: 'smooth' });
         }
 
         // Load All Papers with Filters
-        function filterPapers() {
+        async function filterPapers() {
             const college = document.getElementById('filterCollege').value.toLowerCase().trim();
             const branch = document.getElementById('filterBranch').value;
-            const papers = JSON.parse(localStorage.getItem('papers') || '[]');
-            let filtered = papers;
-            if (college) filtered = filtered.filter(p => p.college.toLowerCase().includes(college));
-            if (branch) filtered = filtered.filter(p => p.branch === branch);
-            filtered.sort((a, b) => b.sem - a.sem); // Sort by semester descending
-            const midsem = filtered.filter(p => p.type === 'midsem');
-            const gtu = filtered.filter(p => p.type === 'gtu');
-            document.getElementById('midsemList').innerHTML = midsem.length > 0 ? midsem.map(p => `
-                <li class="paper-item">
-                    <span class="paper-title">${p.title} (${p.branch} Sem ${p.sem}, ${p.college})</span>
-                    <p class="paper-desc">Download the paper and solutions.</p>
-                    <a href="${p.url}" target="_blank" class="paper-link">Download PDF <i class="fas fa-download"></i></a>
-                </li>
-            `).join('') : '<p>No midsem papers match the filters.</p>';
-            document.getElementById('gtuList').innerHTML = gtu.length > 0 ? gtu.map(p => `
-                <li class="paper-item">
-                    <span class="paper-title">${p.title} (${p.branch} Sem ${p.sem}, ${p.college})</span>
-                    <p class="paper-desc">Download the paper and solutions.</p>
-                    <a href="${p.url}" target="_blank" class="paper-link">Download PDF <i class="fas fa-download"></i></a>
-                </li>
-            `).join('') : '<p>No GTU exam papers match the filters.</p>';
+            try {
+                let q = collection(db, 'papers');
+                if (college || branch) {
+                    q = query(q, where('college', 'array-contains-any', [college]), where('branch', '==', branch));
+                }
+                const snapshot = await getDocs(q);
+                let filtered = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+                filtered.sort((a, b) => b.sem - a.sem);
+                const midsem = filtered.filter(p => p.type === 'midsem');
+                const gtu = filtered.filter(p => p.type === 'gtu');
+                document.getElementById('midsemList').innerHTML = midsem.length > 0 ? midsem.map(p => `
+                    <li class="paper-item">
+                        <span class="paper-title">${p.title} (${p.branch} Sem ${p.sem}, ${p.college})</span>
+                        <p class="paper-desc">Download the paper and solutions.</p>
+                        <a href="${p.url}" target="_blank" class="paper-link">Download PDF <i class="fas fa-download"></i></a>
+                    </li>
+                `).join('') : '<p>No midsem papers match the filters.</p>';
+                document.getElementById('gtuList').innerHTML = gtu.length > 0 ? gtu.map(p => `
+                    <li class="paper-item">
+                        <span class="paper-title">${p.title} (${p.branch} Sem ${p.sem}, ${p.college})</span>
+                        <p class="paper-desc">Download the paper and solutions.</p>
+                        <a href="${p.url}" target="_blank" class="paper-link">Download PDF <i class="fas fa-download"></i></a>
+                    </li>
+                `).join('') : '<p>No GTU exam papers match the filters.</p>';
+            } catch (error) {
+                console.error('Error filtering papers:', error);
+                alert('Error filtering papers');
+            }
         }
 
         // Load All Announcements
-        function loadAllAnnouncements() {
-            let anns = JSON.parse(localStorage.getItem('announcements') || '[]');
-            anns.sort((a, b) => b.id - a.id);
-            const list = document.getElementById('allAnnouncementsList');
-            if (anns.length > 0) {
-                list.innerHTML = anns.map((a, index) => `
-                    <li class="announcement-item ${index < 5 ? 'top-ann' : ''}">
-                        <span class="announcement-title">${a.title}</span>
-                        <p class="announcement-desc">${a.desc}</p>
-                        <div class="announcement-date">Posted on: ${a.date}</div>
-                    </li>
-                `).join('');
-            } else {
-                list.innerHTML = '<p>No announcements available yet. Add via admin panel.</p>';
+        async function loadAllAnnouncements() {
+            try {
+                const annQuery = query(collection(db, 'announcements'), orderBy('id', 'desc'));
+                const snapshot = await getDocs(annQuery);
+                let anns = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+                const list = document.getElementById('allAnnouncementsList');
+                if (anns.length > 0) {
+                    list.innerHTML = anns.map((a, index) => `
+                        <li class="announcement-item ${index < 5 ? 'top-ann' : ''}">
+                            <span class="announcement-title">${a.title}</span>
+                            <p class="announcement-desc">${a.desc}</p>
+                            <div class="announcement-date">Posted on: ${a.date}</div>
+                        </li>
+                    `).join('');
+                } else {
+                    list.innerHTML = '<p>No announcements available yet. Add via admin panel.</p>';
+                }
+            } catch (error) {
+                console.error('Error loading announcements:', error);
+                alert('Error loading announcements');
             }
         }
 
@@ -1792,17 +1837,9 @@
         });
 
         // Load data on page load
-        window.addEventListener('load', () => {
-            filterPapers();
-            loadAllAnnouncements();
-        });
-
-        // Listen for storage changes from other tabs/windows
-        window.addEventListener('storage', (e) => {
-            if (e.key === 'papers' || e.key === 'announcements') {
-                filterPapers();
-                loadAllAnnouncements();
-            }
+        window.addEventListener('load', async () => {
+            await filterPapers();
+            await loadAllAnnouncements();
         });
     </script>
 </body>
