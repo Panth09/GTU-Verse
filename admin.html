@@ -6,133 +6,81 @@
     <title>GTUverse Admin Panel</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script type="module">
-      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
-      import { getFirestore, collection, getDocs, addDoc, updateDoc, deleteDoc, doc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
-      import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-analytics.js";
-
-      const firebaseConfig = {
-        apiKey: "AIzaSyC0QTiJoEIkS7rGDFrd057Kx3nMz7_s2EI",
-        authDomain: "gtu-verse.firebaseapp.com",
-        projectId: "gtu-verse",
-        storageBucket: "gtu-verse.firebasestorage.app",
-        messagingSenderId: "99377635087",
-        appId: "1:99377635087:web:05ba93798e36040cfe287a",
-        measurementId: "G-YV4W2LT96S"
-      };
-
-      const app = initializeApp(firebaseConfig);
-      const analytics = getAnalytics(app);
-      const db = getFirestore(app);
-      window.db = db;
-    </script>
     <style>
-        :root {
-            --primary: #2563eb;
-            --primary-dark: #1e40af;
-            --secondary: #10b981;
-            --secondary-dark: #059669;
-            --danger: #ef4444;
-            --success: #10b981;
-            --dark: #1e293b;
-            --medium: #475569;
-            --light: #f8fafc;
-            --white: #ffffff;
-            --border: #e2e8f0;
-            --gradient-primary: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            --shadow-sm: 0 1px 2px 0 rgba(0,0,0,0.05);
-            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
-            --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
-            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
         body {
-            font-family: 'Inter', sans-serif;
-            background: var(--light);
-            color: var(--dark);
-            line-height: 1.7;
-            transition: var(--transition);
+            background: #f4f7fa;
+            color: #333;
+            transition: all 0.3s ease;
         }
 
         body.dark-mode {
-            --light: #0f172a;
-            --white: #1e293b;
-            --dark: #f1f5f9;
-            --medium: #cbd5e1;
-            --border: #334155;
-            background: #0f172a;
-            color: #f1f5f9;
+            background: #1a1a2e;
+            color: #e0e0e0;
         }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 2rem;
+            padding: 20px;
         }
 
         .login-form {
             max-width: 400px;
-            margin: 4rem auto;
+            margin: 100px auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
             text-align: center;
-            background: var(--white);
-            padding: 2rem;
-            border-radius: 12px;
-            box-shadow: var(--shadow-md);
-            border: 1px solid var(--border);
         }
 
         body.dark-mode .login-form {
-            background: var(--white);
-            border-color: var(--border);
+            background: #2a2a3e;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
 
         .login-form h2 {
-            margin-bottom: 1rem;
-            color: var(--primary);
+            margin-bottom: 20px;
             font-family: 'Poppins', sans-serif;
+            font-weight: 600;
         }
 
         .login-form input {
             width: 100%;
-            padding: 1rem;
-            margin-bottom: 1rem;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            font-size: 1rem;
-            background: var(--white);
-            color: var(--dark);
-            transition: var(--transition);
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
         }
 
         body.dark-mode .login-form input {
-            background: var(--white);
-            border-color: var(--border);
-            color: var(--dark);
-        }
-
-        .login-form input:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+            background: #333;
+            border-color: #444;
+            color: #e0e0e0;
         }
 
         .login-btn {
-            background: var(--gradient-primary);
-            color: white;
-            padding: 1rem;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
             width: 100%;
-            transition: var(--transition);
+            padding: 10px;
+            background: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s;
         }
 
         .login-btn:hover {
-            transform: translateY(-1px);
-            box-shadow: var(--shadow-md);
+            background: #0056b3;
         }
 
         .dashboard {
@@ -143,324 +91,230 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 2rem;
-            background: var(--white);
-            padding: 1rem 2rem;
-            border-radius: 12px;
-            box-shadow: var(--shadow-md);
-            border: 1px solid var(--border);
-        }
-
-        body.dark-mode .dashboard-header {
-            background: var(--white);
-            border-color: var(--border);
+            margin-bottom: 20px;
         }
 
         .dashboard-header h1 {
             font-family: 'Poppins', sans-serif;
-            color: var(--primary);
+            font-weight: 600;
         }
 
         .header-actions {
             display: flex;
-            gap: 1rem;
             align-items: center;
+            gap: 10px;
         }
 
-        .dark-toggle {
-            background: rgba(37, 99, 235, 0.08);
-            border: 1px solid rgba(37, 99, 235, 0.2);
-            color: var(--primary);
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
-            cursor: pointer;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.1rem;
-        }
-
-        .dark-toggle:hover {
-            background: rgba(37, 99, 235, 0.15);
-            transform: rotate(180deg) scale(1.05);
-        }
-
-        .logout-btn {
-            background: var(--danger);
-            color: white;
-            padding: 0.75rem 1.5rem;
+        .dark-toggle, .logout-btn {
+            padding: 8px 12px;
             border: none;
-            border-radius: 8px;
+            border-radius: 4px;
             cursor: pointer;
-            font-weight: 600;
-            transition: var(--transition);
+            background: #007bff;
+            color: #fff;
+            transition: background 0.3s;
         }
 
-        .logout-btn:hover {
-            background: #dc2626;
-            transform: translateY(-1px);
-            box-shadow: var(--shadow-sm);
+        body.dark-mode .dark-toggle, body.dark-mode .logout-btn {
+            background: #0056b3;
+        }
+
+        .dark-toggle:hover, .logout-btn:hover {
+            background: #0056b3;
         }
 
         .section {
-            background: var(--white);
-            padding: 2rem;
-            margin-bottom: 2rem;
-            border-radius: 12px;
-            box-shadow: var(--shadow-md);
-            border: 1px solid var(--border);
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
 
         body.dark-mode .section {
-            background: var(--white);
-            border-color: var(--border);
+            background: #2a2a3e;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
         }
 
         .section h3 {
-            margin-bottom: 1rem;
-            color: var(--primary);
             font-family: 'Poppins', sans-serif;
-            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 36px;
+            font-weight: 700;
+            color: #007bff;
+        }
+
+        body.dark-mode .stat-value {
+            color: #4dabf7;
         }
 
         .form-group {
             display: flex;
-            gap: 1rem;
-            margin-bottom: 1rem;
             flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
         }
 
-        .form-group input, 
-        .form-group textarea,
-        .form-group select {
+        .form-group input, .form-group select, .form-group textarea {
             flex: 1;
             min-width: 200px;
-            padding: 0.75rem;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            background: var(--white);
-            color: var(--dark);
-            transition: var(--transition);
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
         }
 
         body.dark-mode .form-group input,
-        body.dark-mode .form-group textarea,
-        body.dark-mode .form-group select {
-            background: var(--white);
-            border-color: var(--border);
-            color: var(--dark);
-        }
-
-        .form-group input:focus,
-        .form-group textarea:focus,
-        .form-group select:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        body.dark-mode .form-group select,
+        body.dark-mode .form-group textarea {
+            background: #333;
+            border-color: #444;
+            color: #e0e0e0;
         }
 
         .add-btn {
-            background: var(--gradient-primary);
-            color: white;
-            padding: 0.75rem 1.5rem;
+            padding: 10px 20px;
+            background: #28a745;
+            color: #fff;
             border: none;
-            border-radius: 8px;
+            border-radius: 4px;
             cursor: pointer;
-            font-weight: 600;
-            transition: var(--transition);
-            white-space: nowrap;
+            transition: background 0.3s;
         }
 
         .add-btn:hover {
-            transform: translateY(-1px);
-            box-shadow: var(--shadow-sm);
+            background: #218838;
+        }
+
+        .list-container {
+            margin-top: 20px;
         }
 
         .list {
             list-style: none;
-            margin-top: 1rem;
-        }
-
-        .list-container {
-            position: relative;
-        }
-
-        .list.top-items {
-            max-height: none;
-        }
-
-        .list.all-items {
-            max-height: 300px;
-            overflow-y: auto;
-            display: none;
         }
 
         .list-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 1rem;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            margin-bottom: 0.5rem;
-            background: var(--light);
+            padding: 10px;
+            border-bottom: 1px solid #eee;
         }
 
         body.dark-mode .list-item {
-            background: var(--light);
-            border-color: var(--border);
+            border-bottom: 1px solid #444;
         }
 
-        .list-item span {
-            flex: 1;
-            color: var(--medium);
+        .list-item:last-child {
+            border-bottom: none;
         }
 
-        .list-item a {
-            color: var(--primary);
-            text-decoration: none;
-            margin-right: 1rem;
-        }
-
-        .list-item a:hover {
-            text-decoration: underline;
-        }
-
-        .delete-btn,
-        .edit-btn {
-            padding: 0.5rem 1rem;
+        .edit-btn, .delete-btn {
+            padding: 5px 10px;
             border: none;
             border-radius: 4px;
             cursor: pointer;
-            font-size: 0.9rem;
-            margin-left: 0.5rem;
-            transition: var(--transition);
-        }
-
-        .delete-btn {
-            background: var(--danger);
-            color: white;
-        }
-
-        .delete-btn:hover {
-            background: #dc2626;
-            transform: translateY(-1px);
+            margin-left: 5px;
         }
 
         .edit-btn {
-            background: var(--secondary);
-            color: white;
+            background: #ffc107;
+            color: #333;
         }
 
         .edit-btn:hover {
-            background: var(--secondary-dark);
-            transform: translateY(-1px);
+            background: #e0a800;
+        }
+
+        .delete-btn {
+            background: #dc3545;
+            color: #fff;
+        }
+
+        .delete-btn:hover {
+            background: #c82333;
         }
 
         .show-more-btn {
-            background: var(--secondary);
-            color: white;
-            padding: 0.75rem 1.5rem;
+            display: none;
+            margin: 10px auto;
+            padding: 10px 20px;
+            background: #007bff;
+            color: #fff;
             border: none;
-            border-radius: 8px;
+            border-radius: 4px;
             cursor: pointer;
-            font-weight: 600;
-            margin-top: 1rem;
-            display: block;
-            margin-left: auto;
-            margin-right: auto;
-            transition: var(--transition);
         }
 
         .show-more-btn:hover {
-            background: var(--secondary-dark);
-            transform: translateY(-1px);
+            background: #0056b3;
         }
 
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-            margin-top: 1rem;
-        }
-
-        .stat {
-            background: var(--light);
-            padding: 1rem;
-            border-radius: 8px;
-            text-align: center;
-            border: 1px solid var(--border);
-        }
-
-        body.dark-mode .stat {
-            background: var(--light);
-            border-color: var(--border);
-        }
-
-        .stat-value {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--primary);
-            font-family: 'Poppins', sans-serif;
-        }
-
-        .stat div:last-child {
-            color: var(--medium);
-            font-size: 0.9rem;
-            margin-top: 0.25rem;
+        .all-items {
+            display: none;
         }
 
         .edit-modal {
             display: none;
             position: fixed;
-            z-index: 1000;
-            left: 0;
             top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(5px);
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
         }
 
         .edit-modal-content {
-            background: var(--white);
-            margin: 10% auto;
-            padding: 2rem;
-            border-radius: 12px;
+            background: #fff;
             max-width: 500px;
-            width: 90%;
+            margin: 100px auto;
+            padding: 20px;
+            border-radius: 8px;
             position: relative;
-            border: 1px solid var(--border);
         }
 
         body.dark-mode .edit-modal-content {
-            background: var(--white);
-            border-color: var(--border);
+            background: #2a2a3e;
         }
 
         .close-edit {
             position: absolute;
-            top: 1rem;
-            right: 1.5rem;
-            font-size: 1.5rem;
+            top: 10px;
+            right: 15px;
+            font-size: 24px;
             cursor: pointer;
-            color: var(--medium);
+            color: #333;
         }
 
-        .close-edit:hover {
-            color: var(--danger);
+        body.dark-mode .close-edit {
+            color: #e0e0e0;
         }
 
-        @media (max-width: 768px) {
-            .container { padding: 1rem; }
-            .form-group { flex-direction: column; }
-            .form-group input, .form-group textarea, .form-group select { min-width: auto; }
-            .dashboard-header { flex-direction: column; gap: 1rem; padding: 1rem; }
-            .header-actions { order: -1; width: 100%; justify-content: center; }
-            .list-item { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
-            .stats-grid { grid-template-columns: 1fr; }
+        .edit-modal-content h3 {
+            margin-bottom: 20px;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .edit-modal-content .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
         }
     </style>
 </head>
@@ -469,6 +323,7 @@
         <div class="login-form" id="loginForm">
             <h2>Admin Login</h2>
             <form onsubmit="login(event)">
+                <input type="text" id="username" placeholder="Enter username" required>
                 <input type="password" id="password" placeholder="Enter password" required>
                 <button type="submit" class="login-btn">Login</button>
             </form>
@@ -478,6 +333,7 @@
             <div class="dashboard-header">
                 <h1>GTUverse Admin Panel</h1>
                 <div class="header-actions">
+                    <span id="loggedInUser"></span>
                     <button class="dark-toggle" onclick="toggleDarkMode()" aria-label="Toggle Dark Mode">
                         <i class="fas fa-moon" id="adminDarkToggleIcon"></i>
                     </button>
@@ -558,27 +414,23 @@
     </div>
 
     <script>
-        const PASSWORD = 'Panth@IJ#09';
+        const SUPER_ADMINS = ['superadmin1', 'superadmin2'];
+        const SUPER_ADMIN_PASSWORD = 'Super@IJ#09';
+        const ADMIN_PASSWORD = 'Admin@IJ#09';
 
-        // Firestore helpers
-        async function loadFromDB(coll) {
-            const q = query(collection(db, coll), orderBy('id', 'desc'));
-            const snapshot = await getDocs(q);
-            return snapshot.docs.map(docSnap => ({ id: docSnap.id, ...docSnap.data() }));
+        // Local Storage Helpers
+        function getFromStorage(key) {
+            return JSON.parse(localStorage.getItem(key) || '[]');
         }
 
-        async function saveToDB(coll, data) {
-            const ref = collection(db, coll);
-            if (data.id) {
-                await updateDoc(doc(ref, data.id), data);
-            } else {
-                const newDoc = await addDoc(ref, { ...data, id: Date.now() });
-                data.id = newDoc.id;
-            }
+        function saveToStorage(key, data) {
+            localStorage.setItem(key, JSON.stringify(data));
         }
 
-        async function deleteFromDB(coll, id) {
-            await deleteDoc(doc(collection(db, coll), id));
+        function deleteFromStorage(key, id) {
+            const data = getFromStorage(key);
+            const filtered = data.filter(item => item.id !== id);
+            saveToStorage(key, filtered);
         }
 
         // Dark Mode
@@ -595,94 +447,107 @@
             toggleDarkMode();
         }
 
+        // Authentication
         function login(e) {
             e.preventDefault();
-            if (document.getElementById('password').value === PASSWORD) {
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value;
+            let role = null;
+
+            if (SUPER_ADMINS.includes(username) && password === SUPER_ADMIN_PASSWORD) {
+                role = 'superadmin';
+            } else if (password === ADMIN_PASSWORD) {
+                role = 'admin';
+            }
+
+            if (role) {
+                localStorage.setItem('adminRole', role);
+                localStorage.setItem('loggedInUser', username);
                 document.getElementById('loginForm').style.display = 'none';
                 document.getElementById('dashboard').style.display = 'block';
+                document.getElementById('loggedInUser').textContent = `Logged in as: ${username} (${role})`;
                 loadData();
             } else {
-                alert('Invalid password');
+                alert('Invalid username or password');
+                document.getElementById('username').value = '';
                 document.getElementById('password').value = '';
             }
         }
 
         function logout() {
+            localStorage.removeItem('adminRole');
+            localStorage.removeItem('loggedInUser');
             document.getElementById('loginForm').style.display = 'block';
             document.getElementById('dashboard').style.display = 'none';
+            document.getElementById('username').value = '';
             document.getElementById('password').value = '';
         }
 
-        async function loadData() {
-            try {
-                let papers = await loadFromDB('papers');
-                papers.sort((a, b) => b.id - a.id);
-                const papersListTop = document.getElementById('papersListTop');
-                const papersListAll = document.getElementById('papersListAll');
-                const papersShowMore = document.getElementById('papersShowMore');
-                if (papers.length > 0) {
-                    papersListTop.innerHTML = papers.slice(0, 5).map(p => `
-                        <li class="list-item">
-                            <span>${p.title} (${p.type.toUpperCase()}) (${p.branch} Sem ${p.sem}, ${p.college}) - <a href="${p.url}" target="_blank">View</a></span>
-                            <div>
-                                <button class="edit-btn" onclick="editItem('papers', '${p.id}')">Edit</button>
-                                <button class="delete-btn" onclick="deleteItem('papers', '${p.id}')">Delete</button>
-                            </div>
-                        </li>
-                    `).join('');
-                    papersListAll.innerHTML = papers.slice(5).map(p => `
-                        <li class="list-item">
-                            <span>${p.title} (${p.type.toUpperCase()}) (${p.branch} Sem ${p.sem}, ${p.college}) - <a href="${p.url}" target="_blank">View</a></span>
-                            <div>
-                                <button class="edit-btn" onclick="editItem('papers', '${p.id}')">Edit</button>
-                                <button class="delete-btn" onclick="deleteItem('papers', '${p.id}')">Delete</button>
-                            </div>
-                        </li>
-                    `).join('');
-                    papersShowMore.style.display = papers.length > 5 ? 'block' : 'none';
-                } else {
-                    papersListTop.innerHTML = '<p>No papers added yet.</p>';
-                    papersListAll.innerHTML = '';
-                    papersShowMore.style.display = 'none';
-                }
-
-                let announcements = await loadFromDB('announcements');
-                announcements.sort((a, b) => new Date(b.date) - new Date(a.date));
-                const announcementsListTop = document.getElementById('announcementsListTop');
-                const announcementsListAll = document.getElementById('announcementsListAll');
-                const announcementsShowMore = document.getElementById('announcementsShowMore');
-                if (announcements.length > 0) {
-                    announcementsListTop.innerHTML = announcements.slice(0, 5).map(a => `
-                        <li class="list-item">
-                            <span>${a.title}: ${a.desc} (${a.date})</span>
-                            <div>
-                                <button class="edit-btn" onclick="editItem('announcements', '${a.id}')">Edit</button>
-                                <button class="delete-btn" onclick="deleteItem('announcements', '${a.id}')">Delete</button>
-                            </div>
-                        </li>
-                    `).join('');
-                    announcementsListAll.innerHTML = announcements.slice(5).map(a => `
-                        <li class="list-item">
-                            <span>${a.title}: ${a.desc} (${a.date})</span>
-                            <div>
-                                <button class="edit-btn" onclick="editItem('announcements', '${a.id}')">Edit</button>
-                                <button class="delete-btn" onclick="deleteItem('announcements', '${a.id}')">Delete</button>
-                            </div>
-                        </li>
-                    `).join('');
-                    announcementsShowMore.style.display = announcements.length > 5 ? 'block' : 'none';
-                } else {
-                    announcementsListTop.innerHTML = '<p>No announcements added yet.</p>';
-                    announcementsListAll.innerHTML = '';
-                    announcementsShowMore.style.display = 'none';
-                }
-
-                document.getElementById('totalPapers').textContent = papers.length;
-                document.getElementById('totalAnnouncements').textContent = announcements.length;
-            } catch (error) {
-                console.error('Load error:', error);
-                alert('Error loading data.');
+        // Load Data
+        function loadData() {
+            const role = localStorage.getItem('adminRole');
+            const papers = getFromStorage('papers').sort((a, b) => b.id - a.id);
+            const papersListTop = document.getElementById('papersListTop');
+            const papersListAll = document.getElementById('papersListAll');
+            const papersShowMore = document.getElementById('papersShowMore');
+            if (papers.length > 0) {
+                papersListTop.innerHTML = papers.slice(0, 5).map(p => `
+                    <li class="list-item">
+                        <span>${p.title} (${p.type.toUpperCase()}) (${p.branch} Sem ${p.sem}, ${p.college}) - <a href="${p.url}" target="_blank">View</a></span>
+                        <div>
+                            <button class="edit-btn" onclick="editItem('papers', '${p.id}')">Edit</button>
+                            ${role === 'superadmin' ? `<button class="delete-btn" onclick="deleteItem('papers', '${p.id}')">Delete</button>` : ''}
+                        </div>
+                    </li>
+                `).join('');
+                papersListAll.innerHTML = papers.slice(5).map(p => `
+                    <li class="list-item">
+                        <span>${p.title} (${p.type.toUpperCase()}) (${p.branch} Sem ${p.sem}, ${p.college}) - <a href="${p.url}" target="_blank">View</a></span>
+                        <div>
+                            <button class="edit-btn" onclick="editItem('papers', '${p.id}')">Edit</button>
+                            ${role === 'superadmin' ? `<button class="delete-btn" onclick="deleteItem('papers', '${p.id}')">Delete</button>` : ''}
+                        </div>
+                    </li>
+                `).join('');
+                papersShowMore.style.display = papers.length > 5 ? 'block' : 'none';
+            } else {
+                papersListTop.innerHTML = '<p>No papers added yet.</p>';
+                papersListAll.innerHTML = '';
+                papersShowMore.style.display = 'none';
             }
+
+            const announcements = getFromStorage('announcements').sort((a, b) => new Date(b.date) - new Date(a.date));
+            const announcementsListTop = document.getElementById('announcementsListTop');
+            const announcementsListAll = document.getElementById('announcementsListAll');
+            const announcementsShowMore = document.getElementById('announcementsShowMore');
+            if (announcements.length > 0) {
+                announcementsListTop.innerHTML = announcements.slice(0, 5).map(a => `
+                    <li class="list-item">
+                        <span>${a.title}: ${a.desc} (${a.date})</span>
+                        <div>
+                            <button class="edit-btn" onclick="editItem('announcements', '${a.id}')">Edit</button>
+                            ${role === 'superadmin' ? `<button class="delete-btn" onclick="deleteItem('announcements', '${a.id}')">Delete</button>` : ''}
+                        </div>
+                    </li>
+                `).join('');
+                announcementsListAll.innerHTML = announcements.slice(5).map(a => `
+                    <li class="list-item">
+                        <span>${a.title}: ${a.desc} (${a.date})</span>
+                        <div>
+                            <button class="edit-btn" onclick="editItem('announcements', '${a.id}')">Edit</button>
+                            ${role === 'superadmin' ? `<button class="delete-btn" onclick="deleteItem('announcements', '${a.id}')">Delete</button>` : ''}
+                        </div>
+                    </li>
+                `).join('');
+                announcementsShowMore.style.display = announcements.length > 5 ? 'block' : 'none';
+            } else {
+                announcementsListTop.innerHTML = '<p>No announcements added yet.</p>';
+                announcementsListAll.innerHTML = '';
+                announcementsShowMore.style.display = 'none';
+            }
+
+            document.getElementById('totalPapers').textContent = papers.length;
+            document.getElementById('totalAnnouncements').textContent = announcements.length;
         }
 
         function toggleShowMore(type) {
@@ -693,7 +558,7 @@
             button.textContent = isHidden ? 'Show Less' : 'Show More';
         }
 
-        async function addPaper(e) {
+        function addPaper(e) {
             e.preventDefault();
             const elements = e.target.querySelectorAll('input, select');
             const [title, typeEl, branch, sem, college, url] = elements;
@@ -701,18 +566,24 @@
                 alert('Please fill all fields.');
                 return;
             }
-            const paper = { title: title.value.trim(), type: typeEl.value, branch: branch.value.trim().toUpperCase(), sem: parseInt(sem.value), college: college.value.trim(), url: url.value.trim() };
-            try {
-                await saveToDB('papers', paper);
-                alert('Paper added!');
-                loadData();
-                e.target.reset();
-            } catch (error) {
-                alert('Error adding paper.');
-            }
+            const paper = {
+                id: Date.now().toString(),
+                title: title.value.trim(),
+                type: typeEl.value,
+                branch: branch.value.trim().toUpperCase(),
+                sem: parseInt(sem.value),
+                college: college.value.trim(),
+                url: url.value.trim()
+            };
+            const papers = getFromStorage('papers');
+            papers.push(paper);
+            saveToStorage('papers', papers);
+            alert('Paper added!');
+            loadData();
+            e.target.reset();
         }
 
-        async function addAnnouncement(e) {
+        function addAnnouncement(e) {
             e.preventDefault();
             const inputs = e.target.querySelectorAll('input, textarea');
             const [title, desc] = inputs;
@@ -720,87 +591,76 @@
                 alert('Please fill all fields.');
                 return;
             }
-            const ann = { title: title.value.trim(), desc: desc.value.trim(), date: new Date().toLocaleString() };
-            try {
-                await saveToDB('announcements', ann);
-                alert('Announcement added!');
-                loadData();
-                e.target.reset();
-            } catch (error) {
-                alert('Error adding announcement.');
-            }
+            const ann = {
+                id: Date.now().toString(),
+                title: title.value.trim(),
+                desc: desc.value.trim(),
+                date: new Date().toLocaleString()
+            };
+            const announcements = getFromStorage('announcements');
+            announcements.push(ann);
+            saveToStorage('announcements', announcements);
+            alert('Announcement added!');
+            loadData();
+            e.target.reset();
         }
 
-        async function deleteItem(type, id) {
+        function deleteItem(type, id) {
             if (!confirm(`Delete ${type}?`)) return;
-            try {
-                await deleteFromDB(type, id);
-                alert(`${type} deleted!`);
-                loadData();
-            } catch (error) {
-                alert('Error deleting.');
-            }
+            deleteFromStorage(type, id);
+            alert(`${type} deleted!`);
+            loadData();
         }
 
         let editingItem = null;
 
-        async function editItem(type, id) {
+        function editItem(type, id) {
+            const items = getFromStorage(type);
+            const item = items.find(i => i.id === id);
+            if (!item) return;
+
             editingItem = { type, id };
-            try {
-                const items = await loadFromDB(type);
-                const item = items.find(i => i.id === id);
-                if (!item) return;
+            document.getElementById('editType').value = type;
+            document.getElementById('editId').value = id;
+            document.getElementById('editTitle').value = item.title || '';
+            document.getElementById('editDesc').value = item.desc || '';
 
-                document.getElementById('editType').value = type;
-                document.getElementById('editId').value = id;
-                document.getElementById('editTitle').value = item.title || '';
-                document.getElementById('editDesc').value = item.desc || '';
-
-                const extraDiv = document.getElementById('editExtra');
-                extraDiv.style.display = 'none';
-                extraDiv.innerHTML = '';
-                if (type === 'papers') {
-                    document.getElementById('editModalTitle').textContent = 'Edit Paper';
-                    extraDiv.style.display = 'flex';
-                    extraDiv.innerHTML = `
-                        <select id="editTypeSelect" required>
-                            <option value="midsem" ${item.type === 'midsem' ? 'selected' : ''}>Midsem</option>
-                            <option value="gtu" ${item.type === 'gtu' ? 'selected' : ''}>GTU Exam</option>
-                        </select>
-                        <input type="text" id="editBranch" placeholder="Branch" value="${item.branch || ''}" required>
-                        <input type="number" id="editSem" placeholder="Semester" value="${item.sem || ''}" min="1" max="8" required>
-                        <input type="text" id="editCollege" placeholder="College" value="${item.college || ''}" required>
-                        <input type="url" id="editUrl" placeholder="URL" value="${item.url || ''}" required>
-                    `;
-                } else if (type === 'announcements') {
-                    document.getElementById('editModalTitle').textContent = 'Edit Announcement';
-                    extraDiv.style.display = 'flex';
-                    extraDiv.innerHTML = `
-                        <input type="text" id="editDate" placeholder="Date" value="${item.date || ''}" required>
-                    `;
-                }
-
-                document.getElementById('editModal').style.display = 'block';
-                document.body.style.overflow = 'hidden';
-            } catch (error) {
-                alert('Error loading item.');
+            const extraDiv = document.getElementById('editExtra');
+            extraDiv.style.display = 'none';
+            extraDiv.innerHTML = '';
+            if (type === 'papers') {
+                document.getElementById('editModalTitle').textContent = 'Edit Paper';
+                extraDiv.style.display = 'flex';
+                extraDiv.innerHTML = `
+                    <select id="editTypeSelect" required>
+                        <option value="midsem" ${item.type === 'midsem' ? 'selected' : ''}>Midsem</option>
+                        <option value="gtu" ${item.type === 'gtu' ? 'selected' : ''}>GTU Exam</option>
+                    </select>
+                    <input type="text" id="editBranch" placeholder="Branch" value="${item.branch || ''}" required>
+                    <input type="number" id="editSem" placeholder="Semester" value="${item.sem || ''}" min="1" max="8" required>
+                    <input type="text" id="editCollege" placeholder="College" value="${item.college || ''}" required>
+                    <input type="url" id="editUrl" placeholder="URL" value="${item.url || ''}" required>
+                `;
+            } else if (type === 'announcements') {
+                document.getElementById('editModalTitle').textContent = 'Edit Announcement';
+                extraDiv.style.display = 'flex';
+                extraDiv.innerHTML = `
+                    <input type="text" id="editDate" placeholder="Date" value="${item.date || ''}" required>
+                `;
             }
+
+            document.getElementById('editModal').style.display = 'block';
+            document.body.style.overflow = 'hidden';
         }
 
-        function closeEditModal() {
-            document.getElementById('editModal').style.display = 'none';
-            document.body.style.overflow = 'auto';
-            document.getElementById('editForm').reset();
-            editingItem = null;
-        }
-
-        async function saveEdit(e) {
+        function saveEdit(e) {
             e.preventDefault();
             if (!editingItem) return;
 
             const type = document.getElementById('editType').value;
             const id = document.getElementById('editId').value;
             let item = { id };
+            const items = getFromStorage(type);
 
             if (type === 'papers') {
                 item.title = document.getElementById('editTitle').value.trim();
@@ -815,14 +675,18 @@
                 item.date = document.getElementById('editDate').value.trim() || new Date().toLocaleString();
             }
 
-            try {
-                await saveToDB(type, item);
-                alert('Item updated!');
-                loadData();
-                closeEditModal();
-            } catch (error) {
-                alert('Error updating.');
-            }
+            const updatedItems = items.map(i => i.id === id ? item : i);
+            saveToStorage(type, updatedItems);
+            alert('Item updated!');
+            loadData();
+            closeEditModal();
+        }
+
+        function closeEditModal() {
+            document.getElementById('editModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+            document.getElementById('editForm').reset();
+            editingItem = null;
         }
 
         window.onclick = (event) => {
@@ -834,7 +698,15 @@
             if (e.key === 'Escape') closeEditModal();
         });
 
-        window.addEventListener('load', loadData);
+        // Persist Login State
+        if (localStorage.getItem('adminRole')) {
+            document.getElementById('loginForm').style.display = 'none';
+            document.getElementById('dashboard').style.display = 'block';
+            const username = localStorage.getItem('loggedInUser');
+            const role = localStorage.getItem('adminRole');
+            document.getElementById('loggedInUser').textContent = `Logged in as: ${username} (${role})`;
+            loadData();
+        }
     </script>
 </body>
 </html>
