@@ -241,6 +241,11 @@
             box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
         }
 
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
         .add-btn {
             background: var(--gradient-primary);
             color: white;
@@ -486,8 +491,8 @@
                 <div class="form-group">
                     <input type="text" id="editTitle" placeholder="Title" required>
                 </div>
-                <div class="form-group">
-                    <input type="text" id="editDesc" placeholder="Description" required>
+                <div class="form-group" id="editDescGroup">
+                    <textarea id="editDesc" placeholder="Description" required></textarea>
                 </div>
                 <div class="form-group" id="editExtra" style="display: none;"></div>
                 <button type="submit" class="add-btn">Save Changes</button>
@@ -621,11 +626,13 @@
             document.getElementById('editTitle').value = item.title || '';
             document.getElementById('editDesc').value = item.desc || '';
 
+            const descGroup = document.getElementById('editDescGroup');
             const extraDiv = document.getElementById('editExtra');
             extraDiv.style.display = 'none';
             extraDiv.innerHTML = '';
             if (type === 'papers') {
                 document.getElementById('editModalTitle').textContent = 'Edit Paper';
+                descGroup.style.display = 'none';
                 extraDiv.style.display = 'flex';
                 extraDiv.innerHTML = `
                     <select id="editTypeSelect" required>
@@ -639,8 +646,7 @@
                 `;
             } else if (type === 'announcements') {
                 document.getElementById('editModalTitle').textContent = 'Edit Announcement';
-                document.getElementById('editTitle').placeholder = 'Title';
-                document.getElementById('editDesc').placeholder = 'Description';
+                descGroup.style.display = 'block';
                 extraDiv.style.display = 'flex';
                 extraDiv.innerHTML = `
                     <input type="text" id="editDate" placeholder="Date" value="${item.date || ''}" required>
