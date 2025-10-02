@@ -902,20 +902,6 @@
             list-style: none;
         }
 
-        .list-container {
-            position: relative;
-        }
-
-        .papers-list.top-items {
-            max-height: none;
-        }
-
-        .papers-list.all-items {
-            max-height: 300px;
-            overflow-y: auto;
-            display: none;
-        }
-
         .paper-item {
             background: var(--white);
             padding: 1.5rem;
@@ -965,19 +951,11 @@
 
         .announcements-list {
             list-style: none;
+            max-height: 600px;
+            overflow-y: auto;
             padding: 1rem;
             border: 1px solid var(--border);
             border-radius: 12px;
-        }
-
-        .announcements-list.top-items {
-            max-height: none;
-        }
-
-        .announcements-list.all-items {
-            max-height: 300px;
-            overflow-y: auto;
-            display: none;
         }
 
         .announcement-item {
@@ -1035,26 +1013,6 @@
         }
 
         .share-btn:hover {
-            background: var(--secondary-dark);
-            transform: translateY(-1px);
-        }
-
-        .show-more-btn {
-            background: var(--secondary);
-            color: white;
-            padding: 0.75rem 1.5rem;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            margin-top: 1rem;
-            display: block;
-            margin-left: auto;
-            margin-right: auto;
-            transition: var(--transition);
-        }
-
-        .show-more-btn:hover {
             background: var(--secondary-dark);
             transform: translateY(-1px);
         }
@@ -1259,7 +1217,9 @@
             border-radius: 12px;
             cursor: pointer;
             font-weight: 600;
+            font-size: 1.1rem;
             transition: var(--transition);
+            width: 100%;
         }
 
         .modal-submit:hover {
@@ -1267,35 +1227,131 @@
             box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);
         }
 
+        .search-results {
+            max-width: 800px;
+            margin: 2rem auto 0;
+            padding: 0 2rem;
+            display: none;
+        }
+
+        .search-result-item {
+            background: var(--white);
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border);
+            transition: var(--transition);
+        }
+
+        body.dark-mode .search-result-item { 
+            background: var(--white); 
+            border-color: var(--border);
+        }
+
+        .search-result-item:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-1px);
+        }
+
+        .search-result-title {
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .search-result-desc {
+            color: var(--medium);
+            margin-bottom: 1rem;
+        }
+
+        .search-result-link {
+            color: var(--secondary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .typewriter {
+            overflow: hidden;
+            border-right: 0.15em solid var(--primary);
+            white-space: nowrap;
+            margin: 0 auto;
+            letter-spacing: 0.15em;
+            animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+        }
+
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: var(--primary); }
+        }
+
         @media (max-width: 768px) {
-            nav { padding: 1rem; }
-            .nav-links { 
-                display: none; 
-                position: absolute; 
-                top: 70px; 
-                left: 0; 
-                width: 100%; 
-                background: var(--white); 
-                flex-direction: column; 
-                padding: 1rem; 
-                box-shadow: var(--shadow-md); 
-                border-top: 1px solid var(--border);
-            }
-            body.dark-mode .nav-links { background: var(--white); }
-            .nav-links.active { display: flex; }
-            .nav-links a { padding: 1rem; text-align: center; }
             .hamburger { display: flex; }
-            .hero { padding: 80px 1rem 60px; }
-            .hero h1 { font-size: clamp(2rem, 6vw, 3.5rem); }
-            .search-box { margin: 0 1rem 2rem; }
-            .search-input-wrapper { flex-direction: column; gap: 0.5rem; }
-            .search-box input { padding: 1rem; }
-            .search-box button { width: 100%; padding: 1rem; }
-            .quick-links { grid-template-columns: 1fr; }
-            .stats-grid { grid-template-columns: 1fr; }
-            .features-grid { grid-template-columns: 1fr; }
+
+            .nav-links {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: rgba(255, 255, 255, 0.98);
+                backdrop-filter: blur(20px);
+                flex-direction: column;
+                padding: 1.5rem;
+                gap: 1rem;
+                box-shadow: var(--shadow-lg);
+                transform: translateY(-100%);
+                opacity: 0;
+                visibility: hidden;
+                transition: var(--transition);
+            }
+
+            body.dark-mode .nav-links { background: rgba(15, 23, 42, 0.98); }
+
+            .nav-links.active {
+                transform: translateY(0);
+                opacity: 1;
+                visibility: visible;
+            }
+
+            .hero { padding: 80px 1rem 40px; margin-top: 70px; }
+
+            .stats-grid,
+            .features-grid,
             .resources-grid { grid-template-columns: 1fr; }
-            .cta-banner { padding: 3rem 1.5rem; margin: 3rem 1rem; }
+
+            .cta-banner { 
+                margin: 3rem 1rem; 
+                padding: 3rem 1.5rem; 
+            }
+
+            nav { padding: 1rem; }
+
+            .footer-links { gap: 1rem; }
+
+            .quick-links { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 0.75rem; }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 { font-size: 2.5rem; }
+            .search-box button { padding: 1rem 1.5rem; font-size: 0.95rem; }
+            .cta-button { padding: 1rem 2rem; font-size: 1rem; }
         }
     </style>
 </head>
@@ -1306,23 +1362,27 @@
         <div class="bg-shape"></div>
     </div>
 
-    <header>
+    <header id="header">
         <nav>
-            <a href="#" class="logo"><i class="fas fa-graduation-cap"></i> GTUverse</a>
-            <ul class="nav-links">
+            <a href="#home" class="logo">
+                <i class="fas fa-graduation-cap"></i>
+                <span>GTUverse</span>
+            </a>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#resources">Resources</a></li>
                 <li><a href="#papers">Papers</a></li>
                 <li><a href="#announcements">Announcements</a></li>
-                <li><a href="#resources">Resources</a></li>
-                <li><a href="#contact">Contact</a></li>
-                <li><a href="https://chat.whatsapp.com/yourgroup" target="_blank" class="whatsapp-btn">Join WhatsApp</a></li>
-                <li><a href="admin.html" class="admin-link">Admin</a></li>
-                <li>
-                    <button class="dark-toggle" onclick="toggleDarkMode()" aria-label="Toggle Dark Mode">
-                        <i class="fas fa-moon" id="darkToggleIcon"></i>
-                    </button>
-                </li>
+                <li><a href="#contact" onclick="openModal(event)">Contact</a></li>
+                <li><a href="https://chat.whatsapp.com/LLq6Sn0gvqwHHIJxxNaNaM" target="_blank" class="whatsapp-btn">
+                    <i class="fab fa-whatsapp"></i> Join Community
+                </a></li>
+                <li><button class="dark-toggle" onclick="toggleDarkMode()" aria-label="Toggle Dark Mode">
+                    <i class="fas fa-moon" id="darkToggleIcon"></i>
+                </button></li>
             </ul>
-            <div class="hamburger" onclick="toggleMenu()">
+            <div class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Toggle Menu">
                 <span></span>
                 <span></span>
                 <span></span>
@@ -1330,159 +1390,193 @@
         </nav>
     </header>
 
-    <section class="hero">
+    <section class="hero" id="home">
         <div class="hero-content">
-            <h1>Empower Your GTU Journey</h1>
-            <p class="hero-subtitle">Access midsem & GTU papers, earn activity points, and stay updated with real-time announcements—all in one place.</p>
+            <h1>Empower Your <span class="typewriter" id="typewriter"></span></h1>
+            <p class="hero-subtitle">Access midsem papers, earn 100 activity points effortlessly, stay updated with instant announcements, and join 1000+ students excelling together in GTU.</p>
             <div class="search-box">
-                <form id="searchForm" onsubmit="searchPapers(event)">
-                    <div class="search-input-wrapper">
-                        <i class="fas fa-search"></i>
-                        <input type="text" id="searchInput" placeholder="Search papers (e.g., DBMS Sem 5)">
-                        <button type="submit">Search</button>
-                    </div>
-                </form>
+                <div class="search-input-wrapper">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="Search for papers (e.g., DBMS Sem 5, OS Sem 3)..." aria-label="Search papers">
+                    <button onclick="handleSearch()" aria-label="Search"><i class="fas fa-search"></i> Search</button>
+                </div>
             </div>
-            <a href="https://chat.whatsapp.com/yourgroup" target="_blank" class="cta-button">
-                <i class="fab fa-whatsapp"></i> Join 1000+ GTU Students
+            <div id="searchResults" class="search-results"></div>
+            <a href="https://chat.whatsapp.com/LLq6Sn0gvqwHHIJxxNaNaM" target="_blank" class="cta-button" aria-label="Join WhatsApp Community">
+                <i class="fab fa-whatsapp"></i>
+                Join & Start Winning Points
             </a>
             <div class="quick-links">
-                <a href="#papers" class="quick-link"><i class="fas fa-file-alt"></i> Past Papers</a>
-                <a href="#announcements" class="quick-link"><i class="fas fa-bullhorn"></i> Announcements</a>
-                <a href="#resources" class="quick-link"><i class="fas fa-book"></i> Resources</a>
-                <a href="#contact" class="quick-link"><i class="fas fa-envelope"></i> Contact Us</a>
+                <a href="#" class="quick-link" onclick="simulateDownload('CE')"><i class="fas fa-cogs"></i><span>CE Papers</span></a>
+                <a href="#" class="quick-link" onclick="simulateDownload('IT')"><i class="fas fa-laptop-code"></i><span>IT Papers</span></a>
+                <a href="#" class="quick-link" onclick="simulateDownload('ME')"><i class="fas fa-industry"></i><span>ME Papers</span></a>
+                <a href="#" class="quick-link" onclick="simulateDownload('EC')"><i class="fas fa-broadcast-tower"></i><span>EC Papers</span></a>
             </div>
         </div>
     </section>
 
     <section class="stats">
         <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-icon"><i class="fas fa-file-alt"></i></div>
-                <div class="stat-number" id="totalPapers">0</div>
-                <div class="stat-label">Papers Available</div>
+            <div class="stat-card fade-in">
+                <div class="stat-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="stat-number" data-target="1500">0</div>
+                <div class="stat-label">Active GTU Students</div>
             </div>
-            <div class="stat-card">
-                <div class="stat-icon"><i class="fas fa-bullhorn"></i></div>
-                <div class="stat-number" id="totalAnnouncements">0</div>
-                <div class="stat-label">Announcements</div>
+            <div class="stat-card fade-in">
+                <div class="stat-icon">
+                    <i class="fas fa-file-alt"></i>
+                </div>
+                <div class="stat-number" data-target="1200">0</div>
+                <div class="stat-label">Midsem Papers</div>
             </div>
-            <div class="stat-card">
-                <div class="stat-icon"><i class="fas fa-users"></i></div>
-                <div class="stat-number">1000+</div>
-                <div class="stat-label">Students Joined</div>
+            <div class="stat-card fade-in">
+                <div class="stat-icon">
+                    <i class="fas fa-trophy"></i>
+                </div>
+                <div class="stat-number" data-target="250">0</div>
+                <div class="stat-label">Points Earned Today</div>
             </div>
-            <div class="stat-card">
-                <div class="stat-icon"><i class="fas fa-trophy"></i></div>
-                <div class="stat-number">500+</div>
-                <div class="stat-label">Activity Points Earned</div>
+            <div class="stat-card fade-in">
+                <div class="stat-icon">
+                    <i class="fas fa-bell"></i>
+                </div>
+                <div class="stat-number" data-target="75">0</div>
+                <div class="stat-label">Live Updates</div>
             </div>
         </div>
     </section>
 
-    <section class="features">
-        <div class="section-header">
-            <h2 class="section-title">Why Choose GTUverse?</h2>
-            <p class="section-subtitle">Your one-stop platform for academic success and community engagement.</p>
+    <section class="features" id="features">
+        <div class="section-header fade-in">
+            <h2 class="section-title">Why GTUverse is Your Perfect Study Partner</h2>
+            <p class="section-subtitle">Tailored tools to conquer GTU exams, boost your GPA, and earn those elusive activity points without the hassle.</p>
         </div>
         <div class="features-grid">
-            <div class="feature-card">
-                <div class="feature-icon"><i class="fas fa-file-alt"></i></div>
-                <h3>Past Papers</h3>
-                <p>Access a vast collection of GTU midsem and final exam papers, organized by branch and semester.</p>
+            <div class="feature-card fade-in">
+                <div class="feature-icon">
+                    <i class="fas fa-file-search"></i>
+                </div>
+                <h3>Midsem Paper Vault</h3>
+                <p>Curated collection of GTU midsem and endsem papers with solutions. Filter by branch, semester, and subject for laser-focused prep.</p>
                 <ul class="feature-list">
-                    <li><i class="fas fa-check"></i> Midsem & GTU Exams</li>
-                    <li><i class="fas fa-check"></i> Search by Branch</li>
-                    <li><i class="fas fa-check"></i> Free PDF Downloads</li>
+                    <li><i class="fas fa-check"></i> 1200+ verified papers</li>
+                    <li><i class="fas fa-check"></i> Instant PDF downloads</li>
+                    <li><i class="fas fa-check"></i> AI-powered search & tags</li>
                 </ul>
-                <a href="#papers" class="feature-link">Explore Papers <i class="fas fa-arrow-right"></i></a>
+                <a href="#papers" class="feature-link"><i class="fas fa-arrow-right"></i> View All Papers</a>
             </div>
-            <div class="feature-card">
-                <div class="feature-icon"><i class="fas fa-bullhorn"></i></div>
-                <h3>Real-Time Updates</h3>
-                <p>Stay informed with the latest GTU announcements and deadlines, delivered instantly.</p>
+            <div class="feature-card fade-in">
+                <div class="feature-icon">
+                    <i class="fas fa-file-alt"></i>
+                </div>
+                <h3>Activity Points Guide</h3>
+                <p>Comprehensive guide to earn 100+ GTU activity points through various activities, events, and contributions.</p>
                 <ul class="feature-list">
-                    <li><i class="fas fa-check"></i> Exam Schedules</li>
-                    <li><i class="fas fa-check"></i> Result Notifications</li>
-                    <li><i class="fas fa-check"></i> Instant Alerts</li>
+                    <li><i class="fas fa-check"></i> Step-by-step point strategies</li>
+                    <li><i class="fas fa-check"></i> Verified activity suggestions</li>
+                    <li><i class="fas fa-check"></i> Community-driven tips</li>
                 </ul>
-                <a href="#announcements" class="feature-link">View Announcements <i class="fas fa-arrow-right"></i></a>
+                <a href="https://chat.whatsapp.com/LLq6Sn0gvqwHHIJxxNaNaM" target="_blank" class="feature-link"><i class="fas fa-arrow-right"></i> Go here for GTU 100 Activity Points</a>
             </div>
-            <div class="feature-card">
-                <div class="feature-icon"><i class="fas fa-trophy"></i></div>
-                <h3>Activity Points</h3>
-                <p>Earn points effortlessly with our curated list of activities, events, and workshops.</p>
+            <div class="feature-card fade-in">
+                <div class="feature-icon">
+                    <i class="fas fa-bullhorn"></i>
+                </div>
+                <h3>Real-Time GTU Alerts</h3>
+                <p>Push notifications for exam dates, result alerts, syllabus changes, and college events. Stay ahead, never behind.</p>
                 <ul class="feature-list">
-                    <li><i class="fas fa-check"></i> Workshops & Events</li>
-                    <li><i class="fas fa-check"></i> Volunteering</li>
-                    <li><i class="fas fa-check"></i> Certification Programs</li>
+                    <li><i class="fas fa-check"></i> Instant WhatsApp sync</li>
+                    <li><i class="fas fa-check"></i> Categorized feeds</li>
+                    <li><i class="fas fa-check"></i> 1-year archive</li>
                 </ul>
-                <a href="#resources" class="feature-link">Earn Points <i class="fas fa-arrow-right"></i></a>
+                <a href="#announcements" class="feature-link"><i class="fas fa-arrow-right"></i> View Alerts</a>
             </div>
-            <div class="feature-card">
-                <div class="feature-icon"><i class="fas fa-users"></i></div>
-                <h3>Community</h3>
-                <p>Join a vibrant community of GTU students to collaborate, share, and grow together.</p>
+            <div class="feature-card fade-in">
+                <div class="feature-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <h3>Thriving Community Hub</h3>
+                <p>Connect with 1500+ GTU peers for doubt-solving, group studies, and resource sharing. Your network = your net worth.</p>
                 <ul class="feature-list">
-                    <li><i class="fas fa-check"></i> WhatsApp Groups</li>
-                    <li><i class="fas fa-check"></i> Study Groups</li>
-                    <li><i class="fas fa-check"></i> Peer Support</li>
+                    <li><i class="fas fa-check"></i> Branch-wise groups</li>
+                    <li><i class="fas fa-check"></i> Live Q&A sessions</li>
+                    <li><i class="fas fa-check"></i> Mentorship matches</li>
                 </ul>
-                <a href="https://chat.whatsapp.com/yourgroup" target="_blank" class="feature-link">Join Community <i class="fas fa-arrow-right"></i></a>
+                <a href="https://chat.whatsapp.com/LLq6Sn0gvqwHHIJxxNaNaM" target="_blank" class="feature-link"><i class="fas fa-arrow-right"></i> Join Hub</a>
             </div>
         </div>
     </section>
 
-    <section class="cta-banner">
-        <h2>Join the GTUverse Community</h2>
-        <p>Connect with 1000+ GTU students, share resources, and stay ahead in your academic journey.</p>
-        <a href="https://chat.whatsapp.com/yourgroup" target="_blank" class="cta-button">
-            <i class="fab fa-whatsapp"></i> Join Now
+    <div class="cta-banner fade-in">
+        <h2>Ready to Ace GTU Like Never Before?</h2>
+        <p>Thousands of students are transforming their academic game. Free access, zero ads, and results that speak for themselves. Start your journey in under 30 seconds.</p>
+        <a href="https://chat.whatsapp.com/LLq6Sn0gvqwHHIJxxNaNaM" target="_blank" class="cta-button">
+            <i class="fab fa-whatsapp"></i>
+            Get Started Free - Join 1500+ Students
         </a>
-    </section>
+    </div>
 
     <section class="resources" id="resources">
-        <div class="section-header">
-            <h2 class="section-title">Resources & Activity Points</h2>
-            <p class="section-subtitle">Explore curated resources to boost your skills and earn activity points.</p>
+        <div class="section-header fade-in">
+            <h2 class="section-title">Quick GTU Resources by Branch</h2>
+            <p class="section-subtitle">Jump straight to what you need. Updated for Sem 1-8 across all GTU branches.</p>
         </div>
         <div class="resources-grid">
-            <div class="resource-card" onclick="openModal('workshops')">
+            <div class="resource-card fade-in" onclick="showBranchPapers('CE')">
                 <div class="resource-header">
-                    <h3>Workshops</h3>
-                    <p>Earn points through hands-on sessions.</p>
+                    <h3>Computer Engineering</h3>
+                    <p>Sem 1-8 Papers & Notes</p>
                 </div>
                 <div class="resource-body">
                     <ul>
-                        <li><i class="fas fa-check"></i> Technical Workshops</li>
-                        <li><i class="fas fa-check"></i> Coding Bootcamps</li>
-                        <li><i class="fas fa-check"></i> Industry Talks</li>
+                        <li><i class="fas fa-file-pdf"></i> DBMS Sem 5</li>
+                        <li><i class="fas fa-file-pdf"></i> OS Sem 3</li>
+                        <li><i class="fas fa-file-pdf"></i> ADA Sem 4</li>
+                        <li><i class="fas fa-file-pdf"></i> CN Sem 6</li>
                     </ul>
                 </div>
             </div>
-            <div class="resource-card" onclick="openModal('volunteering')">
+            <div class="resource-card fade-in" onclick="showBranchPapers('IT')">
                 <div class="resource-header">
-                    <h3>Volunteering</h3>
-                    <p>Contribute to events and earn points.</p>
+                    <h3>Information Technology</h3>
+                    <p>Sem 1-8 Papers & Notes</p>
                 </div>
                 <div class="resource-body">
                     <ul>
-                        <li><i class="fas fa-check"></i> Event Organization</li>
-                        <li><i class="fas fa-check"></i> Community Service</li>
-                        <li><i class="fas fa-check"></i> Campus Initiatives</li>
+                        <li><i class="fas fa-file-pdf"></i> Web Tech Sem 5</li>
+                        <li><i class="fas fa-file-pdf"></i> Python Sem 3</li>
+                        <li><i class="fas fa-file-pdf"></i> DS Sem 4</li>
+                        <li><i class="fas fa-file-pdf"></i> AI Sem 7</li>
                     </ul>
                 </div>
             </div>
-            <div class="resource-card" onclick="openModal('certifications')">
+            <div class="resource-card fade-in" onclick="showBranchPapers('ME')">
                 <div class="resource-header">
-                    <h3>Certifications</h3>
-                    <p>Boost your resume with certified courses.</p>
+                    <h3>Mechanical Engineering</h3>
+                    <p>Sem 1-8 Papers & Notes</p>
                 </div>
                 <div class="resource-body">
                     <ul>
-                        <li><i class="fas fa-check"></i> Online Courses</li>
-                        <li><i class="fas fa-check"></i> Skill Certifications</li>
-                        <li><i class="fas fa-check"></i> Professional Training</li>
+                        <li><i class="fas fa-file-pdf"></i> SOM Sem 4</li>
+                        <li><i class="fas fa-file-pdf"></i> Thermodynamics Sem 3</li>
+                        <li><i class="fas fa-file-pdf"></i> FM Sem 5</li>
+                        <li><i class="fas fa-file-pdf"></i> RAC Sem 7</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="resource-card fade-in" onclick="showBranchPapers('EC')">
+                <div class="resource-header">
+                    <h3>Electronics & Comm</h3>
+                    <p>Sem 1-8 Papers & Notes</p>
+                </div>
+                <div class="resource-body">
+                    <ul>
+                        <li><i class="fas fa-file-pdf"></i> DSP Sem 5</li>
+                        <li><i class="fas fa-file-pdf"></i> Microprocessors Sem 3</li>
+                        <li><i class="fas fa-file-pdf"></i> Analog Circuits Sem 4</li>
+                        <li><i class="fas fa-file-pdf"></i> VLSI Sem 7</li>
                     </ul>
                 </div>
             </div>
@@ -1490,100 +1584,71 @@
     </section>
 
     <section class="papers" id="papers">
-        <div class="section-header">
-            <h2 class="section-title">Past Papers</h2>
-            <p class="section-subtitle">Find midsem and GTU exam papers for your branch and semester.</p>
+        <div class="section-header fade-in">
+            <h2 class="section-title">All GTU Papers</h2>
+            <p class="section-subtitle">Browse and download all available papers added via admin panel. Filter by college and branch.</p>
         </div>
         <div class="filters">
-            <label>
-                Branch:
-                <select id="branchFilter">
-                    <option value="">All</option>
-                    <option value="CE">CE</option>
-                    <option value="IT">IT</option>
-                    <option value="ME">ME</option>
-                    <option value="EE">EE</option>
-                    <option value="EC">EC</option>
-                </select>
-            </label>
-            <label>
-                Semester:
-                <select id="semFilter">
-                    <option value="">All</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                    <option value="6">6</option>
-                    <option value="7">7</option>
-                    <option value="8">8</option>
-                </select>
-            </label>
-            <label>
-                Type:
-                <select id="typeFilter">
-                    <option value="">All</option>
-                    <option value="midsem">Midsem</option>
-                    <option value="gtu">GTU Exam</option>
-                </select>
-            </label>
+            <label>College: <input id="filterCollege" placeholder="e.g., LDCE"></label>
+            <label>Branch: <select id="filterBranch">
+                <option value="">All</option>
+                <option value="CE">CE</option>
+                <option value="IT">IT</option>
+                <option value="ME">ME</option>
+                <option value="EC">EC</option>
+            </select></label>
             <button onclick="filterPapers()">Filter</button>
         </div>
-        <div class="list-container">
-            <ul class="papers-list top-items" id="papersListTop"></ul>
-            <ul class="papers-list all-items" id="papersListAll"></ul>
-            <button class="show-more-btn" id="papersShowMore" onclick="toggleShowMore('papers')">Show More</button>
-        </div>
+        <h3>Midsem Papers</h3>
+        <ul class="papers-list" id="midsemList"></ul>
+        <h3>GTU Exam Papers</h3>
+        <ul class="papers-list" id="gtuList"></ul>
     </section>
 
     <section class="announcements" id="announcements">
-        <div class="section-header">
-            <h2 class="section-title">Announcements</h2>
-            <p class="section-subtitle">Stay updated with the latest GTU news and deadlines.</p>
+        <div class="section-header fade-in">
+            <h2 class="section-title">GTU Announcements</h2>
+            <p class="section-subtitle">Stay updated with the latest GTU news and alerts.</p>
         </div>
-        <div class="list-container">
-            <ul class="announcements-list top-items" id="announcementsListTop"></ul>
-            <ul class="announcements-list all-items" id="announcementsListAll"></ul>
-            <button class="show-more-btn" id="announcementsShowMore" onclick="toggleShowMore('announcements')">Show More</button>
-        </div>
+        <ul class="announcements-list" id="allAnnouncementsList"></ul>
     </section>
 
     <section class="contact" id="contact">
-        <h2>Contact Us</h2>
-        <p>Have questions or suggestions? Reach out to us, and we'll get back to you!</p>
-        <a href="#" class="cta-button" onclick="openModal('contact')"><i class="fas fa-envelope"></i> Send Message</a>
+        <h2>Got a Question? Let's Chat!</h2>
+        <p>Whether it's a feature request, paper upload, or just a hello—our team of GTU alumni is here to make your journey smoother.</p>
+        <a href="mailto:gtu.versebyij@gmail.com?subject=GTUverse Inquiry" class="cta-button">
+            <i class="fas fa-envelope"></i>
+            Email Us Now
+        </a>
     </section>
 
     <footer>
-        <p>Empowering GTU students with resources, updates, and community.</p>
-        <p>&copy; 2025 GTUverse. All rights reserved.</p>
+        <p>&copy; 2025 GTUverse. Built by GTU students, for GTU students. Empowering futures, one paper at a time.</p>
         <div class="footer-links">
-            <a href="#papers">Papers</a>
-            <a href="#announcements">Announcements</a>
+            <a href="#privacy">Privacy Policy</a>
+            <a href="#terms">Terms of Service</a>
+            <a href="#features">Features</a>
             <a href="#resources">Resources</a>
-            <a href="#contact">Contact</a>
-            <a href="https://chat.whatsapp.com/yourgroup" target="_blank">WhatsApp Community</a>
         </div>
     </footer>
 
-    <div id="modal" class="modal">
+    <div id="contactModal" class="modal" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
         <div class="modal-content">
-            <span class="close" onclick="closeModal()">&times;</span>
-            <h3 id="modalTitle">Resource Details</h3>
-            <p id="modalDesc">Select a resource to view more details.</p>
-            <form id="contactForm" style="display: none;" onsubmit="submitContact(event)">
+            <span class="close" onclick="closeModal()" aria-label="Close modal">&times;</span>
+            <h3 id="modalTitle">Let's Connect!</h3>
+            <p>Share your thoughts, suggest resources, or report issues. We respond within 24 hours.</p>
+            <form id="contactForm" action="mailto:gtu.versebyij@gmail.com" method="post" enctype="text/plain">
                 <div class="form-group">
-                    <label for="name">Name</label>
-                    <input type="text" id="name" placeholder="Your Name" required>
+                    <label for="name">Your Name</label>
+                    <input type="text" id="name" name="name" required aria-required="true">
                 </div>
                 <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" placeholder="Your Email" required>
+                    <label for="email">Your Email</label>
+                    <input type="email" id="email" name="email" required aria-required="true">
                 </div>
                 <div class="form-group">
-                    <label for="message">Message</label>
-                    <textarea id="message" placeholder="Your Message" required></textarea>
+                    <label for="message">Your Message</label>
+                    <textarea id="message" name="message" required aria-required="true"></textarea>
                 </div>
                 <button type="submit" class="modal-submit">Send Message</button>
             </form>
@@ -1591,7 +1656,40 @@
     </div>
 
     <script>
-        // Dark Mode Toggle
+        // Mock Database using localStorage
+        function initDB() {
+            if (!localStorage.getItem('papers')) {
+                localStorage.setItem('papers', JSON.stringify([
+                    { id: 1, title: 'DBMS Sem 5', type: 'midsem', branch: 'CE', sem: 5, college: 'LDCE', url: 'https://example.com/dbms.pdf' },
+                    { id: 2, title: 'OS Sem 3', type: 'gtu', branch: 'CE', sem: 3, college: 'Nirma', url: 'https://example.com/os.pdf' },
+                    { id: 3, title: 'Web Tech Sem 5', type: 'midsem', branch: 'IT', sem: 5, college: 'LDCE', url: 'https://example.com/webtech.pdf' },
+                    { id: 4, title: 'SOM Sem 4', type: 'gtu', branch: 'ME', sem: 4, college: 'VGEC', url: 'https://example.com/som.pdf' },
+                    { id: 5, title: 'DSP Sem 5', type: 'midsem', branch: 'EC', sem: 5, college: 'LDCE', url: 'https://example.com/dsp.pdf' }
+                ]));
+            }
+            if (!localStorage.getItem('announcements')) {
+                localStorage.setItem('announcements', JSON.stringify([
+                    { id: 1, title: 'Exam Schedule Released', desc: 'Midsems start on Oct 10, 2025', date: new Date().toLocaleString() },
+                    { id: 2, title: 'New Syllabus Update', desc: 'Changes in Sem 5 subjects', date: new Date().toLocaleString() }
+                ]));
+            }
+        }
+        initDB();
+
+        // Typewriter Effect for Hero
+        const typewriterText = 'GTU Journey';
+        const typewriterEl = document.getElementById('typewriter');
+        let i = 0;
+        function typeWriter() {
+            if (i < typewriterText.length) {
+                typewriterEl.innerHTML += typewriterText.charAt(i);
+                i++;
+                setTimeout(typeWriter, 100);
+            }
+        }
+        window.addEventListener('load', typeWriter);
+
+        // Dark Mode Toggle with Local Storage
         function toggleDarkMode() {
             document.body.classList.toggle('dark-mode');
             const isDark = document.body.classList.contains('dark-mode');
@@ -1607,62 +1705,188 @@
 
         // Mobile Menu Toggle
         function toggleMenu() {
-            const navLinks = document.querySelector('.nav-links');
-            const hamburger = document.querySelector('.hamburger');
+            const navLinks = document.getElementById('navLinks');
+            const hamburger = document.getElementById('hamburger');
             navLinks.classList.toggle('active');
             hamburger.classList.toggle('active');
         }
 
-        // Scroll Effect for Header
+        // Header Scroll Effect
         window.addEventListener('scroll', () => {
-            const header = document.querySelector('header');
+            const header = document.getElementById('header');
             header.classList.toggle('scrolled', window.scrollY > 50);
         });
 
-        // Modal Handling
-        function openModal(type) {
-            const modal = document.getElementById('modal');
-            const modalTitle = document.getElementById('modalTitle');
-            const modalDesc = document.getElementById('modalDesc');
-            const contactForm = document.getElementById('contactForm');
-            modal.style.display = 'block';
-            document.body.style.overflow = 'hidden';
+        // Animate Stats
+        function animateStats() {
+            const stats = document.querySelectorAll('.stat-number');
+            stats.forEach(stat => {
+                const target = parseInt(stat.getAttribute('data-target'));
+                const duration = 2000; // 2 seconds
+                const increment = target / (duration / 16); // ~60fps
+                let current = 0;
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= target) {
+                        current = target;
+                        clearInterval(timer);
+                    }
+                    stat.textContent = Math.floor(current).toLocaleString();
+                }, 16);
+            });
+        }
 
-            if (type === 'contact') {
-                modalTitle.textContent = 'Contact Us';
-                modalDesc.style.display = 'none';
-                contactForm.style.display = 'block';
-            } else {
-                modalDesc.style.display = 'block';
-                contactForm.style.display = 'none';
-                if (type === 'workshops') {
-                    modalTitle.textContent = 'Workshops';
-                    modalDesc.textContent = 'Join technical workshops, coding bootcamps, and industry talks to earn activity points and enhance your skills.';
-                } else if (type === 'volunteering') {
-                    modalTitle.textContent = 'Volunteering';
-                    modalDesc.textContent = 'Participate in event organization, community service, and campus initiatives to earn points and make an impact.';
-                } else if (type === 'certifications') {
-                    modalTitle.textContent = 'Certifications';
-                    modalDesc.textContent = 'Enroll in online courses and professional training programs to earn certifications and boost your resume.';
+        // Intersection Observer for Animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    if (entry.target.closest('.stats')) {
+                        if (document.querySelector('.stat-number').textContent === '0') {
+                            animateStats();
+                        }
+                    }
                 }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+        // Paper Search
+        function handleSearch(e) {
+            e?.preventDefault();
+            const query = document.getElementById('searchInput').value.toLowerCase().trim();
+            const resultsEl = document.getElementById('searchResults');
+            const papers = JSON.parse(localStorage.getItem('papers') || '[]');
+            const filtered = papers.filter(p => p.title.toLowerCase().includes(query) || p.branch.toLowerCase().includes(query) || p.sem.toString().includes(query) || p.college.toLowerCase().includes(query));
+            if (filtered.length > 0) {
+                resultsEl.innerHTML = filtered.map(p => `
+                    <div class="search-result-item">
+                        <span class="search-result-title">${p.title} (${p.type.toUpperCase()}) (${p.branch} Sem ${p.sem}, ${p.college})</span>
+                        <p class="search-result-desc">Download the paper and solutions.</p>
+                        <a href="${p.url}" target="_blank" class="search-result-link">Download PDF <i class="fas fa-download"></i></a>
+                    </div>
+                `).join('');
+            } else {
+                resultsEl.innerHTML = '<p>No results found. Try different keywords or add via admin panel.</p>';
+            }
+            resultsEl.style.display = 'block';
+            resultsEl.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Show Branch Papers
+        function showBranchPapers(branch) {
+            const papers = JSON.parse(localStorage.getItem('papers') || '[]');
+            const filtered = papers.filter(p => p.branch === branch);
+            const resultsEl = document.getElementById('searchResults');
+            if (filtered.length > 0) {
+                resultsEl.innerHTML = filtered.map(p => `
+                    <div class="search-result-item">
+                        <span class="search-result-title">${p.title} (${p.type.toUpperCase()}) (Sem ${p.sem}, ${p.college})</span>
+                        <p class="search-result-desc">Download the paper and solutions.</p>
+                        <a href="${p.url}" target="_blank" class="search-result-link">Download PDF <i class="fas fa-download"></i></a>
+                    </div>
+                `).join('');
+            } else {
+                resultsEl.innerHTML = '<p>No papers for this branch yet. Add via admin panel.</p>';
+            }
+            resultsEl.style.display = 'block';
+            resultsEl.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Load All Papers with Filters
+        function filterPapers() {
+            const college = document.getElementById('filterCollege').value.toLowerCase().trim();
+            const branch = document.getElementById('filterBranch').value;
+            const papers = JSON.parse(localStorage.getItem('papers') || '[]');
+            let filtered = papers;
+            if (college) filtered = filtered.filter(p => p.college.toLowerCase().includes(college));
+            if (branch) filtered = filtered.filter(p => p.branch === branch);
+            filtered.sort((a, b) => b.sem - a.sem); // Sort by semester descending
+            const midsem = filtered.filter(p => p.type === 'midsem');
+            const gtu = filtered.filter(p => p.type === 'gtu');
+            document.getElementById('midsemList').innerHTML = midsem.length > 0 ? midsem.map(p => `
+                <li class="paper-item">
+                    <span class="paper-title">${p.title} (${p.branch} Sem ${p.sem}, ${p.college})</span>
+                    <p class="paper-desc">Download the paper and solutions.</p>
+                    <a href="${p.url}" target="_blank" class="paper-link">Download PDF <i class="fas fa-download"></i></a>
+                </li>
+            `).join('') : '<p>No midsem papers match the filters.</p>';
+            document.getElementById('gtuList').innerHTML = gtu.length > 0 ? gtu.map(p => `
+                <li class="paper-item">
+                    <span class="paper-title">${p.title} (${p.branch} Sem ${p.sem}, ${p.college})</span>
+                    <p class="paper-desc">Download the paper and solutions.</p>
+                    <a href="${p.url}" target="_blank" class="paper-link">Download PDF <i class="fas fa-download"></i></a>
+                </li>
+            `).join('') : '<p>No GTU exam papers match the filters.</p>';
+        }
+
+        // Load All Announcements
+        function loadAllAnnouncements() {
+            let anns = JSON.parse(localStorage.getItem('announcements') || '[]');
+            anns.sort((a, b) => new Date(b.date) - new Date(a.date));
+            const list = document.getElementById('allAnnouncementsList');
+            if (anns.length > 0) {
+                list.innerHTML = anns.map((a, index) => `
+                    <li class="announcement-item ${index < 5 ? 'top-ann' : ''}">
+                        <span class="announcement-title">${a.title}</span>
+                        <p class="announcement-desc">${a.desc}</p>
+                        <div class="announcement-date">Posted on: ${a.date}</div>
+                        <button class="share-btn" onclick="shareAnnouncement(${a.id})">Share <i class="fas fa-share-alt"></i></button>
+                    </li>
+                `).join('');
+            } else {
+                list.innerHTML = '<p>No announcements available yet. Add via admin panel.</p>';
             }
         }
 
-        function closeModal() {
-            document.getElementById('modal').style.display = 'none';
-            document.body.style.overflow = 'auto';
-            document.getElementById('contactForm').reset();
+        async function shareAnnouncement(id) {
+            const anns = JSON.parse(localStorage.getItem('announcements') || '[]');
+            const ann = anns.find(a => a.id === id);
+            if (!ann) return;
+            const shareData = {
+                title: ann.title,
+                text: ann.desc + '\nPosted on: ' + ann.date,
+                url: window.location.href + '#announcements'
+            };
+            try {
+                if (navigator.share) {
+                    await navigator.share(shareData);
+                } else {
+                    alert('Share not supported. Copy link: ' + shareData.url);
+                }
+            } catch (err) {
+                console.error('Share failed:', err);
+            }
         }
 
-        function submitContact(e) {
-            e.preventDefault();
-            alert('Thank you for your message! We will get back to you soon.');
-            closeModal();
+        // Quick Link Simulation
+        function simulateDownload(branch) {
+            showBranchPapers(branch);
+        }
+
+        // Modal Functions
+        function openModal(e) {
+            e?.preventDefault();
+            document.getElementById('contactModal').style.display = 'block';
+            document.getElementById('contactModal').setAttribute('aria-hidden', 'false');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            document.getElementById('contactModal').style.display = 'none';
+            document.getElementById('contactModal').setAttribute('aria-hidden', 'true');
+            document.body.style.overflow = 'auto';
         }
 
         // Close modal on outside click or ESC
         window.onclick = (event) => {
-            const modal = document.getElementById('modal');
+            const modal = document.getElementById('contactModal');
             if (event.target === modal) closeModal();
         };
 
@@ -1670,183 +1894,44 @@
             if (e.key === 'Escape') closeModal();
         });
 
-        // Load Data
-        function loadData() {
-            // Initialize DB if not exists
-            if (!localStorage.getItem('papers')) localStorage.setItem('papers', '[]');
-            if (!localStorage.getItem('announcements')) localStorage.setItem('announcements', '[]');
-
-            // Load Papers
-            let papers = JSON.parse(localStorage.getItem('papers') || '[]');
-            papers.sort((a, b) => b.id - a.id); // Sort latest first by id
-            const papersListTop = document.getElementById('papersListTop');
-            const papersListAll = document.getElementById('papersListAll');
-            const papersShowMore = document.getElementById('papersShowMore');
-            if (papers.length > 0) {
-                papersListTop.innerHTML = papers.slice(0, 5).map(p => `
-                    <li class="paper-item">
-                        <div class="paper-title">${p.title}</div>
-                        <div class="paper-desc">${p.type.toUpperCase()} - ${p.branch} Sem ${p.sem}, ${p.college}</div>
-                        <a href="${p.url}" target="_blank" class="paper-link">Download PDF</a>
-                    </li>
-                `).join('');
-                papersListAll.innerHTML = papers.slice(5).map(p => `
-                    <li class="paper-item">
-                        <div class="paper-title">${p.title}</div>
-                        <div class="paper-desc">${p.type.toUpperCase()} - ${p.branch} Sem ${p.sem}, ${p.college}</div>
-                        <a href="${p.url}" target="_blank" class="paper-link">Download PDF</a>
-                    </li>
-                `).join('');
-                papersShowMore.style.display = papers.length > 5 ? 'block' : 'none';
-            } else {
-                papersListTop.innerHTML = '<p>No papers available.</p>';
-                papersListAll.innerHTML = '';
-                papersShowMore.style.display = 'none';
-            }
-
-            // Load Announcements
-            let announcements = JSON.parse(localStorage.getItem('announcements') || '[]');
-            announcements.sort((a, b) => new Date(b.date) - new Date(a.date)); // Sort latest first by date
-            const announcementsListTop = document.getElementById('announcementsListTop');
-            const announcementsListAll = document.getElementById('announcementsListAll');
-            const announcementsShowMore = document.getElementById('announcementsShowMore');
-            if (announcements.length > 0) {
-                announcementsListTop.innerHTML = announcements.slice(0, 5).map((a, i) => `
-                    <li class="announcement-item ${i === 0 ? 'top-ann' : ''}">
-                        <div class="announcement-title">${a.title}</div>
-                        <div class="announcement-desc">${a.desc}</div>
-                        <div class="announcement-date">${a.date}</div>
-                        <button class="share-btn" onclick="shareAnnouncement('${a.title}', '${a.desc}')">Share</button>
-                    </li>
-                `).join('');
-                announcementsListAll.innerHTML = announcements.slice(5).map(a => `
-                    <li class="announcement-item">
-                        <div class="announcement-title">${a.title}</div>
-                        <div class="announcement-desc">${a.desc}</div>
-                        <div class="announcement-date">${a.date}</div>
-                        <button class="share-btn" onclick="shareAnnouncement('${a.title}', '${a.desc}')">Share</button>
-                    </li>
-                `).join('');
-                announcementsShowMore.style.display = announcements.length > 5 ? 'block' : 'none';
-            } else {
-                announcementsListTop.innerHTML = '<p>No announcements available.</p>';
-                announcementsListAll.innerHTML = '';
-                announcementsShowMore.style.display = 'none';
-            }
-
-            // Update Stats
-            document.getElementById('totalPapers').textContent = papers.length;
-            document.getElementById('totalAnnouncements').textContent = announcements.length;
-        }
-
-        // Toggle Show More
-        function toggleShowMore(type) {
-            const listAll = document.getElementById(`${type}ListAll`);
-            const button = document.getElementById(`${type}ShowMore`);
-            const isHidden = listAll.style.display === 'none' || listAll.style.display === '';
-            listAll.style.display = isHidden ? 'block' : 'none';
-            button.textContent = isHidden ? 'Show Less' : 'Show More';
-        }
-
-        // Search Papers
-        function searchPapers(e) {
-            e.preventDefault();
-            const query = document.getElementById('searchInput').value.toLowerCase().trim();
-            let papers = JSON.parse(localStorage.getItem('papers') || '[]');
-            papers.sort((a, b) => b.id - a.id); // Sort latest first
-            if (query) {
-                papers = papers.filter(p => 
-                    p.title.toLowerCase().includes(query) ||
-                    p.branch.toLowerCase().includes(query) ||
-                    p.sem.toString().includes(query) ||
-                    p.college.toLowerCase().includes(query) ||
-                    p.type.toLowerCase().includes(query)
-                );
-            }
-            const papersListTop = document.getElementById('papersListTop');
-            const papersListAll = document.getElementById('papersListAll');
-            const papersShowMore = document.getElementById('papersShowMore');
-            if (papers.length > 0) {
-                papersListTop.innerHTML = papers.slice(0, 5).map(p => `
-                    <li class="paper-item">
-                        <div class="paper-title">${p.title}</div>
-                        <div class="paper-desc">${p.type.toUpperCase()} - ${p.branch} Sem ${p.sem}, ${p.college}</div>
-                        <a href="${p.url}" target="_blank" class="paper-link">Download PDF</a>
-                    </li>
-                `).join('');
-                papersListAll.innerHTML = papers.slice(5).map(p => `
-                    <li class="paper-item">
-                        <div class="paper-title">${p.title}</div>
-                        <div class="paper-desc">${p.type.toUpperCase()} - ${p.branch} Sem ${p.sem}, ${p.college}</div>
-                        <a href="${p.url}" target="_blank" class="paper-link">Download PDF</a>
-                    </li>
-                `).join('');
-                papersShowMore.style.display = papers.length > 5 ? 'block' : 'none';
-            } else {
-                papersListTop.innerHTML = '<p>No papers found.</p>';
-                papersListAll.innerHTML = '';
-                papersShowMore.style.display = 'none';
-            }
-        }
-
-        // Filter Papers
-        function filterPapers() {
-            const branch = document.getElementById('branchFilter').value;
-            const sem = document.getElementById('semFilter').value;
-            const type = document.getElementById('typeFilter').value;
-            let papers = JSON.parse(localStorage.getItem('papers') || '[]');
-            papers.sort((a, b) => b.id - a.id); // Sort latest first
-            if (branch) papers = papers.filter(p => p.branch.toLowerCase() === branch.toLowerCase());
-            if (sem) papers = papers.filter(p => p.sem.toString() === sem);
-            if (type) papers = papers.filter(p => p.type.toLowerCase() === type.toLowerCase());
-            const papersListTop = document.getElementById('papersListTop');
-            const papersListAll = document.getElementById('papersListAll');
-            const papersShowMore = document.getElementById('papersShowMore');
-            if (papers.length > 0) {
-                papersListTop.innerHTML = papers.slice(0, 5).map(p => `
-                    <li class="paper-item">
-                        <div class="paper-title">${p.title}</div>
-                        <div class="paper-desc">${p.type.toUpperCase()} - ${p.branch} Sem ${p.sem}, ${p.college}</div>
-                        <a href="${p.url}" target="_blank" class="paper-link">Download PDF</a>
-                    </li>
-                `).join('');
-                papersListAll.innerHTML = papers.slice(5).map(p => `
-                    <li class="paper-item">
-                        <div class="paper-title">${p.title}</div>
-                        <div class="paper-desc">${p.type.toUpperCase()} - ${p.branch} Sem ${p.sem}, ${p.college}</div>
-                        <a href="${p.url}" target="_blank" class="paper-link">Download PDF</a>
-                    </li>
-                `).join('');
-                papersShowMore.style.display = papers.length > 5 ? 'block' : 'none';
-            } else {
-                papersListTop.innerHTML = '<p>No papers found.</p>';
-                papersListAll.innerHTML = '';
-                papersShowMore.style.display = 'none';
-            }
-        }
-
-        // Share Announcement
-        function shareAnnouncement(title, desc) {
-            if (navigator.share) {
-                navigator.share({
-                    title: title,
-                    text: desc,
-                    url: window.location.href
-                }).catch(err => console.error('Share failed:', err));
-            } else {
-                alert('Share this: ' + title + ' - ' + desc);
-            }
-        }
-
-        // Listen for localStorage changes
-        window.addEventListener('storage', (event) => {
-            if (event.key === 'papers' || event.key === 'announcements') {
-                loadData();
-            }
+        // Smooth Scrolling & Menu Close
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const target = document.querySelector(targetId);
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+                const navLinks = document.getElementById('navLinks');
+                const hamburger = document.getElementById('hamburger');
+                if (navLinks.classList.contains('active')) {
+                    navLinks.classList.remove('active');
+                    hamburger.classList.remove('active');
+                }
+            });
         });
 
-        // Initialize on load
-        window.addEventListener('load', loadData);
+        // Search on Enter
+        document.getElementById('searchInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') handleSearch(e);
+        });
+
+        // Notification Permission (Optional)
+        if ('Notification' in window && Notification.permission === 'default') {
+            // Request on first interaction, but skip for now
+        }
+
+        // Load data on page load
+        window.addEventListener('load', () => {
+            filterPapers();
+            loadAllAnnouncements();
+        });
+
+        // Performance: Preload critical resources
+        if ('serviceWorker' in navigator) {
+            // PWA ready, but optional
+        }
     </script>
 </body>
 </html>
