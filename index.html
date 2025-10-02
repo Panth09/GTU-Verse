@@ -869,6 +869,35 @@
 
         body.dark-mode .papers { background: #0f172a; }
 
+        .filters {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .filters label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .filters input, .filters select {
+            padding: 0.75rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+        }
+
+        .filters button {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
         .papers-list {
             list-style: none;
         }
@@ -922,6 +951,11 @@
 
         .announcements-list {
             list-style: none;
+            max-height: 600px;
+            overflow-y: auto;
+            padding: 1rem;
+            border: 1px solid var(--border);
+            border-radius: 12px;
         }
 
         .announcement-item {
@@ -942,6 +976,11 @@
         .announcement-item:hover {
             box-shadow: var(--shadow-md);
             transform: translateY(-1px);
+        }
+
+        .announcement-item.top-ann {
+            background: rgba(37, 99, 235, 0.05);
+            border-left: 4px solid var(--primary);
         }
 
         .announcement-title {
@@ -1548,9 +1587,23 @@
     <section class="papers" id="papers">
         <div class="section-header fade-in">
             <h2 class="section-title">All GTU Papers</h2>
-            <p class="section-subtitle">Browse and download all available papers added via admin panel.</p>
+            <p class="section-subtitle">Browse and download all available papers added via admin panel. Filter by college and branch.</p>
         </div>
-        <ul class="papers-list" id="allPapersList"></ul>
+        <div class="filters">
+            <label>College: <input id="filterCollege" placeholder="e.g., LDCE"></label>
+            <label>Branch: <select id="filterBranch">
+                <option value="">All</option>
+                <option value="CE">CE</option>
+                <option value="IT">IT</option>
+                <option value="ME">ME</option>
+                <option value="EC">EC</option>
+            </select></label>
+            <button onclick="filterPapers()">Filter</button>
+        </div>
+        <h3>Midsem Papers</h3>
+        <ul class="papers-list" id="midsemList"></ul>
+        <h3>GTU Exam Papers</h3>
+        <ul class="papers-list" id="gtuList"></ul>
     </section>
 
     <section class="announcements" id="announcements">
@@ -1618,11 +1671,11 @@
         function initDB() {
             if (!localStorage.getItem('papers')) {
                 localStorage.setItem('papers', JSON.stringify([
-                    { id: 1, title: 'DBMS Sem 5', branch: 'CE', sem: 5, url: 'https://example.com/dbms.pdf' },
-                    { id: 2, title: 'OS Sem 3', branch: 'CE', sem: 3, url: 'https://example.com/os.pdf' },
-                    { id: 3, title: 'Web Tech Sem 5', branch: 'IT', sem: 5, url: 'https://example.com/webtech.pdf' },
-                    { id: 4, title: 'SOM Sem 4', branch: 'ME', sem: 4, url: 'https://example.com/som.pdf' },
-                    { id: 5, title: 'DSP Sem 5', branch: 'EC', sem: 5, url: 'https://example.com/dsp.pdf' }
+                    { id: 1, title: 'DBMS Sem 5', type: 'midsem', branch: 'CE', sem: 5, college: 'LDCE', url: 'https://example.com/dbms.pdf' },
+                    { id: 2, title: 'OS Sem 3', type: 'gtu', branch: 'CE', sem: 3, college: 'Nirma', url: 'https://example.com/os.pdf' },
+                    { id: 3, title: 'Web Tech Sem 5', type: 'midsem', branch: 'IT', sem: 5, college: 'LDCE', url: 'https://example.com/webtech.pdf' },
+                    { id: 4, title: 'SOM Sem 4', type: 'gtu', branch: 'ME', sem: 4, college: 'VGEC', url: 'https://example.com/som.pdf' },
+                    { id: 5, title: 'DSP Sem 5', type: 'midsem', branch: 'EC', sem: 5, college: 'LDCE', url: 'https://example.com/dsp.pdf' }
                 ]));
             }
             if (!localStorage.getItem('announcements')) {
@@ -1733,11 +1786,11 @@
             const query = document.getElementById('searchInput').value.toLowerCase().trim();
             const resultsEl = document.getElementById('searchResults');
             const papers = JSON.parse(localStorage.getItem('papers') || '[]');
-            const filtered = papers.filter(p => p.title.toLowerCase().includes(query) || p.branch.toLowerCase().includes(query) || p.sem.toString().includes(query));
+            const filtered = papers.filter(p => p.title.toLowerCase().includes(query) || p.branch.toLowerCase().includes(query) || p.sem.toString().includes(query) || p.college.toLowerCase().includes(query));
             if (filtered.length > 0) {
                 resultsEl.innerHTML = filtered.map(p => `
                     <div class="search-result-item">
-                        <span class="search-result-title">${p.title} (${p.branch} Sem ${p.sem})</span>
+                        <span class="search-result-title">${p.title} (${p.type.toUpperCase()}) (${p.branch} Sem ${p.sem}, ${p.college})</span>
                         <p class="search-result-desc">Download the paper and solutions.</p>
                         <a href="${p.url}" target="_blank" class="search-result-link">Download PDF <i class="fas fa-download"></i></a>
                     </div>
@@ -1757,7 +1810,7 @@
             if (filtered.length > 0) {
                 resultsEl.innerHTML = filtered.map(p => `
                     <div class="search-result-item">
-                        <span class="search-result-title">${p.title} (Sem ${p.sem})</span>
+                        <span class="search-result-title">${p.title} (${p.type.toUpperCase()}) (Sem ${p.sem}, ${p.college})</span>
                         <p class="search-result-desc">Download the paper and solutions.</p>
                         <a href="${p.url}" target="_blank" class="search-result-link">Download PDF <i class="fas fa-download"></i></a>
                     </div>
@@ -1769,30 +1822,41 @@
             resultsEl.scrollIntoView({ behavior: 'smooth' });
         }
 
-        // Load All Papers
-        function loadAllPapers() {
+        // Load All Papers with Filters
+        function filterPapers() {
+            const college = document.getElementById('filterCollege').value.toLowerCase().trim();
+            const branch = document.getElementById('filterBranch').value;
             const papers = JSON.parse(localStorage.getItem('papers') || '[]');
-            const list = document.getElementById('allPapersList');
-            if (papers.length > 0) {
-                list.innerHTML = papers.map(p => `
-                    <li class="paper-item">
-                        <span class="paper-title">${p.title} (${p.branch} Sem ${p.sem})</span>
-                        <p class="paper-desc">Download the paper and solutions.</p>
-                        <a href="${p.url}" target="_blank" class="paper-link">Download PDF <i class="fas fa-download"></i></a>
-                    </li>
-                `).join('');
-            } else {
-                list.innerHTML = '<p>No papers available yet. Add via admin panel.</p>';
-            }
+            let filtered = papers;
+            if (college) filtered = filtered.filter(p => p.college.toLowerCase().includes(college));
+            if (branch) filtered = filtered.filter(p => p.branch === branch);
+            filtered.sort((a, b) => b.sem - a.sem); // Sort by semester descending
+            const midsem = filtered.filter(p => p.type === 'midsem');
+            const gtu = filtered.filter(p => p.type === 'gtu');
+            document.getElementById('midsemList').innerHTML = midsem.length > 0 ? midsem.map(p => `
+                <li class="paper-item">
+                    <span class="paper-title">${p.title} (${p.branch} Sem ${p.sem}, ${p.college})</span>
+                    <p class="paper-desc">Download the paper and solutions.</p>
+                    <a href="${p.url}" target="_blank" class="paper-link">Download PDF <i class="fas fa-download"></i></a>
+                </li>
+            `).join('') : '<p>No midsem papers match the filters.</p>';
+            document.getElementById('gtuList').innerHTML = gtu.length > 0 ? gtu.map(p => `
+                <li class="paper-item">
+                    <span class="paper-title">${p.title} (${p.branch} Sem ${p.sem}, ${p.college})</span>
+                    <p class="paper-desc">Download the paper and solutions.</p>
+                    <a href="${p.url}" target="_blank" class="paper-link">Download PDF <i class="fas fa-download"></i></a>
+                </li>
+            `).join('') : '<p>No GTU exam papers match the filters.</p>';
         }
 
         // Load All Announcements
         function loadAllAnnouncements() {
-            const anns = JSON.parse(localStorage.getItem('announcements') || '[]');
+            let anns = JSON.parse(localStorage.getItem('announcements') || '[]');
+            anns.sort((a, b) => new Date(b.date) - new Date(a.date));
             const list = document.getElementById('allAnnouncementsList');
             if (anns.length > 0) {
-                list.innerHTML = anns.map(a => `
-                    <li class="announcement-item">
+                list.innerHTML = anns.map((a, index) => `
+                    <li class="announcement-item ${index < 5 ? 'top-ann' : ''}">
                         <span class="announcement-title">${a.title}</span>
                         <p class="announcement-desc">${a.desc}</p>
                         <div class="announcement-date">Posted on: ${a.date}</div>
@@ -1917,7 +1981,7 @@
 
         // Load data on page load
         window.addEventListener('load', () => {
-            loadAllPapers();
+            filterPapers();
             loadAllAnnouncements();
         });
 
@@ -1928,3 +1992,5 @@
     </script>
 </body>
 </html>
+
+<!DOCTYPE html>
