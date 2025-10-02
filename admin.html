@@ -456,18 +456,18 @@
                 <h3>Manage Papers</h3>
                 <form onsubmit="addPaper(event)" id="paperForm">
                     <div class="form-group">
-                        <input type="text" placeholder="Title (e.g., DBMS Sem 5)" required>
-                        <select required>
+                        <input type="text" id="paperTitle" placeholder="Title (e.g., DBMS Sem 5)" required>
+                        <select id="paperType" required>
                             <option value="">Select Type</option>
                             <option value="midsem">Midsem</option>
                             <option value="gtu">GTU Exam</option>
                         </select>
-                        <input type="text" placeholder="Branch (e.g., CE)" required>
+                        <input type="text" id="paperBranch" placeholder="Branch (e.g., CE)" required>
                     </div>
                     <div class="form-group">
-                        <input type="number" placeholder="Semester (e.g., 5)" min="1" max="8" required>
-                        <input type="text" placeholder="College (e.g., LDCE)" required>
-                        <input type="url" placeholder="PDF URL" required>
+                        <input type="number" id="paperSem" placeholder="Semester (e.g., 5)" min="1" max="8" required>
+                        <input type="text" id="paperCollege" placeholder="College (e.g., LDCE)" required>
+                        <input type="url" id="paperUrl" placeholder="PDF URL" required>
                         <button type="submit" class="add-btn">Add Paper</button>
                     </div>
                 </form>
@@ -478,10 +478,10 @@
                 <h3>Manage Announcements</h3>
                 <form onsubmit="addAnnouncement(event)" id="announcementForm">
                     <div class="form-group">
-                        <input type="text" placeholder="Title (e.g., Exam Schedule Released)" required>
+                        <input type="text" id="annTitle" placeholder="Title (e.g., Exam Schedule Released)" required>
                     </div>
                     <div class="form-group">
-                        <textarea placeholder="Description" rows="3" required></textarea>
+                        <textarea id="annDesc" placeholder="Description" rows="3" required></textarea>
                         <button type="submit" class="add-btn">Add Announcement</button>
                     </div>
                 </form>
@@ -504,7 +504,7 @@
                 <div class="form-group" id="editDescGroup">
                     <textarea id="editDesc" placeholder="Description" required></textarea>
                 </div>
-                <div class="form-group" id="editExtra" style="display: none;"></div>
+                <div id="editExtra" style="display: none;"></div>
                 <button type="submit" class="add-btn">Save Changes</button>
             </form>
         </div>
@@ -566,7 +566,7 @@
 
             // Load Announcements
             let announcements = JSON.parse(localStorage.getItem('announcements') || '[]');
-            announcements = announcements.sort((a, b) => new Date(b.date) - new Date(a.date)); // Sort by date descending
+            announcements = announcements.sort((a, b) => b.id - a.id); // Sort by ID descending
             document.getElementById('announcementsList').innerHTML = announcements.map(a => `
                 <li class="list-item">
                     <span>${a.title}: ${a.desc} (${a.date})</span>
@@ -584,31 +584,29 @@
 
         function addPaper(e) {
             e.preventDefault();
-            const form = e.target;
-            const title = form.querySelector('input[placeholder="Title (e.g., DBMS Sem 5)"]').value.trim();
-            const typeEl = form.querySelector('select');
-            const branch = form.querySelector('input[placeholder="Branch (e.g., CE)"]').value.trim();
-            const sem = form.querySelector('input[type="number"]').value;
-            const college = form.querySelector('input[placeholder="College (e.g., LDCE)"]').value.trim();
-            const url = form.querySelector('input[type="url"]').value.trim();
-            if (!title || !typeEl.value || !branch || !sem || !college || !url) {
+            const title = document.getElementById('paperTitle').value.trim();
+            const type = document.getElementById('paperType').value;
+            const branch = document.getElementById('paperBranch').value.trim();
+            const sem = document.getElementById('paperSem').value;
+            const college = document.getElementById('paperCollege').value.trim();
+            const url = document.getElementById('paperUrl').value.trim();
+            if (!title || !type || !branch || !sem || !college || !url) {
                 alert('Please fill all fields.');
                 return;
             }
             let papers = JSON.parse(localStorage.getItem('papers') || '[]');
             const newId = papers.length ? Math.max(...papers.map(p => p.id)) + 1 : 1;
-            papers.push({ id: newId, title, type: typeEl.value, branch: branch.toUpperCase(), sem: parseInt(sem), college, url });
+            papers.push({ id: newId, title, type, branch: branch.toUpperCase(), sem: parseInt(sem), college, url });
             localStorage.setItem('papers', JSON.stringify(papers));
             alert('Paper added successfully! Live on site now.');
             loadData();
-            form.reset();
+            document.getElementById('paperForm').reset();
         }
 
         function addAnnouncement(e) {
             e.preventDefault();
-            const form = e.target;
-            const title = form.querySelector('input[placeholder="Title (e.g., Exam Schedule Released)"]').value.trim();
-            const desc = form.querySelector('textarea').value.trim();
+            const title = document.getElementById('annTitle').value.trim();
+            const desc = document.getElementById('annDesc').value.trim();
             if (!title || !desc) {
                 alert('Please fill all fields.');
                 return;
@@ -619,7 +617,7 @@
             localStorage.setItem('announcements', JSON.stringify(announcements));
             alert('Announcement added! Live on site now.');
             loadData();
-            form.reset();
+            document.getElementById('announcementForm').reset();
         }
 
         function deleteItem(type, id) {
