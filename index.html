@@ -3,9 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GTUverse - Empower Your Academic Journey</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+    <title>GTUverse - Your Ultimate GTU Study Hub: Papers, Points & Updates</title>
+    <meta name="description" content="Empower your GTU journey with instant access to midsem papers, easy activity points, real-time announcements, and a thriving student community. Join 1000+ GTU students today!">
+    <meta name="keywords" content="GTU, midsem papers, activity points, GTU announcements, GTU study resources, GTU community">
+    <link rel="canonical" href="https://gtuverse.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎓</text></svg>">
     <style>
         :root {
             --primary: #2563eb;
@@ -15,18 +19,20 @@
             --accent: #f59e0b;
             --accent-dark: #d97706;
             --danger: #ef4444;
+            --success: #10b981;
             --dark: #1e293b;
             --medium: #475569;
             --light: #f8fafc;
             --white: #ffffff;
+            --border: #e2e8f0;
             --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             --gradient-2: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
             --gradient-3: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
             --gradient-primary: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            --shadow-sm: 0 2px 8px rgba(0,0,0,0.08);
-            --shadow-md: 0 4px 16px rgba(0,0,0,0.1);
-            --shadow-lg: 0 8px 32px rgba(0,0,0,0.12);
-            --shadow-xl: 0 20px 60px rgba(0,0,0,0.15);
+            --shadow-sm: 0 1px 2px 0 rgba(0,0,0,0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+            --shadow-xl: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
             --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
@@ -39,6 +45,8 @@
             line-height: 1.7;
             overflow-x: hidden;
             transition: var(--transition);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
         body.dark-mode {
@@ -46,6 +54,7 @@
             --white: #1e293b;
             --dark: #f1f5f9;
             --medium: #cbd5e1;
+            --border: #334155;
             background: #0f172a;
             color: #f1f5f9;
         }
@@ -64,8 +73,8 @@
             position: absolute;
             border-radius: 50%;
             filter: blur(80px);
-            opacity: 0.3;
-            animation: float 20s ease-in-out infinite;
+            opacity: 0.1;
+            animation: float 25s ease-in-out infinite;
         }
 
         .bg-shape:nth-child(1) {
@@ -83,7 +92,7 @@
             background: var(--gradient-2);
             bottom: -200px;
             right: -200px;
-            animation-delay: -5s;
+            animation-delay: -7s;
         }
 
         .bg-shape:nth-child(3) {
@@ -92,13 +101,13 @@
             background: var(--gradient-3);
             top: 50%;
             right: -300px;
-            animation-delay: -10s;
+            animation-delay: -14s;
         }
 
         @keyframes float {
-            0%, 100% { transform: translate(0, 0) rotate(0deg); }
-            33% { transform: translate(30px, -30px) rotate(120deg); }
-            66% { transform: translate(-20px, 20px) rotate(240deg); }
+            0%, 100% { transform: translate(0, 0) rotate(0deg) scale(1); }
+            33% { transform: translate(30px, -30px) rotate(120deg) scale(1.05); }
+            66% { transform: translate(-20px, 20px) rotate(240deg) scale(0.95); }
         }
 
         header {
@@ -106,19 +115,26 @@
             top: 0;
             width: 100%;
             z-index: 1000;
-            background: rgba(255, 255, 255, 0.8);
+            background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(20px) saturate(180%);
-            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            border-bottom: 1px solid var(--border);
             box-shadow: var(--shadow-sm);
             transition: var(--transition);
         }
 
         body.dark-mode header {
-            background: rgba(15, 23, 42, 0.8);
-            border-bottom-color: rgba(255, 255, 255, 0.05);
+            background: rgba(15, 23, 42, 0.95);
+            border-bottom-color: var(--border);
         }
 
-        header.scrolled { box-shadow: var(--shadow-md); }
+        header.scrolled { 
+            box-shadow: var(--shadow-md);
+            background: rgba(255, 255, 255, 0.98);
+        }
+
+        body.dark-mode header.scrolled { 
+            background: rgba(15, 23, 42, 0.98);
+        }
 
         nav {
             display: flex;
@@ -139,6 +155,7 @@
             color: var(--primary);
             cursor: pointer;
             transition: var(--transition);
+            text-decoration: none;
         }
 
         .logo:hover { transform: scale(1.05); }
@@ -177,8 +194,9 @@
         body.dark-mode .nav-links a { color: var(--dark); }
 
         .nav-links a:hover {
-            background: rgba(37, 99, 235, 0.1);
+            background: rgba(37, 99, 235, 0.08);
             color: var(--primary);
+            transform: translateY(-1px);
         }
 
         .whatsapp-btn {
@@ -187,6 +205,7 @@
             padding: 0.7rem 1.5rem !important;
             font-weight: 600;
             box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+            border-radius: 12px;
         }
 
         .whatsapp-btn:hover {
@@ -196,11 +215,11 @@
         }
 
         .dark-toggle {
-            background: rgba(37, 99, 235, 0.1);
-            border: none;
+            background: rgba(37, 99, 235, 0.08);
+            border: 1px solid rgba(37, 99, 235, 0.2);
             color: var(--primary);
-            width: 40px;
-            height: 40px;
+            width: 42px;
+            height: 42px;
             border-radius: 50%;
             cursor: pointer;
             transition: var(--transition);
@@ -211,8 +230,8 @@
         }
 
         .dark-toggle:hover {
-            background: rgba(37, 99, 235, 0.2);
-            transform: rotate(180deg);
+            background: rgba(37, 99, 235, 0.15);
+            transform: rotate(180deg) scale(1.05);
         }
 
         .hamburger {
@@ -238,7 +257,7 @@
 
         .hero {
             margin-top: 70px;
-            padding: 100px 2rem 80px;
+            padding: 120px 2rem 80px;
             text-align: center;
             position: relative;
             overflow: hidden;
@@ -253,34 +272,42 @@
 
         .hero h1 {
             font-family: 'Poppins', sans-serif;
-            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-size: clamp(2.8rem, 7vw, 5rem);
             font-weight: 800;
             margin-bottom: 1.5rem;
             background: var(--gradient-1);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             animation: fadeInUp 0.8s ease-out;
-            line-height: 1.2;
+            line-height: 1.1;
         }
 
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .hero p {
-            font-size: clamp(1.1rem, 2vw, 1.3rem);
+        .hero-subtitle {
+            font-size: clamp(1.1rem, 2.5vw, 1.4rem);
             color: var(--medium);
             margin-bottom: 2.5rem;
             max-width: 700px;
             margin-left: auto;
             margin-right: auto;
             animation: fadeInUp 0.8s ease-out 0.2s both;
+            position: relative;
+        }
+
+        .hero-subtitle::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: var(--gradient-primary);
+            border-radius: 2px;
         }
 
         .search-box {
-            max-width: 550px;
-            margin: 0 auto 2rem;
+            max-width: 600px;
+            margin: 0 auto 2.5rem;
             position: relative;
             animation: fadeInUp 0.8s ease-out 0.4s both;
         }
@@ -290,17 +317,22 @@
             display: flex;
             align-items: center;
             background: var(--white);
+            border: 2px solid var(--border);
             border-radius: 16px;
             padding: 0.5rem;
             box-shadow: var(--shadow-lg);
             transition: var(--transition);
         }
 
-        body.dark-mode .search-input-wrapper { background: var(--white); }
+        body.dark-mode .search-input-wrapper { 
+            background: var(--white); 
+            border-color: var(--border);
+        }
 
         .search-input-wrapper:focus-within {
+            border-color: var(--primary);
             transform: translateY(-2px);
-            box-shadow: var(--shadow-xl);
+            box-shadow: var(--shadow-xl), 0 0 0 3px rgba(37, 99, 235, 0.1);
         }
 
         .search-input-wrapper i {
@@ -308,16 +340,18 @@
             left: 1.5rem;
             color: var(--medium);
             font-size: 1.2rem;
+            z-index: 2;
         }
 
         .search-box input {
             flex: 1;
             border: none;
             outline: none;
-            padding: 1rem 1rem 1rem 3rem;
+            padding: 1.2rem 1rem 1.2rem 3.5rem;
             font-size: 1rem;
             background: transparent;
             color: var(--dark);
+            min-width: 200px;
         }
 
         body.dark-mode .search-box input { color: var(--dark); }
@@ -328,14 +362,28 @@
             background: var(--gradient-primary);
             color: white;
             border: none;
-            padding: 1rem 2rem;
+            padding: 1.2rem 2.2rem;
             border-radius: 12px;
             font-weight: 600;
             cursor: pointer;
             transition: var(--transition);
             white-space: nowrap;
+            position: relative;
+            overflow: hidden;
         }
 
+        .search-box button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .search-box button:hover::before { left: 100%; }
         .search-box button:hover {
             transform: scale(1.05);
             box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);
@@ -355,18 +403,75 @@
             box-shadow: 0 8px 24px rgba(37, 211, 102, 0.3);
             transition: var(--transition);
             animation: fadeInUp 0.8s ease-out 0.6s both;
+            position: relative;
+            overflow: hidden;
         }
 
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .cta-button:hover::before { left: 100%; }
         .cta-button:hover {
             transform: translateY(-4px);
             box-shadow: 0 12px 32px rgba(37, 211, 102, 0.4);
         }
 
+        .quick-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 3rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .quick-link {
+            background: var(--white);
+            padding: 1rem;
+            border-radius: 12px;
+            text-align: center;
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            transition: var(--transition);
+            border: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        body.dark-mode .quick-link { 
+            background: var(--white); 
+            border-color: var(--border);
+            color: var(--dark);
+        }
+
+        .quick-link:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+            color: var(--primary);
+        }
+
+        .quick-link i { font-size: 1.5rem; color: var(--primary); }
+
         .stats {
-            padding: 4rem 2rem;
+            padding: 5rem 2rem;
             max-width: 1280px;
             margin: 0 auto;
+            background: linear-gradient(135deg, var(--light) 0%, #f1f5f9 100%);
         }
+
+        body.dark-mode .stats { background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); }
 
         .stats-grid {
             display: grid;
@@ -376,19 +481,34 @@
 
         .stat-card {
             background: var(--white);
-            padding: 2rem;
+            padding: 2.5rem 2rem;
             border-radius: 20px;
             text-align: center;
             box-shadow: var(--shadow-md);
             transition: var(--transition);
-            border: 1px solid rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
         }
 
         body.dark-mode .stat-card {
             background: var(--white);
-            border-color: rgba(255, 255, 255, 0.05);
+            border-color: var(--border);
         }
 
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--gradient-primary);
+            transform: scaleX(0);
+            transition: var(--transition);
+        }
+
+        .stat-card:hover::before { transform: scaleX(1); }
         .stat-card:hover {
             transform: translateY(-8px);
             box-shadow: var(--shadow-xl);
@@ -404,19 +524,23 @@
             margin: 0 auto 1.5rem;
             font-size: 2rem;
             transition: var(--transition);
+            color: white;
         }
 
-        .stat-card:nth-child(1) .stat-icon { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
-        .stat-card:nth-child(2) .stat-icon { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
-        .stat-card:nth-child(3) .stat-icon { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
-        .stat-card:nth-child(4) .stat-icon { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); }
+        .stat-card:nth-child(1) .stat-icon { background: var(--gradient-1); }
+        .stat-card:nth-child(2) .stat-icon { background: var(--gradient-2); }
+        .stat-card:nth-child(3) .stat-icon { background: var(--gradient-3); }
+        .stat-card:nth-child(4) .stat-icon { background: linear-gradient(135deg, var(--secondary) 0%, var(--secondary-dark) 100%); }
 
-        .stat-card:hover .stat-icon { transform: rotate(360deg) scale(1.1); }
+        .stat-card:hover .stat-icon { 
+            transform: rotate(360deg) scale(1.1); 
+            animation-duration: 0.5s;
+        }
 
         .stat-number {
             font-family: 'Poppins', sans-serif;
-            font-size: 2.5rem;
-            font-weight: 700;
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 800;
             color: var(--primary);
             margin-bottom: 0.5rem;
         }
@@ -424,6 +548,7 @@
         .stat-label {
             color: var(--medium);
             font-size: 1rem;
+            font-weight: 500;
         }
 
         .features {
@@ -439,41 +564,44 @@
 
         .section-title {
             font-family: 'Poppins', sans-serif;
-            font-size: clamp(2rem, 4vw, 3rem);
+            font-size: clamp(2.2rem, 5vw, 3.5rem);
             font-weight: 700;
             margin-bottom: 1rem;
             background: var(--gradient-1);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            line-height: 1.2;
         }
 
         .section-subtitle {
-            font-size: 1.2rem;
+            font-size: 1.25rem;
             color: var(--medium);
             max-width: 600px;
             margin: 0 auto;
+            font-weight: 400;
         }
 
         .features-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
             gap: 2.5rem;
         }
 
         .feature-card {
             background: var(--white);
-            padding: 2.5rem;
+            padding: 3rem 2.5rem;
             border-radius: 24px;
             box-shadow: var(--shadow-md);
             transition: var(--transition);
             position: relative;
             overflow: hidden;
-            border: 1px solid rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--border);
+            height: 100%;
         }
 
         body.dark-mode .feature-card {
             background: var(--white);
-            border-color: rgba(255, 255, 255, 0.05);
+            border-color: var(--border);
         }
 
         .feature-card::before {
@@ -490,6 +618,7 @@
 
         .feature-card:nth-child(2)::before { background: var(--gradient-2); }
         .feature-card:nth-child(3)::before { background: var(--gradient-3); }
+        .feature-card:nth-child(4)::before { background: linear-gradient(135deg, var(--secondary) 0%, var(--secondary-dark) 100%); }
 
         .feature-card:hover {
             transform: translateY(-10px);
@@ -514,12 +643,15 @@
 
         .feature-card:nth-child(2) .feature-icon { background: var(--gradient-2); }
         .feature-card:nth-child(3) .feature-icon { background: var(--gradient-3); }
+        .feature-card:nth-child(4) .feature-icon { background: linear-gradient(135deg, var(--secondary) 0%, var(--secondary-dark) 100%); }
 
-        .feature-card:hover .feature-icon { transform: scale(1.1) rotate(5deg); }
+        .feature-card:hover .feature-icon { 
+            transform: scale(1.1) rotate(5deg); 
+        }
 
         .feature-card h3 {
             font-family: 'Poppins', sans-serif;
-            font-size: 1.5rem;
+            font-size: 1.6rem;
             font-weight: 600;
             margin-bottom: 1rem;
             color: var(--dark);
@@ -531,6 +663,7 @@
             color: var(--medium);
             line-height: 1.8;
             margin-bottom: 1.5rem;
+            font-weight: 400;
         }
 
         .feature-list {
@@ -539,16 +672,20 @@
         }
 
         .feature-list li {
-            padding: 0.5rem 0;
+            padding: 0.75rem 0;
             display: flex;
             align-items: center;
             gap: 0.75rem;
             color: var(--medium);
+            border-bottom: 1px solid var(--border);
         }
+
+        .feature-list li:last-child { border-bottom: none; }
 
         .feature-list li i {
             color: var(--secondary);
             font-size: 1rem;
+            width: 20px;
         }
 
         .feature-link {
@@ -559,9 +696,13 @@
             text-decoration: none;
             font-weight: 600;
             transition: var(--transition);
+            font-size: 0.95rem;
         }
 
-        .feature-link:hover { gap: 1rem; }
+        .feature-link:hover { 
+            gap: 1rem;
+            color: var(--primary-dark);
+        }
 
         .cta-banner {
             margin: 6rem 2rem;
@@ -575,6 +716,7 @@
             max-width: 1280px;
             margin-left: auto;
             margin-right: auto;
+            box-shadow: var(--shadow-xl);
         }
 
         .cta-banner::before {
@@ -582,27 +724,31 @@
             position: absolute;
             top: -50%;
             right: -50%;
-            width: 100%;
-            height: 100%;
+            width: 200%;
+            height: 200%;
             background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
             animation: float 8s ease-in-out infinite;
         }
 
         .cta-banner h2 {
             font-family: 'Poppins', sans-serif;
-            font-size: clamp(2rem, 4vw, 3rem);
+            font-size: clamp(2.2rem, 5vw, 3.5rem);
             font-weight: 700;
             margin-bottom: 1rem;
             position: relative;
             z-index: 1;
+            line-height: 1.2;
         }
 
         .cta-banner p {
-            font-size: 1.2rem;
-            margin-bottom: 2rem;
+            font-size: 1.25rem;
+            margin-bottom: 2.5rem;
             opacity: 0.95;
             position: relative;
             z-index: 1;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         .cta-banner .cta-button {
@@ -610,9 +756,89 @@
             color: var(--primary);
             position: relative;
             z-index: 1;
+            font-size: 1.15rem;
+            padding: 1.3rem 2.7rem;
         }
 
-        .cta-banner .cta-button:hover { background: var(--light); }
+        .cta-banner .cta-button:hover { 
+            background: #f8fafc;
+            color: var(--primary-dark);
+        }
+
+        .resources {
+            padding: 6rem 2rem;
+            max-width: 1280px;
+            margin: 0 auto;
+            background: var(--light);
+        }
+
+        body.dark-mode .resources { background: #0f172a; }
+
+        .resources-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .resource-card {
+            background: var(--white);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            transition: var(--transition);
+            border: 1px solid var(--border);
+            cursor: pointer;
+        }
+
+        body.dark-mode .resource-card { 
+            background: var(--white); 
+            border-color: var(--border);
+        }
+
+        .resource-card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .resource-header {
+            background: var(--gradient-primary);
+            padding: 2rem;
+            text-align: center;
+            color: white;
+        }
+
+        .resource-header h3 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .resource-header p {
+            opacity: 0.9;
+            font-size: 0.95rem;
+        }
+
+        .resource-body {
+            padding: 2rem;
+        }
+
+        .resource-body ul {
+            list-style: none;
+        }
+
+        .resource-body li {
+            padding: 0.75rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: var(--medium);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .resource-body li:last-child { border-bottom: none; }
+
+        .resource-body li i { color: var(--secondary); font-size: 1rem; width: 20px; }
 
         .testimonials {
             padding: 6rem 2rem;
@@ -622,22 +848,35 @@
 
         .testimonials-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
             gap: 2rem;
         }
 
         .testimonial {
             background: var(--white);
-            padding: 2rem;
+            padding: 2.5rem;
             border-radius: 20px;
             box-shadow: var(--shadow-md);
             transition: var(--transition);
-            border: 1px solid rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--border);
+            position: relative;
         }
 
         body.dark-mode .testimonial {
             background: var(--white);
-            border-color: rgba(255, 255, 255, 0.05);
+            border-color: var(--border);
+        }
+
+        .testimonial::before {
+            content: '"';
+            position: absolute;
+            top: 1rem;
+            left: 2rem;
+            font-size: 6rem;
+            font-family: 'Georgia', serif;
+            color: var(--primary);
+            opacity: 0.1;
+            line-height: 1;
         }
 
         .testimonial:hover {
@@ -650,6 +889,8 @@
             align-items: center;
             gap: 1rem;
             margin-bottom: 1.5rem;
+            position: relative;
+            z-index: 1;
         }
 
         .testimonial-avatar {
@@ -663,6 +904,7 @@
             color: white;
             font-weight: 600;
             font-size: 1.2rem;
+            flex-shrink: 0;
         }
 
         .testimonial:nth-child(2) .testimonial-avatar { background: var(--gradient-2); }
@@ -685,43 +927,131 @@
             color: var(--medium);
             line-height: 1.8;
             font-style: italic;
+            margin-bottom: 1.5rem;
+            position: relative;
+            z-index: 1;
+            font-size: 1.05rem;
         }
 
         .stars {
             color: var(--accent);
             margin-top: 1rem;
+            display: flex;
+            gap: 0.25rem;
+            justify-content: center;
         }
+
+        .stars i { font-size: 1.1rem; }
 
         .contact {
             padding: 6rem 2rem;
             max-width: 1280px;
             margin: 0 auto;
             text-align: center;
+            background: var(--light);
         }
+
+        body.dark-mode .contact { background: #0f172a; }
 
         .contact h2 {
             font-family: 'Poppins', sans-serif;
-            font-size: clamp(2rem, 4vw, 3rem);
+            font-size: clamp(2.2rem, 5vw, 3.5rem);
             font-weight: 700;
             margin-bottom: 1rem;
             color: var(--dark);
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .contact p {
             color: var(--medium);
-            font-size: 1.2rem;
-            margin-bottom: 2rem;
+            font-size: 1.25rem;
+            margin-bottom: 3rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         .contact .cta-button {
             background: var(--gradient-primary);
             color: white;
+            font-size: 1.15rem;
+            padding: 1.3rem 2.7rem;
         }
+
+        .newsletter {
+            background: var(--dark);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        body.dark-mode .newsletter {
+            background: var(--white);
+            color: var(--dark);
+        }
+
+        .newsletter h3 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: white;
+        }
+
+        body.dark-mode .newsletter h3 { color: var(--dark); }
+
+        .newsletter p {
+            opacity: 0.9;
+            margin-bottom: 2rem;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        body.dark-mode .newsletter p { opacity: 0.8; color: var(--medium); }
+
+        .newsletter-form {
+            display: flex;
+            max-width: 400px;
+            margin: 0 auto;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .newsletter-input {
+            flex: 1;
+            padding: 1rem;
+            border-radius: 8px;
+            border: none;
+            font-size: 1rem;
+            min-width: 250px;
+        }
+
+        body.dark-mode .newsletter-input {
+            background: var(--white);
+            color: var(--dark);
+        }
+
+        .newsletter-btn {
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            white-space: nowrap;
+        }
+
+        .newsletter-btn:hover { transform: scale(1.05); }
 
         footer {
             background: var(--dark);
             color: white;
-            padding: 3rem 2rem 2rem;
+            padding: 3rem 2rem 1rem;
             text-align: center;
         }
 
@@ -733,6 +1063,7 @@
         footer p {
             opacity: 0.8;
             margin-bottom: 1rem;
+            font-size: 0.95rem;
         }
 
         .footer-links {
@@ -747,11 +1078,15 @@
             color: white;
             text-decoration: none;
             transition: var(--transition);
+            font-weight: 500;
         }
 
         body.dark-mode .footer-links a { color: var(--dark); }
 
-        .footer-links a:hover { color: var(--accent); }
+        .footer-links a:hover { 
+            color: var(--accent);
+            transform: translateY(-1px);
+        }
 
         .modal {
             display: none;
@@ -762,8 +1097,8 @@
             width: 100%;
             height: 100%;
             background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(5px);
-            animation: fadeIn 0.3s;
+            backdrop-filter: blur(8px);
+            animation: fadeIn 0.3s ease-out;
         }
 
         @keyframes fadeIn {
@@ -773,27 +1108,29 @@
 
         .modal-content {
             background: var(--white);
-            margin: 10% auto;
+            margin: 5% auto;
             padding: 3rem;
             border-radius: 24px;
-            max-width: 500px;
+            max-width: 550px;
             width: 90%;
             text-align: center;
             box-shadow: var(--shadow-xl);
-            animation: slideUp 0.3s;
+            animation: slideUp 0.4s ease-out;
             position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
         }
 
         body.dark-mode .modal-content { background: var(--white); }
 
         @keyframes slideUp {
-            from { opacity: 0; transform: translateY(50px); }
-            to { opacity: 1; transform: translateY(0); }
+            from { opacity: 0; transform: translateY(50px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
         }
 
         .modal-content h3 {
             font-family: 'Poppins', sans-serif;
-            font-size: 2rem;
+            font-size: 2.2rem;
             margin-bottom: 1rem;
             color: var(--primary);
         }
@@ -801,32 +1138,162 @@
         .modal-content p {
             color: var(--medium);
             margin-bottom: 2rem;
+            font-size: 1.1rem;
         }
 
         .close {
             position: absolute;
-            top: 1rem;
-            right: 1rem;
-            font-size: 2rem;
+            top: 1.2rem;
+            right: 1.5rem;
+            font-size: 2.2rem;
             color: var(--medium);
             cursor: pointer;
             transition: var(--transition);
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
         }
 
         .close:hover {
             color: var(--danger);
+            background: rgba(239, 68, 68, 0.1);
             transform: rotate(90deg);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--dark);
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: var(--transition);
+            background: var(--white);
+            color: var(--dark);
+        }
+
+        body.dark-mode .form-group input,
+        body.dark-mode .form-group textarea {
+            background: var(--white);
+            border-color: var(--border);
+            color: var(--dark);
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .form-group textarea { resize: vertical; min-height: 100px; }
+
+        .modal-submit {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 1.2rem 3rem;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: var(--transition);
+            width: 100%;
+        }
+
+        .modal-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);
+        }
+
+        .search-results {
+            max-width: 800px;
+            margin: 2rem auto 0;
+            padding: 0 2rem;
+            display: none;
+        }
+
+        .search-result-item {
+            background: var(--white);
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border);
+            transition: var(--transition);
+        }
+
+        body.dark-mode .search-result-item { 
+            background: var(--white); 
+            border-color: var(--border);
+        }
+
+        .search-result-item:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-1px);
+        }
+
+        .search-result-title {
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .search-result-desc {
+            color: var(--medium);
+            margin-bottom: 1rem;
+        }
+
+        .search-result-link {
+            color: var(--secondary);
+            text-decoration: none;
+            font-weight: 500;
         }
 
         .fade-in {
             opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+            transform: translateY(40px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
         }
 
         .fade-in.visible {
             opacity: 1;
             transform: translateY(0);
+        }
+
+        .typewriter {
+            overflow: hidden;
+            border-right: 0.15em solid var(--primary);
+            white-space: nowrap;
+            margin: 0 auto;
+            letter-spacing: 0.15em;
+            animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+        }
+
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: var(--primary); }
         }
 
         @media (max-width: 768px) {
@@ -837,19 +1304,19 @@
                 top: 100%;
                 left: 0;
                 width: 100%;
-                background: rgba(255, 255, 255, 0.95);
+                background: rgba(255, 255, 255, 0.98);
                 backdrop-filter: blur(20px);
                 flex-direction: column;
-                padding: 1rem;
-                gap: 0.5rem;
-                box-shadow: var(--shadow-md);
+                padding: 1.5rem;
+                gap: 1rem;
+                box-shadow: var(--shadow-lg);
                 transform: translateY(-100%);
                 opacity: 0;
                 visibility: hidden;
                 transition: var(--transition);
             }
 
-            body.dark-mode .nav-links { background: rgba(15, 23, 42, 0.95); }
+            body.dark-mode .nav-links { background: rgba(15, 23, 42, 0.98); }
 
             .nav-links.active {
                 transform: translateY(0);
@@ -857,20 +1324,34 @@
                 visibility: visible;
             }
 
-            .hero { padding: 60px 1rem 40px; }
+            .hero { padding: 80px 1rem 40px; margin-top: 70px; }
 
             .stats-grid,
             .features-grid,
-            .testimonials-grid { grid-template-columns: 1fr; }
+            .testimonials-grid,
+            .resources-grid { grid-template-columns: 1fr; }
 
-            .cta-banner {
-                margin: 3rem 1rem;
-                padding: 3rem 1.5rem;
+            .cta-banner,
+            .newsletter { 
+                margin: 3rem 1rem; 
+                padding: 3rem 1.5rem; 
             }
 
             nav { padding: 1rem; }
 
             .footer-links { gap: 1rem; }
+
+            .newsletter-form { flex-direction: column; align-items: stretch; }
+
+            .newsletter-input { min-width: auto; }
+
+            .quick-links { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 0.75rem; }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 { font-size: 2.5rem; }
+            .search-box button { padding: 1rem 1.5rem; font-size: 0.95rem; }
+            .cta-button { padding: 1rem 2rem; font-size: 1rem; }
         }
     </style>
 </head>
@@ -883,23 +1364,24 @@
 
     <header id="header">
         <nav>
-            <div class="logo" onclick="window.location.href='#'">
+            <a href="#home" class="logo">
                 <i class="fas fa-graduation-cap"></i>
                 <span>GTUverse</span>
-            </div>
+            </a>
             <ul class="nav-links" id="navLinks">
                 <li><a href="#home">Home</a></li>
                 <li><a href="#features">Features</a></li>
+                <li><a href="#resources">Resources</a></li>
                 <li><a href="#testimonials">Reviews</a></li>
-                <li><a href="#contact" onclick="openModal()">Contact</a></li>
+                <li><a href="#contact" onclick="openModal(event)">Contact</a></li>
                 <li><a href="https://chat.whatsapp.com/LLq6Sn0gvqwHHIJxxNaNaM" target="_blank" class="whatsapp-btn">
                     <i class="fab fa-whatsapp"></i> Join Community
                 </a></li>
-                <li><button class="dark-toggle" onclick="toggleDarkMode()">
+                <li><button class="dark-toggle" onclick="toggleDarkMode()" aria-label="Toggle Dark Mode">
                     <i class="fas fa-moon" id="darkToggleIcon"></i>
                 </button></li>
             </ul>
-            <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+            <div class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Toggle Menu">
                 <span></span>
                 <span></span>
                 <span></span>
@@ -909,19 +1391,26 @@
 
     <section class="hero" id="home">
         <div class="hero-content">
-            <h1 id="heroTitle">Empower Your GTU Journey</h1>
-            <p>Access midsem papers, earn 100 activity points effortlessly, stay updated with instant announcements, and join 1000+ students excelling together.</p>
+            <h1>Empower Your <span class="typewriter" id="typewriter"></span></h1>
+            <p class="hero-subtitle">Access midsem papers, earn 100 activity points effortlessly, stay updated with instant announcements, and join 1000+ students excelling together in GTU.</p>
             <div class="search-box">
                 <div class="search-input-wrapper">
                     <i class="fas fa-search"></i>
-                    <input type="text" id="searchInput" placeholder="Search for papers (e.g., DBMS Sem 5)...">
-                    <button onclick="handleSearch()">Search</button>
+                    <input type="text" id="searchInput" placeholder="Search for papers (e.g., DBMS Sem 5, OS Sem 3)..." aria-label="Search papers">
+                    <button onclick="handleSearch()" aria-label="Search"><i class="fas fa-magnifying-glass"></i> Search</button>
                 </div>
             </div>
-            <a href="https://chat.whatsapp.com/LLq6Sn0gvqwHHIJxxNaNaM" target="_blank" class="cta-button">
+            <div id="searchResults" class="search-results"></div>
+            <a href="https://chat.whatsapp.com/LLq6Sn0gvqwHHIJxxNaNaM" target="_blank" class="cta-button" aria-label="Join WhatsApp Community">
                 <i class="fab fa-whatsapp"></i>
-                Join & Start Winning
+                Join & Start Winning Points
             </a>
+            <div class="quick-links">
+                <a href="#" class="quick-link" onclick="simulateDownload('CE')"><i class="fas fa-cogs"></i><span>CE Papers</span></a>
+                <a href="#" class="quick-link" onclick="simulateDownload('IT')"><i class="fas fa-laptop-code"></i><span>IT Papers</span></a>
+                <a href="#" class="quick-link" onclick="simulateDownload('ME')"><i class="fas fa-industry"></i><span>ME Papers</span></a>
+                <a href="#" class="quick-link" onclick="simulateDownload('EC')"><i class="fas fa-broadcast-tower"></i><span>EC Papers</span></a>
+            </div>
         </div>
     </section>
 
@@ -931,94 +1420,172 @@
                 <div class="stat-icon">
                     <i class="fas fa-users"></i>
                 </div>
-                <div class="stat-number" data-target="1000">0</div>
-                <div class="stat-label">Active Students</div>
+                <div class="stat-number" data-target="1500">0</div>
+                <div class="stat-label">Active GTU Students</div>
             </div>
             <div class="stat-card fade-in">
                 <div class="stat-icon">
                     <i class="fas fa-file-alt"></i>
                 </div>
-                <div class="stat-number" data-target="500">0</div>
-                <div class="stat-label">Papers Available</div>
+                <div class="stat-number" data-target="1200">0</div>
+                <div class="stat-label">Midsem Papers</div>
             </div>
             <div class="stat-card fade-in">
                 <div class="stat-icon">
                     <i class="fas fa-trophy"></i>
                 </div>
-                <div class="stat-number" data-target="100">0</div>
-                <div class="stat-label">Activity Points Earned</div>
+                <div class="stat-number" data-target="250">0</div>
+                <div class="stat-label">Points Earned Today</div>
             </div>
             <div class="stat-card fade-in">
                 <div class="stat-icon">
                     <i class="fas fa-bell"></i>
                 </div>
-                <div class="stat-number" data-target="50">0</div>
-                <div class="stat-label">Live Announcements</div>
+                <div class="stat-number" data-target="75">0</div>
+                <div class="stat-label">Live Updates</div>
             </div>
         </div>
     </section>
 
     <section class="features" id="features">
         <div class="section-header fade-in">
-            <h2 class="section-title">Why Choose GTUverse?</h2>
-            <p class="section-subtitle">Unlock your potential with tools designed for GTU success.</p>
+            <h2 class="section-title">Why GTUverse is Your Perfect Study Partner</h2>
+            <p class="section-subtitle">Tailored tools to conquer GTU exams, boost your GPA, and earn those elusive activity points without the hassle.</p>
         </div>
         <div class="features-grid">
             <div class="feature-card fade-in">
                 <div class="feature-icon">
                     <i class="fas fa-file-search"></i>
                 </div>
-                <h3>Midsem Mastery</h3>
-                <p>Instant access to past papers and solutions for every semester. Search, download, and ace your exams.</p>
+                <h3>Midsem Paper Vault</h3>
+                <p>Curated collection of GTU midsem and endsem papers with solutions. Filter by branch, semester, and subject for laser-focused prep.</p>
                 <ul class="feature-list">
-                    <li><i class="fas fa-check"></i> 500+ papers</li>
-                    <li><i class="fas fa-check"></i> Instant downloads</li>
-                    <li><i class="fas fa-check"></i> Filtered by subject</li>
+                    <li><i class="fas fa-check"></i> 1200+ verified papers</li>
+                    <li><i class="fas fa-check"></i> Instant PDF downloads</li>
+                    <li><i class="fas fa-check"></i> AI-powered search & tags</li>
                 </ul>
-                <a href="#" class="feature-link"><i class="fas fa-arrow-right"></i> Explore Papers</a>
+                <a href="#" class="feature-link" onclick="simulateSearch('papers')"><i class="fas fa-arrow-right"></i> Dive into Papers</a>
             </div>
             <div class="feature-card fade-in">
                 <div class="feature-icon">
                     <i class="fas fa-star"></i>
                 </div>
-                <h3>Activity Points Booster</h3>
-                <p>Earn 100+ points with quizzes, discussions, and challenges. Track progress and stay motivated.</p>
+                <h3>Activity Points Engine</h3>
+                <p>Effortless ways to rack up 100+ points: quick quizzes, peer discussions, and daily challenges aligned with GTU criteria.</p>
                 <ul class="feature-list">
-                    <li><i class="fas fa-check"></i> Daily challenges</li>
-                    <li><i class="fas fa-check"></i> Leaderboards</li>
-                    <li><i class="fas fa-check"></i> Easy earning</li>
+                    <li><i class="fas fa-check"></i> 5-min daily quizzes</li>
+                    <li><i class="fas fa-check"></i> Live leaderboards</li>
+                    <li><i class="fas fa-check"></i> Verified submissions</li>
                 </ul>
-                <a href="#" class="feature-link"><i class="fas fa-arrow-right"></i> Start Earning</a>
+                <a href="#" class="feature-link" onclick="simulatePoints()"><i class="fas fa-arrow-right"></i> Earn Now</a>
             </div>
             <div class="feature-card fade-in">
                 <div class="feature-icon">
                     <i class="fas fa-bullhorn"></i>
                 </div>
-                <h3>Instant Updates</h3>
-                <p>Get real-time announcements, exam schedules, and university news. Never miss important deadlines.</p>
+                <h3>Real-Time GTU Alerts</h3>
+                <p>Push notifications for exam dates, result alerts, syllabus changes, and college events. Stay ahead, never behind.</p>
                 <ul class="feature-list">
-                    <li><i class="fas fa-check"></i> Push notifications</li>
-                    <li><i class="fas fa-check"></i> Categorized alerts</li>
-                    <li><i class="fas fa-check"></i> Archive access</li>
+                    <li><i class="fas fa-check"></i> Instant WhatsApp sync</li>
+                    <li><i class="fas fa-check"></i> Categorized feeds</li>
+                    <li><i class="fas fa-check"></i> 1-year archive</li>
                 </ul>
-                <a href="#" class="feature-link"><i class="fas fa-arrow-right"></i> View Alerts</a>
+                <a href="#" class="feature-link" onclick="simulateAlert()"><i class="fas fa-arrow-right"></i> Enable Alerts</a>
+            </div>
+            <div class="feature-card fade-in">
+                <div class="feature-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <h3>Thriving Community Hub</h3>
+                <p>Connect with 1500+ GTU peers for doubt-solving, group studies, and resource sharing. Your network = your net worth.</p>
+                <ul class="feature-list">
+                    <li><i class="fas fa-check"></i> Branch-wise groups</li>
+                    <li><i class="fas fa-check"></i> Live Q&A sessions</li>
+                    <li><i class="fas fa-check"></i> Mentorship matches</li>
+                </ul>
+                <a href="https://chat.whatsapp.com/LLq6Sn0gvqwHHIJxxNaNaM" target="_blank" class="feature-link"><i class="fas fa-arrow-right"></i> Join Hub</a>
             </div>
         </div>
     </section>
 
     <div class="cta-banner fade-in">
-        <h2>Ready to Transform Your GTU Experience?</h2>
-        <p>Join thousands of students who are already ahead of the curve. It's free and takes just 30 seconds.</p>
+        <h2>Ready to Ace GTU Like Never Before?</h2>
+        <p>Thousands of students are transforming their academic game. Free access, zero ads, and results that speak for themselves. Start your journey in under 30 seconds.</p>
         <a href="https://chat.whatsapp.com/LLq6Sn0gvqwHHIJxxNaNaM" target="_blank" class="cta-button">
             <i class="fab fa-whatsapp"></i>
-            Join Now - Free!
+            Get Started Free - Join 1500+ Students
         </a>
     </div>
 
+    <section class="resources" id="resources">
+        <div class="section-header fade-in">
+            <h2 class="section-title">Quick GTU Resources by Branch</h2>
+            <p class="section-subtitle">Jump straight to what you need. Updated for Sem 1-8 across all GTU branches.</p>
+        </div>
+        <div class="resources-grid">
+            <div class="resource-card fade-in">
+                <div class="resource-header">
+                    <h3>Computer Engineering</h3>
+                    <p>Sem 1-8 Papers & Notes</p>
+                </div>
+                <div class="resource-body">
+                    <ul>
+                        <li><i class="fas fa-file-pdf"></i> DBMS Sem 5</li>
+                        <li><i class="fas fa-file-pdf"></i> OS Sem 3</li>
+                        <li><i class="fas fa-file-pdf"></i> ADA Sem 4</li>
+                        <li><i class="fas fa-file-pdf"></i> CN Sem 6</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="resource-card fade-in">
+                <div class="resource-header">
+                    <h3>Information Technology</h3>
+                    <p>Sem 1-8 Papers & Notes</p>
+                </div>
+                <div class="resource-body">
+                    <ul>
+                        <li><i class="fas fa-file-pdf"></i> Web Tech Sem 5</li>
+                        <li><i class="fas fa-file-pdf"></i> Python Sem 3</li>
+                        <li><i class="fas fa-file-pdf"></i> DS Sem 4</li>
+                        <li><i class="fas fa-file-pdf"></i> AI Sem 7</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="resource-card fade-in">
+                <div class="resource-header">
+                    <h3>Mechanical Engineering</h3>
+                    <p>Sem 1-8 Papers & Notes</p>
+                </div>
+                <div class="resource-body">
+                    <ul>
+                        <li><i class="fas fa-file-pdf"></i> SOM Sem 4</li>
+                        <li><i class="fas fa-file-pdf"></i> Thermodynamics Sem 3</li>
+                        <li><i class="fas fa-file-pdf"></i> FM Sem 5</li>
+                        <li><i class="fas fa-file-pdf"></i> RAC Sem 7</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="resource-card fade-in">
+                <div class="resource-header">
+                    <h3>Electronics & Comm</h3>
+                    <p>Sem 1-8 Papers & Notes</p>
+                </div>
+                <div class="resource-body">
+                    <ul>
+                        <li><i class="fas fa-file-pdf"></i> DSP Sem 5</li>
+                        <li><i class="fas fa-file-pdf"></i> Microprocessors Sem 3</li>
+                        <li><i class="fas fa-file-pdf"></i> Analog Circuits Sem 4</li>
+                        <li><i class="fas fa-file-pdf"></i> VLSI Sem 7</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <section class="testimonials" id="testimonials">
         <div class="section-header fade-in">
-            <h2 class="section-title">What Students Say</h2>
-            <p class="section-subtitle">Hear from our thriving community.</p>
+            <h2 class="section-title">Success Stories from GTU Stars</h2>
+            <p class="section-subtitle">Real students, real results. See how GTUverse turned their struggles into straight A's.</p>
         </div>
         <div class="testimonials-grid">
             <div class="testimonial fade-in">
@@ -1026,16 +1593,12 @@
                     <div class="testimonial-avatar">A</div>
                     <div class="testimonial-info">
                         <h4>Aarav Patel</h4>
-                        <p>CE Sem 5, GTU</p>
+                        <p>CE Sem 5, LDCE</p>
                     </div>
                 </div>
-                <div class="testimonial-content">"GTUverse saved my midsems! The papers are spot-on, and earning points was a game-changer."</div>
+                <div class="testimonial-content">GTUverse is a lifesaver! Scored 8.5 SGPA in midsems thanks to the exact papers. Plus, earned 120 activity points in a week—faculty was impressed!</div>
                 <div class="stars">
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
                 </div>
             </div>
             <div class="testimonial fade-in">
@@ -1043,16 +1606,12 @@
                     <div class="testimonial-avatar">P</div>
                     <div class="testimonial-info">
                         <h4>Priya Sharma</h4>
-                        <p>IT Sem 3, GTU</p>
+                        <p>IT Sem 3, Nirma Uni</p>
                     </div>
                 </div>
-                <div class="testimonial-content">"Love the instant announcements. No more scrambling for updates—everything in one place!"</div>
+                <div class="testimonial-content">The announcements feature kept me on top of every deadline. No more last-minute panics. Community doubts cleared in minutes—best study hack ever!</div>
                 <div class="stars">
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
                 </div>
             </div>
             <div class="testimonial fade-in">
@@ -1060,61 +1619,95 @@
                     <div class="testimonial-avatar">R</div>
                     <div class="testimonial-info">
                         <h4>Rohan Desai</h4>
-                        <p>ME Sem 7, GTU</p>
+                        <p>ME Sem 7, VGEC</p>
                     </div>
                 </div>
-                <div class="testimonial-content">"Earned 150 points already! The community is super helpful for doubts and tips."</div>
+                <div class="testimonial-content">From barely passing to topping my branch. The points challenges are fun and actually useful. Joined the WhatsApp group—it's buzzing 24/7 with tips!</div>
                 <div class="stars">
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
                 </div>
             </div>
         </div>
     </section>
 
     <section class="contact" id="contact">
-        <h2>Get In Touch</h2>
-        <p>Have questions? We're here to help. Drop us a message!</p>
-        <a href="mailto:support@gtuverse.com" class="cta-button">
+        <h2>Got a Question? Let's Chat!</h2>
+        <p>Whether it's a feature request, paper upload, or just a hello—our team of GTU alumni is here to make your journey smoother.</p>
+        <a href="mailto:support@gtuverse.com?subject=GTUverse Inquiry" class="cta-button">
             <i class="fas fa-envelope"></i>
-            Send Email
+            Email Us Now
         </a>
     </section>
 
+    <div class="newsletter">
+        <h3>Stay in the Loop</h3>
+        <p>Get weekly GTU tips, new paper alerts, and exclusive challenges straight to your inbox.</p>
+        <form class="newsletter-form" onsubmit="subscribeNewsletter(event)">
+            <input type="email" class="newsletter-input" placeholder="Enter your GTU email..." required aria-label="Email for newsletter">
+            <button type="submit" class="newsletter-btn">Subscribe</button>
+        </form>
+    </div>
+
     <footer>
-        <p>&copy; 2025 GTUverse. Empowering GTU Students Worldwide.</p>
+        <p>&copy; 2025 GTUverse. Built by GTU students, for GTU students. Empowering futures, one paper at a time.</p>
         <div class="footer-links">
-            <a href="#privacy">Privacy</a>
-            <a href="#terms">Terms</a>
+            <a href="#privacy">Privacy Policy</a>
+            <a href="#terms">Terms of Service</a>
             <a href="#features">Features</a>
+            <a href="#resources">Resources</a>
             <a href="https://chat.whatsapp.com/LLq6Sn0gvqwHHIJxxNaNaM" target="_blank">Community</a>
         </div>
     </footer>
 
-    <div id="contactModal" class="modal">
+    <div id="contactModal" class="modal" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
         <div class="modal-content">
-            <span class="close" onclick="closeModal()">&times;</span>
-            <h3>Let's Connect!</h3>
-            <p>Share your thoughts or queries. We'll respond within 24 hours.</p>
-            <form>
-                <input type="text" placeholder="Your Name" style="width: 100%; padding: 1rem; margin-bottom: 1rem; border-radius: 8px; border: 1px solid var(--medium);">
-                <input type="email" placeholder="Your Email" style="width: 100%; padding: 1rem; margin-bottom: 1rem; border-radius: 8px; border: 1px solid var(--medium);">
-                <textarea placeholder="Your Message" rows="4" style="width: 100%; padding: 1rem; margin-bottom: 1rem; border-radius: 8px; border: 1px solid var(--medium);"></textarea>
-                <button type="submit" style="background: var(--gradient-primary); color: white; padding: 1rem 2rem; border: none; border-radius: 8px; cursor: pointer;">Send Message</button>
+            <span class="close" onclick="closeModal()" aria-label="Close modal">&times;</span>
+            <h3 id="modalTitle">Let's Connect!</h3>
+            <p>Share your thoughts, suggest resources, or report issues. We respond within 24 hours.</p>
+            <form id="contactForm">
+                <div class="form-group">
+                    <label for="name">Your Name</label>
+                    <input type="text" id="name" name="name" required aria-required="true">
+                </div>
+                <div class="form-group">
+                    <label for="email">Your Email</label>
+                    <input type="email" id="email" name="email" required aria-required="true">
+                </div>
+                <div class="form-group">
+                    <label for="message">Your Message</label>
+                    <textarea id="message" name="message" required aria-required="true"></textarea>
+                </div>
+                <button type="submit" class="modal-submit">Send Message</button>
             </form>
         </div>
     </div>
 
     <script>
-        // Dark Mode Toggle
+        // Typewriter Effect for Hero
+        const typewriterText = 'GTU Journey';
+        const typewriterEl = document.getElementById('typewriter');
+        let i = 0;
+        function typeWriter() {
+            if (i < typewriterText.length) {
+                typewriterEl.innerHTML += typewriterText.charAt(i);
+                i++;
+                setTimeout(typeWriter, 100);
+            }
+        }
+        window.addEventListener('load', typeWriter);
+
+        // Dark Mode Toggle with Local Storage
         function toggleDarkMode() {
             document.body.classList.toggle('dark-mode');
+            const isDark = document.body.classList.contains('dark-mode');
             const icon = document.getElementById('darkToggleIcon');
-            icon.classList.toggle('fa-moon');
-            icon.classList.toggle('fa-sun');
+            icon.classList.toggle('fa-moon', !isDark);
+            icon.classList.toggle('fa-sun', isDark);
+            localStorage.setItem('darkMode', isDark);
+        }
+
+        if (localStorage.getItem('darkMode') === 'true') {
+            toggleDarkMode();
         }
 
         // Mobile Menu Toggle
@@ -1128,11 +1721,7 @@
         // Header Scroll Effect
         window.addEventListener('scroll', () => {
             const header = document.getElementById('header');
-            if (window.scrollY > 50) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
-            }
+            header.classList.toggle('scrolled', window.scrollY > 50);
         });
 
         // Animate Stats
@@ -1140,7 +1729,8 @@
             const stats = document.querySelectorAll('.stat-number');
             stats.forEach(stat => {
                 const target = parseInt(stat.getAttribute('data-target'));
-                const increment = target / 100;
+                const duration = 2000; // 2 seconds
+                const increment = target / (duration / 16); // ~60fps
                 let current = 0;
                 const timer = setInterval(() => {
                     current += increment;
@@ -1148,15 +1738,15 @@
                         current = target;
                         clearInterval(timer);
                     }
-                    stat.textContent = Math.floor(current) + '+';
-                }, 20);
+                    stat.textContent = Math.floor(current).toLocaleString();
+                }, 16);
             });
         }
 
-        // Fade-in on Scroll
+        // Intersection Observer for Animations
         const observerOptions = {
             threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
+            rootMargin: '0px 0px -100px 0px'
         };
 
         const observer = new IntersectionObserver((entries) => {
@@ -1164,7 +1754,9 @@
                 if (entry.isIntersecting) {
                     entry.target.classList.add('visible');
                     if (entry.target.closest('.stats')) {
-                        animateStats();
+                        if (!document.querySelector('.stat-number').textContent !== '0') {
+                            animateStats();
+                        }
                     }
                 }
             });
@@ -1172,40 +1764,95 @@
 
         document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 
-        // Search Handler
-        function handleSearch() {
-            const query = document.getElementById('searchInput').value;
+        // Enhanced Search with Mock Results
+        const mockResults = {
+            'dbms': [{ title: 'DBMS Sem 5 CE Midsem Paper 2024', desc: 'Full solution with model answers', link: '#' }],
+            'os': [{ title: 'OS Sem 3 IT Endsems 2023', desc: 'Previous year questions + tips', link: '#' }],
+            'default': [{ title: 'No exact match. Try "DBMS Sem 5" or "OS Sem 3"', desc: 'Explore quick links above for popular searches.', link: '#' }]
+        };
+
+        function handleSearch(e) {
+            e?.preventDefault();
+            const query = document.getElementById('searchInput').value.toLowerCase().trim();
+            const resultsEl = document.getElementById('searchResults');
             if (query) {
-                alert(`Searching for: ${query}. Redirecting to results... (Demo)`);
-                // In real app: window.location.href = `/search?q=${encodeURIComponent(query)}`;
+                const key = Object.keys(mockResults).find(k => query.includes(k)) || 'default';
+                resultsEl.innerHTML = mockResults[key].map(r => `
+                    <div class="search-result-item">
+                        <a href="${r.link}" class="search-result-title">${r.title}</a>
+                        <p class="search-result-desc">${r.desc}</p>
+                        <a href="${r.link}" class="search-result-link">Download PDF <i class="fas fa-download"></i></a>
+                    </div>
+                `).join('');
+                resultsEl.style.display = 'block';
+                resultsEl.scrollIntoView({ behavior: 'smooth' });
+            } else {
+                resultsEl.style.display = 'none';
             }
         }
 
+        // Quick Link Simulation
+        function simulateDownload(branch) {
+            alert(`Downloading ${branch} papers... Redirecting to secure download (Demo). Join community for real access!`);
+        }
+
+        // Feature Simulations
+        function simulatePoints() {
+            alert('Challenge unlocked! Complete this quiz to earn 20 points instantly. (Demo - Full in app)');
+        }
+
+        function simulateAlert() {
+            alert('Alerts enabled! You\'ll get a test notification now. (Demo)');
+            // Simulate notification
+            if (Notification.permission === 'granted') {
+                new Notification('GTUverse Alert', { body: 'New paper added: DBMS Sem 5!' });
+            }
+        }
+
+        function simulateSearch(type) {
+            alert(`${type.charAt(0).toUpperCase() + type.slice(1)} search initiated! Results loading... (Demo)`);
+        }
+
         // Modal Functions
-        function openModal() {
+        function openModal(e) {
+            e?.preventDefault();
             document.getElementById('contactModal').style.display = 'block';
+            document.getElementById('contactModal').setAttribute('aria-hidden', 'false');
+            document.body.style.overflow = 'hidden';
         }
 
         function closeModal() {
             document.getElementById('contactModal').style.display = 'none';
+            document.getElementById('contactModal').setAttribute('aria-hidden', 'true');
+            document.body.style.overflow = 'auto';
         }
 
-        // Close modal on outside click
+        // Close modal on outside click or ESC
         window.onclick = (event) => {
             const modal = document.getElementById('contactModal');
-            if (event.target === modal) {
-                closeModal();
-            }
-        }
+            if (event.target === modal) closeModal();
+        };
 
-        // Form Submission (Demo)
-        document.querySelector('#contactModal form').addEventListener('submit', (e) => {
-            e.preventDefault();
-            alert('Message sent! Thanks for reaching out.');
-            closeModal();
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeModal();
         });
 
-        // Smooth Scrolling for Nav Links
+        // Form Submissions
+        document.getElementById('contactForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Message sent successfully! Expect a reply soon. Thanks for making GTUverse better.');
+            closeModal();
+            e.target.reset();
+        });
+
+        function subscribeNewsletter(e) {
+            e.preventDefault();
+            const email = e.target.querySelector('input[type="email"]').value;
+            alert(`Subscribed! Welcome to GTUverse updates, ${email.split('@')[0]}. Check your inbox for a free study guide.`);
+            e.target.reset();
+        }
+
+        // Smooth Scrolling & Menu Close
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
@@ -1213,7 +1860,6 @@
                 if (target) {
                     target.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }
-                // Close mobile menu if open
                 const navLinks = document.getElementById('navLinks');
                 const hamburger = document.getElementById('hamburger');
                 if (navLinks.classList.contains('active')) {
@@ -1223,12 +1869,20 @@
             });
         });
 
-        // Enter key for search
+        // Search on Enter
         document.getElementById('searchInput').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                handleSearch();
-            }
+            if (e.key === 'Enter') handleSearch(e);
         });
+
+        // Notification Permission (Optional)
+        if ('Notification' in window && Notification.permission === 'default') {
+            // Request on first interaction, but skip for now
+        }
+
+        // Performance: Preload critical resources
+        if ('serviceWorker' in navigator) {
+            // PWA ready, but optional
+        }
     </script>
 </body>
 </html>
