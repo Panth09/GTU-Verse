@@ -1813,7 +1813,7 @@
         // Load All Announcements
         function loadAllAnnouncements() {
             let anns = JSON.parse(localStorage.getItem('announcements') || '[]');
-            anns.sort((a, b) => new Date(b.date) - new Date(a.date));
+            anns.sort((a, b) => b.id - a.id);
             const list = document.getElementById('allAnnouncementsList');
             if (anns.length > 0) {
                 list.innerHTML = anns.map((a, index) => `
@@ -1884,6 +1884,14 @@
         window.addEventListener('load', () => {
             filterPapers();
             loadAllAnnouncements();
+        });
+
+        // Listen for storage changes from other tabs/windows
+        window.addEventListener('storage', (e) => {
+            if (e.key === 'papers' || e.key === 'announcements') {
+                filterPapers();
+                loadAllAnnouncements();
+            }
         });
     </script>
 </body>
