@@ -7,80 +7,112 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', sans-serif;
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1e40af;
+            --secondary: #10b981;
+            --secondary-dark: #059669;
+            --danger: #ef4444;
+            --success: #10b981;
+            --dark: #1e293b;
+            --medium: #475569;
+            --light: #f8fafc;
+            --white: #ffffff;
+            --border: #e2e8f0;
+            --gradient-primary: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            --shadow-sm: 0 1px 2px 0 rgba(0,0,0,0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
         body {
-            background: #f4f7fa;
-            color: #333;
-            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+            background: var(--light);
+            color: var(--dark);
+            line-height: 1.7;
+            transition: var(--transition);
         }
 
         body.dark-mode {
-            background: #1a1a2e;
-            color: #e0e0e0;
+            --light: #0f172a;
+            --white: #1e293b;
+            --dark: #f1f5f9;
+            --medium: #cbd5e1;
+            --border: #334155;
+            background: #0f172a;
+            color: #f1f5f9;
         }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 2rem;
         }
 
         .login-form {
             max-width: 400px;
-            margin: 100px auto;
-            padding: 20px;
-            background: #fff;
-            border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            margin: 4rem auto;
             text-align: center;
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border);
         }
 
         body.dark-mode .login-form {
-            background: #2a2a3e;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            background: var(--white);
+            border-color: var(--border);
         }
 
         .login-form h2 {
-            margin-bottom: 20px;
+            margin-bottom: 1rem;
+            color: var(--primary);
             font-family: 'Poppins', sans-serif;
-            font-weight: 600;
         }
 
         .login-form input {
             width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            font-size: 16px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 1rem;
+            background: var(--white);
+            color: var(--dark);
+            transition: var(--transition);
         }
 
         body.dark-mode .login-form input {
-            background: #333;
-            border-color: #444;
-            color: #e0e0e0;
+            background: var(--white);
+            border-color: var(--border);
+            color: var(--dark);
+        }
+
+        .login-form input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
         }
 
         .login-btn {
-            width: 100%;
-            padding: 10px;
-            background: #007bff;
-            color: #fff;
+            background: var(--gradient-primary);
+            color: white;
+            padding: 1rem;
             border: none;
-            border-radius: 4px;
-            font-size: 16px;
+            border-radius: 8px;
             cursor: pointer;
-            transition: background 0.3s;
+            font-weight: 600;
+            width: 100%;
+            transition: var(--transition);
         }
 
         .login-btn:hover {
-            background: #0056b3;
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
         }
 
         .dashboard {
@@ -91,230 +123,290 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
+            margin-bottom: 2rem;
+            background: var(--white);
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border);
+        }
+
+        body.dark-mode .dashboard-header {
+            background: var(--white);
+            border-color: var(--border);
         }
 
         .dashboard-header h1 {
             font-family: 'Poppins', sans-serif;
-            font-weight: 600;
+            color: var(--primary);
         }
 
         .header-actions {
             display: flex;
+            gap: 1rem;
             align-items: center;
-            gap: 10px;
         }
 
-        .dark-toggle, .logout-btn {
-            padding: 8px 12px;
-            border: none;
-            border-radius: 4px;
+        .dark-toggle {
+            background: rgba(37, 99, 235, 0.08);
+            border: 1px solid rgba(37, 99, 235, 0.2);
+            color: var(--primary);
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
             cursor: pointer;
-            background: #007bff;
-            color: #fff;
-            transition: background 0.3s;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
         }
 
-        body.dark-mode .dark-toggle, body.dark-mode .logout-btn {
-            background: #0056b3;
+        .dark-toggle:hover {
+            background: rgba(37, 99, 235, 0.15);
+            transform: rotate(180deg) scale(1.05);
         }
 
-        .dark-toggle:hover, .logout-btn:hover {
-            background: #0056b3;
+        .logout-btn {
+            background: var(--danger);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .logout-btn:hover {
+            background: #dc2626;
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-sm);
         }
 
         .section {
-            background: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            background: var(--white);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-radius: 12px;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border);
         }
 
         body.dark-mode .section {
-            background: #2a2a3e;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            background: var(--white);
+            border-color: var(--border);
         }
 
         .section h3 {
+            margin-bottom: 1rem;
+            color: var(--primary);
             font-family: 'Poppins', sans-serif;
-            font-weight: 600;
-            margin-bottom: 15px;
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-        }
-
-        .stat {
-            text-align: center;
-        }
-
-        .stat-value {
-            font-size: 36px;
-            font-weight: 700;
-            color: #007bff;
-        }
-
-        body.dark-mode .stat-value {
-            color: #4dabf7;
+            font-size: 1.5rem;
         }
 
         .form-group {
             display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
             flex-wrap: wrap;
-            gap: 10px;
-            margin-bottom: 20px;
         }
 
-        .form-group input, .form-group select, .form-group textarea {
+        .form-group input, 
+        .form-group textarea,
+        .form-group select {
             flex: 1;
             min-width: 200px;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            font-size: 16px;
+            padding: 0.75rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: var(--white);
+            color: var(--dark);
+            transition: var(--transition);
         }
 
         body.dark-mode .form-group input,
-        body.dark-mode .form-group select,
-        body.dark-mode .form-group textarea {
-            background: #333;
-            border-color: #444;
-            color: #e0e0e0;
+        body.dark-mode .form-group textarea,
+        body.dark-mode .form-group select {
+            background: var(--white);
+            border-color: var(--border);
+            color: var(--dark);
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
         }
 
         .add-btn {
-            padding: 10px 20px;
-            background: #28a745;
-            color: #fff;
+            background: var(--gradient-primary);
+            color: white;
+            padding: 0.75rem 1.5rem;
             border: none;
-            border-radius: 4px;
+            border-radius: 8px;
             cursor: pointer;
-            transition: background 0.3s;
+            font-weight: 600;
+            transition: var(--transition);
+            white-space: nowrap;
         }
 
         .add-btn:hover {
-            background: #218838;
-        }
-
-        .list-container {
-            margin-top: 20px;
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-sm);
         }
 
         .list {
             list-style: none;
+            margin-top: 1rem;
         }
 
         .list-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 10px;
-            border-bottom: 1px solid #eee;
+            padding: 1rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
+            background: var(--light);
         }
 
         body.dark-mode .list-item {
-            border-bottom: 1px solid #444;
+            background: var(--light);
+            border-color: var(--border);
         }
 
-        .list-item:last-child {
-            border-bottom: none;
+        .list-item span {
+            flex: 1;
+            color: var(--medium);
         }
 
-        .edit-btn, .delete-btn {
-            padding: 5px 10px;
+        .list-item a {
+            color: var(--primary);
+            text-decoration: none;
+            margin-right: 1rem;
+        }
+
+        .list-item a:hover {
+            text-decoration: underline;
+        }
+
+        .delete-btn,
+        .edit-btn {
+            padding: 0.5rem 1rem;
             border: none;
             border-radius: 4px;
             cursor: pointer;
-            margin-left: 5px;
-        }
-
-        .edit-btn {
-            background: #ffc107;
-            color: #333;
-        }
-
-        .edit-btn:hover {
-            background: #e0a800;
+            font-size: 0.9rem;
+            margin-left: 0.5rem;
+            transition: var(--transition);
         }
 
         .delete-btn {
-            background: #dc3545;
-            color: #fff;
+            background: var(--danger);
+            color: white;
         }
 
         .delete-btn:hover {
-            background: #c82333;
+            background: #dc2626;
+            transform: translateY(-1px);
         }
 
-        .show-more-btn {
-            display: none;
-            margin: 10px auto;
-            padding: 10px 20px;
-            background: #007bff;
-            color: #fff;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
+        .edit-btn {
+            background: var(--secondary);
+            color: white;
         }
 
-        .show-more-btn:hover {
-            background: #0056b3;
+        .edit-btn:hover {
+            background: var(--secondary-dark);
+            transform: translateY(-1px);
         }
 
-        .all-items {
-            display: none;
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .stat {
+            background: var(--light);
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid var(--border);
+        }
+
+        body.dark-mode .stat {
+            background: var(--light);
+            border-color: var(--border);
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .stat div:last-child {
+            color: var(--medium);
+            font-size: 0.9rem;
+            margin-top: 0.25rem;
         }
 
         .edit-modal {
             display: none;
             position: fixed;
-            top: 0;
+            z-index: 1000;
             left: 0;
+            top: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.5);
-            z-index: 1000;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
         }
 
         .edit-modal-content {
-            background: #fff;
+            background: var(--white);
+            margin: 10% auto;
+            padding: 2rem;
+            border-radius: 12px;
             max-width: 500px;
-            margin: 100px auto;
-            padding: 20px;
-            border-radius: 8px;
+            width: 90%;
             position: relative;
+            border: 1px solid var(--border);
         }
 
         body.dark-mode .edit-modal-content {
-            background: #2a2a3e;
+            background: var(--white);
+            border-color: var(--border);
         }
 
         .close-edit {
             position: absolute;
-            top: 10px;
-            right: 15px;
-            font-size: 24px;
+            top: 1rem;
+            right: 1.5rem;
+            font-size: 1.5rem;
             cursor: pointer;
-            color: #333;
+            color: var(--medium);
         }
 
-        body.dark-mode .close-edit {
-            color: #e0e0e0;
+        .close-edit:hover {
+            color: var(--danger);
         }
 
-        .edit-modal-content h3 {
-            margin-bottom: 20px;
-            font-family: 'Poppins', sans-serif;
-        }
-
-        .edit-modal-content .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
+        @media (max-width: 768px) {
+            .container { padding: 1rem; }
+            .form-group { flex-direction: column; }
+            .form-group input, .form-group textarea, .form-group select { min-width: auto; }
+            .dashboard-header { flex-direction: column; gap: 1rem; padding: 1rem; }
+            .header-actions { order: -1; width: 100%; justify-content: center; }
+            .list-item { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+            .stats-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -323,7 +415,6 @@
         <div class="login-form" id="loginForm">
             <h2>Admin Login</h2>
             <form onsubmit="login(event)">
-                <input type="text" id="username" placeholder="Enter username" required>
                 <input type="password" id="password" placeholder="Enter password" required>
                 <button type="submit" class="login-btn">Login</button>
             </form>
@@ -333,7 +424,6 @@
             <div class="dashboard-header">
                 <h1>GTUverse Admin Panel</h1>
                 <div class="header-actions">
-                    <span id="loggedInUser"></span>
                     <button class="dark-toggle" onclick="toggleDarkMode()" aria-label="Toggle Dark Mode">
                         <i class="fas fa-moon" id="adminDarkToggleIcon"></i>
                     </button>
@@ -370,25 +460,17 @@
                     <input type="url" placeholder="PDF URL" required>
                     <button type="submit" class="add-btn">Add Paper</button>
                 </form>
-                <div class="list-container">
-                    <ul class="list top-items" id="papersListTop"></ul>
-                    <ul class="list all-items" id="papersListAll"></ul>
-                    <button class="show-more-btn" id="papersShowMore" onclick="toggleShowMore('papers')">Show More</button>
-                </div>
+                <ul class="list" id="papersList"></ul>
             </div>
 
             <div class="section">
-                <h3>Manage Announcements (Triggers Notifications)</h3>
+                <h3>Manage Announcements</h3>
                 <form onsubmit="addAnnouncement(event)" class="form-group">
                     <input type="text" placeholder="Title (e.g., Exam Schedule Released)" required>
                     <textarea placeholder="Description" rows="3" required></textarea>
-                    <button type="submit" class="add-btn">Add Announcement & Notify</button>
+                    <button type="submit" class="add-btn">Add Announcement</button>
                 </form>
-                <div class="list-container">
-                    <ul class="list top-items" id="announcementsListTop"></ul>
-                    <ul class="list all-items" id="announcementsListAll"></ul>
-                    <button class="show-more-btn" id="announcementsShowMore" onclick="toggleShowMore('announcements')">Show More</button>
-                </div>
+                <ul class="list" id="announcementsList"></ul>
             </div>
         </div>
     </div>
@@ -414,26 +496,9 @@
     </div>
 
     <script>
-        const SUPER_ADMINS = ['superadmin1', 'superadmin2'];
-        const SUPER_ADMIN_PASSWORD = 'Super@IJ#09';
-        const ADMIN_PASSWORD = 'Admin@IJ#09';
+        const PASSWORD = 'Panth@IJ#09'; // Change for production
 
-        // Local Storage Helpers
-        function getFromStorage(key) {
-            return JSON.parse(localStorage.getItem(key) || '[]');
-        }
-
-        function saveToStorage(key, data) {
-            localStorage.setItem(key, JSON.stringify(data));
-        }
-
-        function deleteFromStorage(key, id) {
-            const data = getFromStorage(key);
-            const filtered = data.filter(item => item.id !== id);
-            saveToStorage(key, filtered);
-        }
-
-        // Dark Mode
+        // Dark Mode for Admin
         function toggleDarkMode() {
             document.body.classList.toggle('dark-mode');
             const isDark = document.body.classList.contains('dark-mode');
@@ -447,115 +512,56 @@
             toggleDarkMode();
         }
 
-        // Authentication
         function login(e) {
             e.preventDefault();
-            const username = document.getElementById('username').value.trim();
-            const password = document.getElementById('password').value;
-            let role = null;
-
-            if (SUPER_ADMINS.includes(username) && password === SUPER_ADMIN_PASSWORD) {
-                role = 'superadmin';
-            } else if (password === ADMIN_PASSWORD) {
-                role = 'admin';
-            }
-
-            if (role) {
-                localStorage.setItem('adminRole', role);
-                localStorage.setItem('loggedInUser', username);
+            if (document.getElementById('password').value === PASSWORD) {
                 document.getElementById('loginForm').style.display = 'none';
                 document.getElementById('dashboard').style.display = 'block';
-                document.getElementById('loggedInUser').textContent = `Logged in as: ${username} (${role})`;
                 loadData();
             } else {
-                alert('Invalid username or password');
-                document.getElementById('username').value = '';
+                alert('Invalid password');
                 document.getElementById('password').value = '';
             }
         }
 
         function logout() {
-            localStorage.removeItem('adminRole');
-            localStorage.removeItem('loggedInUser');
             document.getElementById('loginForm').style.display = 'block';
             document.getElementById('dashboard').style.display = 'none';
-            document.getElementById('username').value = '';
             document.getElementById('password').value = '';
         }
 
-        // Load Data
         function loadData() {
-            const role = localStorage.getItem('adminRole');
-            const papers = getFromStorage('papers').sort((a, b) => b.id - a.id);
-            const papersListTop = document.getElementById('papersListTop');
-            const papersListAll = document.getElementById('papersListAll');
-            const papersShowMore = document.getElementById('papersShowMore');
-            if (papers.length > 0) {
-                papersListTop.innerHTML = papers.slice(0, 5).map(p => `
-                    <li class="list-item">
-                        <span>${p.title} (${p.type.toUpperCase()}) (${p.branch} Sem ${p.sem}, ${p.college}) - <a href="${p.url}" target="_blank">View</a></span>
-                        <div>
-                            <button class="edit-btn" onclick="editItem('papers', '${p.id}')">Edit</button>
-                            ${role === 'superadmin' ? `<button class="delete-btn" onclick="deleteItem('papers', '${p.id}')">Delete</button>` : ''}
-                        </div>
-                    </li>
-                `).join('');
-                papersListAll.innerHTML = papers.slice(5).map(p => `
-                    <li class="list-item">
-                        <span>${p.title} (${p.type.toUpperCase()}) (${p.branch} Sem ${p.sem}, ${p.college}) - <a href="${p.url}" target="_blank">View</a></span>
-                        <div>
-                            <button class="edit-btn" onclick="editItem('papers', '${p.id}')">Edit</button>
-                            ${role === 'superadmin' ? `<button class="delete-btn" onclick="deleteItem('papers', '${p.id}')">Delete</button>` : ''}
-                        </div>
-                    </li>
-                `).join('');
-                papersShowMore.style.display = papers.length > 5 ? 'block' : 'none';
-            } else {
-                papersListTop.innerHTML = '<p>No papers added yet.</p>';
-                papersListAll.innerHTML = '';
-                papersShowMore.style.display = 'none';
-            }
+            // Ensure DB is initialized
+            if (!localStorage.getItem('papers')) localStorage.setItem('papers', '[]');
+            if (!localStorage.getItem('announcements')) localStorage.setItem('announcements', '[]');
 
-            const announcements = getFromStorage('announcements').sort((a, b) => new Date(b.date) - new Date(a.date));
-            const announcementsListTop = document.getElementById('announcementsListTop');
-            const announcementsListAll = document.getElementById('announcementsListAll');
-            const announcementsShowMore = document.getElementById('announcementsShowMore');
-            if (announcements.length > 0) {
-                announcementsListTop.innerHTML = announcements.slice(0, 5).map(a => `
-                    <li class="list-item">
-                        <span>${a.title}: ${a.desc} (${a.date})</span>
-                        <div>
-                            <button class="edit-btn" onclick="editItem('announcements', '${a.id}')">Edit</button>
-                            ${role === 'superadmin' ? `<button class="delete-btn" onclick="deleteItem('announcements', '${a.id}')">Delete</button>` : ''}
-                        </div>
-                    </li>
-                `).join('');
-                announcementsListAll.innerHTML = announcements.slice(5).map(a => `
-                    <li class="list-item">
-                        <span>${a.title}: ${a.desc} (${a.date})</span>
-                        <div>
-                            <button class="edit-btn" onclick="editItem('announcements', '${a.id}')">Edit</button>
-                            ${role === 'superadmin' ? `<button class="delete-btn" onclick="deleteItem('announcements', '${a.id}')">Delete</button>` : ''}
-                        </div>
-                    </li>
-                `).join('');
-                announcementsShowMore.style.display = announcements.length > 5 ? 'block' : 'none';
-            } else {
-                announcementsListTop.innerHTML = '<p>No announcements added yet.</p>';
-                announcementsListAll.innerHTML = '';
-                announcementsShowMore.style.display = 'none';
-            }
+            // Load Papers
+            const papers = JSON.parse(localStorage.getItem('papers') || '[]');
+            document.getElementById('papersList').innerHTML = papers.map(p => `
+                <li class="list-item">
+                    <span>${p.title} (${p.type.toUpperCase()}) (${p.branch} Sem ${p.sem}, ${p.college}) - <a href="${p.url}" target="_blank">View</a></span>
+                    <div>
+                        <button class="edit-btn" onclick="editItem('papers', ${p.id})">Edit</button>
+                        <button class="delete-btn" onclick="deleteItem('papers', ${p.id})">Delete</button>
+                    </div>
+                </li>
+            `).join('');
 
+            // Load Announcements
+            const announcements = JSON.parse(localStorage.getItem('announcements') || '[]');
+            document.getElementById('announcementsList').innerHTML = announcements.map(a => `
+                <li class="list-item">
+                    <span>${a.title}: ${a.desc} (${a.date})</span>
+                    <div>
+                        <button class="edit-btn" onclick="editItem('announcements', ${a.id})">Edit</button>
+                        <button class="delete-btn" onclick="deleteItem('announcements', ${a.id})">Delete</button>
+                    </div>
+                </li>
+            `).join('');
+
+            // Update Stats
             document.getElementById('totalPapers').textContent = papers.length;
             document.getElementById('totalAnnouncements').textContent = announcements.length;
-        }
-
-        function toggleShowMore(type) {
-            const listAll = document.getElementById(`${type}ListAll`);
-            const button = document.getElementById(`${type}ShowMore`);
-            const isHidden = listAll.style.display === 'none' || listAll.style.display === '';
-            listAll.style.display = isHidden ? 'block' : 'none';
-            button.textContent = isHidden ? 'Show Less' : 'Show More';
         }
 
         function addPaper(e) {
@@ -566,19 +572,11 @@
                 alert('Please fill all fields.');
                 return;
             }
-            const paper = {
-                id: Date.now().toString(),
-                title: title.value.trim(),
-                type: typeEl.value,
-                branch: branch.value.trim().toUpperCase(),
-                sem: parseInt(sem.value),
-                college: college.value.trim(),
-                url: url.value.trim()
-            };
-            const papers = getFromStorage('papers');
-            papers.push(paper);
-            saveToStorage('papers', papers);
-            alert('Paper added!');
+            const papers = JSON.parse(localStorage.getItem('papers') || '[]');
+            const newId = papers.length ? Math.max(...papers.map(p => p.id)) + 1 : 1;
+            papers.push({ id: newId, title: title.value.trim(), type: typeEl.value, branch: branch.value.trim().toUpperCase(), sem: parseInt(sem.value), college: college.value.trim(), url: url.value.trim() });
+            localStorage.setItem('papers', JSON.stringify(papers));
+            alert('Paper added successfully! Live on site now.');
             loadData();
             e.target.reset();
         }
@@ -591,35 +589,33 @@
                 alert('Please fill all fields.');
                 return;
             }
-            const ann = {
-                id: Date.now().toString(),
-                title: title.value.trim(),
-                desc: desc.value.trim(),
-                date: new Date().toLocaleString()
-            };
-            const announcements = getFromStorage('announcements');
-            announcements.push(ann);
-            saveToStorage('announcements', announcements);
-            alert('Announcement added!');
+            const announcements = JSON.parse(localStorage.getItem('announcements') || '[]');
+            const newId = announcements.length ? Math.max(...announcements.map(a => a.id)) + 1 : 1;
+            announcements.push({ id: newId, title: title.value.trim(), desc: desc.value.trim(), date: new Date().toLocaleString() });
+            localStorage.setItem('announcements', JSON.stringify(announcements));
+            alert('Announcement added! Live on site now.');
             loadData();
             e.target.reset();
         }
 
         function deleteItem(type, id) {
-            if (!confirm(`Delete ${type}?`)) return;
-            deleteFromStorage(type, id);
-            alert(`${type} deleted!`);
+            if (!confirm(`Are you sure you want to delete this ${type}?`)) return;
+            let items = JSON.parse(localStorage.getItem(type) || '[]');
+            items = items.filter(i => i.id !== id);
+            localStorage.setItem(type, JSON.stringify(items));
+            alert(`${type.charAt(0).toUpperCase() + type.slice(1)} item deleted! Changes live on site.`);
             loadData();
         }
 
+        // Edit Functionality
         let editingItem = null;
 
         function editItem(type, id) {
-            const items = getFromStorage(type);
+            editingItem = { type, id };
+            const items = JSON.parse(localStorage.getItem(type) || '[]');
             const item = items.find(i => i.id === id);
             if (!item) return;
 
-            editingItem = { type, id };
             document.getElementById('editType').value = type;
             document.getElementById('editId').value = id;
             document.getElementById('editTitle').value = item.title || '';
@@ -643,6 +639,8 @@
                 `;
             } else if (type === 'announcements') {
                 document.getElementById('editModalTitle').textContent = 'Edit Announcement';
+                document.getElementById('editTitle').placeholder = 'Title';
+                document.getElementById('editDesc').placeholder = 'Description';
                 extraDiv.style.display = 'flex';
                 extraDiv.innerHTML = `
                     <input type="text" id="editDate" placeholder="Date" value="${item.date || ''}" required>
@@ -653,35 +651,6 @@
             document.body.style.overflow = 'hidden';
         }
 
-        function saveEdit(e) {
-            e.preventDefault();
-            if (!editingItem) return;
-
-            const type = document.getElementById('editType').value;
-            const id = document.getElementById('editId').value;
-            let item = { id };
-            const items = getFromStorage(type);
-
-            if (type === 'papers') {
-                item.title = document.getElementById('editTitle').value.trim();
-                item.type = document.getElementById('editTypeSelect').value;
-                item.branch = document.getElementById('editBranch').value.trim().toUpperCase();
-                item.sem = parseInt(document.getElementById('editSem').value);
-                item.college = document.getElementById('editCollege').value.trim();
-                item.url = document.getElementById('editUrl').value.trim();
-            } else if (type === 'announcements') {
-                item.title = document.getElementById('editTitle').value.trim();
-                item.desc = document.getElementById('editDesc').value.trim();
-                item.date = document.getElementById('editDate').value.trim() || new Date().toLocaleString();
-            }
-
-            const updatedItems = items.map(i => i.id === id ? item : i);
-            saveToStorage(type, updatedItems);
-            alert('Item updated!');
-            loadData();
-            closeEditModal();
-        }
-
         function closeEditModal() {
             document.getElementById('editModal').style.display = 'none';
             document.body.style.overflow = 'auto';
@@ -689,6 +658,42 @@
             editingItem = null;
         }
 
+        function saveEdit(e) {
+            e.preventDefault();
+            if (!editingItem) return;
+
+            const type = document.getElementById('editType').value;
+            const id = parseInt(document.getElementById('editId').value);
+            let items = JSON.parse(localStorage.getItem(type) || '[]');
+            const index = items.findIndex(i => i.id === id);
+            if (index === -1) return;
+
+            if (type === 'papers') {
+                items[index] = {
+                    ...items[index],
+                    title: document.getElementById('editTitle').value.trim(),
+                    type: document.getElementById('editTypeSelect').value,
+                    branch: document.getElementById('editBranch').value.trim().toUpperCase(),
+                    sem: parseInt(document.getElementById('editSem').value),
+                    college: document.getElementById('editCollege').value.trim(),
+                    url: document.getElementById('editUrl').value.trim()
+                };
+            } else if (type === 'announcements') {
+                items[index] = {
+                    ...items[index],
+                    title: document.getElementById('editTitle').value.trim(),
+                    desc: document.getElementById('editDesc').value.trim(),
+                    date: document.getElementById('editDate').value.trim() || new Date().toLocaleString()
+                };
+            }
+
+            localStorage.setItem(type, JSON.stringify(items));
+            alert('Item updated successfully! Changes live on site.');
+            loadData();
+            closeEditModal();
+        }
+
+        // Close edit modal on outside click or ESC
         window.onclick = (event) => {
             const modal = document.getElementById('editModal');
             if (event.target === modal) closeEditModal();
@@ -698,15 +703,8 @@
             if (e.key === 'Escape') closeEditModal();
         });
 
-        // Persist Login State
-        if (localStorage.getItem('adminRole')) {
-            document.getElementById('loginForm').style.display = 'none';
-            document.getElementById('dashboard').style.display = 'block';
-            const username = localStorage.getItem('loggedInUser');
-            const role = localStorage.getItem('adminRole');
-            document.getElementById('loggedInUser').textContent = `Logged in as: ${username} (${role})`;
-            loadData();
-        }
+        // Initialize on load
+        window.addEventListener('load', loadData);
     </script>
 </body>
 </html>
