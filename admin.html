@@ -442,14 +442,6 @@
                         <div class="stat-value" id="totalAnnouncements">0</div>
                         <div>Total Announcements</div>
                     </div>
-                    <div class="stat">
-                        <div class="stat-value" id="totalQuizzes">0</div>
-                        <div>Total Quizzes</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-value" id="totalPoints">0</div>
-                        <div>Total Points Earned (Global)</div>
-                    </div>
                 </div>
             </div>
 
@@ -480,17 +472,6 @@
                 </form>
                 <ul class="list" id="announcementsList"></ul>
             </div>
-
-            <div class="section">
-                <h3>Manage Quizzes</h3>
-                <form onsubmit="addQuiz(event)" class="form-group">
-                    <input type="text" placeholder="Question (e.g., What is DBMS?)" required>
-                    <input type="text" placeholder="Answer (e.g., Database Management System)" required>
-                    <input type="number" placeholder="Points (e.g., 10)" min="1" required>
-                    <button type="submit" class="add-btn">Add Quiz</button>
-                </form>
-                <ul class="list" id="quizzesList"></ul>
-            </div>
         </div>
     </div>
 
@@ -506,7 +487,7 @@
                     <input type="text" id="editTitle" placeholder="Title" required>
                 </div>
                 <div class="form-group">
-                    <input type="text" id="editDesc" placeholder="Description/Answer" required>
+                    <input type="text" id="editDesc" placeholder="Description" required>
                 </div>
                 <div class="form-group" id="editExtra" style="display: none;"></div>
                 <button type="submit" class="add-btn">Save Changes</button>
@@ -553,8 +534,6 @@
             // Ensure DB is initialized
             if (!localStorage.getItem('papers')) localStorage.setItem('papers', '[]');
             if (!localStorage.getItem('announcements')) localStorage.setItem('announcements', '[]');
-            if (!localStorage.getItem('quizzes')) localStorage.setItem('quizzes', '[]');
-            if (!localStorage.getItem('totalPoints')) localStorage.setItem('totalPoints', '0');
 
             // Load Papers
             const papers = JSON.parse(localStorage.getItem('papers') || '[]');
@@ -580,23 +559,9 @@
                 </li>
             `).join('');
 
-            // Load Quizzes
-            const quizzes = JSON.parse(localStorage.getItem('quizzes') || '[]');
-            document.getElementById('quizzesList').innerHTML = quizzes.map(q => `
-                <li class="list-item">
-                    <span>${q.question} (Answer: ${q.answer}, Points: ${q.points})</span>
-                    <div>
-                        <button class="edit-btn" onclick="editItem('quizzes', ${q.id})">Edit</button>
-                        <button class="delete-btn" onclick="deleteItem('quizzes', ${q.id})">Delete</button>
-                    </div>
-                </li>
-            `).join('');
-
             // Update Stats
             document.getElementById('totalPapers').textContent = papers.length;
             document.getElementById('totalAnnouncements').textContent = announcements.length;
-            document.getElementById('totalQuizzes').textContent = quizzes.length;
-            document.getElementById('totalPoints').textContent = parseInt(localStorage.getItem('totalPoints') || 0).toLocaleString();
         }
 
         function addPaper(e) {
@@ -633,29 +598,12 @@
             e.target.reset();
         }
 
-        function addQuiz(e) {
-            e.preventDefault();
-            const inputs = e.target.querySelectorAll('input');
-            const [question, answer, points] = inputs;
-            if (!question.value.trim() || !answer.value.trim() || !points.value) {
-                alert('Please fill all fields.');
-                return;
-            }
-            const quizzes = JSON.parse(localStorage.getItem('quizzes') || '[]');
-            const newId = quizzes.length ? Math.max(...quizzes.map(q => q.id)) + 1 : 1;
-            quizzes.push({ id: newId, question: question.value.trim(), answer: answer.value.trim(), points: parseInt(points.value) });
-            localStorage.setItem('quizzes', JSON.stringify(quizzes));
-            alert('Quiz added successfully! Live on site now.');
-            loadData();
-            e.target.reset();
-        }
-
         function deleteItem(type, id) {
-            if (!confirm(`Are you sure you want to delete this ${type}? This action cannot be undone and will reflect live on the site.`)) return;
+            if (!confirm(`Are you sure you want to delete this ${type}?`)) return;
             let items = JSON.parse(localStorage.getItem(type) || '[]');
             items = items.filter(i => i.id !== id);
             localStorage.setItem(type, JSON.stringify(items));
-            alert(`${type.charAt(0).toUpperCase() + type.slice(1)} item deleted successfully! Changes are now live on the site.`);
+            alert(`${type.charAt(0).toUpperCase() + type.slice(1)} item deleted! Changes live on site.`);
             loadData();
         }
 
@@ -670,8 +618,8 @@
 
             document.getElementById('editType').value = type;
             document.getElementById('editId').value = id;
-            document.getElementById('editTitle').value = item.title || item.question || '';
-            document.getElementById('editDesc').value = item.desc || item.answer || '';
+            document.getElementById('editTitle').value = item.title || '';
+            document.getElementById('editDesc').value = item.desc || '';
 
             const extraDiv = document.getElementById('editExtra');
             extraDiv.style.display = 'none';
@@ -685,7 +633,7 @@
                         <option value="gtu" ${item.type === 'gtu' ? 'selected' : ''}>GTU Exam</option>
                     </select>
                     <input type="text" id="editBranch" placeholder="Branch" value="${item.branch || ''}" required>
-                    <input type="number" id="editSem" placeholder="Semester" value="${item.sem || ''}" required>
+                    <input type="number" id="editSem" placeholder="Semester" value="${item.sem || ''}" min="1" max="8" required>
                     <input type="text" id="editCollege" placeholder="College" value="${item.college || ''}" required>
                     <input type="url" id="editUrl" placeholder="URL" value="${item.url || ''}" required>
                 `;
@@ -696,14 +644,6 @@
                 extraDiv.style.display = 'flex';
                 extraDiv.innerHTML = `
                     <input type="text" id="editDate" placeholder="Date" value="${item.date || ''}" required>
-                `;
-            } else if (type === 'quizzes') {
-                document.getElementById('editModalTitle').textContent = 'Edit Quiz';
-                document.getElementById('editTitle').placeholder = 'Question';
-                document.getElementById('editDesc').placeholder = 'Answer';
-                extraDiv.style.display = 'flex';
-                extraDiv.innerHTML = `
-                    <input type="number" id="editPoints" placeholder="Points" value="${item.points || ''}" required>
                 `;
             }
 
@@ -745,17 +685,10 @@
                     desc: document.getElementById('editDesc').value.trim(),
                     date: document.getElementById('editDate').value.trim() || new Date().toLocaleString()
                 };
-            } else if (type === 'quizzes') {
-                items[index] = {
-                    ...items[index],
-                    question: document.getElementById('editTitle').value.trim(),
-                    answer: document.getElementById('editDesc').value.trim(),
-                    points: parseInt(document.getElementById('editPoints').value)
-                };
             }
 
             localStorage.setItem(type, JSON.stringify(items));
-            alert('Item updated successfully! Changes are now live on the site.');
+            alert('Item updated successfully! Changes live on site.');
             loadData();
             closeEditModal();
         }
