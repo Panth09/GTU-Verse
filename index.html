@@ -44,7 +44,7 @@
         header { 
             background: rgba(0, 123, 255, 0.95); 
             color: var(--white); 
-            padding: 1rem 0; 
+            padding: 0.5rem 0; 
             position: fixed; 
             top: 0; 
             width: 100%; 
@@ -53,7 +53,7 @@
             box-shadow: var(--shadow);
             transition: all 0.3s ease;
         }
-        header.scrolled { background: rgba(0, 123, 255, 0.98); box-shadow: var(--shadow-hover); }
+        header.scrolled { background: rgba(0, 123, 255, 0.98); box-shadow: var(--shadow-hover); padding: 0.5rem 0; }
         nav { 
             display: flex; 
             justify-content: space-between; 
@@ -68,6 +68,7 @@
             font-weight: 600;
             display: flex; align-items: center; gap: 0.5rem;
             transition: transform 0.3s ease;
+            cursor: pointer;
         }
         nav h1:hover { transform: scale(1.05); }
         nav h1 i { color: var(--accent); animation: pulse 2s infinite; }
@@ -77,6 +78,7 @@
             list-style: none; 
             gap: 1rem; 
             flex-wrap: wrap;
+            align-items: center;
         }
         nav a { 
             color: var(--white); 
@@ -119,6 +121,7 @@
             border-radius: 50%;
             cursor: pointer;
             transition: all 0.3s;
+            margin-left: 0.5rem;
         }
         .dark-toggle:hover { background: rgba(255,255,255,0.3); }
         .hamburger {
@@ -556,7 +559,7 @@
 <body>
     <header id="header">
         <nav>
-            <h1><i class="fas fa-university"></i> GTUverse</h1>
+            <h1 onclick="window.location.href='index.html'"><i class="fas fa-university"></i> GTUverse</h1>
             <ul id="navUl">
                 <li><a href="index.html">Home</a></li>
                 <li><a href="papers.html">Papers</a></li>
