@@ -9,6 +9,9 @@
     <style>
         :root {
             --primary: #2563eb;
+            --primary-dark: #1e40af;
+            --secondary: #10b981;
+            --secondary-dark: #059669;
             --danger: #ef4444;
             --success: #10b981;
             --dark: #1e293b;
@@ -16,8 +19,10 @@
             --light: #f8fafc;
             --white: #ffffff;
             --border: #e2e8f0;
-            --gradient-primary: linear-gradient(135deg, var(--primary) 0%, #1e40af 100%);
+            --gradient-primary: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            --shadow-sm: 0 1px 2px 0 rgba(0,0,0,0.05);
             --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
             --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
@@ -28,6 +33,17 @@
             background: var(--light);
             color: var(--dark);
             line-height: 1.7;
+            transition: var(--transition);
+        }
+
+        body.dark-mode {
+            --light: #0f172a;
+            --white: #1e293b;
+            --dark: #f1f5f9;
+            --medium: #cbd5e1;
+            --border: #334155;
+            background: #0f172a;
+            color: #f1f5f9;
         }
 
         .container {
@@ -44,6 +60,18 @@
             padding: 2rem;
             border-radius: 12px;
             box-shadow: var(--shadow-md);
+            border: 1px solid var(--border);
+        }
+
+        body.dark-mode .login-form {
+            background: var(--white);
+            border-color: var(--border);
+        }
+
+        .login-form h2 {
+            margin-bottom: 1rem;
+            color: var(--primary);
+            font-family: 'Poppins', sans-serif;
         }
 
         .login-form input {
@@ -53,6 +81,21 @@
             border: 1px solid var(--border);
             border-radius: 8px;
             font-size: 1rem;
+            background: var(--white);
+            color: var(--dark);
+            transition: var(--transition);
+        }
+
+        body.dark-mode .login-form input {
+            background: var(--white);
+            border-color: var(--border);
+            color: var(--dark);
+        }
+
+        .login-form input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
         }
 
         .login-btn {
@@ -64,6 +107,12 @@
             cursor: pointer;
             font-weight: 600;
             width: 100%;
+            transition: var(--transition);
+        }
+
+        .login-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
         }
 
         .dashboard {
@@ -76,9 +125,46 @@
             align-items: center;
             margin-bottom: 2rem;
             background: var(--white);
-            padding: 1rem;
-            border-radius: 8px;
+            padding: 1rem 2rem;
+            border-radius: 12px;
             box-shadow: var(--shadow-md);
+            border: 1px solid var(--border);
+        }
+
+        body.dark-mode .dashboard-header {
+            background: var(--white);
+            border-color: var(--border);
+        }
+
+        .dashboard-header h1 {
+            font-family: 'Poppins', sans-serif;
+            color: var(--primary);
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .dark-toggle {
+            background: rgba(37, 99, 235, 0.08);
+            border: 1px solid rgba(37, 99, 235, 0.2);
+            color: var(--primary);
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+        }
+
+        .dark-toggle:hover {
+            background: rgba(37, 99, 235, 0.15);
+            transform: rotate(180deg) scale(1.05);
         }
 
         .logout-btn {
@@ -88,6 +174,14 @@
             border: none;
             border-radius: 8px;
             cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .logout-btn:hover {
+            background: #dc2626;
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-sm);
         }
 
         .section {
@@ -96,11 +190,19 @@
             margin-bottom: 2rem;
             border-radius: 12px;
             box-shadow: var(--shadow-md);
+            border: 1px solid var(--border);
+        }
+
+        body.dark-mode .section {
+            background: var(--white);
+            border-color: var(--border);
         }
 
         .section h3 {
             margin-bottom: 1rem;
             color: var(--primary);
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.5rem;
         }
 
         .form-group {
@@ -110,26 +212,55 @@
             flex-wrap: wrap;
         }
 
-        .form-group input, .form-group textarea {
+        .form-group input, 
+        .form-group textarea,
+        .form-group select {
             flex: 1;
             min-width: 200px;
             padding: 0.75rem;
             border: 1px solid var(--border);
             border-radius: 8px;
+            background: var(--white);
+            color: var(--dark);
+            transition: var(--transition);
+        }
+
+        body.dark-mode .form-group input,
+        body.dark-mode .form-group textarea,
+        body.dark-mode .form-group select {
+            background: var(--white);
+            border-color: var(--border);
+            color: var(--dark);
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
         }
 
         .add-btn {
-            background: var(--success);
+            background: var(--gradient-primary);
             color: white;
             padding: 0.75rem 1.5rem;
             border: none;
             border-radius: 8px;
             cursor: pointer;
             font-weight: 600;
+            transition: var(--transition);
+            white-space: nowrap;
+        }
+
+        .add-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-sm);
         }
 
         .list {
             list-style: none;
+            margin-top: 1rem;
         }
 
         .list-item {
@@ -137,16 +268,61 @@
             justify-content: space-between;
             align-items: center;
             padding: 1rem;
-            border-bottom: 1px solid var(--border);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
+            background: var(--light);
+        }
+
+        body.dark-mode .list-item {
+            background: var(--light);
+            border-color: var(--border);
+        }
+
+        .list-item span {
+            flex: 1;
+            color: var(--medium);
+        }
+
+        .list-item a {
+            color: var(--primary);
+            text-decoration: none;
+            margin-right: 1rem;
+        }
+
+        .list-item a:hover {
+            text-decoration: underline;
+        }
+
+        .delete-btn,
+        .edit-btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            margin-left: 0.5rem;
+            transition: var(--transition);
         }
 
         .delete-btn {
             background: var(--danger);
             color: white;
-            padding: 0.5rem 1rem;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
+        }
+
+        .delete-btn:hover {
+            background: #dc2626;
+            transform: translateY(-1px);
+        }
+
+        .edit-btn {
+            background: var(--secondary);
+            color: white;
+        }
+
+        .edit-btn:hover {
+            background: var(--secondary-dark);
+            transform: translateY(-1px);
         }
 
         .stats-grid {
@@ -161,12 +337,76 @@
             padding: 1rem;
             border-radius: 8px;
             text-align: center;
+            border: 1px solid var(--border);
+        }
+
+        body.dark-mode .stat {
+            background: var(--light);
+            border-color: var(--border);
         }
 
         .stat-value {
             font-size: 1.5rem;
             font-weight: 700;
             color: var(--primary);
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .stat div:last-child {
+            color: var(--medium);
+            font-size: 0.9rem;
+            margin-top: 0.25rem;
+        }
+
+        .edit-modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+        }
+
+        .edit-modal-content {
+            background: var(--white);
+            margin: 10% auto;
+            padding: 2rem;
+            border-radius: 12px;
+            max-width: 500px;
+            width: 90%;
+            position: relative;
+            border: 1px solid var(--border);
+        }
+
+        body.dark-mode .edit-modal-content {
+            background: var(--white);
+            border-color: var(--border);
+        }
+
+        .close-edit {
+            position: absolute;
+            top: 1rem;
+            right: 1.5rem;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--medium);
+        }
+
+        .close-edit:hover {
+            color: var(--danger);
+        }
+
+        @media (max-width: 768px) {
+            .container { padding: 1rem; }
+            .form-group { flex-direction: column; }
+            .form-group input, .form-group textarea, .form-group select { min-width: auto; }
+            .dashboard-header { flex-direction: column; gap: 1rem; padding: 1rem; }
+            .header-actions { order: -1; width: 100%; justify-content: center; }
+            .list-item { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+            .stats-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -175,7 +415,7 @@
         <div class="login-form" id="loginForm">
             <h2>Admin Login</h2>
             <form onsubmit="login(event)">
-                <input type="password" id="password" placeholder="Enter password " required>
+                <input type="password" id="password" placeholder="Enter password" required>
                 <button type="submit" class="login-btn">Login</button>
             </form>
         </div>
@@ -183,7 +423,12 @@
         <div class="dashboard" id="dashboard">
             <div class="dashboard-header">
                 <h1>GTUverse Admin Panel</h1>
-                <button class="logout-btn" onclick="logout()">Logout</button>
+                <div class="header-actions">
+                    <button class="dark-toggle" onclick="toggleDarkMode()" aria-label="Toggle Dark Mode">
+                        <i class="fas fa-moon" id="adminDarkToggleIcon"></i>
+                    </button>
+                    <button class="logout-btn" onclick="logout()">Logout</button>
+                </div>
             </div>
 
             <div class="section">
@@ -203,7 +448,7 @@
                     </div>
                     <div class="stat">
                         <div class="stat-value" id="totalPoints">0</div>
-                        <div>Total Points Earned</div>
+                        <div>Total Points Earned (Global)</div>
                     </div>
                 </div>
             </div>
@@ -213,7 +458,7 @@
                 <form onsubmit="addPaper(event)" class="form-group">
                     <input type="text" placeholder="Title (e.g., DBMS Sem 5)" required>
                     <input type="text" placeholder="Branch (e.g., CE)" required>
-                    <input type="number" placeholder="Semester (e.g., 5)" required>
+                    <input type="number" placeholder="Semester (e.g., 5)" min="1" max="8" required>
                     <input type="url" placeholder="PDF URL" required>
                     <button type="submit" class="add-btn">Add Paper</button>
                 </form>
@@ -235,7 +480,7 @@
                 <form onsubmit="addQuiz(event)" class="form-group">
                     <input type="text" placeholder="Question (e.g., What is DBMS?)" required>
                     <input type="text" placeholder="Answer (e.g., Database Management System)" required>
-                    <input type="number" placeholder="Points (e.g., 10)" required>
+                    <input type="number" placeholder="Points (e.g., 10)" min="1" required>
                     <button type="submit" class="add-btn">Add Quiz</button>
                 </form>
                 <ul class="list" id="quizzesList"></ul>
@@ -243,8 +488,47 @@
         </div>
     </div>
 
+    <!-- Edit Modal -->
+    <div id="editModal" class="edit-modal">
+        <div class="edit-modal-content">
+            <span class="close-edit" onclick="closeEditModal()">&times;</span>
+            <h3 id="editModalTitle">Edit Item</h3>
+            <form id="editForm" onsubmit="saveEdit(event)">
+                <input type="hidden" id="editType" name="type">
+                <input type="hidden" id="editId" name="id">
+                <div class="form-group">
+                    <input type="text" id="editTitle" placeholder="Title" required>
+                </div>
+                <div class="form-group">
+                    <input type="text" id="editDesc" placeholder="Description/Answer" required>
+                </div>
+                <div class="form-group" id="editExtra" style="display: none;">
+                    <input type="text" id="editBranch" placeholder="Branch">
+                    <input type="number" id="editSem" placeholder="Semester">
+                    <input type="url" id="editUrl" placeholder="URL">
+                    <input type="number" id="editPoints" placeholder="Points">
+                </div>
+                <button type="submit" class="add-btn">Save Changes</button>
+            </form>
+        </div>
+    </div>
+
     <script>
         const PASSWORD = 'Panth@IJ#09'; // Change for production
+
+        // Dark Mode for Admin
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const isDark = document.body.classList.contains('dark-mode');
+            const icon = document.getElementById('adminDarkToggleIcon');
+            icon.classList.toggle('fa-moon', !isDark);
+            icon.classList.toggle('fa-sun', isDark);
+            localStorage.setItem('darkMode', isDark);
+        }
+
+        if (localStorage.getItem('darkMode') === 'true') {
+            toggleDarkMode();
+        }
 
         function login(e) {
             e.preventDefault();
@@ -254,6 +538,7 @@
                 loadData();
             } else {
                 alert('Invalid password');
+                document.getElementById('password').value = '';
             }
         }
 
@@ -264,12 +549,21 @@
         }
 
         function loadData() {
+            // Ensure DB is initialized
+            if (!localStorage.getItem('papers')) localStorage.setItem('papers', '[]');
+            if (!localStorage.getItem('announcements')) localStorage.setItem('announcements', '[]');
+            if (!localStorage.getItem('quizzes')) localStorage.setItem('quizzes', '[]');
+            if (!localStorage.getItem('totalPoints')) localStorage.setItem('totalPoints', '0');
+
             // Load Papers
             const papers = JSON.parse(localStorage.getItem('papers') || '[]');
             document.getElementById('papersList').innerHTML = papers.map(p => `
                 <li class="list-item">
                     <span>${p.title} (${p.branch} Sem ${p.sem}) - <a href="${p.url}" target="_blank">View</a></span>
-                    <button class="delete-btn" onclick="deleteItem('papers', ${p.id})">Delete</button>
+                    <div>
+                        <button class="edit-btn" onclick="editItem('papers', ${p.id})">Edit</button>
+                        <button class="delete-btn" onclick="deleteItem('papers', ${p.id})">Delete</button>
+                    </div>
                 </li>
             `).join('');
 
@@ -278,7 +572,10 @@
             document.getElementById('announcementsList').innerHTML = announcements.map(a => `
                 <li class="list-item">
                     <span>${a.title}: ${a.desc}</span>
-                    <button class="delete-btn" onclick="deleteItem('announcements', ${a.id})">Delete</button>
+                    <div>
+                        <button class="edit-btn" onclick="editItem('announcements', ${a.id})">Edit</button>
+                        <button class="delete-btn" onclick="deleteItem('announcements', ${a.id})">Delete</button>
+                    </div>
                 </li>
             `).join('');
 
@@ -287,7 +584,10 @@
             document.getElementById('quizzesList').innerHTML = quizzes.map(q => `
                 <li class="list-item">
                     <span>${q.question} (Answer: ${q.answer}, Points: ${q.points})</span>
-                    <button class="delete-btn" onclick="deleteItem('quizzes', ${q.id})">Delete</button>
+                    <div>
+                        <button class="edit-btn" onclick="editItem('quizzes', ${q.id})">Edit</button>
+                        <button class="delete-btn" onclick="deleteItem('quizzes', ${q.id})">Delete</button>
+                    </div>
                 </li>
             `).join('');
 
@@ -295,18 +595,22 @@
             document.getElementById('totalPapers').textContent = papers.length;
             document.getElementById('totalAnnouncements').textContent = announcements.length;
             document.getElementById('totalQuizzes').textContent = quizzes.length;
-            document.getElementById('totalPoints').textContent = localStorage.getItem('points') || 0;
+            document.getElementById('totalPoints').textContent = parseInt(localStorage.getItem('totalPoints') || 0).toLocaleString();
         }
 
         function addPaper(e) {
             e.preventDefault();
             const inputs = e.target.querySelectorAll('input');
             const [title, branch, sem, url] = inputs;
+            if (!title.value.trim() || !branch.value.trim() || !sem.value || !url.value.trim()) {
+                alert('Please fill all fields.');
+                return;
+            }
             const papers = JSON.parse(localStorage.getItem('papers') || '[]');
             const newId = papers.length ? Math.max(...papers.map(p => p.id)) + 1 : 1;
-            papers.push({ id: newId, title: title.value, branch: branch.value, sem: parseInt(sem.value), url: url.value });
+            papers.push({ id: newId, title: title.value.trim(), branch: branch.value.trim().toUpperCase(), sem: parseInt(sem.value), url: url.value.trim() });
             localStorage.setItem('papers', JSON.stringify(papers));
-            alert('Paper added! Live on site now.');
+            alert('Paper added successfully! Live on site now.');
             loadData();
             e.target.reset();
         }
@@ -315,12 +619,15 @@
             e.preventDefault();
             const inputs = e.target.querySelectorAll('input, textarea');
             const [title, desc] = inputs;
+            if (!title.value.trim() || !desc.value.trim()) {
+                alert('Please fill all fields.');
+                return;
+            }
             const announcements = JSON.parse(localStorage.getItem('announcements') || '[]');
             const newId = announcements.length ? Math.max(...announcements.map(a => a.id)) + 1 : 1;
-            announcements.push({ id: newId, title: title.value, desc: desc.value });
+            announcements.push({ id: newId, title: title.value.trim(), desc: desc.value.trim() });
             localStorage.setItem('announcements', JSON.stringify(announcements));
             alert('Announcement added & notification triggered! Live on site now.');
-            // Simulate notification trigger (main site will show on load/view)
             loadData();
             e.target.reset();
         }
@@ -329,22 +636,127 @@
             e.preventDefault();
             const inputs = e.target.querySelectorAll('input');
             const [question, answer, points] = inputs;
+            if (!question.value.trim() || !answer.value.trim() || !points.value) {
+                alert('Please fill all fields.');
+                return;
+            }
             const quizzes = JSON.parse(localStorage.getItem('quizzes') || '[]');
             const newId = quizzes.length ? Math.max(...quizzes.map(q => q.id)) + 1 : 1;
-            quizzes.push({ id: newId, question: question.value, answer: answer.value, points: parseInt(points.value) });
+            quizzes.push({ id: newId, question: question.value.trim(), answer: answer.value.trim(), points: parseInt(points.value) });
             localStorage.setItem('quizzes', JSON.stringify(quizzes));
-            alert('Quiz added! Live on site now.');
+            alert('Quiz added successfully! Live on site now.');
             loadData();
             e.target.reset();
         }
 
         function deleteItem(type, id) {
+            if (!confirm(`Are you sure you want to delete this ${type}?`)) return;
             let items = JSON.parse(localStorage.getItem(type) || '[]');
             items = items.filter(i => i.id !== id);
             localStorage.setItem(type, JSON.stringify(items));
-            alert(`${type} item deleted! Changes live on site.`);
+            alert(`${type.charAt(0).toUpperCase() + type.slice(1)} item deleted! Changes live on site.`);
             loadData();
         }
+
+        // Edit Functionality
+        let editingItem = null;
+
+        function editItem(type, id) {
+            editingItem = { type, id };
+            const items = JSON.parse(localStorage.getItem(type) || '[]');
+            const item = items.find(i => i.id === id);
+            if (!item) return;
+
+            document.getElementById('editType').value = type;
+            document.getElementById('editId').value = id;
+            document.getElementById('editTitle').value = item.title || item.question || '';
+            document.getElementById('editDesc').value = item.desc || item.answer || '';
+
+            const extraDiv = document.getElementById('editExtra');
+            extraDiv.style.display = 'none';
+            if (type === 'papers') {
+                document.getElementById('editModalTitle').textContent = 'Edit Paper';
+                extraDiv.style.display = 'flex';
+                document.getElementById('editBranch').value = item.branch || '';
+                document.getElementById('editSem').value = item.sem || '';
+                document.getElementById('editUrl').value = item.url || '';
+            } else if (type === 'announcements') {
+                document.getElementById('editModalTitle').textContent = 'Edit Announcement';
+                document.getElementById('editTitle').placeholder = 'Title';
+                document.getElementById('editDesc').placeholder = 'Description';
+            } else if (type === 'quizzes') {
+                document.getElementById('editModalTitle').textContent = 'Edit Quiz';
+                document.getElementById('editTitle').placeholder = 'Question';
+                document.getElementById('editDesc').placeholder = 'Answer';
+                extraDiv.style.display = 'flex';
+                document.getElementById('editPoints').value = item.points || '';
+                extraDiv.innerHTML = `
+                    <input type="number" id="editPoints" placeholder="Points" value="${item.points || ''}" required>
+                `;
+            }
+
+            document.getElementById('editModal').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeEditModal() {
+            document.getElementById('editModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+            document.getElementById('editForm').reset();
+            editingItem = null;
+        }
+
+        function saveEdit(e) {
+            e.preventDefault();
+            if (!editingItem) return;
+
+            const type = document.getElementById('editType').value;
+            const id = parseInt(document.getElementById('editId').value);
+            let items = JSON.parse(localStorage.getItem(type) || '[]');
+            const index = items.findIndex(i => i.id === id);
+            if (index === -1) return;
+
+            if (type === 'papers') {
+                items[index] = {
+                    ...items[index],
+                    title: document.getElementById('editTitle').value.trim(),
+                    branch: document.getElementById('editBranch').value.trim().toUpperCase(),
+                    sem: parseInt(document.getElementById('editSem').value),
+                    url: document.getElementById('editUrl').value.trim()
+                };
+            } else if (type === 'announcements') {
+                items[index] = {
+                    ...items[index],
+                    title: document.getElementById('editTitle').value.trim(),
+                    desc: document.getElementById('editDesc').value.trim()
+                };
+            } else if (type === 'quizzes') {
+                items[index] = {
+                    ...items[index],
+                    question: document.getElementById('editTitle').value.trim(),
+                    answer: document.getElementById('editDesc').value.trim(),
+                    points: parseInt(document.getElementById('editPoints').value)
+                };
+            }
+
+            localStorage.setItem(type, JSON.stringify(items));
+            alert('Item updated successfully! Changes live on site.');
+            loadData();
+            closeEditModal();
+        }
+
+        // Close edit modal on outside click or ESC
+        window.onclick = (event) => {
+            const modal = document.getElementById('editModal');
+            if (event.target === modal) closeEditModal();
+        };
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeEditModal();
+        });
+
+        // Initialize on load
+        window.addEventListener('load', loadData);
     </script>
 </body>
 </html>
