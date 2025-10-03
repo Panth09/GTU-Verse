@@ -1437,13 +1437,13 @@
             <a href="papers.html">Papers</a>
             <a href="books.html">Books</a>
             <a href="announcements.html">Announcements</a>
-            <a href="#contact" onclick="openModal(event)">Contact</a>
+            <a href="#contact" onclick="window.openModal(event)">Contact</a>
         </div>
     </footer>
 
     <div id="contactModal" class="modal" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
         <div class="modal-content">
-            <span class="close" onclick="closeModal()" aria-label="Close modal">&times;</span>
+            <span class="close" onclick="window.closeModal()" aria-label="Close modal">&times;</span>
             <h3 id="modalTitle">Let's Connect!</h3>
             <p>Share your thoughts, suggest resources, or report issues. We respond within 24 hours.</p>
             <form id="contactForm" action="mailto:gtu.versebyij@gmail.com" method="post" enctype="text/plain">
@@ -1544,7 +1544,7 @@ window.addEventListener('load', () => {
 });
 
         // Dark Mode Toggle with Local Storage
-        function toggleDarkMode() {
+        window.toggleDarkMode = function() {
             document.body.classList.toggle('dark-mode');
             const isDark = document.body.classList.contains('dark-mode');
             const icon = document.getElementById('darkToggleIcon');
@@ -1554,11 +1554,11 @@ window.addEventListener('load', () => {
         }
 
         if (localStorage.getItem('darkMode') === 'true') {
-            toggleDarkMode();
+            window.toggleDarkMode();
         }
 
         // Mobile Menu Toggle
-        function toggleMenu() {
+        window.toggleMenu = function() {
             const navLinks = document.getElementById('navLinks');
             const hamburger = document.getElementById('hamburger');
             navLinks.classList.toggle('active');
@@ -1696,14 +1696,14 @@ window.addEventListener('load', () => {
         };
 
         // Modal Functions
-        function openModal(e) {
+        window.openModal = function(e) {
             e?.preventDefault();
             document.getElementById('contactModal').style.display = 'block';
             document.getElementById('contactModal').setAttribute('aria-hidden', 'false');
             document.body.style.overflow = 'hidden';
         }
 
-        function closeModal() {
+        window.closeModal = function() {
             document.getElementById('contactModal').style.display = 'none';
             document.getElementById('contactModal').setAttribute('aria-hidden', 'true');
             document.body.style.overflow = 'auto';
@@ -1712,11 +1712,11 @@ window.addEventListener('load', () => {
         // Close modal on outside click or ESC
         window.addEventListener('click', (event) => {
             const modal = document.getElementById('contactModal');
-            if (event.target === modal) closeModal();
+            if (event.target === modal) window.closeModal();
         });
 
         window.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') closeModal();
+            if (e.key === 'Escape') window.closeModal();
         });
 
         // Smooth Scrolling for Internal Links
