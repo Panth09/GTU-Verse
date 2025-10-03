@@ -67,7 +67,6 @@
             height: 100%;
             z-index: -1;
             overflow: hidden;
-            pointer-events: none;
         }
 
         .bg-shape {
@@ -75,7 +74,6 @@
             border-radius: 50%;
             filter: blur(80px);
             opacity: 0.1;
-            will-change: transform;
             animation: float 25s ease-in-out infinite;
         }
 
@@ -107,9 +105,9 @@
         }
 
         @keyframes float {
-            0%, 100% { transform: translate3d(0, 0, 0) rotate(0deg) scale(1); }
-            33% { transform: translate3d(30px, -30px, 0) rotate(120deg) scale(1.05); }
-            66% { transform: translate3d(-20px, 20px, 0) rotate(240deg) scale(0.95); }
+            0%, 100% { transform: translate(0, 0) rotate(0deg) scale(1); }
+            33% { transform: translate(30px, -30px) rotate(120deg) scale(1.05); }
+            66% { transform: translate(-20px, 20px) rotate(240deg) scale(0.95); }
         }
 
         header {
@@ -167,7 +165,6 @@
             background: var(--gradient-primary);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            background-clip: text;
             animation: pulse 2s ease-in-out infinite;
         }
 
@@ -280,7 +277,6 @@
             background: var(--gradient-1);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            background-clip: text;
             animation: fadeInUp 0.8s ease-out;
             line-height: 1.1;
         }
@@ -458,6 +454,7 @@
 
         .stat-card:hover .stat-icon { 
             transform: rotate(360deg) scale(1.1); 
+            animation-duration: 0.5s;
         }
 
         .stat-number {
@@ -493,7 +490,6 @@
             background: var(--gradient-1);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            background-clip: text;
             line-height: 1.2;
         }
 
@@ -623,7 +619,6 @@
             color: var(--secondary);
             font-size: 1rem;
             width: 20px;
-            flex-shrink: 0;
         }
 
         .feature-link {
@@ -666,7 +661,6 @@
             height: 200%;
             background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
             animation: float 8s ease-in-out infinite;
-            pointer-events: none;
         }
 
         .cta-banner h2 {
@@ -777,7 +771,7 @@
 
         .resource-body li:last-child { border-bottom: none; }
 
-        .resource-body li i { color: var(--secondary); font-size: 1rem; width: 20px; flex-shrink: 0; }
+        .resource-body li i { color: var(--secondary); font-size: 1rem; width: 20px; }
 
         .papers, .announcements, .books {
             padding: 6rem 2rem;
@@ -793,28 +787,19 @@
             gap: 1rem;
             margin-bottom: 2rem;
             flex-wrap: wrap;
-            align-items: flex-end;
         }
 
         .filters label {
             display: flex;
-            flex-direction: column;
+            align-items: center;
             gap: 0.5rem;
         }
 
         .filters input, .filters select {
             padding: 0.75rem;
-            border: 2px solid var(--border);
+            border: 1px solid var(--border);
             border-radius: 8px;
             font-size: 1rem;
-            background: var(--white);
-            color: var(--dark);
-            transition: var(--transition);
-        }
-
-        .filters input:focus, .filters select:focus {
-            outline: none;
-            border-color: var(--primary);
         }
 
         .filters button {
@@ -825,12 +810,6 @@
             border-radius: 8px;
             cursor: pointer;
             font-weight: 600;
-            transition: var(--transition);
-        }
-
-        .filters button:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-md);
         }
 
         .papers-list, .announcements-list, .books-list {
@@ -873,12 +852,6 @@
             color: var(--secondary);
             text-decoration: none;
             font-weight: 500;
-            transition: var(--transition);
-        }
-
-        .paper-link:hover, .book-link:hover {
-            color: var(--secondary-dark);
-            text-decoration: underline;
         }
 
         .announcement-item.top-ann {
@@ -930,7 +903,6 @@
             background: var(--gradient-1);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            background-clip: text;
         }
 
         .contact p {
@@ -1086,7 +1058,6 @@
             transition: var(--transition);
             background: var(--white);
             color: var(--dark);
-            font-family: inherit;
         }
 
         body.dark-mode .form-group input,
@@ -1135,12 +1106,17 @@
         }
 
         .typewriter {
-            display: inline-block;
+            overflow: hidden;
             border-right: 0.15em solid var(--primary);
             white-space: nowrap;
-            letter-spacing: 0.05em;
-            animation: blink-caret 0.75s step-end infinite;
-            min-width: 200px;
+            margin: 0 auto;
+            letter-spacing: 0.15em;
+            animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+        }
+
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
         }
 
         @keyframes blink-caret {
@@ -1197,7 +1173,6 @@
             .hero h1 { font-size: 2.5rem; }
             .cta-button { padding: 1rem 2rem; font-size: 1rem; }
             .features-grid { grid-template-columns: 1fr; }
-            .quick-links { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -1210,7 +1185,7 @@
 
     <header id="header">
         <nav>
-            <a href="https://gtu-verse.vercel.app" class="logo" aria-label="GTUverse Home">
+            <a href="https://gtu-verse.vercel.app" class="logo">
                 <i class="fas fa-graduation-cap"></i>
                 <span>GTUverse</span>
             </a>
@@ -1222,7 +1197,7 @@
                 <li><a href="announcements.html">Announcements</a></li>
                 <li><a href="books.html">Books</a></li>
                 <li><a href="#contact" onclick="window.openModal(event)">Contact</a></li>
-                <li><a href="https://chat.whatsapp.com/LLq6Sn0gvqwHHIJxxNaNaM" target="_blank" rel="noopener noreferrer" class="whatsapp-btn">
+                <li><a href="https://chat.whatsapp.com/LLq6Sn0gvqwHHIJxxNaNaM" target="_blank" class="whatsapp-btn">
                     <i class="fab fa-whatsapp"></i> Join Community
                 </a></li>
                 <li><button class="dark-toggle" onclick="window.toggleDarkMode()" aria-label="Toggle Dark Mode">
@@ -1241,7 +1216,7 @@
         <div class="hero-content">
             <h1>Empower Your <span class="typewriter" id="typewriter"></span></h1>
             <p class="hero-subtitle">Access midsem papers, books, earn 100 activity points effortlessly, stay updated with instant announcements, and join 1000+ students excelling together in GTU.</p>
-            <a href="https://chat.whatsapp.com/LLq6Sn0gvqwHHIJxxNaNaM" target="_blank" rel="noopener noreferrer" class="cta-button" aria-label="Join WhatsApp Community">
+            <a href="https://chat.whatsapp.com/LLq6Sn0gvqwHHIJxxNaNaM" target="_blank" class="cta-button" aria-label="Join WhatsApp Community">
                 <i class="fab fa-whatsapp"></i>
                 Join & Start Winning Points
             </a>
@@ -1249,7 +1224,7 @@
                 <a href="papers.html" class="quick-link"><i class="fas fa-file-alt"></i> Papers</a>
                 <a href="books.html" class="quick-link"><i class="fas fa-book"></i> Books</a>
                 <a href="announcements.html" class="quick-link"><i class="fas fa-bullhorn"></i> Announcements</a>
-                <a href="https://chat.whatsapp.com/LLq6Sn0gvqwHHIJxxNaNaM" target="_blank" rel="noopener noreferrer" class="quick-link"><i class="fab fa-whatsapp"></i> Community</a>
+                <a href="https://chat.whatsapp.com/LLq6Sn0gvqwHHIJxxNaNaM" target="_blank" class="quick-link"><i class="fab fa-whatsapp"></i> Community</a>
             </div>
         </div>
     </section>
@@ -1304,7 +1279,7 @@
                     <li><i class="fas fa-check"></i> Instant PDF downloads</li>
                     <li><i class="fas fa-check"></i> AI-powered search & tags</li>
                 </ul>
-                <a href="papers.html" class="feature-link">View All Papers <i class="fas fa-arrow-right"></i></a>
+                <a href="papers.html" class="feature-link"><i class="fas fa-arrow-right"></i> View All Papers</a>
             </div>
             <div class="feature-card fade-in">
                 <div class="feature-icon">
@@ -1317,7 +1292,7 @@
                     <li><i class="fas fa-check"></i> Branch-specific resources</li>
                     <li><i class="fas fa-check"></i> Free PDF downloads</li>
                 </ul>
-                <a href="books.html" class="feature-link">Explore Books <i class="fas fa-arrow-right"></i></a>
+                <a href="books.html" class="feature-link"><i class="fas fa-arrow-right"></i> Explore Books</a>
             </div>
             <div class="feature-card fade-in">
                 <div class="feature-icon">
@@ -1330,7 +1305,7 @@
                     <li><i class="fas fa-check"></i> Verified activity suggestions</li>
                     <li><i class="fas fa-check"></i> Community-driven tips</li>
                 </ul>
-                <a href="https://chat.whatsapp.com/LLq6Sn0gvqwHHIJxxNaNaM" target="_blank" rel="noopener noreferrer" class="feature-link">Go here for GTU 100 Activity Points <i class="fas fa-arrow-right"></i></a>
+                <a href="https://chat.whatsapp.com/LLq6Sn0gvqwHHIJxxNaNaM" target="_blank" class="feature-link"><i class="fas fa-arrow-right"></i> Go here for GTU 100 Activity Points</a>
             </div>
             <div class="feature-card fade-in">
                 <div class="feature-icon">
@@ -1343,7 +1318,7 @@
                     <li><i class="fas fa-check"></i> Categorized feeds</li>
                     <li><i class="fas fa-check"></i> 1-year archive</li>
                 </ul>
-                <a href="announcements.html" class="feature-link">View Alerts <i class="fas fa-arrow-right"></i></a>
+                <a href="announcements.html" class="feature-link"><i class="fas fa-arrow-right"></i> View Alerts</a>
             </div>
             <div class="feature-card fade-in">
                 <div class="feature-icon">
@@ -1356,7 +1331,7 @@
                     <li><i class="fas fa-check"></i> Live Q&A sessions</li>
                     <li><i class="fas fa-check"></i> Mentorship matches</li>
                 </ul>
-                <a href="https://chat.whatsapp.com/LLq6Sn0gvqwHHIJxxNaNaM" target="_blank" rel="noopener noreferrer" class="feature-link">Join Hub <i class="fas fa-arrow-right"></i></a>
+                <a href="https://chat.whatsapp.com/LLq6Sn0gvqwHHIJxxNaNaM" target="_blank" class="feature-link"><i class="fas fa-arrow-right"></i> Join Hub</a>
             </div>
         </div>
     </section>
@@ -1364,7 +1339,7 @@
     <div class="cta-banner fade-in">
         <h2>Ready to Ace GTU Like Never Before?</h2>
         <p>Thousands of students are transforming their academic game. Free access, zero ads, and results that speak for themselves. Start your journey in under 30 seconds.</p>
-        <a href="https://chat.whatsapp.com/LLq6Sn0gvqwHHIJxxNaNaM" target="_blank" rel="noopener noreferrer" class="cta-button">
+        <a href="https://chat.whatsapp.com/LLq6Sn0gvqwHHIJxxNaNaM" target="_blank" class="cta-button">
             <i class="fab fa-whatsapp"></i>
             Get Started Free - Join 1500+ Students
         </a>
@@ -1376,8 +1351,8 @@
             <p class="section-subtitle">Browse and download all available papers added via admin panel. Filter by college and branch.</p>
         </div>
         <div class="filters">
-            <label>College: <input id="filterCollege" placeholder="e.g., LDCE" aria-label="Filter by college"></label>
-            <label>Branch: <select id="filterBranch" aria-label="Filter by branch">
+            <label>College: <input id="filterCollege" placeholder="e.g., LDCE"></label>
+            <label>Branch: <select id="filterBranch">
                 <option value="">All</option>
                 <option value="CE">CE</option>
                 <option value="IT">IT</option>
@@ -1392,10 +1367,10 @@
         </div>
         <h3>Midsem Papers</h3>
         <ul class="papers-list" id="midsemList"></ul>
-        <a href="papers.html" class="show-more">Show More Papers <i class="fas fa-arrow-right"></i></a>
+        <a href="papers.html" class="show-more">Show More Papers</a>
         <h3>GTU Exam Papers</h3>
         <ul class="papers-list" id="gtuList"></ul>
-        <a href="papers.html" class="show-more">Show More Papers <i class="fas fa-arrow-right"></i></a>
+        <a href="papers.html" class="show-more">Show More Papers</a>
     </section>
 
     <section class="books" id="books">
@@ -1404,20 +1379,20 @@
             <p class="section-subtitle">Access GTU-recommended textbooks and reference materials for all branches and semesters.</p>
         </div>
         <div class="filters">
-            <label>College: <input id="filterBookCollege" placeholder="e.g., LDCE" aria-label="Filter books by college"></label>
-            <label>Branch: <select id="filterBookBranch" aria-label="Filter books by branch">
+            <label>College: <input id="filterBookCollege" placeholder="e.g., LDCE"></label>
+            <label>Branch: <select id="filterBookBranch">
                 <option value="">All</option>
                 <option value="CE">CE</option>
                 <option value="IT">IT</option>
                 <option value="ME">ME</option>
                 <option value="EC">EC</option>
-                <option value="EE">EE>
+                <option value="EE">EE</option>
                 
             </select></label>
             <button onclick="window.filterBooks()">Filter</button>
         </div>
         <ul class="books-list" id="booksList"></ul>
-        <a href="books.html" class="show-more">Show More Books <i class="fas fa-arrow-right"></i></a>
+        <a href="books.html" class="show-more">Show More Books</a>
     </section>
 
     <section class="announcements" id="announcements">
@@ -1426,7 +1401,7 @@
             <p class="section-subtitle">Stay updated with the latest GTU news and alerts.</p>
         </div>
         <ul class="announcements-list" id="allAnnouncementsList"></ul>
-        <a href="announcements.html" class="show-more">Show More Announcements <i class="fas fa-arrow-right"></i></a>
+        <a href="announcements.html" class="show-more">Show More Announcements</a>
     </section>
 
     <section class="contact" id="contact">
@@ -1472,7 +1447,7 @@
         </div>
     </div>
 
-    <script type="module">
+    <script type="module" defer>
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
         import { getFirestore, collection, getDocs, query, orderBy, where, limit } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
@@ -1489,39 +1464,41 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        const typewriterWords = ['GTU Journey', 'Success', 'Excellence', 'Mastery', 'Achievement'];
-        const typewriterEl = document.getElementById('typewriter');
-        let wordIndex = 0;
-        let charIndex = 0;
-        let isDeleting = false;
+       // Typewriter Effect for Hero
+const typewriterWords = ['GTU Journey', 'Success', 'Excellence', 'Mastery', 'Achievement'];
+const typewriterEl = document.getElementById('typewriter');
+let wordIndex = 0;
+let charIndex = 0;
+let isDeleting = false;
 
-        function typeWriter() {
-            const currentWord = typewriterWords[wordIndex];
-            if (!isDeleting && charIndex < currentWord.length) {
-                typewriterEl.textContent = currentWord.substring(0, charIndex + 1);
-                charIndex++;
-                setTimeout(typeWriter, 100);
-            } else if (isDeleting && charIndex > 0) {
-                typewriterEl.textContent = currentWord.substring(0, charIndex - 1);
-                charIndex--;
-                setTimeout(typeWriter, 50);
-            } else if (!isDeleting && charIndex === currentWord.length) {
-                setTimeout(() => {
-                    isDeleting = true;
-                    typeWriter();
-                }, 1000);
-            } else if (isDeleting && charIndex === 0) {
-                isDeleting = false;
-                wordIndex = (wordIndex + 1) % typewriterWords.length;
-                setTimeout(typeWriter, 200);
-            }
-        }
-
-        window.addEventListener('load', () => {
+function typeWriter() {
+    const currentWord = typewriterWords[wordIndex];
+    if (!isDeleting && charIndex < currentWord.length) {
+        // Typing characters
+        typewriterEl.innerHTML = currentWord.substring(0, charIndex + 1);
+        charIndex++;
+        setTimeout(typeWriter, 100);
+    } else if (isDeleting && charIndex > 0) {
+        // Deleting characters
+        typewriterEl.innerHTML = currentWord.substring(0, charIndex - 1);
+        charIndex--;
+        setTimeout(typeWriter, 50);
+    } else if (!isDeleting && charIndex === currentWord.length) {
+        // Pause at end of word
+        setTimeout(() => {
+            isDeleting = true;
             typeWriter();
-            loadResourcesLazy();
-        });
+        }, 1000);
+    } else if (isDeleting && charIndex === 0) {
+        // Move to next word
+        isDeleting = false;
+        wordIndex = (wordIndex + 1) % typewriterWords.length;
+        setTimeout(typeWriter, 200);
+    }
+}
+window.addEventListener('load', typeWriter);
 
+        // Dark Mode Toggle with Local Storage
         window.toggleDarkMode = function() {
             document.body.classList.toggle('dark-mode');
             const isDark = document.body.classList.contains('dark-mode');
@@ -1535,6 +1512,7 @@
             window.toggleDarkMode();
         }
 
+        // Mobile Menu Toggle
         window.toggleMenu = function() {
             const navLinks = document.getElementById('navLinks');
             const hamburger = document.getElementById('hamburger');
@@ -1542,15 +1520,13 @@
             hamburger.classList.toggle('active');
         };
 
-        let scrollTimeout;
+        // Header Scroll Effect
         window.addEventListener('scroll', () => {
-            if (scrollTimeout) clearTimeout(scrollTimeout);
-            scrollTimeout = setTimeout(() => {
-                const header = document.getElementById('header');
-                header.classList.toggle('scrolled', window.scrollY > 50);
-            }, 10);
-        }, { passive: true });
+            const header = document.getElementById('header');
+            header.classList.toggle('scrolled', window.scrollY > 50);
+        });
 
+        // Animate Stats
         function animateStats() {
             const stats = document.querySelectorAll('.stat-number');
             stats.forEach(stat => {
@@ -1564,197 +1540,177 @@
                         current = target;
                         clearInterval(timer);
                     }
-                    stat.textContent = Math.floor(current).toLocaleString();                }, 16);
+                    stat.textContent = Math.floor(current).toLocaleString();
+                }, 16);
             });
         }
 
-        function loadResourcesLazy() {
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
+        // Intersection Observer for Animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    if (entry.target.closest('.stats')) {
+                        if (document.querySelector('.stat-number').textContent === '0') {
+                            animateStats();
+                        }
                     }
-                });
-            }, { threshold: 0.1 });
+                }
+            });
+        }, observerOptions);
 
-            document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 
-            loadPapers();
-            loadBooks();
-            loadAnnouncements();
-            animateStats();
-        }
-
-        async function loadPapers() {
-            try {
-                const midsemQuery = query(collection(db, 'papers'), where('type', '==', 'midsem'), orderBy('date', 'desc'), limit(5));
-                const midsemSnapshot = await getDocs(midsemQuery);
-                const midsemList = document.getElementById('midsemList');
-                midsemList.innerHTML = '';
-                midsemSnapshot.forEach(doc => {
-                    const data = doc.data();
-                    const li = document.createElement('li');
-                    li.className = 'paper-item';
-                    li.innerHTML = `
-                        <div class="paper-title">${data.title}</div>
-                        <div class="paper-desc">${data.description}</div>
-                        <a href="${data.link}" class="paper-link" target="_blank">Download PDF</a>
-                    `;
-                    midsemList.appendChild(li);
-                });
-
-                const gtuQuery = query(collection(db, 'papers'), where('type', '==', 'gtu'), orderBy('date', 'desc'), limit(5));
-                const gtuSnapshot = await getDocs(gtuQuery);
-                const gtuList = document.getElementById('gtuList');
-                gtuList.innerHTML = '';
-                gtuSnapshot.forEach(doc => {
-                    const data = doc.data();
-                    const li = document.createElement('li');
-                    li.className = 'paper-item';
-                    li.innerHTML = `
-                        <div class="paper-title">${data.title}</div>
-                        <div class="paper-desc">${data.description}</div>
-                        <a href="${data.link}" class="paper-link" target="_blank">Download PDF</a>
-                    `;
-                    gtuList.appendChild(li);
-                });
-            } catch (error) {
-                console.error('Error loading papers:', error);
-            }
-        }
-
+        // Load Papers with Limit
         window.filterPapers = async function() {
-            const college = document.getElementById('filterCollege').value.toLowerCase();
+            const collegeInput = document.getElementById('filterCollege').value.trim().toLowerCase();
             const branch = document.getElementById('filterBranch').value;
             try {
-                let q = collection(db, 'papers');
-                if (college) q = query(q, where('college', '>=', college), where('college', '<=', college + '\uf8ff'));
+                let q = query(collection(db, 'papers'), orderBy('createdAt', 'desc'), limit(5));
                 if (branch) q = query(q, where('branch', '==', branch));
-                q = query(q, orderBy('date', 'desc'), limit(10));
                 const snapshot = await getDocs(q);
-                const midsemList = document.getElementById('midsemList');
-                midsemList.innerHTML = '';
-                snapshot.forEach(doc => {
-                    const data = doc.data();
-                    const li = document.createElement('li');
-                    li.className = 'paper-item';
-                    li.innerHTML = `
-                        <div class="paper-title">${data.title}</div>
-                        <div class="paper-desc">${data.description}</div>
-                        <a href="${data.link}" class="paper-link" target="_blank">Download PDF</a>
-                    `;
-                    midsemList.appendChild(li);
-                });
+                let filtered = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+                if (collegeInput) {
+                    filtered = filtered.filter(p => p.college.toLowerCase().includes(collegeInput));
+                }
+                const midsem = filtered.filter(p => p.type === 'midsem');
+                const gtu = filtered.filter(p => p.type === 'gtu');
+                document.getElementById('midsemList').innerHTML = midsem.length > 0 ? midsem.map(p => `
+                    <li class="paper-item">
+                        <span class="paper-title">${p.title} (${p.branch} Sem ${p.sem}, ${p.college})</span>
+                        <p class="paper-desc">Download the paper and solutions.</p>
+                        <a href="${p.url}" target="_blank" class="paper-link">Download PDF <i class="fas fa-download"></i></a>
+                    </li>
+                `).join('') : '<p>No midsem papers match the filters.</p>';
+                document.getElementById('gtuList').innerHTML = gtu.length > 0 ? gtu.map(p => `
+                    <li class="paper-item">
+                        <span class="paper-title">${p.title} (${p.branch} Sem ${p.sem}, ${p.college})</span>
+                        <p class="paper-desc">Download the paper and solutions.</p>
+                        <a href="${p.url}" target="_blank" class="paper-link">Download PDF <i class="fas fa-download"></i></a>
+                    </li>
+                `).join('') : '<p>No GTU exam papers match the filters.</p>';
             } catch (error) {
                 console.error('Error filtering papers:', error);
+                alert('Error filtering papers. Check Firebase configuration and console for details.');
             }
         };
 
-        async function loadBooks() {
-            try {
-                const q = query(collection(db, 'books'), orderBy('title'), limit(10));
-                const snapshot = await getDocs(q);
-                const booksList = document.getElementById('booksList');
-                booksList.innerHTML = '';
-                snapshot.forEach(doc => {
-                    const data = doc.data();
-                    const li = document.createElement('li');
-                    li.className = 'book-item';
-                    li.innerHTML = `
-                        <div class="book-title">${data.title}</div>
-                        <div class="book-desc">${data.description}</div>
-                        <a href="${data.link}" class="book-link" target="_blank">Download Book</a>
-                    `;
-                    booksList.appendChild(li);
-                });
-            } catch (error) {
-                console.error('Error loading books:', error);
-            }
-        }
-
+        // Load Books with Limit
         window.filterBooks = async function() {
-            const college = document.getElementById('filterBookCollege').value.toLowerCase();
+            const collegeInput = document.getElementById('filterBookCollege').value.trim().toLowerCase();
             const branch = document.getElementById('filterBookBranch').value;
             try {
-                let q = collection(db, 'books');
-                if (college) q = query(q, where('college', '>=', college), where('college', '<=', college + '\uf8ff'));
+                let q = query(collection(db, 'books'), orderBy('createdAt', 'desc'), limit(5));
                 if (branch) q = query(q, where('branch', '==', branch));
-                q = query(q, orderBy('title'), limit(10));
                 const snapshot = await getDocs(q);
-                const booksList = document.getElementById('booksList');
-                booksList.innerHTML = '';
-                snapshot.forEach(doc => {
-                    const data = doc.data();
-                    const li = document.createElement('li');
-                    li.className = 'book-item';
-                    li.innerHTML = `
-                        <div class="book-title">${data.title}</div>
-                        <div class="book-desc">${data.description}</div>
-                        <a href="${data.link}" class="book-link" target="_blank">Download Book</a>
-                    `;
-                    booksList.appendChild(li);
-                });
+                let filtered = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+                if (collegeInput) {
+                    filtered = filtered.filter(b => b.college.toLowerCase().includes(collegeInput));
+                }
+                document.getElementById('booksList').innerHTML = filtered.length > 0 ? filtered.map(b => `
+                    <li class="book-item">
+                        <span class="book-title">${b.title} (${b.branch} Sem ${b.sem}, ${b.college})</span>
+                        <p class="book-desc">Download the textbook or reference material.</p>
+                        <a href="${b.url}" target="_blank" class="book-link">Download PDF <i class="fas fa-download"></i></a>
+                    </li>
+                `).join('') : '<p>No books match the filters.</p>';
             } catch (error) {
                 console.error('Error filtering books:', error);
+                alert('Error filtering books. Check Firebase configuration and console for details.');
             }
         };
 
-        async function loadAnnouncements() {
+        // Load Announcements with Limit
+        window.loadAllAnnouncements = async function() {
             try {
-                const q = query(collection(db, 'announcements'), orderBy('date', 'desc'), limit(5));
-                const snapshot = await getDocs(q);
+                const annQuery = query(collection(db, 'announcements'), orderBy('createdAt', 'desc'), limit(5));
+                const snapshot = await getDocs(annQuery);
+                let anns = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
                 const list = document.getElementById('allAnnouncementsList');
-                list.innerHTML = '';
-                snapshot.forEach(doc => {
-                    const data = doc.data();
-                    const li = document.createElement('li');
-                    li.className = `announcement-item ${data.priority === 'high' ? 'top-ann' : ''}`;
-                    li.innerHTML = `
-                        <div class="announcement-date">${new Date(data.date.toDate()).toLocaleDateString()}</div>
-                        <div class="announcement-title">${data.title}</div>
-                        <div class="announcement-desc">${data.description}</div>
-                        ${data.link ? `<a href="${data.link}" class="paper-link" target="_blank">Read More</a>` : ''}
-                    `;
-                    list.appendChild(li);
-                });
+                if (anns.length > 0) {
+                    list.innerHTML = anns.map((a, index) => `
+                        <li class="announcement-item ${index < 3 ? 'top-ann' : ''}">
+                            <span class="announcement-title">${a.title}</span>
+                            <p class="announcement-desc">${a.desc}</p>
+                            <div class="announcement-date">Posted on: ${a.date}</div>
+                        </li>
+                    `).join('');
+                } else {
+                    list.innerHTML = '<p>No announcements available yet. Add via admin panel.</p>';
+                }
             } catch (error) {
                 console.error('Error loading announcements:', error);
+                alert('Error loading announcements. Check Firebase configuration and console for details.');
             }
-        }
+        };
 
-        window.openModal = function(event) {
-            event.preventDefault();
+        // Modal Functions
+        window.openModal = function(e) {
+            e?.preventDefault();
             document.getElementById('contactModal').style.display = 'block';
+            document.getElementById('contactModal').setAttribute('aria-hidden', 'false');
             document.body.style.overflow = 'hidden';
         };
 
         window.closeModal = function() {
             document.getElementById('contactModal').style.display = 'none';
+            document.getElementById('contactModal').setAttribute('aria-hidden', 'true');
             document.body.style.overflow = 'auto';
         };
 
-        document.getElementById('contactForm').addEventListener('submit', (e) => {
-            e.preventDefault();
-            const formData = new FormData(e.target);
-            const subject = `GTUverse Inquiry: ${document.getElementById('name').value}`;
-            const body = `From: ${document.getElementById('email').value}\n\nMessage:\n${document.getElementById('message').value}`;
-            const mailto = `mailto:gtu.versebyij@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-            window.location.href = mailto;
-            window.closeModal();
-        });
-
-        document.addEventListener('click', (e) => {
+        // Close modal on outside click or ESC
+        window.addEventListener('click', (event) => {
             const modal = document.getElementById('contactModal');
-            if (e.target === modal) {
-                window.closeModal();
-            }
+            if (event.target === modal) window.closeModal();
         });
 
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                window.closeModal();
-            }
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') window.closeModal();
         });
+
+        // Smooth Scrolling for Internal Links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href').substring(1);
+                const targetElement = document.getElementById(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }
+                const navLinks = document.getElementById('navLinks');
+                const hamburger = document.getElementById('hamburger');
+                navLinks.classList.remove('active');
+                hamburger.classList.remove('active');
+            });
+        });
+
+        // Lazy Load Resources
+        const loadResources = async () => {
+            const papersSection = document.getElementById('papers');
+            const booksSection = document.getElementById('books');
+            const announcementsSection = document.getElementById('announcements');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        if (entry.target === papersSection) window.filterPapers();
+                        if (entry.target === booksSection) window.filterBooks();
+                        if (entry.target === announcementsSection) window.loadAllAnnouncements();
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+            observer.observe(papersSection);
+            observer.observe(booksSection);
+            observer.observe(announcementsSection);
+        };
+
+        // Initialize on Load
+        window.addEventListener('load', loadResources);
     </script>
 </body>
 </html>
