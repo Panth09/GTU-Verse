@@ -604,148 +604,215 @@ const firebaseConfig = {
     measurementId: "G-YV4W2LT96S"
 };
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+try {
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
 
-let lastDoc = null;
-const pageSize = 5;
+    let lastDoc = null;
+    const pageSize = 5;
 
-// Dark Mode Toggle
-function toggleDarkMode() {
-    document.body.classList.toggle('dark-mode');
-    const isDark = document.body.classList.contains('dark-mode');
-    document.getElementById('darkToggleIcon').classList.toggle('fa-moon', !isDark);
-    document.getElementById('darkToggleIcon').classList.toggle('fa-sun', isDark);
-    localStorage.setItem('darkMode', isDark);
-}
-
-if (localStorage.getItem('darkMode') === 'true') {
-    toggleDarkMode();
-}
-
-// Mobile Menu Toggle
-function toggleMenu() {
-    const navLinks = document.getElementById('navLinks');
-    const hamburger = document.getElementById('hamburger');
-    navLinks.classList.toggle('active');
-    hamburger.classList.toggle('active');
-}
-
-// Header Scroll Effect
-window.addEventListener('scroll', () => {
-    const header = document.getElementById('header');
-    header.classList.toggle('scrolled', window.scrollY > 50);
-});
-
-// Intersection Observer for Animations
-const observerOptions = {
-    threshold: 0.1,
-    rootMargin: '0px 0px -100px 0px'
-};
-
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
+    // Dark Mode Toggle
+    function toggleDarkMode() {
+        try {
+            document.body.classList.toggle('dark-mode');
+            const isDark = document.body.classList.contains('dark-mode');
+            const darkToggleIcon = document.getElementById('darkToggleIcon');
+            if (darkToggleIcon) {
+                darkToggleIcon.classList.toggle('fa-moon', !isDark);
+                darkToggleIcon.classList.toggle('fa-sun', isDark);
+            }
+            localStorage.setItem('darkMode', isDark);
+        } catch (error) {
+            console.error('Error in toggleDarkMode:', error);
         }
-    });
-}, observerOptions);
-
-document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
-
-// Modal Functions
-function openModal(e) {
-    e?.preventDefault();
-    document.getElementById('contactModal').style.display = 'block';
-    document.getElementById('contactModal').setAttribute('aria-hidden', 'false');
-    document.body.style.overflow = 'hidden';
-}
-
-function closeModal() {
-    document.getElementById('contactModal').style.display = 'none';
-    document.getElementById('contactModal').setAttribute('aria-hidden', 'true');
-    document.body.style.overflow = 'auto';
-}
-
-window.onclick = (event) => {
-    const modal = document.getElementById('contactModal');
-    if (event.target === modal) closeModal();
-};
-
-document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') closeModal();
-});
-
-// Load Books
-async function filterBooks(reset = true) {
-    const collegeInput = document.getElementById('filterCollege').value.trim().toLowerCase();
-    const branch = document.getElementById('filterBranch').value;
-    const sem = document.getElementById('filterSem').value;
-    try {
-        // Validate semester input
-        if (sem && (isNaN(parseInt(sem)) || parseInt(sem) < 1 || parseInt(sem) > 8)) {
-            document.getElementById('booksList').innerHTML = '<li class="book-item"><p>Please enter a valid semester (1-8).</p></li>';
-            return;
-        }
-
-        // Build the query
-        let q = query(collection(db, 'books'), orderBy('createdAt', 'desc'), limit(pageSize));
-        if (branch) q = query(q, where('branch', '==', branch));
-        if (sem) q = query(q, where('sem', '==', parseInt(sem)));
-        if (!reset && lastDoc) q = query(q, startAfter(lastDoc));
-
-        const snapshot = await getDocs(q);
-        let books = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
-
-        // Client-side filtering for college
-        if (collegeInput) {
-            books = books.filter(b => b.college && b.college.toLowerCase().includes(collegeInput));
-        }
-
-        // Update lastDoc for pagination
-        lastDoc = snapshot.docs[snapshot.docs.length - 1];
-        document.getElementById('showMoreBtn').style.display = snapshot.docs.length < pageSize ? 'none' : 'inline-flex';
-
-        // Render books
-        const list = document.getElementById('booksList');
-        if (reset) list.innerHTML = '<li class="loading">Loading books...</li>';
-        list.innerHTML = books.length > 0 ? books.map(b => `
-            <li class="book-item fade-in">
-                <span class="book-title">${b.title || 'Untitled'} (${b.branch || 'N/A'} Sem ${b.sem || 'N/A'}, ${b.college || 'N/A'})</span>
-                <p class="book-desc">Download the textbook or reference material.</p>
-                <a href="${b.url || '#'}" target="_blank" class="book-link">Download PDF <i class="fas fa-download"></i></a>
-            </li>
-        `).join('') : '<li class="book-item"><p>No books match the filters.</p></li>';
-
-        // Re-observe new elements for fade-in animation
-        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
-    } catch (error) {
-        console.error('Error filtering books:', error);
-        let errorMessage = 'Unable to load books. Please try again later or contact support.';
-        if (error.code === 'failed-precondition' && error.message.includes('index')) {
-            errorMessage = 'Filter query requires a Firestore index. Please check the Firebase Console and create the suggested index.';
-        }
-        document.getElementById('booksList').innerHTML = `<li class="book-item"><p>${errorMessage}</p></li>`;
     }
-}
 
-// Load More Books
-function loadMoreBooks() {
-    document.getElementById('showMoreBtn').style.pointerEvents = 'none';
-    document.getElementById('showMoreBtn').textContent = 'Loading...';
-    filterBooks(false).then(() => {
-        document.getElementById('showMoreBtn').style.pointerEvents = 'auto';
-        document.getElementById('showMoreBtn').textContent = 'Show More Books';
+    if (localStorage.getItem('darkMode') === 'true') {
+        toggleDarkMode();
+    }
+
+    // Mobile Menu Toggle
+    function toggleMenu() {
+        try {
+            const navLinks = document.getElementById('navLinks');
+            const hamburger = document.getElementById('hamburger');
+            if (navLinks && hamburger) {
+                navLinks.classList.toggle('active');
+                hamburger.classList.toggle('active');
+            }
+        } catch (error) {
+            console.error('Error in toggleMenu:', error);
+        }
+    }
+
+    // Header Scroll Effect
+    window.addEventListener('scroll', () => {
+        try {
+            const header = document.getElementById('header');
+            if (header) {
+                header.classList.toggle('scrolled', window.scrollY > 50);
+            }
+        } catch (error) {
+            console.error('Error in scroll event:', error);
+        }
     });
-}
 
-// Attach event listeners
-document.addEventListener('DOMContentLoaded', () => {
-    document.getElementById('filterBtn').addEventListener('click', () => filterBooks(true));
-    document.getElementById('darkToggleBtn').addEventListener('click', toggleDarkMode);
-    document.getElementById('showMoreBtn').addEventListener('click', loadMoreBooks);
-    filterBooks();
-});
+    // Intersection Observer for Animations
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -100px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, observerOptions);
+
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+    // Modal Functions
+    function openModal(e) {
+        try {
+            e?.preventDefault();
+            const modal = document.getElementById('contactModal');
+            if (modal) {
+                modal.style.display = 'block';
+                modal.setAttribute('aria-hidden', 'false');
+                document.body.style.overflow = 'hidden';
+            }
+        } catch (error) {
+            console.error('Error in openModal:', error);
+        }
+    }
+
+    function closeModal() {
+        try {
+            const modal = document.getElementById('contactModal');
+            if (modal) {
+                modal.style.display = 'none';
+                modal.setAttribute('aria-hidden', 'true');
+                document.body.style.overflow = 'auto';
+            }
+        } catch (error) {
+            console.error('Error in closeModal:', error);
+        }
+    }
+
+    window.onclick = (event) => {
+        try {
+            const modal = document.getElementById('contactModal');
+            if (event.target === modal) closeModal();
+        } catch (error) {
+            console.error('Error in window onclick:', error);
+        }
+    };
+
+    document.addEventListener('keydown', (e) => {
+        try {
+            if (e.key === 'Escape') closeModal();
+        } catch (error) {
+            console.error('Error in keydown event:', error);
+        }
+    });
+
+    // Load Books
+    async function filterBooks(reset = true) {
+        const booksList = document.getElementById('booksList');
+        try {
+            const collegeInput = document.getElementById('filterCollege')?.value.trim().toLowerCase() || '';
+            const branch = document.getElementById('filterBranch')?.value || '';
+            const sem = document.getElementById('filterSem')?.value || '';
+
+            // Validate semester input
+            if (sem && (isNaN(parseInt(sem)) || parseInt(sem) < 1 || parseInt(sem) > 8)) {
+                booksList.innerHTML = '<li class="book-item"><p>Please enter a valid semester (1-8).</p></li>';
+                return;
+            }
+
+            // Build the query
+            let q = query(collection(db, 'books'), orderBy('createdAt', 'desc'), limit(pageSize));
+            if (branch) q = query(q, where('branch', '==', branch));
+            if (sem) q = query(q, where('sem', '==', parseInt(sem)));
+            if (!reset && lastDoc) q = query(q, startAfter(lastDoc));
+
+            const snapshot = await getDocs(q);
+            let books = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+
+            // Client-side filtering for college
+            if (collegeInput) {
+                books = books.filter(b => b.college && b.college.toLowerCase().includes(collegeInput));
+            }
+
+            // Update lastDoc for pagination
+            lastDoc = snapshot.docs[snapshot.docs.length - 1] || null;
+            document.getElementById('showMoreBtn').style.display = snapshot.docs.length < pageSize ? 'none' : 'inline-flex';
+
+            // Render books
+            if (reset) booksList.innerHTML = '<li class="loading">Loading books...</li>';
+            booksList.innerHTML = books.length > 0 ? books.map(b => `
+                <li class="book-item fade-in">
+                    <span class="book-title">${b.title || 'Untitled'} (${b.branch || 'N/A'} Sem ${b.sem || 'N/A'}, ${b.college || 'N/A'})</span>
+                    <p class="book-desc">Download the textbook or reference material.</p>
+                    <a href="${b.url || '#'}" target="_blank" class="book-link">Download PDF <i class="fas fa-download"></i></a>
+                </li>
+            `).join('') : '<li class="book-item"><p>No books match the filters.</p></li>';
+
+            // Re-observe new elements for fade-in animation
+            document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+        } catch (error) {
+            console.error('Error filtering books:', error);
+            let errorMessage = 'Unable to load books. Please try again later or contact support.';
+            if (error.code === 'failed-precondition' && error.message.includes('index')) {
+                errorMessage = 'Filter query requires a Firestore index. Please check the Firebase Console and create the suggested index.';
+            } else if (error.code === 'permission-denied') {
+                errorMessage = 'Permission denied. Please check Firestore security rules.';
+            } else if (error.code === 'unavailable') {
+                errorMessage = 'Network error. Please check your internet connection and try again.';
+            }
+            booksList.innerHTML = `<li class="book-item"><p>${errorMessage}</p></li>`;
+        }
+    }
+
+    // Load More Books
+    function loadMoreBooks() {
+        try {
+            const showMoreBtn = document.getElementById('showMoreBtn');
+            if (showMoreBtn) {
+                showMoreBtn.style.pointerEvents = 'none';
+                showMoreBtn.textContent = 'Loading...';
+                filterBooks(false).then(() => {
+                    showMoreBtn.style.pointerEvents = 'auto';
+                    showMoreBtn.textContent = 'Show More Books';
+                }).catch(error => {
+                    console.error('Error in loadMoreBooks:', error);
+                    showMoreBtn.style.pointerEvents = 'auto';
+                    showMoreBtn.textContent = 'Show More Books';
+                });
+            }
+        } catch (error) {
+            console.error('Error in loadMoreBooks:', error);
+        }
+    }
+
+    // Attach event listeners
+    document.addEventListener('DOMContentLoaded', async () => {
+        try {
+            document.getElementById('filterBtn')?.addEventListener('click', () => filterBooks(true));
+            document.getElementById('darkToggleBtn')?.addEventListener('click', toggleDarkMode);
+            document.getElementById('showMoreBtn')?.addEventListener('click', loadMoreBooks);
+            await filterBooks();
+        } catch (error) {
+            console.error('Error in DOMContentLoaded:', error);
+            document.getElementById('booksList').innerHTML = '<li class="book-item"><p>Error loading books. Please try again later or contact support.</p></li>';
+        }
+    });
+} catch (error) {
+    console.error('Error initializing Firebase:', error);
+    document.getElementById('booksList').innerHTML = '<li class="book-item"><p>Failed to initialize Firebase. Please check the Firebase configuration.</p></li>';
+}
     </script>
 </body>
 </html>
