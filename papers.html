@@ -338,6 +338,145 @@
             transform: translateY(0);
         }
 
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: var(--medium);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(8px);
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background: var(--white);
+            margin: 5% auto;
+            padding: 3rem;
+            border-radius: 24px;
+            max-width: 550px;
+            width: 90%;
+            text-align: center;
+            box-shadow: var(--shadow-lg);
+            animation: slideUp 0.4s ease-out;
+            position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        body.dark-mode .modal-content { background: var(--white); }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(50px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .modal-content h3 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2.2rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .modal-content p {
+            color: var(--medium);
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+        }
+
+        .close {
+            position: absolute;
+            top: 1.2rem;
+            right: 1.5rem;
+            font-size: 2.2rem;
+            color: var(--medium);
+            cursor: pointer;
+            transition: var(--transition);
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+
+        .close:hover {
+            color: var(--danger);
+            background: rgba(239, 68, 68, 0.1);
+            transform: rotate(90deg);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--dark);
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: var(--transition);
+            background: var(--white);
+            color: var(--dark);
+        }
+
+        body.dark-mode .form-group input,
+        body.dark-mode .form-group textarea {
+            background: var(--white);
+            border-color: var(--border);
+            color: var(--dark);
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .form-group textarea { resize: vertical; min-height: 100px; }
+
+        .modal-submit {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 1.2rem 3rem;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: var(--transition);
+            width: 100%;
+        }
+
+        .modal-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);
+        }
+
         @media (max-width: 768px) {
             .hamburger { display: flex; }
 
@@ -390,7 +529,10 @@
                 <li><a href="https://chat.whatsapp.com/LLq6Sn0gvqwHHIJxxNaNaM" target="_blank" class="whatsapp-btn">
                     <i class="fab fa-whatsapp"></i> Join Community
                 </a></li>
-               
+                <li><a href="admin.html" class="admin-link">Admin</a></li>
+                <li><button class="dark-toggle" onclick="toggleDarkMode()" aria-label="Toggle Dark Mode">
+                    <i class="fas fa-moon" id="darkToggleIcon"></i>
+                </button></li>
             </ul>
             <div class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Toggle Menu">
                 <span></span>
@@ -430,134 +572,181 @@
         <a href="#" class="show-more" id="showMoreBtn" onclick="loadMorePapers()">Show More Papers</a>
     </section>
 
-  
+    <div id="contactModal" class="modal" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()" aria-label="Close modal">&times;</span>
+            <h3 id="modalTitle">Let's Connect!</h3>
+            <p>Share your thoughts, suggest resources, or report issues. We respond within 24 hours.</p>
+            <form id="contactForm" action="mailto:gtu.versebyij@gmail.com" method="post" enctype="text/plain">
+                <div class="form-group">
+                    <label for="name">Your Name</label>
+                    <input type="text" id="name" name="name" required aria-required="true">
+                </div>
+                <div class="form-group">
+                    <label for="email">Your Email</label>
+                    <input type="email" id="email" name="email" required aria-required="true">
+                </div>
+                <div class="form-group">
+                    <label for="message">Your Message</label>
+                    <textarea id="message" name="message" required aria-required="true"></textarea>
+                </div>
+                <button type="submit" class="modal-submit">Send Message</button>
+            </form>
+        </div>
+    </div>
 
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js";
-        import { getFirestore, collection, getDocs, query, orderBy, where, limit, startAfter } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-firestore.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, collection, getDocs, query, orderBy, where, limit, startAfter } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyC0QTiJoEIkS7rGDFrd057Kx3nMz7_s2EI",
-            authDomain: "gtu-verse.firebaseapp.com",
-            projectId: "gtu-verse",
-            storageBucket: "gtu-verse.firebasestorage.app",
-            messagingSenderId: "99377635087",
-            appId: "1:99377635087:web:05ba93798e36040cfe287a",
-            measurementId: "G-YV4W2LT96S"
-        };
+const firebaseConfig = {
+    apiKey: "AIzaSyC0QTiJoEIkS7rGDFrd057Kx3nMz7_s2EI",
+    authDomain: "gtu-verse.firebaseapp.com",
+    projectId: "gtu-verse",
+    storageBucket: "gtu-verse.firebasestorage.app",
+    messagingSenderId: "99377635087",
+    appId: "1:99377635087:web:05ba93798e36040cfe287a",
+    measurementId: "G-YV4W2LT96S"
+};
 
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
-        let lastDoc = null;
-        const pageSize = 5;
+let lastDoc = null;
+const pageSize = 5;
 
-        // Dark Mode Toggle
-        function toggleDarkMode() {
-            document.body.classList.toggle('dark-mode');
-            const isDark = document.body.classList.contains('dark-mode');
-            document.getElementById('darkToggleIcon').classList.toggle('fa-moon', !isDark);
-            document.getElementById('darkToggleIcon').classList.toggle('fa-sun', isDark);
-            localStorage.setItem('darkMode', isDark);
+// Dark Mode Toggle
+function toggleDarkMode() {
+    document.body.classList.toggle('dark-mode');
+    const isDark = document.body.classList.contains('dark-mode');
+    document.getElementById('darkToggleIcon').classList.toggle('fa-moon', !isDark);
+    document.getElementById('darkToggleIcon').classList.toggle('fa-sun', isDark);
+    localStorage.setItem('darkMode', isDark);
+}
+
+if (localStorage.getItem('darkMode') === 'true') {
+    toggleDarkMode();
+}
+
+// Mobile Menu Toggle
+function toggleMenu() {
+    const navLinks = document.getElementById('navLinks');
+    const hamburger = document.getElementById('hamburger');
+    navLinks.classList.toggle('active');
+    hamburger.classList.toggle('active');
+}
+
+// Header Scroll Effect
+window.addEventListener('scroll', () => {
+    const header = document.getElementById('header');
+    header.classList.toggle('scrolled', window.scrollY > 50);
+});
+
+// Intersection Observer for Animations
+const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -100px 0px'
+};
+
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+        }
+    });
+}, observerOptions);
+
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+// Modal Functions
+function openModal(e) {
+    e?.preventDefault();
+    document.getElementById('contactModal').style.display = 'block';
+    document.getElementById('contactModal').setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+    document.getElementById('contactModal').style.display = 'none';
+    document.getElementById('contactModal').setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = 'auto';
+}
+
+window.onclick = (event) => {
+    const modal = document.getElementById('contactModal');
+    if (event.target === modal) closeModal();
+};
+
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeModal();
+});
+
+// Load Papers
+async function filterPapers(reset = true) {
+    const collegeInput = document.getElementById('filterCollege').value.trim().toLowerCase();
+    const branch = document.getElementById('filterBranch').value;
+    const sem = document.getElementById('filterSem').value;
+    const type = document.getElementById('filterType').value;
+    try {
+        // Validate semester input
+        if (sem && (isNaN(parseInt(sem)) || parseInt(sem) < 1 || parseInt(sem) > 8)) {
+            document.getElementById('papersList').innerHTML = '<li class="paper-item"><p>Please enter a valid semester (1-8).</p></li>';
+            return;
         }
 
-        if (localStorage.getItem('darkMode') === 'true') {
-            toggleDarkMode();
+        // Build the query
+        let q = query(collection(db, 'papers'), orderBy('createdAt', 'desc'), limit(pageSize));
+        if (branch) q = query(q, where('branch', '==', branch));
+        if (sem) q = query(q, where('sem', '==', parseInt(sem)));
+        if (type) q = query(q, where('type', '==', type));
+        if (!reset && lastDoc) q = query(q, startAfter(lastDoc));
+
+        const snapshot = await getDocs(q);
+        let papers = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+
+        // Client-side filtering for college
+        if (collegeInput) {
+            papers = papers.filter(p => p.college && p.college.toLowerCase().includes(collegeInput));
         }
 
-        // Mobile Menu Toggle
-        function toggleMenu() {
-            const navLinks = document.getElementById('navLinks');
-            const hamburger = document.getElementById('hamburger');
-            navLinks.classList.toggle('active');
-            hamburger.classList.toggle('active');
-        }
+        // Update lastDoc for pagination
+        lastDoc = snapshot.docs[snapshot.docs.length - 1];
+        document.getElementById('showMoreBtn').style.display = snapshot.docs.length < pageSize ? 'none' : 'inline-flex';
 
-        // Header Scroll Effect
-        window.addEventListener('scroll', () => {
-            const header = document.getElementById('header');
-            header.classList.toggle('scrolled', window.scrollY > 50);
-        });
+        // Render papers
+        const list = document.getElementById('papersList');
+        if (reset) list.innerHTML = '<li class="loading">Loading papers...</li>';
+        list.innerHTML = papers.length > 0 ? papers.map(p => `
+            <li class="paper-item fade-in">
+                <span class="paper-title">${p.title || 'Untitled'} (${p.branch || 'N/A'} Sem ${p.sem || 'N/A'}, ${p.college || 'N/A'}, ${p.type ? p.type.toUpperCase() : 'N/A'})</span>
+                <p class="paper-desc">Download the paper and solutions.</p>
+                <a href="${p.url || '#'}" target="_blank" class="paper-link">Download PDF <i class="fas fa-download"></i></a>
+            </li>
+        `).join('') : '<li class="paper-item"><p>No papers match the filters.</p></li>';
 
-        // Intersection Observer for Animations
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -100px 0px'
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, observerOptions);
-
+        // Re-observe new elements for fade-in animation
         document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
-
-        // Modal Functions
-        function openModal(e) {
-            e?.preventDefault();
-            document.getElementById('contactModal').style.display = 'block';
-            document.getElementById('contactModal').setAttribute('aria-hidden', 'false');
-            document.body.style.overflow = 'hidden';
+    } catch (error) {
+        console.error('Error filtering papers:', error);
+        let errorMessage = 'Unable to load papers. Please try again later or contact support.';
+        if (error.code === 'failed-precondition' && error.message.includes('index')) {
+            errorMessage = 'Filter query requires a Firestore index. Please check the Firebase Console and create the suggested index.';
         }
+        document.getElementById('papersList').innerHTML = `<li class="paper-item"><p>${errorMessage}</p></li>`;
+    }
+}
 
-        function closeModal() {
-            document.getElementById('contactModal').style.display = 'none';
-            document.getElementById('contactModal').setAttribute('aria-hidden', 'true');
-            document.body.style.overflow = 'auto';
-        }
+// Load More Papers
+window.loadMorePapers = async () => {
+    document.getElementById('showMoreBtn').style.pointerEvents = 'none';
+    document.getElementById('showMoreBtn').textContent = 'Loading...';
+    await filterPapers(false);
+    document.getElementById('showMoreBtn').style.pointerEvents = 'auto';
+    document.getElementById('showMoreBtn').textContent = 'Show More Papers';
+};
 
-        window.onclick = (event) => {
-            const modal = document.getElementById('contactModal');
-            if (event.target === modal) closeModal();
-        };
-
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') closeModal();
-        });
-
-        // Load Papers
-        async function filterPapers(reset = true) {
-            const collegeInput = document.getElementById('filterCollege').value.trim().toLowerCase();
-            const branch = document.getElementById('filterBranch').value;
-            const sem = document.getElementById('filterSem').value;
-            const type = document.getElementById('filterType').value;
-            try {
-                let q = query(collection(db, 'papers'), orderBy('id', 'desc'), limit(pageSize));
-                if (branch) q = query(q, where('branch', '==', branch));
-                if (sem) q = query(q, where('sem', '==', parseInt(sem)));
-                if (type) q = query(q, where('type', '==', type));
-                if (!reset) q = query(q, startAfter(lastDoc));
-                const snapshot = await getDocs(q);
-                let papers = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
-                if (collegeInput) {
-                    papers = papers.filter(p => p.college.toLowerCase().includes(collegeInput));
-                }
-                lastDoc = snapshot.docs[snapshot.docs.length - 1];
-                document.getElementById('showMoreBtn').style.display = snapshot.docs.length < pageSize ? 'none' : 'inline-flex';
-                const list = document.getElementById('papersList');
-                if (reset) list.innerHTML = '';
-                list.innerHTML += papers.length > 0 ? papers.map(p => `
-                    <li class="paper-item fade-in">
-                        <span class="paper-title">${p.title} (${p.branch} Sem ${p.sem}, ${p.college}, ${p.type.toUpperCase()})</span>
-                        <p class="paper-desc">Download the paper and solutions.</p>
-                        <a href="${p.url}" target="_blank" class="paper-link">Download PDF <i class="fas fa-download"></i></a>
-                    </li>
-                `).join('') : '<p>No papers match the filters.</p>';
-                document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
-            } catch (error) {
-                console.error('Error filtering papers:', error);
-                alert('Error filtering papers. Check Firebase configuration and console for details.');
-            }
-        }
-
-        // Load More Papers
-        window.loadMorePapers = () => filterPapers(false);
-
-        // Initialize
-        window.addEventListener('load', () => filterPapers());
+// Initialize
+window.addEventListener('load', () => filterPapers());
     </script>
 </body>
 </html>
