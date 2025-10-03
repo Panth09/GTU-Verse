@@ -525,16 +525,15 @@
                 <li><a href="papers.html">Papers</a></li>
                 <li><a href="announcements.html">Announcements</a></li>
                 <li><a href="books.html">Books</a></li>
-                <li><a href="index.html#contact" onclick="openModal(event)">Contact</a></li>
+                <li><a href="index.html#contact">Contact</a></li>
                 <li><a href="https://chat.whatsapp.com/LLq6Sn0gvqwHHIJxxNaNaM" target="_blank" class="whatsapp-btn">
                     <i class="fab fa-whatsapp"></i> Join Community
                 </a></li>
-                
                 <li><button class="dark-toggle" id="darkToggleBtn" aria-label="Toggle Dark Mode">
                     <i class="fas fa-moon" id="darkToggleIcon"></i>
                 </button></li>
             </ul>
-            <div class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Toggle Menu">
+            <div class="hamburger" id="hamburger" aria-label="Toggle Menu">
                 <span></span>
                 <span></span>
                 <span></span>
@@ -569,7 +568,7 @@
 
     <div id="contactModal" class="modal" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
         <div class="modal-content">
-            <span class="close" onclick="closeModal()" aria-label="Close modal">&times;</span>
+            <span class="close" aria-label="Close modal">&times;</span>
             <h3 id="modalTitle">Let's Connect!</h3>
             <p>Share your thoughts, suggest resources, or report issues. We respond within 24 hours.</p>
             <form id="contactForm" action="mailto:gtu.versebyij@gmail.com" method="post" enctype="text/plain">
@@ -645,34 +644,6 @@ try {
         }
     }
 
-    // Header Scroll Effect
-    window.addEventListener('scroll', () => {
-        try {
-            const header = document.getElementById('header');
-            if (header) {
-                header.classList.toggle('scrolled', window.scrollY > 50);
-            }
-        } catch (error) {
-            console.error('Error in scroll event:', error);
-        }
-    });
-
-    // Intersection Observer for Animations
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -100px 0px'
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('visible');
-            }
-        });
-    }, observerOptions);
-
-    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
-
     // Modal Functions
     function openModal(e) {
         try {
@@ -701,6 +672,35 @@ try {
         }
     }
 
+    // Header Scroll Effect
+    window.addEventListener('scroll', () => {
+        try {
+            const header = document.getElementById('header');
+            if (header) {
+                header.classList.toggle('scrolled', window.scrollY > 50);
+            }
+        } catch (error) {
+            console.error('Error in scroll event:', error);
+        }
+    });
+
+    // Intersection Observer for Animations
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -100px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, observerOptions);
+
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+    // Modal Event Handlers
     window.onclick = (event) => {
         try {
             const modal = document.getElementById('contactModal');
@@ -803,6 +803,9 @@ try {
             document.getElementById('filterBtn')?.addEventListener('click', () => filterBooks(true));
             document.getElementById('darkToggleBtn')?.addEventListener('click', toggleDarkMode);
             document.getElementById('showMoreBtn')?.addEventListener('click', loadMoreBooks);
+            document.getElementById('hamburger')?.addEventListener('click', toggleMenu);
+            document.querySelector('a[href="index.html#contact"]')?.addEventListener('click', openModal);
+            document.querySelector('.close')?.addEventListener('click', closeModal);
             await filterBooks();
         } catch (error) {
             console.error('Error in DOMContentLoaded:', error);
