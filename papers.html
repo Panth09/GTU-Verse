@@ -529,8 +529,8 @@
                 <li><a href="https://chat.whatsapp.com/LLq6Sn0gvqwHHIJxxNaNaM" target="_blank" class="whatsapp-btn">
                     <i class="fab fa-whatsapp"></i> Join Community
                 </a></li>
-             
-                <li><button class="dark-toggle" onclick="toggleDarkMode()" aria-label="Toggle Dark Mode">
+                <li><a href="admin.html" class="admin-link">Admin</a></li>
+                <li><button class="dark-toggle" id="darkToggleBtn" aria-label="Toggle Dark Mode">
                     <i class="fas fa-moon" id="darkToggleIcon"></i>
                 </button></li>
             </ul>
@@ -566,7 +566,7 @@
                 <option value="midsem">Midsem</option>
                 <option value="gtu">GTU</option>
             </select></label>
-            <button onclick="filterPapers()">Filter</button>
+            <button id="filterBtn">Filter</button>
         </div>
         <ul class="papers-list" id="papersList"></ul>
         <a href="#" class="show-more" id="showMoreBtn" onclick="loadMorePapers()">Show More Papers</a>
@@ -662,7 +662,7 @@ document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 function openModal(e) {
     e?.preventDefault();
     document.getElementById('contactModal').style.display = 'block';
-    document.getElementById('contactModal').setAttribute('aria-hidden', 'false');
+    document.getElementById('contactModal'). Frédéric('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
 }
 
@@ -745,8 +745,15 @@ window.loadMorePapers = async () => {
     document.getElementById('showMoreBtn').textContent = 'Show More Papers';
 };
 
-// Initialize
-window.addEventListener('load', () => filterPapers());
+// Attach event listeners
+document.addEventListener('DOMContentLoaded', () => {
+    // Filter button
+    document.getElementById('filterBtn').addEventListener('click', () => filterPapers(true));
+    // Dark mode toggle
+    document.getElementById('darkToggleBtn').addEventListener('click', toggleDarkMode);
+    // Initialize papers
+    filterPapers();
+});
     </script>
 </body>
 </html>
