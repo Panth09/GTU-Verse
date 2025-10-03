@@ -338,67 +338,90 @@
             transform: translateY(0);
         }
 
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: var(--medium);
+        }
+
         .modal {
             display: none;
             position: fixed;
-            top: 0;
+            z-index: 2000;
             left: 0;
+            top: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(5px);
-            z-index: 2000;
-            justify-content: center;
-            align-items: center;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(8px);
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         .modal-content {
             background: var(--white);
-            padding: 2rem;
-            border-radius: 12px;
-            max-width: 500px;
+            margin: 5% auto;
+            padding: 3rem;
+            border-radius: 24px;
+            max-width: 550px;
             width: 90%;
+            text-align: center;
             box-shadow: var(--shadow-lg);
+            animation: slideUp 0.4s ease-out;
             position: relative;
-            animation: slideIn 0.3s ease-out;
+            max-height: 90vh;
+            overflow-y: auto;
         }
 
-        body.dark-mode .modal-content {
-            background: var(--white);
-            border: 1px solid var(--border);
+        body.dark-mode .modal-content { background: var(--white); }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(50px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
         }
 
-        @keyframes slideIn {
-            from { transform: translateY(-50px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-
-        .modal h3 {
+        .modal-content h3 {
             font-family: 'Poppins', sans-serif;
-            font-size: 1.8rem;
-            color: var(--primary);
+            font-size: 2.2rem;
             margin-bottom: 1rem;
+            color: var(--primary);
         }
 
-        .modal p {
+        .modal-content p {
             color: var(--medium);
-            margin-bottom: 1.5rem;
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
         }
 
         .close {
             position: absolute;
-            top: 1rem;
-            right: 1rem;
-            font-size: 1.5rem;
-            cursor: pointer;
+            top: 1.2rem;
+            right: 1.5rem;
+            font-size: 2.2rem;
             color: var(--medium);
+            cursor: pointer;
             transition: var(--transition);
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
         }
 
-        .close:hover { color: var(--primary); }
+        .close:hover {
+            color: var(--danger);
+            background: rgba(239, 68, 68, 0.1);
+            transform: rotate(90deg);
+        }
 
         .form-group {
             margin-bottom: 1.5rem;
+            text-align: left;
         }
 
         .form-group label {
@@ -439,13 +462,14 @@
         .modal-submit {
             background: var(--gradient-primary);
             color: white;
-            padding: 1rem 2rem;
+            padding: 1.2rem 3rem;
             border: none;
             border-radius: 12px;
             cursor: pointer;
             font-weight: 600;
-            width: 100%;
+            font-size: 1.1rem;
             transition: var(--transition);
+            width: 100%;
         }
 
         .modal-submit:hover {
@@ -506,6 +530,9 @@
                     <i class="fab fa-whatsapp"></i> Join Community
                 </a></li>
                 
+                <li><button class="dark-toggle" id="darkToggleBtn" aria-label="Toggle Dark Mode">
+                    <i class="fas fa-moon" id="darkToggleIcon"></i>
+                </button></li>
             </ul>
             <div class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Toggle Menu">
                 <span></span>
@@ -534,145 +561,191 @@
                 <option value="IN">IN</option>
             </select></label>
             <label>Semester: <input type="number" id="filterSem" min="1" max="8" placeholder="1-8"></label>
-            <button onclick="filterBooks()">Filter</button>
+            <button id="filterBtn">Filter</button>
         </div>
         <ul class="books-list" id="booksList"></ul>
-        <a href="#" class="show-more" id="showMoreBtn" onclick="loadMoreBooks()">Show More Books</a>
+        <a href="#" class="show-more" id="showMoreBtn">Show More Books</a>
     </section>
 
-    
+    <div id="contactModal" class="modal" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()" aria-label="Close modal">&times;</span>
+            <h3 id="modalTitle">Let's Connect!</h3>
+            <p>Share your thoughts, suggest resources, or report issues. We respond within 24 hours.</p>
+            <form id="contactForm" action="mailto:gtu.versebyij@gmail.com" method="post" enctype="text/plain">
+                <div class="form-group">
+                    <label for="name">Your Name</label>
+                    <input type="text" id="name" name="name" required aria-required="true">
+                </div>
+                <div class="form-group">
+                    <label for="email">Your Email</label>
+                    <input type="email" id="email" name="email" required aria-required="true">
+                </div>
+                <div class="form-group">
+                    <label for="message">Your Message</label>
+                    <textarea id="message" name="message" required aria-required="true"></textarea>
+                </div>
+                <button type="submit" class="modal-submit">Send Message</button>
+            </form>
+        </div>
+    </div>
 
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js";
-        import { getFirestore, collection, getDocs, query, orderBy, where, limit, startAfter } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-firestore.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, collection, getDocs, query, orderBy, where, limit, startAfter } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyC0QTiJoEIkS7rGDFrd057Kx3nMz7_s2EI",
-            authDomain: "gtu-verse.firebaseapp.com",
-            projectId: "gtu-verse",
-            storageBucket: "gtu-verse.firebasestorage.app",
-            messagingSenderId: "99377635087",
-            appId: "1:99377635087:web:05ba93798e36040cfe287a",
-            measurementId: "G-YV4W2LT96S"
-        };
+const firebaseConfig = {
+    apiKey: "AIzaSyC0QTiJoEIkS7rGDFrd057Kx3nMz7_s2EI",
+    authDomain: "gtu-verse.firebaseapp.com",
+    projectId: "gtu-verse",
+    storageBucket: "gtu-verse.firebasestorage.app",
+    messagingSenderId: "99377635087",
+    appId: "1:99377635087:web:05ba93798e36040cfe287a",
+    measurementId: "G-YV4W2LT96S"
+};
 
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
-        let lastDoc = null;
-        const pageSize = 5;
+let lastDoc = null;
+const pageSize = 5;
 
-        // Dark Mode Toggle
-        function toggleDarkMode() {
-            document.body.classList.toggle('dark-mode');
-            const isDark = document.body.classList.contains('dark-mode');
-            document.getElementById('darkToggleIcon').classList.toggle('fa-moon', !isDark);
-            document.getElementById('darkToggleIcon').classList.toggle('fa-sun', isDark);
-            localStorage.setItem('darkMode', isDark);
+// Dark Mode Toggle
+function toggleDarkMode() {
+    document.body.classList.toggle('dark-mode');
+    const isDark = document.body.classList.contains('dark-mode');
+    document.getElementById('darkToggleIcon').classList.toggle('fa-moon', !isDark);
+    document.getElementById('darkToggleIcon').classList.toggle('fa-sun', isDark);
+    localStorage.setItem('darkMode', isDark);
+}
+
+if (localStorage.getItem('darkMode') === 'true') {
+    toggleDarkMode();
+}
+
+// Mobile Menu Toggle
+function toggleMenu() {
+    const navLinks = document.getElementById('navLinks');
+    const hamburger = document.getElementById('hamburger');
+    navLinks.classList.toggle('active');
+    hamburger.classList.toggle('active');
+}
+
+// Header Scroll Effect
+window.addEventListener('scroll', () => {
+    const header = document.getElementById('header');
+    header.classList.toggle('scrolled', window.scrollY > 50);
+});
+
+// Intersection Observer for Animations
+const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -100px 0px'
+};
+
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+        }
+    });
+}, observerOptions);
+
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+// Modal Functions
+function openModal(e) {
+    e?.preventDefault();
+    document.getElementById('contactModal').style.display = 'block';
+    document.getElementById('contactModal').setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+    document.getElementById('contactModal').style.display = 'none';
+    document.getElementById('contactModal').setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = 'auto';
+}
+
+window.onclick = (event) => {
+    const modal = document.getElementById('contactModal');
+    if (event.target === modal) closeModal();
+};
+
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeModal();
+});
+
+// Load Books
+async function filterBooks(reset = true) {
+    const collegeInput = document.getElementById('filterCollege').value.trim().toLowerCase();
+    const branch = document.getElementById('filterBranch').value;
+    const sem = document.getElementById('filterSem').value;
+    try {
+        // Validate semester input
+        if (sem && (isNaN(parseInt(sem)) || parseInt(sem) < 1 || parseInt(sem) > 8)) {
+            document.getElementById('booksList').innerHTML = '<li class="book-item"><p>Please enter a valid semester (1-8).</p></li>';
+            return;
         }
 
-        if (localStorage.getItem('darkMode') === 'true') {
-            toggleDarkMode();
+        // Build the query
+        let q = query(collection(db, 'books'), orderBy('createdAt', 'desc'), limit(pageSize));
+        if (branch) q = query(q, where('branch', '==', branch));
+        if (sem) q = query(q, where('sem', '==', parseInt(sem)));
+        if (!reset && lastDoc) q = query(q, startAfter(lastDoc));
+
+        const snapshot = await getDocs(q);
+        let books = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+
+        // Client-side filtering for college
+        if (collegeInput) {
+            books = books.filter(b => b.college && b.college.toLowerCase().includes(collegeInput));
         }
 
-        // Mobile Menu Toggle
-        function toggleMenu() {
-            const navLinks = document.getElementById('navLinks');
-            const hamburger = document.getElementById('hamburger');
-            navLinks.classList.toggle('active');
-            hamburger.classList.toggle('active');
-        }
+        // Update lastDoc for pagination
+        lastDoc = snapshot.docs[snapshot.docs.length - 1];
+        document.getElementById('showMoreBtn').style.display = snapshot.docs.length < pageSize ? 'none' : 'inline-flex';
 
-        // Header Scroll Effect
-        window.addEventListener('scroll', () => {
-            const header = document.getElementById('header');
-            header.classList.toggle('scrolled', window.scrollY > 50);
-        });
+        // Render books
+        const list = document.getElementById('booksList');
+        if (reset) list.innerHTML = '<li class="loading">Loading books...</li>';
+        list.innerHTML = books.length > 0 ? books.map(b => `
+            <li class="book-item fade-in">
+                <span class="book-title">${b.title || 'Untitled'} (${b.branch || 'N/A'} Sem ${b.sem || 'N/A'}, ${b.college || 'N/A'})</span>
+                <p class="book-desc">Download the textbook or reference material.</p>
+                <a href="${b.url || '#'}" target="_blank" class="book-link">Download PDF <i class="fas fa-download"></i></a>
+            </li>
+        `).join('') : '<li class="book-item"><p>No books match the filters.</p></li>';
 
-        // Intersection Observer for Animations
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -100px 0px'
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, observerOptions);
-
+        // Re-observe new elements for fade-in animation
         document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
-
-        // Modal Functions
-        function openModal(e) {
-            e?.preventDefault();
-            document.getElementById('contactModal').style.display = 'block';
-            document.getElementById('contactModal').setAttribute('aria-hidden', 'false');
-            document.body.style.overflow = 'hidden';
+    } catch (error) {
+        console.error('Error filtering books:', error);
+        let errorMessage = 'Unable to load books. Please try again later or contact support.';
+        if (error.code === 'failed-precondition' && error.message.includes('index')) {
+            errorMessage = 'Filter query requires a Firestore index. Please check the Firebase Console and create the suggested index.';
         }
+        document.getElementById('booksList').innerHTML = `<li class="book-item"><p>${errorMessage}</p></li>`;
+    }
+}
 
-        function closeModal() {
-            document.getElementById('contactModal').style.display = 'none';
-            document.getElementById('contactModal').setAttribute('aria-hidden', 'true');
-            document.body.style.overflow = 'auto';
-        }
+// Load More Books
+function loadMoreBooks() {
+    document.getElementById('showMoreBtn').style.pointerEvents = 'none';
+    document.getElementById('showMoreBtn').textContent = 'Loading...';
+    filterBooks(false).then(() => {
+        document.getElementById('showMoreBtn').style.pointerEvents = 'auto';
+        document.getElementById('showMoreBtn').textContent = 'Show More Books';
+    });
+}
 
-        window.onclick = (event) => {
-            const modal = document.getElementById('contactModal');
-            if (event.target === modal) closeModal();
-        };
-
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') closeModal();
-        });
-
-        // Load Books
-        async function filterBooks(reset = true) {
-            try {
-                const collegeInput = document.getElementById('filterCollege').value.trim().toLowerCase();
-                const branch = document.getElementById('filterBranch').value;
-                const sem = document.getElementById('filterSem').value;
-                
-                let q = query(collection(db, 'books'), orderBy('id', 'desc'), limit(pageSize));
-                if (branch) q = query(q, where('branch', '==', branch));
-                if (sem) q = query(q, where('sem', '==', parseInt(sem)));
-                if (!reset && lastDoc) q = query(q, startAfter(lastDoc));
-                
-                const snapshot = await getDocs(q);
-                let books = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
-                
-                if (collegeInput) {
-                    books = books.filter(b => b.college?.toLowerCase().includes(collegeInput));
-                }
-                
-                lastDoc = snapshot.docs[snapshot.docs.length - 1] || null;
-                document.getElementById('showMoreBtn').style.display = snapshot.docs.length < pageSize ? 'none' : 'inline-flex';
-                
-                const list = document.getElementById('booksList');
-                if (reset) list.innerHTML = '';
-                
-                list.innerHTML += books.length > 0 ? books.map(b => `
-                    <li class="book-item fade-in">
-                        <span class="book-title">${b.title} (${b.branch} Sem ${b.sem}, ${b.college})</span>
-                        <p class="book-desc">Download the textbook or reference material.</p>
-                        <a href="${b.url}" target="_blank" class="book-link">Download PDF <i class="fas fa-download"></i></a>
-                    </li>
-                `).join('') : '<p>No books match the filters.</p>';
-                
-                document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
-            } catch (error) {
-                console.error('Error filtering books:', error.message, error);
-                alert(`Error filtering books: ${error.message}. Please check Firebase configuration or console for details.`);
-            }
-        }
-
-        // Load More Books
-        window.loadMoreBooks = () => filterBooks(false);
-
-        // Initialize
-        window.addEventListener('load', () => filterBooks());
+// Attach event listeners
+document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('filterBtn').addEventListener('click', () => filterBooks(true));
+    document.getElementById('darkToggleBtn').addEventListener('click', toggleDarkMode);
+    document.getElementById('showMoreBtn').addEventListener('click', loadMoreBooks);
+    filterBooks();
+});
     </script>
 </body>
 </html>
