@@ -390,10 +390,7 @@
                 <li><a href="https://chat.whatsapp.com/LLq6Sn0gvqwHHIJxxNaNaM" target="_blank" class="whatsapp-btn">
                     <i class="fab fa-whatsapp"></i> Join Community
                 </a></li>
-                <li><a href="admin.html" class="admin-link">Admin</a></li>
-                <li><button class="dark-toggle" onclick="toggleDarkMode()" aria-label="Toggle Dark Mode">
-                    <i class="fas fa-moon" id="darkToggleIcon"></i>
-                </button></li>
+               
             </ul>
             <div class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Toggle Menu">
                 <span></span>
@@ -433,28 +430,7 @@
         <a href="#" class="show-more" id="showMoreBtn" onclick="loadMorePapers()">Show More Papers</a>
     </section>
 
-    <div id="contactModal" class="modal" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal()" aria-label="Close modal">&times;</span>
-            <h3 id="modalTitle">Let's Connect!</h3>
-            <p>Share your thoughts, suggest resources, or report issues. We respond within 24 hours.</p>
-            <form id="contactForm" action="mailto:gtu.versebyij@gmail.com" method="post" enctype="text/plain">
-                <div class="form-group">
-                    <label for="name">Your Name</label>
-                    <input type="text" id="name" name="name" required aria-required="true">
-                </div>
-                <div class="form-group">
-                    <label for="email">Your Email</label>
-                    <input type="email" id="email" name="email" required aria-required="true">
-                </div>
-                <div class="form-group">
-                    <label for="message">Your Message</label>
-                    <textarea id="message" name="message" required aria-required="true"></textarea>
-                </div>
-                <button type="submit" class="modal-submit">Send Message</button>
-            </form>
-        </div>
-    </div>
+  
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js";
