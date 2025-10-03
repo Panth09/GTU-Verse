@@ -312,6 +312,145 @@
             transform: translateY(0);
         }
 
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: var(--medium);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(8px);
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background: var(--white);
+            margin: 5% auto;
+            padding: 3rem;
+            border-radius: 24px;
+            max-width: 550px;
+            width: 90%;
+            text-align: center;
+            box-shadow: var(--shadow-lg);
+            animation: slideUp 0.4s ease-out;
+            position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        body.dark-mode .modal-content { background: var(--white); }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(50px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .modal-content h3 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2.2rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .modal-content p {
+            color: var(--medium);
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+        }
+
+        .close {
+            position: absolute;
+            top: 1.2rem;
+            right: 1.5rem;
+            font-size: 2.2rem;
+            color: var(--medium);
+            cursor: pointer;
+            transition: var(--transition);
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+
+        .close:hover {
+            color: var(--danger);
+            background: rgba(239, 68, 68, 0.1);
+            transform: rotate(90deg);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--dark);
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: var(--transition);
+            background: var(--white);
+            color: var(--dark);
+        }
+
+        body.dark-mode .form-group input,
+        body.dark-mode .form-group textarea {
+            background: var(--white);
+            border-color: var(--border);
+            color: var(--dark);
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .form-group textarea { resize: vertical; min-height: 100px; }
+
+        .modal-submit {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 1.2rem 3rem;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: var(--transition);
+            width: 100%;
+        }
+
+        .modal-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);
+        }
+
         @media (max-width: 768px) {
             .hamburger { display: flex; }
 
@@ -362,7 +501,10 @@
                 <li><a href="https://chat.whatsapp.com/LLq6Sn0gvqwHHIJxxNaNaM" target="_blank" class="whatsapp-btn">
                     <i class="fab fa-whatsapp"></i> Join Community
                 </a></li>
-                
+                <li><a href="admin.html" class="admin-link">Admin</a></li>
+                <li><button class="dark-toggle" id="darkToggleBtn" aria-label="Toggle Dark Mode">
+                    <i class="fas fa-moon" id="darkToggleIcon"></i>
+                </button></li>
             </ul>
             <div class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Toggle Menu">
                 <span></span>
@@ -378,126 +520,165 @@
             <p class="section-subtitle">Stay updated with the latest GTU news and alerts.</p>
         </div>
         <ul class="announcements-list" id="announcementsList"></ul>
-        <a href="#" class="show-more" id="showMoreBtn" onclick="loadMoreAnnouncements()">Show More Announcements</a>
+        <a href="#" class="show-more" id="showMoreBtn">Show More Announcements</a>
     </section>
 
-   
+    <div id="contactModal" class="modal" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()" aria-label="Close modal">&times;</span>
+            <h3 id="modalTitle">Let's Connect!</h3>
+            <p>Share your thoughts, suggest resources, or report issues. We respond within 24 hours.</p>
+            <form id="contactForm" action="mailto:gtu.versebyij@gmail.com" method="post" enctype="text/plain">
+                <div class="form-group">
+                    <label for="name">Your Name</label>
+                    <input type="text" id="name" name="name" required aria-required="true">
+                </div>
+                <div class="form-group">
+                    <label for="email">Your Email</label>
+                    <input type="email" id="email" name="email" required aria-required="true">
+                </div>
+                <div class="form-group">
+                    <label for="message">Your Message</label>
+                    <textarea id="message" name="message" required aria-required="true"></textarea>
+                </div>
+                <button type="submit" class="modal-submit">Send Message</button>
+            </form>
+        </div>
+    </div>
+
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js";
-        import { getFirestore, collection, getDocs, query, orderBy, limit, startAfter } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-firestore.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, collection, getDocs, query, orderBy, limit, startAfter } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyC0QTiJoEIkS7rGDFrd057Kx3nMz7_s2EI",
-            authDomain: "gtu-verse.firebaseapp.com",
-            projectId: "gtu-verse",
-            storageBucket: "gtu-verse.firebasestorage.app",
-            messagingSenderId: "99377635087",
-            appId: "1:99377635087:web:05ba93798e36040cfe287a",
-            measurementId: "G-YV4W2LT96S"
-        };
+const firebaseConfig = {
+    apiKey: "AIzaSyC0QTiJoEIkS7rGDFrd057Kx3nMz7_s2EI",
+    authDomain: "gtu-verse.firebaseapp.com",
+    projectId: "gtu-verse",
+    storageBucket: "gtu-verse.firebasestorage.app",
+    messagingSenderId: "99377635087",
+    appId: "1:99377635087:web:05ba93798e36040cfe287a",
+    measurementId: "G-YV4W2LT96S"
+};
 
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
-        let lastDoc = null;
-        const pageSize = 5;
+let lastDoc = null;
+const pageSize = 5;
 
-        // Dark Mode Toggle
-        function toggleDarkMode() {
-            document.body.classList.toggle('dark-mode');
-            const isDark = document.body.classList.contains('dark-mode');
-            document.getElementById('darkToggleIcon').classList.toggle('fa-moon', !isDark);
-            document.getElementById('darkToggleIcon').classList.toggle('fa-sun', isDark);
-            localStorage.setItem('darkMode', isDark);
+// Dark Mode Toggle
+function toggleDarkMode() {
+    document.body.classList.toggle('dark-mode');
+    const isDark = document.body.classList.contains('dark-mode');
+    document.getElementById('darkToggleIcon').classList.toggle('fa-moon', !isDark);
+    document.getElementById('darkToggleIcon').classList.toggle('fa-sun', isDark);
+    localStorage.setItem('darkMode', isDark);
+}
+
+if (localStorage.getItem('darkMode') === 'true') {
+    toggleDarkMode();
+}
+
+// Mobile Menu Toggle
+function toggleMenu() {
+    const navLinks = document.getElementById('navLinks');
+    const hamburger = document.getElementById('hamburger');
+    navLinks.classList.toggle('active');
+    hamburger.classList.toggle('active');
+}
+
+// Header Scroll Effect
+window.addEventListener('scroll', () => {
+    const header = document.getElementById('header');
+    header.classList.toggle('scrolled', window.scrollY > 50);
+});
+
+// Intersection Observer for Animations
+const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -100px 0px'
+};
+
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
         }
+    });
+}, observerOptions);
 
-        if (localStorage.getItem('darkMode') === 'true') {
-            toggleDarkMode();
-        }
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 
-        // Mobile Menu Toggle
-        function toggleMenu() {
-            const navLinks = document.getElementById('navLinks');
-            const hamburger = document.getElementById('hamburger');
-            navLinks.classList.toggle('active');
-            hamburger.classList.toggle('active');
-        }
+// Modal Functions
+function openModal(e) {
+    e?.preventDefault();
+    document.getElementById('contactModal').style.display = 'block';
+    document.getElementById('contactModal').setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+}
 
-        // Header Scroll Effect
-        window.addEventListener('scroll', () => {
-            const header = document.getElementById('header');
-            header.classList.toggle('scrolled', window.scrollY > 50);
-        });
+function closeModal() {
+    document.getElementById('contactModal').style.display = 'none';
+    document.getElementById('contactModal').setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = 'auto';
+}
 
-        // Intersection Observer for Animations
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -100px 0px'
-        };
+window.onclick = (event) => {
+    const modal = document.getElementById('contactModal');
+    if (event.target === modal) closeModal();
+};
 
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, observerOptions);
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeModal();
+});
+
+// Load Announcements
+async function loadAnnouncements(reset = true) {
+    try {
+        let q = query(collection(db, 'announcements'), orderBy('createdAt', 'desc'), limit(pageSize));
+        if (!reset && lastDoc) q = query(q, startAfter(lastDoc));
+        const snapshot = await getDocs(q);
+        const anns = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+        lastDoc = snapshot.docs[snapshot.docs.length - 1];
+        document.getElementById('showMoreBtn').style.display = snapshot.docs.length < pageSize ? 'none' : 'inline-flex';
+
+        const list = document.getElementById('announcementsList');
+        if (reset) list.innerHTML = '<li class="loading">Loading announcements...</li>';
+        list.innerHTML = anns.length > 0 ? anns.map((a, index) => `
+            <li class="announcement-item fade-in ${index < 3 ? 'top-ann' : ''}">
+                <span class="announcement-title">${a.title || 'Untitled'}</span>
+                <p class="announcement-desc">${a.desc || 'No description available'}</p>
+                <div class="announcement-date">Posted on: ${a.date || 'N/A'}</div>
+            </li>
+        `).join('') : '<li class="announcement-item"><p>No announcements available.</p></li>';
 
         document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
-
-        // Modal Functions
-        function openModal(e) {
-            e?.preventDefault();
-            document.getElementById('contactModal').style.display = 'block';
-            document.getElementById('contactModal').setAttribute('aria-hidden', 'false');
-            document.body.style.overflow = 'hidden';
+    } catch (error) {
+        console.error('Error loading announcements:', error);
+        let errorMessage = 'Unable to load announcements. Please try again later or contact support.';
+        if (error.code === 'failed-precondition' && error.message.includes('index')) {
+            errorMessage = 'Query requires a Firestore index. Please check the Firebase Console and create the suggested index.';
         }
+        document.getElementById('announcementsList').innerHTML = `<li class="announcement-item"><p>${errorMessage}</p></li>`;
+    }
+}
 
-        function closeModal() {
-            document.getElementById('contactModal').style.display = 'none';
-            document.getElementById('contactModal').setAttribute('aria-hidden', 'true');
-            document.body.style.overflow = 'auto';
-        }
+// Load More Announcements
+function loadMoreAnnouncements() {
+    document.getElementById('showMoreBtn').style.pointerEvents = 'none';
+    document.getElementById('showMoreBtn').textContent = 'Loading...';
+    loadAnnouncements(false).then(() => {
+        document.getElementById('showMoreBtn').style.pointerEvents = 'auto';
+        document.getElementById('showMoreBtn').textContent = 'Show More Announcements';
+    });
+}
 
-        window.onclick = (event) => {
-            const modal = document.getElementById('contactModal');
-            if (event.target === modal) closeModal();
-        };
-
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') closeModal();
-        });
-
-        // Load Announcements
-        async function loadAnnouncements(reset = true) {
-            try {
-                let q = query(collection(db, 'announcements'), orderBy('id', 'desc'), limit(pageSize));
-                if (!reset) q = query(q, startAfter(lastDoc));
-                const snapshot = await getDocs(q);
-                const anns = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
-                lastDoc = snapshot.docs[snapshot.docs.length - 1];
-                document.getElementById('showMoreBtn').style.display = snapshot.docs.length < pageSize ? 'none' : 'inline-flex';
-                const list = document.getElementById('announcementsList');
-                if (reset) list.innerHTML = '';
-                list.innerHTML += anns.length > 0 ? anns.map((a, index) => `
-                    <li class="announcement-item fade-in ${index < 3 ? 'top-ann' : ''}">
-                        <span class="announcement-title">${a.title}</span>
-                        <p class="announcement-desc">${a.desc}</p>
-                        <div class="announcement-date">Posted on: ${a.date}</div>
-                    </li>
-                `).join('') : '<p>No announcements available.</p>';
-                document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
-            } catch (error) {
-                console.error('Error loading announcements:', error);
-                alert('Error loading announcements. Check Firebase configuration and console for details.');
-            }
-        }
-
-        // Load More Announcements
-        window.loadMoreAnnouncements = () => loadAnnouncements(false);
-
-        // Initialize
-        window.addEventListener('load', () => loadAnnouncements());
+// Attach event listeners
+document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('darkToggleBtn').addEventListener('click', toggleDarkMode);
+    document.getElementById('showMoreBtn').addEventListener('click', loadMoreAnnouncements);
+    loadAnnouncements();
+});
     </script>
 </body>
 </html>
