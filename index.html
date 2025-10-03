@@ -570,8 +570,14 @@
             transition: var(--transition);
         }
 
+        .feature-card:nth-child(1) .feature-icon { 
+            background: linear-gradient(135deg, #a855f7, #7c3aed); /* Purple for Vault */
+            font-size: 3rem;
+        }
         .feature-card:nth-child(2) .feature-icon { background: var(--gradient-2); }
-        .feature-card:nth-child(3) .feature-icon { background: var(--gradient-3); }
+        .feature-card:nth-child(3) .feature-icon { 
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8); /* Blue for Guide */
+        }
         .feature-card:nth-child(4) .feature-icon { background: linear-gradient(135deg, var(--secondary) 0%, var(--secondary-dark) 100%); }
         .feature-card:nth-child(5) .feature-icon { background: var(--gradient-1); }
 
@@ -1174,6 +1180,12 @@
             .cta-button { padding: 1rem 2rem; font-size: 1rem; }
             .features-grid { grid-template-columns: 1fr; }
         }
+
+        /* Enhanced: Improved dark mode text contrasts and subtle glows */
+        body.dark-mode .nav-links a:hover { background: rgba(37, 99, 235, 0.2); }
+        body.dark-mode .feature-card p { line-height: 1.7; }
+        .feature-icon { box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        body.dark-mode .feature-icon { box-shadow: 0 4px 12px rgba(255,255,255,0.05); }
     </style>
 </head>
 <body>
@@ -1270,9 +1282,9 @@
         <div class="features-grid">
             <div class="feature-card fade-in">
                 <div class="feature-icon">
-                    <i class="fas fa-file-search"></i>
+                    <i class="fas fa-archive"></i> <!-- Added vault icon: fa-archive for square vault ref -->
                 </div>
-                <h3><i class="fas fa-file-search"></i> Midsem Paper Vault</h3>
+                <h3><i class="fas fa-archive"></i> Midsem Paper Vault</h3>
                 <p>Curated collection of GTU midsem and endsem papers with solutions. Filter by branch, semester, and subject for laser-focused prep.</p>
                 <ul class="feature-list">
                     <li><i class="fas fa-check"></i> 1200+ verified papers</li>
@@ -1296,7 +1308,7 @@
             </div>
             <div class="feature-card fade-in">
                 <div class="feature-icon">
-                    <i class="fas fa-file-alt"></i>
+                    <i class="fas fa-clipboard-list"></i> <!-- Enhanced to clipboard for guide ref -->
                 </div>
                 <h3>Activity Points Guide</h3>
                 <p>Comprehensive guide to earn 100+ GTU activity points through various activities, events, and contributions.</p>
@@ -1363,7 +1375,7 @@
                 <option value="CH">CH</option>
                 <option value="IN">IN</option>
             </select></label>
-            <button onclick="window.filterPapers()">Filter</button>
+            <button onclick="filterPapers()">Filter</button>
         </div>
         <h3>Midsem Papers</h3>
         <ul class="papers-list" id="midsemList"></ul>
@@ -1387,9 +1399,11 @@
                 <option value="ME">ME</option>
                 <option value="EC">EC</option>
                 <option value="EE">EE</option>
-                
+                <option value="CS">CS</option>
+                <option value="CH">CH</option>
+                <option value="IN">IN</option>
             </select></label>
-            <button onclick="window.filterBooks()">Filter</button>
+            <button onclick="filterBooks()">Filter</button>
         </div>
         <ul class="books-list" id="booksList"></ul>
         <a href="books.html" class="show-more">Show More Books</a>
@@ -1420,13 +1434,13 @@
             <a href="papers.html">Papers</a>
             <a href="books.html">Books</a>
             <a href="announcements.html">Announcements</a>
-            <a href="#contact" onclick="window.openModal(event)">Contact</a>
+            <a href="#contact" onclick="openModal(event)">Contact</a>
         </div>
     </footer>
 
     <div id="contactModal" class="modal" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
         <div class="modal-content">
-            <span class="close" onclick="window.closeModal()" aria-label="Close modal">&times;</span>
+            <span class="close" onclick="closeModal()" aria-label="Close modal">&times;</span>
             <h3 id="modalTitle">Let's Connect!</h3>
             <p>Share your thoughts, suggest resources, or report issues. We respond within 24 hours.</p>
             <form id="contactForm" action="mailto:gtu.versebyij@gmail.com" method="post" enctype="text/plain">
@@ -1447,7 +1461,7 @@
         </div>
     </div>
 
-    <script type="module" defer>
+    <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
         import { getFirestore, collection, getDocs, query, orderBy, where, limit } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
@@ -1499,21 +1513,21 @@ function typeWriter() {
 window.addEventListener('load', typeWriter);
 
         // Dark Mode Toggle with Local Storage
-        window.toggleDarkMode = function() {
+        function toggleDarkMode() {
             document.body.classList.toggle('dark-mode');
             const isDark = document.body.classList.contains('dark-mode');
             const icon = document.getElementById('darkToggleIcon');
             icon.classList.toggle('fa-moon', !isDark);
             icon.classList.toggle('fa-sun', isDark);
             localStorage.setItem('darkMode', isDark);
-        };
+        }
 
         if (localStorage.getItem('darkMode') === 'true') {
-            window.toggleDarkMode();
+            toggleDarkMode();
         }
 
         // Mobile Menu Toggle
-        window.toggleMenu = function() {
+        function toggleMenu() {
             const navLinks = document.getElementById('navLinks');
             const hamburger = document.getElementById('hamburger');
             navLinks.classList.toggle('active');
@@ -1576,27 +1590,28 @@ window.addEventListener('load', typeWriter);
                 const snapshot = await getDocs(q);
                 let filtered = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
                 if (collegeInput) {
-                    filtered = filtered.filter(p => p.college.toLowerCase().includes(collegeInput));
+                    filtered = filtered.filter(p => p.college && p.college.toLowerCase().includes(collegeInput));
                 }
                 const midsem = filtered.filter(p => p.type === 'midsem');
                 const gtu = filtered.filter(p => p.type === 'gtu');
                 document.getElementById('midsemList').innerHTML = midsem.length > 0 ? midsem.map(p => `
                     <li class="paper-item">
-                        <span class="paper-title">${p.title} (${p.branch} Sem ${p.sem}, ${p.college})</span>
+                        <span class="paper-title">${p.title || 'Untitled'} (${p.branch || 'N/A'} Sem ${p.sem || 'N/A'}, ${p.college || 'N/A'})</span>
                         <p class="paper-desc">Download the paper and solutions.</p>
-                        <a href="${p.url}" target="_blank" class="paper-link">Download PDF <i class="fas fa-download"></i></a>
+                        <a href="${p.url || '#'}" target="_blank" class="paper-link">Download PDF <i class="fas fa-download"></i></a>
                     </li>
-                `).join('') : '<p>No midsem papers match the filters.</p>';
+                `).join('') : '<li class="paper-item"><p>No midsem papers match the filters.</p></li>';
                 document.getElementById('gtuList').innerHTML = gtu.length > 0 ? gtu.map(p => `
                     <li class="paper-item">
-                        <span class="paper-title">${p.title} (${p.branch} Sem ${p.sem}, ${p.college})</span>
+                        <span class="paper-title">${p.title || 'Untitled'} (${p.branch || 'N/A'} Sem ${p.sem || 'N/A'}, ${p.college || 'N/A'})</span>
                         <p class="paper-desc">Download the paper and solutions.</p>
-                        <a href="${p.url}" target="_blank" class="paper-link">Download PDF <i class="fas fa-download"></i></a>
+                        <a href="${p.url || '#'}" target="_blank" class="paper-link">Download PDF <i class="fas fa-download"></i></a>
                     </li>
-                `).join('') : '<p>No GTU exam papers match the filters.</p>';
+                `).join('') : '<li class="paper-item"><p>No GTU exam papers match the filters.</p></li>';
             } catch (error) {
                 console.error('Error filtering papers:', error);
-                alert('Error filtering papers. Check Firebase configuration and console for details.');
+                document.getElementById('midsemList').innerHTML = '<li class="paper-item"><p>Error loading papers. Check console.</p></li>';
+                document.getElementById('gtuList').innerHTML = '<li class="paper-item"><p>Error loading papers. Check console.</p></li>';
             }
         };
 
@@ -1610,18 +1625,18 @@ window.addEventListener('load', typeWriter);
                 const snapshot = await getDocs(q);
                 let filtered = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
                 if (collegeInput) {
-                    filtered = filtered.filter(b => b.college.toLowerCase().includes(collegeInput));
+                    filtered = filtered.filter(b => b.college && b.college.toLowerCase().includes(collegeInput));
                 }
                 document.getElementById('booksList').innerHTML = filtered.length > 0 ? filtered.map(b => `
                     <li class="book-item">
-                        <span class="book-title">${b.title} (${b.branch} Sem ${b.sem}, ${b.college})</span>
+                        <span class="book-title">${b.title || 'Untitled'} (${b.branch || 'N/A'} Sem ${b.sem || 'N/A'}, ${b.college || 'N/A'})</span>
                         <p class="book-desc">Download the textbook or reference material.</p>
-                        <a href="${b.url}" target="_blank" class="book-link">Download PDF <i class="fas fa-download"></i></a>
+                        <a href="${b.url || '#'}" target="_blank" class="book-link">Download PDF <i class="fas fa-download"></i></a>
                     </li>
-                `).join('') : '<p>No books match the filters.</p>';
+                `).join('') : '<li class="book-item"><p>No books match the filters.</p></li>';
             } catch (error) {
                 console.error('Error filtering books:', error);
-                alert('Error filtering books. Check Firebase configuration and console for details.');
+                document.getElementById('booksList').innerHTML = '<li class="book-item"><p>Error loading books. Check console.</p></li>';
             }
         };
 
@@ -1635,42 +1650,42 @@ window.addEventListener('load', typeWriter);
                 if (anns.length > 0) {
                     list.innerHTML = anns.map((a, index) => `
                         <li class="announcement-item ${index < 3 ? 'top-ann' : ''}">
-                            <span class="announcement-title">${a.title}</span>
-                            <p class="announcement-desc">${a.desc}</p>
-                            <div class="announcement-date">Posted on: ${a.date}</div>
+                            <span class="announcement-title">${a.title || 'Untitled'}</span>
+                            <p class="announcement-desc">${a.desc || ''}</p>
+                            <div class="announcement-date">Posted on: ${a.date || 'N/A'}</div>
                         </li>
                     `).join('');
                 } else {
-                    list.innerHTML = '<p>No announcements available yet. Add via admin panel.</p>';
+                    list.innerHTML = '<li class="announcement-item"><p>No announcements available yet. Add via admin panel.</p></li>';
                 }
             } catch (error) {
                 console.error('Error loading announcements:', error);
-                alert('Error loading announcements. Check Firebase configuration and console for details.');
+                document.getElementById('allAnnouncementsList').innerHTML = '<li class="announcement-item"><p>Error loading announcements. Check console.</p></li>';
             }
         };
 
         // Modal Functions
-        window.openModal = function(e) {
+        function openModal(e) {
             e?.preventDefault();
             document.getElementById('contactModal').style.display = 'block';
             document.getElementById('contactModal').setAttribute('aria-hidden', 'false');
             document.body.style.overflow = 'hidden';
-        };
+        }
 
-        window.closeModal = function() {
+        function closeModal() {
             document.getElementById('contactModal').style.display = 'none';
             document.getElementById('contactModal').setAttribute('aria-hidden', 'true');
             document.body.style.overflow = 'auto';
-        };
+        }
 
         // Close modal on outside click or ESC
         window.addEventListener('click', (event) => {
             const modal = document.getElementById('contactModal');
-            if (event.target === modal) window.closeModal();
+            if (event.target === modal) closeModal();
         });
 
         window.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') window.closeModal();
+            if (e.key === 'Escape') closeModal();
         });
 
         // Smooth Scrolling for Internal Links
@@ -1689,28 +1704,23 @@ window.addEventListener('load', typeWriter);
             });
         });
 
-        // Lazy Load Resources
+        // Lazy Load Resources - Removed lazy, load immediately
         const loadResources = async () => {
-            const papersSection = document.getElementById('papers');
-            const booksSection = document.getElementById('books');
-            const announcementsSection = document.getElementById('announcements');
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        if (entry.target === papersSection) window.filterPapers();
-                        if (entry.target === booksSection) window.filterBooks();
-                        if (entry.target === announcementsSection) window.loadAllAnnouncements();
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, { threshold: 0.1 });
-            observer.observe(papersSection);
-            observer.observe(booksSection);
-            observer.observe(announcementsSection);
+            await filterPapers();
+            await filterBooks();
+            await loadAllAnnouncements();
         };
 
         // Initialize on Load
-        window.addEventListener('load', loadResources);
+        window.addEventListener('load', async () => {
+            typeWriter();
+            loadResources();
+        });
+
+        // Enhanced: Preload critical resources for faster load
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js');
+        }
     </script>
 </body>
 </html>
