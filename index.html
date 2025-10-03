@@ -270,16 +270,18 @@
         }
 
         .hero h1 {
-            font-family: 'Poppins', sans-serif;
-            font-size: clamp(2.8rem, 7vw, 5rem);
-            font-weight: 800;
-            margin-bottom: 1.5rem;
-            background: var(--gradient-1);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: fadeInUp 0.8s ease-out;
-            line-height: 1.1;
-        }
+    font-family: 'Poppins', sans-serif;
+    font-size: clamp(2.8rem, 7vw, 5rem);
+    font-weight: 800;
+    margin-bottom: 1.5rem;
+    background: var(--gradient-1);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: fadeInUp 0.8s ease-out;
+    line-height: 1.1;
+    display: inline-block; /* Ensure h1 wraps tightly around content */
+    width: auto; /* Prevent full-width stretching */
+}
 
         @keyframes fadeInUp {
             from { opacity: 0; transform: translateY(30px); }
@@ -1112,13 +1114,14 @@
         }
 
         .typewriter {
-            overflow: hidden;
-            border-right: 0.15em solid var(--primary);
-            white-space: nowrap;
-            margin: 0 auto;
-            letter-spacing: 0.15em;
-            animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
-        }
+    display: inline-block; /* Change from inline to inline-block for better size control */
+    min-width: 300px; /* Temporary fallback width, will be updated dynamically */
+    overflow: hidden;
+    border-right: 0.15em solid var(--primary);
+    white-space: nowrap;
+    vertical-align: top; /* Prevent vertical alignment issues */
+    animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+}
 
         @keyframes typing {
             from { width: 0 }
@@ -1485,6 +1488,29 @@ let wordIndex = 0;
 let charIndex = 0;
 let isDeleting = false;
 
+// Function to calculate and set the width of the typewriter element
+function setTypewriterWidth() {
+    // Create a temporary span to measure text width
+    const tempSpan = document.createElement('span');
+    tempSpan.style.visibility = 'hidden';
+    tempSpan.style.position = 'absolute';
+    tempSpan.style.whiteSpace = 'nowrap';
+    tempSpan.style.font = window.getComputedStyle(typewriterEl).font; // Match font styles
+    document.body.appendChild(tempSpan);
+
+    // Find the longest word's width
+    let maxWidth = 0;
+    typewriterWords.forEach(word => {
+        tempSpan.textContent = word;
+        const width = tempSpan.offsetWidth;
+        if (width > maxWidth) maxWidth = width;
+    });
+
+    // Set the typewriter element's min-width to the longest word's width
+    typewriterEl.style.minWidth = `${maxWidth + 10}px`; // Add padding for cursor
+    document.body.removeChild(tempSpan); // Clean up
+}
+
 function typeWriter() {
     const currentWord = typewriterWords[wordIndex];
     if (!isDeleting && charIndex < currentWord.length) {
@@ -1510,7 +1536,12 @@ function typeWriter() {
         setTimeout(typeWriter, 200);
     }
 }
-window.addEventListener('load', typeWriter);
+
+// Initialize typewriter and set width on load
+window.addEventListener('load', () => {
+    setTypewriterWidth();
+    typeWriter();
+});
 
         // Dark Mode Toggle with Local Storage
         function toggleDarkMode() {
