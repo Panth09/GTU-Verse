@@ -24,6 +24,7 @@
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         .animate-fade-in { animation: fadeIn 0.6s ease-out; }
         .animate-slide-up { animation: fadeIn 0.8s ease-out; }
+        .chart-wrapper { height: 20rem; /* Fixed height for charts */ }
     </style>
 </head>
 <body class="bg-gradient-to-br from-gray-900 via-blue-900 to-gray-900 text-white min-h-screen">
@@ -84,11 +85,15 @@
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
                 <div class="bg-gray-800/60 rounded-xl p-6 shadow-2xl border border-gray-700/50 backdrop-blur-sm animate-slide-up animation-delay-500">
                     <h3 class="text-2xl font-bold mb-6 text-blue-400">📈 Publications Timeline</h3>
-                    <canvas id="yearChart" class="h-80"></canvas>
+                    <div class="chart-wrapper">
+                        <canvas id="yearChart"></canvas>
+                    </div>
                 </div>
                 <div class="bg-gray-800/60 rounded-xl p-6 shadow-2xl border border-gray-700/50 backdrop-blur-sm animate-slide-up animation-delay-600">
                     <h3 class="text-2xl font-bold mb-6 text-green-400">🦠 Organisms Distribution</h3>
-                    <canvas id="organismChart" class="h-80"></canvas>
+                    <div class="chart-wrapper">
+                        <canvas id="organismChart"></canvas>
+                    </div>
                 </div>
             </div>
 
@@ -96,11 +101,15 @@
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 <div class="bg-gray-800/60 rounded-xl p-6 shadow-2xl border border-gray-700/50 backdrop-blur-sm animate-slide-up animation-delay-700">
                     <h3 class="text-2xl font-bold mb-6 text-purple-400">🔬 Research Areas</h3>
-                    <canvas id="researchAreaChart" class="h-80"></canvas>
+                    <div class="chart-wrapper">
+                        <canvas id="researchAreaChart"></canvas>
+                    </div>
                 </div>
                 <div class="bg-gray-800/60 rounded-xl p-6 shadow-2xl border border-gray-700/50 backdrop-blur-sm animate-slide-up animation-delay-800">
                     <h3 class="text-2xl font-bold mb-6 text-orange-400">🚀 Space Conditions</h3>
-                    <canvas id="conditionChart" class="h-80"></canvas>
+                    <div class="chart-wrapper">
+                        <canvas id="conditionChart"></canvas>
+                    </div>
                 </div>
             </div>
 
@@ -214,7 +223,9 @@
                 <!-- Research Stage Distribution -->
                 <div class="bg-gray-800/60 rounded-xl p-6 shadow-2xl border border-gray-700/50 backdrop-blur-sm animate-slide-up animation-delay-300">
                     <h3 class="text-2xl font-bold mb-4 text-purple-400">🎯 Research Maturity</h3>
-                    <canvas id="stageChart" class="h-64 mb-4"></canvas>
+                    <div class="chart-wrapper h-64">
+                        <canvas id="stageChart"></canvas>
+                    </div>
                     <div class="space-y-2" id="stageDetails"></div>
                 </div>
 
