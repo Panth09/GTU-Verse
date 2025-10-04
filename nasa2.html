@@ -1,0 +1,1056 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Space Biology Knowledge Engine</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-blue: #3B82F6;
+            --accent-purple: #A855F7;
+            --highlight-green: #10B981;
+            --warning-orange: #F59E0B;
+            --bg-dark: #0f172a;
+            --card-bg: rgba(31, 41, 55, 0.6);
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--bg-dark) 0%, #1e3a8a 50%, var(--bg-dark) 100%);
+            font-family: 'Inter', sans-serif;
+            overscroll-behavior: none;
+        }
+
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        .stat-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            backdrop-filter: blur(8px);
+        }
+        .stat-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.5);
+        }
+        #network-graph {
+            width: 100%;
+            height: 600px;
+            background: var(--card-bg);
+            border-radius: 16px;
+            overflow: hidden;
+        }
+        .publication-card {
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        .publication-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 24px rgba(59, 130, 246, 0.4);
+            border-color: var(--primary-blue);
+        }
+        .line-clamp-2 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .line-clamp-3 {
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .scrollbar-thin::-webkit-scrollbar {
+            width: 6px;
+        }
+        .scrollbar-thin::-webkit-scrollbar-track {
+            background: #1f2937;
+            border-radius: 3px;
+        }
+        .scrollbar-thin::-webkit-scrollbar-thumb {
+            background: var(--primary-blue);
+            border-radius: 3px;
+        }
+        .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+            background: #2563eb;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in { animation: fadeIn 0.8s ease-out; }
+        .animate-slide-up { animation: fadeIn 1s ease-out; }
+        .chart-wrapper { height: 20rem; position: relative; }
+        .focus:ring { --tw-ring-color: var(--primary-blue); }
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            border: 0;
+        }
+        .resource-link {
+            transition: all 0.3s ease;
+        }
+        .resource-link:hover {
+            transform: translateX(4px);
+            color: var(--primary-blue);
+        }
+        details > summary {
+            list-style: none;
+        }
+        details > summary::-webkit-details-marker {
+            display: none;
+        }
+    </style>
+</head>
+<body class="text-white min-h-screen">
+    <div class="container mx-auto px-4 py-12 max-w-7xl">
+        <!-- Header -->
+        <header class="text-center mb-12 animate-fade-in">
+            <h1 class="text-5xl md:text-6xl font-extrabold mb-4 bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 bg-clip-text text-transparent drop-shadow-xl">
+                🧬 Space Biology Knowledge Engine
+            </h1>
+            <p class="text-gray-200 text-xl md:text-2xl mb-2">NASA Space Apps Challenge 2025</p>
+            <p class="text-gray-400 text-base">Analyzing 608 Bioscience Publications • Powered by AI & Knowledge Graphs</p>
+        </header>
+
+        <!-- Navigation Tabs -->
+        <nav class="flex flex-wrap justify-center gap-4 mb-12" role="tablist">
+            <button onclick="showTab('overview')" class="tab-btn px-6 py-3 bg-blue-600 hover:bg-blue-700 rounded-xl font-semibold transition-all duration-300 shadow-lg focus:outline-none focus:ring-2 ring-offset-2 ring-blue-500" role="tab" aria-selected="true" aria-controls="overview">
+                📊 Overview
+            </button>
+            <button onclick="showTab('search')" class="tab-btn px-6 py-3 bg-gray-700 hover:bg-gray-600 rounded-xl font-semibold transition-all duration-300 shadow-lg focus:outline-none focus:ring-2 ring-offset-2 ring-blue-500" role="tab" aria-selected="false" aria-controls="search">
+                🔍 Search & Explore
+            </button>
+            <button onclick="showTab('insights')" class="tab-btn px-6 py-3 bg-gray-700 hover:bg-gray-600 rounded-xl font-semibold transition-all duration-300 shadow-lg focus:outline-none focus:ring-2 ring-offset-2 ring-blue-500" role="tab" aria-selected="false" aria-controls="insights">
+                💡 AI Insights
+            </button>
+            <button onclick="showTab('knowledge-graph')" class="tab-btn px-6 py-3 bg-gray-700 hover:bg-gray-600 rounded-xl font-semibold transition-all duration-300 shadow-lg focus:outline-none focus:ring-2 ring-offset-2 ring-blue-500" role="tab" aria-selected="false" aria-controls="knowledge-graph">
+                🕸️ Knowledge Graph
+            </button>
+            <button onclick="showTab('audience')" class="tab-btn px-6 py-3 bg-gray-700 hover:bg-gray-600 rounded-xl font-semibold transition-all duration-300 shadow-lg focus:outline-none focus:ring-2 ring-offset-2 ring-blue-500" role="tab" aria-selected="false" aria-controls="audience">
+                👥 By Audience
+            </button>
+        </nav>
+
+        <!-- TAB 1: OVERVIEW -->
+        <section id="overview" class="tab-content active" role="tabpanel">
+            <!-- Key Metrics -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+                <div class="stat-card bg-gradient-to-br from-blue-900 to-blue-800 rounded-xl p-6 shadow-2xl border border-blue-700/50 animate-slide-up">
+                    <h3 class="text-blue-300 text-sm font-medium mb-2">📚 Total Publications</h3>
+                    <p class="text-5xl font-bold text-white">608</p>
+                </div>
+                <div class="stat-card bg-gradient-to-br from-green-900 to-green-800 rounded-xl p-6 shadow-2xl border border-green-700/50 animate-slide-up animation-delay-100">
+                    <h3 class="text-green-300 text-sm font-medium mb-2">🧬 Organisms Studied</h3>
+                    <p class="text-5xl font-bold text-white">4</p>
+                </div>
+                <div class="stat-card bg-gradient-to-br from-purple-900 to-purple-800 rounded-xl p-6 shadow-2xl border border-purple-700/50 animate-slide-up animation-delay-200">
+                    <h3 class="text-purple-300 text-sm font-medium mb-2">🔬 Research Areas</h3>
+                    <p class="text-5xl font-bold text-white">5</p>
+                </div>
+                <div class="stat-card bg-gradient-to-br from-orange-900 to-orange-800 rounded-xl p-6 shadow-2xl border border-orange-700/50 animate-slide-up animation-delay-300">
+                    <h3 class="text-orange-300 text-sm font-medium mb-2">📅 Year Span</h3>
+                    <p class="text-5xl font-bold text-white">2005-2025</p>
+                </div>
+            </div>
+
+            <!-- Charts Row 1 -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+                <div class="bg-gray-800/60 rounded-xl p-6 shadow-2xl border border-gray-700/50 backdrop-blur-sm animate-slide-up animation-delay-400">
+                    <h3 class="text-2xl font-bold mb-6 text-blue-400">📈 Publications Timeline</h3>
+                    <div class="chart-wrapper">
+                        <canvas id="yearChart" aria-label="Timeline of publications from 2005 to 2025"></canvas>
+                    </div>
+                </div>
+                <div class="bg-gray-800/60 rounded-xl p-6 shadow-2xl border border-gray-700/50 backdrop-blur-sm animate-slide-up animation-delay-500">
+                    <h3 class="text-2xl font-bold mb-6 text-green-400">🦠 Organisms Distribution</h3>
+                    <div class="chart-wrapper">
+                        <canvas id="organismChart" aria-label="Distribution of organisms studied in research"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts Row 2 -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="bg-gray-800/60 rounded-xl p-6 shadow-2xl border border-gray-700/50 backdrop-blur-sm animate-slide-up animation-delay-600">
+                    <h3 class="text-2xl font-bold mb-6 text-purple-400">🔬 Research Areas</h3>
+                    <div class="chart-wrapper">
+                        <canvas id="researchAreaChart" aria-label="Distribution of research areas"></canvas>
+                    </div>
+                </div>
+                <div class="bg-gray-800/60 rounded-xl p-6 shadow-2xl border border-gray-700/50 backdrop-blur-sm animate-slide-up animation-delay-700">
+                    <h3 class="text-2xl font-bold mb-6 text-orange-400">🚀 Space Conditions</h3>
+                    <div class="chart-wrapper">
+                        <canvas id="conditionChart" aria-label="Distribution of space conditions studied"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 2: SEARCH & EXPLORE -->
+        <section id="search" class="tab-content" role="tabpanel">
+            <!-- Search Bar -->
+            <div class="mb-8">
+                <label for="searchInput" class="sr-only">Search publications</label>
+                <input 
+                    type="text" 
+                    id="searchInput" 
+                    placeholder="🔍 Search by title, abstract, organism, research area, or section (e.g., results, conclusion)..." 
+                    class="w-full px-6 py-4 bg-gray-800/60 border-2 border-gray-700 rounded-xl text-white focus:outline-none focus:border-blue-500 transition-all duration-300 backdrop-blur-sm shadow-lg"
+                    oninput="debouncedFilterPublications()"
+                    aria-describedby="search-hint"
+                >
+                <p id="search-hint" class="text-gray-400 text-sm mt-2">Enter keywords to filter publications by title, abstract, organisms, areas, or specific sections like Results or Conclusions.</p>
+            </div>
+
+            <!-- Filters -->
+            <div class="bg-gray-800/60 rounded-xl p-6 mb-8 border border-gray-700 backdrop-blur-sm shadow-lg animate-slide-up">
+                <h3 class="text-xl font-bold mb-4 text-white">🎯 Filters</h3>
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <div>
+                        <label for="organismFilter" class="block text-gray-400 text-sm mb-2">Organism</label>
+                        <select id="organismFilter" onchange="filterPublications()" class="w-full px-4 py-3 bg-gray-700/60 border border-gray-600 rounded-lg text-white backdrop-blur-sm focus:outline-none focus:ring-2 ring-blue-500">
+                            <option value="">All Organisms</option>
+                            <option value="Human">Human (182)</option>
+                            <option value="Mouse">Mouse (152)</option>
+                            <option value="Yeast">Yeast (121)</option>
+                            <option value="Plant">Plant (153)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="areaFilter" class="block text-gray-400 text-sm mb-2">Research Area</label>
+                        <select id="areaFilter" onchange="filterPublications()" class="w-full px-4 py-3 bg-gray-700/60 border border-gray-600 rounded-lg text-white backdrop-blur-sm focus:outline-none focus:ring-2 ring-blue-500">
+                            <option value="">All Areas</option>
+                            <option value="Gene Expression">Gene Expression (152)</option>
+                            <option value="Bone Health">Bone Health (122)</option>
+                            <option value="Muscle Atrophy">Muscle Atrophy (109)</option>
+                            <option value="Radiation Effects">Radiation Effects (91)</option>
+                            <option value="Immune Response">Immune Response (134)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="yearFilter" class="block text-gray-400 text-sm mb-2">Year Range</label>
+                        <select id="yearFilter" onchange="filterPublications()" class="w-full px-4 py-3 bg-gray-700/60 border border-gray-600 rounded-lg text-white backdrop-blur-sm focus:outline-none focus:ring-2 ring-blue-500">
+                            <option value="">All Years</option>
+                            <option value="recent">Last 5 Years</option>
+                            <option value="2015-2020">2015-2020</option>
+                            <option value="2010-2015">2010-2015</option>
+                            <option value="before-2010">Before 2010</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="sectionFilter" class="block text-gray-400 text-sm mb-2">Section Focus</label>
+                        <select id="sectionFilter" onchange="filterPublications()" class="w-full px-4 py-3 bg-gray-700/60 border border-gray-600 rounded-lg text-white backdrop-blur-sm focus:outline-none focus:ring-2 ring-blue-500">
+                            <option value="">All Sections</option>
+                            <option value="introduction">Introduction</option>
+                            <option value="results">Results</option>
+                            <option value="conclusion">Conclusion</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results -->
+            <div class="mb-6">
+                <h2 class="text-3xl font-bold text-white">Publications</h2>
+                <p class="text-gray-400 mt-1" id="resultCount">608 publications</p>
+            </div>
+            
+            <div id="publicationsList" class="space-y-6 max-h-[600px] overflow-y-auto pr-2 scrollbar-thin" role="list"></div>
+
+            <!-- Load More Button -->
+            <div class="text-center mt-8">
+                <button onclick="loadMore()" id="loadMoreBtn" class="px-8 py-3 bg-blue-600 hover:bg-blue-700 rounded-lg font-semibold transition-all duration-300 shadow-lg focus:outline-none focus:ring-2 ring-offset-2 ring-blue-500">
+                    Load More Publications
+                </button>
+            </div>
+        </section>
+
+        <!-- TAB 3: AI INSIGHTS -->
+        <section id="insights" class="tab-content" role="tabpanel">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+                <!-- Research Gaps -->
+                <div class="bg-gray-800/60 rounded-xl p-6 shadow-2xl border border-gray-700/50 backdrop-blur-sm animate-slide-up">
+                    <h3 class="text-2xl font-bold mb-4 text-yellow-400">🔍 Knowledge Gaps</h3>
+                    <p class="text-gray-400 mb-4">Underrepresented combinations (&lt;5 publications)</p>
+                    <div class="space-y-3 max-h-80 overflow-y-auto scrollbar-thin" id="knowledgeGaps"></div>
+                    <div class="mt-6 bg-yellow-900/30 rounded-lg p-4 border border-yellow-700/50">
+                        <p class="text-yellow-200">💡 Investment opportunities for future funding</p>
+                    </div>
+                </div>
+
+                <!-- Consensus Areas -->
+                <div class="bg-gray-800/60 rounded-xl p-6 shadow-2xl border border-gray-700/50 backdrop-blur-sm animate-slide-up animation-delay-100">
+                    <h3 class="text-2xl font-bold mb-4 text-green-400">✅ Consensus Areas</h3>
+                    <p class="text-gray-400 mb-4">Established areas (&gt;50 publications)</p>
+                    <div class="space-y-3 max-h-80 overflow-y-auto scrollbar-thin" id="consensusAreas"></div>
+                    <div class="mt-6 bg-green-900/30 rounded-lg p-4 border border-green-700/50">
+                        <p class="text-green-200">💡 High confidence with substantial backing</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+                <!-- Recent Trends -->
+                <div class="bg-gray-800/60 rounded-xl p-6 shadow-2xl border border-gray-700/50 backdrop-blur-sm animate-slide-up animation-delay-200">
+                    <h3 class="text-2xl font-bold mb-4 text-blue-400">📈 Recent Trends</h3>
+                    <p class="text-gray-400 mb-4">Emerging areas (Last 5 years)</p>
+                    <div class="space-y-3" id="recentTrends"></div>
+                </div>
+
+                <!-- Research Stage Distribution -->
+                <div class="bg-gray-800/60 rounded-xl p-6 shadow-2xl border border-gray-700/50 backdrop-blur-sm animate-slide-up animation-delay-300">
+                    <h3 class="text-2xl font-bold mb-4 text-purple-400">🎯 Research Maturity</h3>
+                    <div class="chart-wrapper h-64">
+                        <canvas id="stageChart" aria-label="Distribution of research stages"></canvas>
+                    </div>
+                    <div class="space-y-2" id="stageDetails"></div>
+                </div>
+            </div>
+
+            <!-- Actionable Insights Section -->
+            <section class="bg-gradient-to-r from-blue-900/80 to-purple-900/80 rounded-xl p-8 shadow-2xl border border-blue-700/50 backdrop-blur-sm animate-slide-up animation-delay-400">
+                <h3 class="text-3xl font-bold mb-6 text-white text-center">🎯 Actionable Insights</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- For Scientists -->
+                    <div class="bg-gray-800/70 rounded-lg p-6">
+                        <h4 class="text-xl font-bold mb-3 text-blue-400">👨‍🔬 For Scientists</h4>
+                        <ul class="space-y-2 text-gray-300">
+                            <li>• 243 high-relevance publications</li>
+                            <li>• 10 underexplored combinations</li>
+                            <li>• Focus on gene expression and immune response</li>
+                        </ul>
+                    </div>
+
+                    <!-- For Managers -->
+                    <div class="bg-gray-800/70 rounded-lg p-6">
+                        <h4 class="text-xl font-bold mb-3 text-purple-400">💼 For Managers</h4>
+                        <ul class="space-y-2 text-gray-300">
+                            <li>• 213 high-impact publications</li>
+                            <li>• 10 funding opportunities</li>
+                            <li>• 5 mature research areas</li>
+                        </ul>
+                    </div>
+
+                    <!-- For Mission Architects -->
+                    <div class="bg-gray-800/70 rounded-lg p-6">
+                        <h4 class="text-xl font-bold mb-3 text-orange-400">🚀 For Mission Architects</h4>
+                        <ul class="space-y-2 text-gray-300">
+                            <li>• 274 mission-critical publications</li>
+                            <li>• Focus: bone, muscle, radiation</li>
+                            <li>• ISS data applicable to Moon/Mars</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+        </section>
+
+        <!-- TAB 4: KNOWLEDGE GRAPH -->
+        <section id="knowledge-graph" class="tab-content" role="tabpanel">
+            <div class="bg-gray-800/60 rounded-xl p-6 shadow-2xl border border-gray-700/50 mb-6 backdrop-blur-sm animate-slide-up">
+                <h3 class="text-2xl font-bold mb-4 text-purple-400">🕸️ Research Relationship Network</h3>
+                <p class="text-gray-400 mb-2">Interactive connections between organisms, research areas, and space conditions.</p>
+                <p class="text-gray-500 text-sm">Drag nodes to explore • Hover for details • Node size reflects publication count</p>
+            </div>
+
+            <div class="bg-gray-800/60 rounded-xl p-6 shadow-2xl border border-gray-700/50 mb-6 backdrop-blur-sm animate-slide-up animation-delay-100">
+                <div id="network-graph" role="img" aria-label="Interactive network graph of research connections"></div>
+            </div>
+
+            <!-- Legend -->
+            <div class="bg-gray-800/60 rounded-xl p-6 shadow-2xl border border-gray-700/50 backdrop-blur-sm animate-slide-up animation-delay-200">
+                <h4 class="font-bold mb-3 text-white">Legend</h4>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="flex items-center gap-2">
+                        <div class="w-5 h-5 rounded-full bg-blue-500"></div>
+                        <span class="text-gray-300">Organisms</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <div class="w-5 h-5 rounded-full bg-purple-500"></div>
+                        <span class="text-gray-300">Research Areas</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <div class="w-5 h-5 rounded-full bg-green-500"></div>
+                        <span class="text-gray-300">Conditions</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <div class="w-4 h-0.5 bg-gray-400"></div>
+                        <span class="text-gray-300">Connections</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 5: BY AUDIENCE -->
+        <section id="audience" class="tab-content" role="tabpanel">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+                <!-- Scientists View -->
+                <div class="bg-gradient-to-br from-blue-900/80 to-blue-800/80 rounded-xl p-6 shadow-2xl border border-blue-700/50 backdrop-blur-sm animate-slide-up">
+                    <h3 class="text-2xl font-bold mb-4 text-white">👨‍🔬 Scientists</h3>
+                    <p class="text-blue-200 mb-6">Hypothesis & mechanistic research</p>
+                    <div class="bg-blue-950/50 rounded-lg p-4 mb-4 text-center">
+                        <p class="text-4xl font-bold text-white mb-1">243</p>
+                        <p class="text-blue-200 text-sm">High Relevance Publications</p>
+                    </div>
+                    <button onclick="filterByAudience('scientist')" class="w-full px-4 py-3 bg-blue-600 hover:bg-blue-700 rounded-lg font-semibold transition-all duration-300 mb-6 shadow-lg focus:outline-none focus:ring-2 ring-offset-2 ring-blue-500">
+                        View Publications
+                    </button>
+                    <div class="space-y-2 text-sm">
+                        <h4 class="font-semibold text-blue-200 mb-2">Top Areas:</h4>
+                        <div class="flex justify-between"><span class="text-blue-300">Gene Expression</span><span class="text-white font-bold">152</span></div>
+                        <div class="flex justify-between"><span class="text-blue-300">Immune Response</span><span class="text-white font-bold">134</span></div>
+                        <div class="flex justify-between"><span class="text-blue-300">Bone Health</span><span class="text-white font-bold">122</span></div>
+                        <div class="flex justify-between"><span class="text-blue-300">Muscle Atrophy</span><span class="text-white font-bold">109</span></div>
+                    </div>
+                </div>
+
+                <!-- Managers View -->
+                <div class="bg-gradient-to-br from-purple-900/80 to-purple-800/80 rounded-xl p-6 shadow-2xl border border-purple-700/50 backdrop-blur-sm animate-slide-up animation-delay-100">
+                    <h3 class="text-2xl font-bold mb-4 text-white">💼 Managers</h3>
+                    <p class="text-purple-200 mb-6">Investment & portfolio analysis</p>
+                    <div class="bg-purple-950/50 rounded-lg p-4 mb-4 text-center">
+                        <p class="text-4xl font-bold text-white mb-1">213</p>
+                        <p class="text-purple-200 text-sm">High Impact Publications</p>
+                    </div>
+                    <button onclick="filterByAudience('manager')" class="w-full px-4 py-3 bg-purple-600 hover:bg-purple-700 rounded-lg font-semibold transition-all duration-300 mb-6 shadow-lg focus:outline-none focus:ring-2 ring-offset-2 ring-purple-500">
+                        View Publications
+                    </button>
+                    <div class="space-y-2 text-sm">
+                        <h4 class="font-semibold text-purple-200 mb-2">Knowledge Gaps:</h4>
+                        <div class="flex justify-between"><span class="text-purple-300">Plant + Radiation</span><span class="text-yellow-400 font-bold">3</span></div>
+                        <div class="flex justify-between"><span class="text-purple-300">Yeast + Bone Health</span><span class="text-yellow-400 font-bold">2</span></div>
+                        <div class="flex justify-between"><span class="text-purple-300">Mouse + Immune Response</span><span class="text-yellow-400 font-bold">4</span></div>
+                        <div class="flex justify-between"><span class="text-purple-300">Human + Muscle Atrophy</span><span class="text-yellow-400 font-bold">1</span></div>
+                    </div>
+                </div>
+
+                <!-- Mission Architects View -->
+                <div class="bg-gradient-to-br from-orange-900/80 to-orange-800/80 rounded-xl p-6 shadow-2xl border border-orange-700/50 backdrop-blur-sm animate-slide-up animation-delay-200">
+                    <h3 class="text-2xl font-bold mb-4 text-white">🚀 Mission Architects</h3>
+                    <p class="text-orange-200 mb-6">Health & safety data for Moon/Mars</p>
+                    <div class="bg-orange-950/50 rounded-lg p-4 mb-4 text-center">
+                        <p class="text-4xl font-bold text-white mb-1">274</p>
+                        <p class="text-orange-200 text-sm">Mission-Critical Publications</p>
+                    </div>
+                    <button onclick="filterByAudience('mission')" class="w-full px-4 py-3 bg-orange-600 hover:bg-orange-700 rounded-lg font-semibold transition-all duration-300 mb-6 shadow-lg focus:outline-none focus:ring-2 ring-offset-2 ring-orange-500">
+                        View Publications
+                    </button>
+                    <div class="space-y-2 text-sm">
+                        <h4 class="font-semibold text-orange-200 mb-2">Critical Areas:</h4>
+                        <div class="flex justify-between"><span class="text-orange-300">Bone Health</span><span class="text-white font-bold">122</span></div>
+                        <div class="flex justify-between"><span class="text-orange-300">Muscle Atrophy</span><span class="text-white font-bold">109</span></div>
+                        <div class="flex justify-between"><span class="text-orange-300">Radiation Effects</span><span class="text-white font-bold">91</span></div>
+                        <div class="flex justify-between"><span class="text-orange-300">Immune Response</span><span class="text-white font-bold">134</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Detailed Audience View -->
+            <div id="audienceResults" class="mt-8" style="display: none;">
+                <div class="bg-gray-800/60 rounded-xl p-6 shadow-2xl border border-gray-700/50 backdrop-blur-sm animate-slide-up">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-2xl font-bold text-white" id="audienceTitle"></h3>
+                        <button onclick="closeAudienceView()" class="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg transition-all duration-300 focus:outline-none focus:ring-2 ring-offset-2 ring-gray-500">
+                            Close
+                        </button>
+                    </div>
+                    <div id="audiencePublications" class="space-y-4 max-h-[600px] overflow-y-auto pr-2 scrollbar-thin" role="list"></div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer with Resources -->
+    <footer class="bg-gray-900/80 border-t border-gray-700/50 py-8 mt-16">
+        <div class="container mx-auto px-4 max-w-7xl">
+            <h3 class="text-2xl font-bold mb-6 text-center text-white">📚 Additional Resources</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+                <div>
+                    <h4 class="text-lg font-semibold mb-2 text-blue-400">NASA Open Science Data Repository</h4>
+                    <p class="text-gray-300 mb-4">Primary data and metadata from space biology studies.</p>
+                    <a href="https://www.nasa.gov/osdr" target="_blank" class="resource-link inline-block text-blue-400 hover:text-blue-300">Explore OSDR →</a>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-2 text-purple-400">NASA Space Life Sciences Library</h4>
+                    <p class="text-gray-300 mb-4">Additional relevant publications and archives.</p>
+                    <a href="https://sls.ldc.nasa.gov/" target="_blank" class="resource-link inline-block text-purple-400 hover:text-purple-300">Visit Library →</a>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-2 text-green-400">NASA Task Book</h4>
+                    <p class="text-gray-300 mb-4">Information on grants funding these studies.</p>
+                    <a href="https://taskbook.nasaprs.com/" target="_blank" class="resource-link inline-block text-green-400 hover:text-green-300">View Task Book →</a>
+                </div>
+            </div>
+            <p class="text-center text-gray-500 mt-8 text-sm">Built for NASA Space Apps Challenge 2025 • Challenge 3: Build a Space Biology Knowledge Engine</p>
+        </footer>
+
+    <script>
+        // Mock Data - Scaled to represent 608 publications
+        const mockResponse = {
+            publications: Array.from({length: 61}, (_, i) => ({
+                id: i + 1,
+                title: `Effects of Space Conditions on ${['Human Cells', 'Mouse Models', 'Yeast Strains', 'Plant Tissues'][i % 4]} - Study ${i + 1}`,
+                year: 2005 + Math.floor(Math.random() * 21),
+                journal: ['Astrobiology', 'Space Medicine', 'Microgravity Research', 'NASA Technical Reports'][Math.floor(i / 15) % 4],
+                pmcid: Math.random() > 0.7 ? `PMC${1000 + i}` : null,
+                authors: `Smith J, Johnson A${i % 3 === 0 ? ', et al.' : ''}`,
+                abstract: `This study explores biological impacts of spaceflight on ${['cellular', 'tissue', 'organ', 'system'][i % 4]} levels. Key findings include altered gene expression under microgravity, relevant for long-duration missions.`,
+                introduction: `Introduction: This research examines how space environments affect biological systems, focusing on ${['human health', 'animal models', 'microbial systems', 'plant growth'][i % 4]}.`,
+                results: `Results: Significant changes observed in ${['gene expression', 'bone density', 'muscle mass', 'immune response'][i % 4]} under space conditions.`,
+                conclusion: `Conclusion: Findings suggest countermeasures needed for ${['Moon', 'Mars'][i % 2]} missions, with further research recommended.`,
+                organisms: [i % 4 === 0 ? 'Human' : i % 4 === 1 ? 'Mouse' : i % 4 === 2 ? 'Yeast' : 'Plant'],
+                research_areas: [i % 5 === 0 ? 'Gene Expression' : i % 5 === 1 ? 'Bone Health' : i % 5 === 2 ? 'Muscle Atrophy' : i % 5 === 3 ? 'Radiation Effects' : 'Immune Response'],
+                space_conditions: ['Microgravity'].concat(Math.random() > 0.5 ? ['Radiation'] : []),
+                scientist_relevance: Math.floor(Math.random() * 3) + 1,
+                manager_relevance: Math.floor(Math.random() * 3) + 1,
+                mission_planner_relevance: Math.floor(Math.random() * 3) + 1
+            })),
+            statistics: {
+                total_publications: 608,
+                organism_counts: { Human: 182, Mouse: 152, Yeast: 121, Plant: 153 },
+                research_area_counts: { 'Gene Expression': 152, 'Bone Health': 122, 'Muscle Atrophy': 109, 'Radiation Effects': 91, 'Immune Response': 134 },
+                condition_counts: { Microgravity: 486, Radiation: 243, Hypergravity: 61 },
+                year_distribution: Object.fromEntries(Array.from({length: 21}, (_, i) => [2005 + i, Math.floor(608 / 21) + Math.floor(Math.random() * 10)])),
+                knowledge_gaps: [
+                    { combination: 'Plant + Radiation', publication_count: 3 },
+                    { combination: 'Yeast + Bone Health', publication_count: 2 },
+                    { combination: 'Mouse + Immune Response', publication_count: 4 },
+                    { combination: 'Human + Muscle Atrophy', publication_count: 1 },
+                    { combination: 'Yeast + Radiation', publication_count: 3 },
+                    { combination: 'Plant + Bone Health', publication_count: 2 },
+                    { combination: 'Human + Radiation', publication_count: 4 },
+                    { combination: 'Mouse + Gene Expression', publication_count: 3 },
+                    { combination: 'Yeast + Muscle Atrophy', publication_count: 1 },
+                    { combination: 'Plant + Immune Response', publication_count: 2 }
+                ],
+                consensus_areas: [
+                    { area: 'Gene Expression in Microgravity', publication_count: 80 },
+                    { area: 'Bone Health in Humans', publication_count: 65 },
+                    { area: 'Muscle Atrophy in Microgravity', publication_count: 55 },
+                    { area: 'Immune Response in Space', publication_count: 70 },
+                    { area: 'Radiation Effects on Cells', publication_count: 60 }
+                ],
+                recent_trends: [
+                    { area: 'CRISPR in Space', recent_publications: 20 },
+                    { area: 'Plant Growth in Microgravity', recent_publications: 18 },
+                    { area: 'Immune Dysregulation', recent_publications: 22 },
+                    { area: 'Bone Remodeling', recent_publications: 15 },
+                    { area: 'Radiation Shielding', recent_publications: 17 },
+                    { area: 'Microbial Adaptation', recent_publications: 14 },
+                    { area: 'Muscle Regeneration', recent_publications: 16 },
+                    { area: 'Metabolic Shifts', recent_publications: 19 }
+                ],
+                stage_distribution: { Exploratory: 122, Applied: 304, Translational: 182 },
+                high_scientist_relevance: 243,
+                high_manager_relevance: 213,
+                high_mission_planner_relevance: 274
+            }
+        };
+
+        const allPublications = mockResponse.publications;
+        const statsData = mockResponse.statistics;
+        let displayedCount = 10;
+        let graphInitialized = false;
+        let timeoutId;
+
+        // Debounce utility
+        function debounce(func, delay) {
+            return function(...args) {
+                clearTimeout(timeoutId);
+                timeoutId = setTimeout(() => func.apply(this, args), delay);
+            };
+        }
+
+        const debouncedFilterPublications = debounce(filterPublications, 300);
+
+        // Tab Navigation
+        function showTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('bg-blue-600', 'hover:bg-blue-700');
+                btn.classList.add('bg-gray-700', 'hover:bg-gray-600');
+                btn.setAttribute('aria-selected', 'false');
+            });
+            const activeTab = document.getElementById(tabId);
+            activeTab.classList.add('active');
+            document.querySelector(`button[aria-controls="${tabId}"]`).classList.add('bg-blue-600', 'hover:bg-blue-700');
+            document.querySelector(`button[aria-controls="${tabId}"]`).classList.remove('bg-gray-700', 'hover:bg-gray-600');
+            document.querySelector(`button[aria-controls="${tabId}"]`).setAttribute('aria-selected', 'true');
+            if (tabId === 'knowledge-graph' && !graphInitialized) {
+                initKnowledgeGraph();
+                graphInitialized = true;
+            }
+        }
+
+        // Publication Card Template
+        function createPublicationCard(pub) {
+            return `
+                <div class="publication-card bg-gray-800/60 rounded-xl p-6 border-2 border-gray-700/50 shadow-xl backdrop-blur-sm animate-slide-up"
+                     data-organisms='${JSON.stringify(pub.organisms)}'
+                     data-areas='${JSON.stringify(pub.research_areas)}'
+                     data-year="${pub.year}"
+                     role="article">
+                    <h3 class="text-xl font-bold mb-3 text-blue-400 line-clamp-2">${pub.title}</h3>
+                    <div class="flex flex-wrap gap-2 mb-3">
+                        <span class="px-3 py-1 bg-gray-700 text-gray-300 rounded-full text-xs">📅 ${pub.year}</span>
+                        <span class="px-3 py-1 bg-gray-700 text-gray-300 rounded-full text-xs">📖 ${pub.journal}</span>
+                        ${pub.pmcid ? `<a href="https://www.ncbi.nlm.nih.gov/pmc/articles/${pub.pmcid}" target="_blank" class="px-3 py-1 bg-gray-700 text-gray-300 rounded-full text-xs hover:bg-blue-600 transition-colors" aria-label="View publication ${pub.pmcid}">🔗 ${pub.pmcid}</a>` : ''}
+                    </div>
+                    <p class="text-gray-400 text-xs mb-4">${pub.authors}</p>
+                    <p class="text-gray-300 mb-2 leading-relaxed text-sm line-clamp-3"><strong>Abstract:</strong> ${pub.abstract}</p>
+                    <details class="text-sm text-gray-400 mb-4">
+                        <summary class="cursor-pointer text-blue-400 font-medium mb-1">View Sections</summary>
+                        <div class="mt-2 space-y-2 pt-2 border-t border-gray-600">
+                            <p><strong>Introduction:</strong> ${pub.introduction}</p>
+                            <p><strong>Results:</strong> ${pub.results}</p>
+                            <p><strong>Conclusion:</strong> ${pub.conclusion}</p>
+                        </div>
+                    </details>
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        ${pub.organisms.map(org => `<span class="px-3 py-1 bg-green-900 text-green-200 rounded-full text-xs font-medium">🦠 ${org}</span>`).join('')}
+                        ${pub.research_areas.map(area => `<span class="px-3 py-1 bg-purple-900 text-purple-200 rounded-full text-xs font-medium">🔬 ${area}</span>`).join('')}
+                        ${pub.space_conditions.map(cond => `<span class="px-3 py-1 bg-orange-900 text-orange-200 rounded-full text-xs font-medium">🌌 ${cond}</span>`).join('')}
+                    </div>
+                    <div class="flex gap-2 text-xs flex-wrap">
+                        <span class="px-2 py-1 bg-blue-900 text-blue-200 rounded-full" aria-label="Scientist relevance: ${pub.scientist_relevance} stars">👨‍🔬 ${'⭐'.repeat(pub.scientist_relevance)}</span>
+                        <span class="px-2 py-1 bg-purple-900 text-purple-200 rounded-full" aria-label="Manager relevance: ${pub.manager_relevance} stars">💼 ${'⭐'.repeat(pub.manager_relevance)}</span>
+                        <span class="px-2 py-1 bg-orange-900 text-orange-200 rounded-full" aria-label="Mission architect relevance: ${pub.mission_planner_relevance} stars">🚀 ${'⭐'.repeat(pub.mission_planner_relevance)}</span>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Filter Logic
+        function getFilteredPublications() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const organismFilter = document.getElementById('organismFilter').value;
+            const areaFilter = document.getElementById('areaFilter').value;
+            const yearFilter = document.getElementById('yearFilter').value;
+            const sectionFilter = document.getElementById('sectionFilter').value;
+
+            return allPublications.filter(pub => {
+                const searchFields = sectionFilter
+                    ? [pub[sectionFilter]]
+                    : [pub.title, pub.abstract, pub.introduction, pub.results, pub.conclusion, pub.organisms.join(' '), pub.research_areas.join(' ')];
+                const text = searchFields.join(' ').toLowerCase();
+                if (searchTerm && !text.includes(searchTerm)) return false;
+                if (organismFilter && !pub.organisms.includes(organismFilter)) return false;
+                if (areaFilter && !pub.research_areas.includes(areaFilter)) return false;
+                if (yearFilter) {
+                    const currentYear = 2025;
+                    if (yearFilter === 'recent' && pub.year < currentYear - 5) return false;
+                    if (yearFilter === '2015-2020' && (pub.year < 2015 || pub.year > 2020)) return false;
+                    if (yearFilter === '2010-2015' && (pub.year < 2010 || pub.year > 2015)) return false;
+                    if (yearFilter === 'before-2010' && pub.year >= 2010) return false;
+                }
+                return true;
+            });
+        }
+
+        // Search & Filter Functions
+        function filterPublications() {
+            const filtered = getFilteredPublications();
+            const container = document.getElementById('publicationsList');
+            container.innerHTML = filtered.slice(0, displayedCount).map(createPublicationCard).join('');
+            const totalFiltered = Math.round(filtered.length * (608 / 61));
+            const shown = Math.min(displayedCount, filtered.length) * (608 / 61);
+            document.getElementById('resultCount').textContent = `${Math.round(totalFiltered)} publication${totalFiltered !== 1 ? 's' : ''} (${Math.round(shown)} shown)`;
+            document.getElementById('loadMoreBtn').style.display = displayedCount >= filtered.length ? 'none' : 'block';
+        }
+
+        function loadMore() {
+            const filtered = getFilteredPublications();
+            const container = document.getElementById('publicationsList');
+            const start = displayedCount;
+            displayedCount += 10;
+            const newPubs = filtered.slice(start, displayedCount);
+            newPubs.forEach(pub => container.insertAdjacentHTML('beforeend', createPublicationCard(pub)));
+            const totalFiltered = Math.round(filtered.length * (608 / 61));
+            const shown = Math.min(displayedCount, filtered.length) * (608 / 61);
+            document.getElementById('resultCount').textContent = `${Math.round(totalFiltered)} publication${totalFiltered !== 1 ? 's' : ''} (${Math.round(shown)} shown)`;
+            document.getElementById('loadMoreBtn').style.display = displayedCount >= filtered.length ? 'none' : 'block';
+        }
+
+        function filterByAudience(audience) {
+            const relevanceField = audience === 'mission' ? 'mission_planner_relevance' : `${audience}_relevance`;
+            const filtered = allPublications.filter(pub => pub[relevanceField] >= 2).slice(0, 15);
+            const titles = {
+                scientist: '👨‍🔬 High-Relevance Publications for Scientists',
+                manager: '💼 High-Impact Publications for Managers',
+                mission: '🚀 Mission-Critical Publications for Architects'
+            };
+            document.getElementById('audienceTitle').textContent = titles[audience];
+            document.getElementById('audiencePublications').innerHTML = filtered.map(createPublicationCard).join('');
+            document.getElementById('audienceResults').style.display = 'block';
+            document.getElementById('audienceResults').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function closeAudienceView() {
+            document.getElementById('audienceResults').style.display = 'none';
+        }
+
+        // Chart Initialization
+        function initCharts() {
+            const commonOptions = {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: '#D1D5DB',
+                            font: { size: 14, family: 'Inter' },
+                            padding: 20,
+                            usePointStyle: true
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(0,0,0,0.9)',
+                        titleColor: '#fff',
+                        bodyColor: '#fff',
+                        borderColor: '#3B82F6',
+                        borderWidth: 1,
+                        padding: 12,
+                        titleFont: { size: 14, family: 'Inter' },
+                        bodyFont: { size: 12, family: 'Inter' }
+                    }
+                },
+                animation: {
+                    duration: 1500,
+                    easing: 'easeInOutQuart'
+                }
+            };
+
+            // Year Timeline Chart
+            const yearLabels = Object.keys(statsData.year_distribution).sort();
+            new Chart(document.getElementById('yearChart'), {
+                type: 'line',
+                data: {
+                    labels: yearLabels,
+                    datasets: [{
+                        label: 'Publications per Year',
+                        data: yearLabels.map(y => statsData.year_distribution[y]),
+                        backgroundColor: 'rgba(59, 130, 246, 0.3)',
+                        borderColor: '#3B82F6',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.4,
+                        pointRadius: 5,
+                        pointHoverRadius: 8,
+                        pointBackgroundColor: '#fff',
+                        pointBorderColor: '#3B82F6',
+                        pointBorderWidth: 2
+                    }]
+                },
+                options: {
+                    ...commonOptions,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: { color: '#9CA3AF', font: { family: 'Inter' } },
+                            grid: { color: '#374151', drawBorder: false }
+                        },
+                        x: {
+                            ticks: { color: '#9CA3AF', font: { family: 'Inter' } },
+                            grid: { display: false }
+                        }
+                    }
+                }
+            });
+
+            // Organism Distribution Chart
+            new Chart(document.getElementById('organismChart'), {
+                type: 'doughnut',
+                data: {
+                    labels: Object.keys(statsData.organism_counts),
+                    datasets: [{
+                        data: Object.values(statsData.organism_counts),
+                        backgroundColor: ['#10B981', '#8B5CF6', '#F59E0B', '#EF4444'],
+                        borderWidth: 2,
+                        borderColor: '#1F2937',
+                        hoverOffset: 20
+                    }]
+                },
+                options: {
+                    ...commonOptions,
+                    plugins: {
+                        ...commonOptions.plugins,
+                        legend: { position: 'bottom' }
+                    },
+                    cutout: '60%'
+                }
+            });
+
+            // Research Area Chart
+            const topAreas = Object.entries(statsData.research_area_counts).sort((a, b) => b[1] - a[1]);
+            new Chart(document.getElementById('researchAreaChart'), {
+                type: 'bar',
+                data: {
+                    labels: topAreas.map(([area]) => area),
+                    datasets: [{
+                        label: 'Publications',
+                        data: topAreas.map(([, count]) => count),
+                        backgroundColor: '#A855F7',
+                        borderColor: '#9333EA',
+                        borderWidth: 1,
+                        borderRadius: 8
+                    }]
+                },
+                options: {
+                    ...commonOptions,
+                    indexAxis: 'y',
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            ticks: { color: '#9CA3AF', font: { family: 'Inter' } },
+                            grid: { color: '#374151', drawBorder: false }
+                        },
+                        y: {
+                            ticks: { color: '#9CA3AF', font: { family: 'Inter' } },
+                            grid: { display: false }
+                        }
+                    },
+                    plugins: { ...commonOptions.plugins, legend: { display: false } }
+                }
+            });
+
+            // Space Conditions Chart
+            new Chart(document.getElementById('conditionChart'), {
+                type: 'polarArea',
+                data: {
+                    labels: Object.keys(statsData.condition_counts),
+                    datasets: [{
+                        data: Object.values(statsData.condition_counts),
+                        backgroundColor: [
+                            'rgba(59, 130, 246, 0.7)',
+                            'rgba(16, 185, 129, 0.7)',
+                            'rgba(245, 158, 11, 0.7)'
+                        ],
+                        borderWidth: 2,
+                        borderColor: '#1F2937'
+                    }]
+                },
+                options: {
+                    ...commonOptions,
+                    scales: {
+                        r: {
+                            ticks: { color: '#9CA3AF', backdropColor: 'transparent', font: { family: 'Inter' } },
+                            grid: { color: '#374151' }
+                        }
+                    }
+                }
+            });
+
+            // Stage Distribution Chart
+            new Chart(document.getElementById('stageChart'), {
+                type: 'pie',
+                data: {
+                    labels: Object.keys(statsData.stage_distribution),
+                    datasets: [{
+                        data: Object.values(statsData.stage_distribution),
+                        backgroundColor: ['#3B82F6', '#8B5CF6', '#10B981'],
+                        borderWidth: 2,
+                        borderColor: '#1F2937',
+                        hoverOffset: 20
+                    }]
+                },
+                options: {
+                    ...commonOptions,
+                    plugins: {
+                        ...commonOptions.plugins,
+                        legend: { position: 'bottom' }
+                    }
+                }
+            });
+        }
+
+        // Knowledge Graph
+        function initKnowledgeGraph() {
+            const width = document.getElementById('network-graph').clientWidth;
+            const height = 600;
+
+            const nodes = [
+                ...Object.keys(statsData.organism_counts).map((org, i) => ({
+                    id: org,
+                    type: 'organism',
+                    value: statsData.organism_counts[org]
+                })),
+                ...Object.keys(statsData.research_area_counts).map((area, i) => ({
+                    id: area,
+                    type: 'area',
+                    value: statsData.research_area_counts[area]
+                })),
+                ...Object.keys(statsData.condition_counts).map((cond, i) => ({
+                    id: cond,
+                    type: 'condition',
+                    value: statsData.condition_counts[cond]
+                }))
+            ];
+
+            const links = [];
+            Object.keys(statsData.organism_counts).forEach(org => {
+                Object.keys(statsData.research_area_counts).forEach(area => {
+                    if (Math.random() > 0.4) {
+                        links.push({ source: org, target: area, value: Math.floor(Math.random() * 30) + 6 });
+                    }
+                });
+                Object.keys(statsData.condition_counts).forEach(cond => {
+                    if (Math.random() > 0.5) {
+                        links.push({ source: org, target: cond, value: Math.floor(Math.random() * 60) + 30 });
+                    }
+                });
+            });
+
+            const svg = d3.select('#network-graph')
+                .append('svg')
+                .attr('width', width)
+                .attr('height', height)
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const simulation = d3.forceSimulation(nodes)
+                .force('link', d3.forceLink(links).id(d => d.id).distance(150))
+                .force('charge', d3.forceManyBody().strength(-300))
+                .force('center', d3.forceCenter(width / 2, height / 2))
+                .force('collision', d3.forceCollide().radius(50));
+
+            const link = svg.append('g')
+                .selectAll('line')
+                .data(links)
+                .join('line')
+                .attr('stroke', '#6B7280')
+                .attr('stroke-opacity', 0.7)
+                .attr('stroke-width', d => Math.sqrt(d.value) / 2);
+
+            const node = svg.append('g')
+                .selectAll('g')
+                .data(nodes)
+                .join('g')
+                .call(d3.drag()
+                    .on('start', dragstarted)
+                    .on('drag', dragged)
+                    .on('end', dragended))
+                .on('mouseover', function(event, d) {
+                    d3.select(this).select('circle').attr('stroke-width', 4);
+                    d3.select(this).select('text').attr('font-size', '12px');
+                })
+                .on('mouseout', function(event, d) {
+                    d3.select(this).select('circle').attr('stroke-width', 2);
+                    d3.select(this).select('text').attr('font-size', '10px');
+                });
+
+            node.append('circle')
+                .attr('r', d => Math.sqrt(d.value) * 1.2)
+                .attr('fill', d => {
+                    if (d.type === 'organism') return '#3B82F6';
+                    if (d.type === 'area') return '#A855F7';
+                    return '#10B981';
+                })
+                .attr('stroke', '#fff')
+                .attr('stroke-width', 2);
+
+            node.append('text')
+                .text(d => d.id)
+                .attr('x', 0)
+                .attr('y', 5)
+                .attr('text-anchor', 'middle')
+                .attr('fill', '#fff')
+                .attr('font-size', '10px')
+                .attr('font-weight', 'bold')
+                .attr('font-family', 'Inter')
+                .attr('pointer-events', 'none');
+
+            node.append('title')
+                .text(d => `${d.id}\n${d.value} publications`);
+
+            simulation.on('tick', () => {
+                link
+                    .attr('x1', d => Math.max(20, Math.min(width - 20, d.source.x)))
+                    .attr('y1', d => Math.max(20, Math.min(height - 20, d.source.y)))
+                    .attr('x2', d => Math.max(20, Math.min(width - 20, d.target.x)))
+                    .attr('y2', d => Math.max(20, Math.min(height - 20, d.target.y)));
+
+                node.attr('transform', d => `translate(${Math.max(20, Math.min(width - 20, d.x))},${Math.max(20, Math.min(height - 20, d.y))})`);
+            });
+
+            function dragstarted(event, d) {
+                if (!event.active) simulation.alphaTarget(0.3).restart();
+                d.fx = d.x;
+                d.fy = d.y;
+            }
+
+            function dragged(event, d) {
+                d.fx = event.x;
+                d.fy = event.y;
+            }
+
+            function dragended(event, d) {
+                if (!event.active) simulation.alphaTarget(0);
+                d.fx = null;
+                d.fy = null;
+            }
+
+            window.addEventListener('resize', () => {
+                const newWidth = document.getElementById('network-graph').clientWidth;
+                svg.attr('width', newWidth);
+                simulation.force('center', d3.forceCenter(newWidth / 2, height / 2));
+                simulation.alpha(0.5).restart();
+            });
+        }
+
+        // Populate Insights Tab
+        function populateInsights() {
+            document.getElementById('knowledgeGaps').innerHTML = statsData.knowledge_gaps.map(gap => `
+                <div class="bg-gray-700/50 rounded-lg p-4 border-l-4 border-yellow-500 animate-slide-up">
+                    <p class="font-semibold text-white">${gap.combination}</p>
+                    <p class="text-sm text-gray-400">${gap.publication_count} publication${gap.publication_count !== 1 ? 's' : ''}</p>
+                </div>
+            `).join('');
+
+            document.getElementById('consensusAreas').innerHTML = statsData.consensus_areas.map(area => `
+                <div class="bg-gray-700/50 rounded-lg p-4 border-l-4 border-green-500 animate-slide-up animation-delay-100">
+                    <div class="flex justify-between items-center">
+                        <p class="font-semibold text-white">${area.area}</p>
+                        <span class="px-3 py-1 bg-green-900 text-green-200 rounded-full text-xs font-bold">${area.publication_count}</span>
+                    </div>
+                </div>
+            `).join('');
+
+            const maxPubs = Math.max(...statsData.recent_trends.map(t => t.recent_publications));
+            document.getElementById('recentTrends').innerHTML = statsData.recent_trends.map((trend, i) => `
+                <div class="bg-gray-700/50 rounded-lg p-3 animate-slide-up animation-delay-${i * 50}">
+                    <div class="flex justify-between items-center mb-2">
+                        <p class="font-semibold text-white">${trend.area}</p>
+                        <span class="text-blue-400 font-bold">${trend.recent_publications}</span>
+                    </div>
+                    <div class="w-full bg-gray-600 rounded-full h-2.5">
+                        <div class="bg-blue-500 h-2.5 rounded-full transition-all duration-500" style="width: ${(trend.recent_publications / maxPubs) * 100}%"></div>
+                    </div>
+                </div>
+            `).join('');
+
+            document.getElementById('stageDetails').innerHTML = Object.entries(statsData.stage_distribution).map(([stage, count]) => `
+                <div class="flex justify-between items-center animate-slide-up">
+                    <span class="text-gray-400">${stage}</span>
+                    <span class="text-white font-bold">${count} (${Math.round((count / statsData.total_publications) * 100)}%)</span>
+                </div>
+            `).join('');
+        }
+
+        // Initialize Everything
+        window.addEventListener('DOMContentLoaded', () => {
+            filterPublications();
+            initCharts();
+            populateInsights();
+            // Ensure initial tab state
+            showTab('overview');
+        });
+    </script>
+</body>
+</html>
