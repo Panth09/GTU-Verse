@@ -7,17 +7,20 @@
     <meta name="description" content="Empower your GTU journey with instant access to midsem papers, books, activity points, real-time announcements, and a thriving student community. Join 1000+ GTU students today!">
     <meta name="keywords" content="GTU, midsem papers, books, activity points, GTU announcements, GTU study resources, GTU community">
     <link rel="canonical" href="https://gtuverse.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎓</text></svg>">
     <style>
         :root {
             --primary: #2563eb;
             --primary-dark: #1e40af;
+            --primary-light: #3b82f6;
             --secondary: #10b981;
             --secondary-dark: #059669;
             --accent: #f59e0b;
             --accent-dark: #d97706;
+            --purple: #a855f7;
+            --purple-dark: #7c3aed;
             --danger: #ef4444;
             --success: #10b981;
             --dark: #1e293b;
@@ -29,11 +32,15 @@
             --gradient-2: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
             --gradient-3: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
             --gradient-primary: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            --gradient-purple: linear-gradient(135deg, #a855f7, #7c3aed);
+            --gradient-green: linear-gradient(135deg, #10b981, #059669);
             --shadow-sm: 0 1px 2px 0 rgba(0,0,0,0.05);
             --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
             --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
             --shadow-xl: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
+            --shadow-2xl: 0 25px 50px -12px rgba(0,0,0,0.25);
             --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-fast: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -72,42 +79,42 @@
         .bg-shape {
             position: absolute;
             border-radius: 50%;
-            filter: blur(80px);
-            opacity: 0.1;
-            animation: float 25s ease-in-out infinite;
+            filter: blur(100px);
+            opacity: 0.12;
+            animation: float 30s ease-in-out infinite;
         }
 
         .bg-shape:nth-child(1) {
-            width: 500px;
-            height: 500px;
+            width: 600px;
+            height: 600px;
             background: var(--gradient-1);
-            top: -250px;
-            left: -250px;
+            top: -300px;
+            left: -300px;
             animation-delay: 0s;
         }
 
         .bg-shape:nth-child(2) {
-            width: 400px;
-            height: 400px;
+            width: 500px;
+            height: 500px;
             background: var(--gradient-2);
-            bottom: -200px;
-            right: -200px;
-            animation-delay: -7s;
+            bottom: -250px;
+            right: -250px;
+            animation-delay: -10s;
         }
 
         .bg-shape:nth-child(3) {
-            width: 600px;
-            height: 600px;
+            width: 700px;
+            height: 700px;
             background: var(--gradient-3);
             top: 50%;
-            right: -300px;
-            animation-delay: -14s;
+            right: -350px;
+            animation-delay: -20s;
         }
 
         @keyframes float {
             0%, 100% { transform: translate(0, 0) rotate(0deg) scale(1); }
-            33% { transform: translate(30px, -30px) rotate(120deg) scale(1.05); }
-            66% { transform: translate(-20px, 20px) rotate(240deg) scale(0.95); }
+            33% { transform: translate(40px, -40px) rotate(120deg) scale(1.1); }
+            66% { transform: translate(-30px, 30px) rotate(240deg) scale(0.9); }
         }
 
         header {
@@ -115,7 +122,7 @@
             top: 0;
             width: 100%;
             z-index: 1000;
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(255, 255, 255, 0.8);
             backdrop-filter: blur(20px) saturate(180%);
             border-bottom: 1px solid var(--border);
             box-shadow: var(--shadow-sm);
@@ -123,17 +130,17 @@
         }
 
         body.dark-mode header {
-            background: rgba(15, 23, 42, 0.95);
+            background: rgba(15, 23, 42, 0.9);
             border-bottom-color: var(--border);
         }
 
         header.scrolled { 
-            box-shadow: var(--shadow-md);
-            background: rgba(255, 255, 255, 0.98);
+            box-shadow: var(--shadow-lg);
+            background: rgba(255, 255, 255, 0.95);
         }
 
         body.dark-mode header.scrolled { 
-            background: rgba(15, 23, 42, 0.98);
+            background: rgba(15, 23, 42, 0.95);
         }
 
         nav {
@@ -151,7 +158,7 @@
             gap: 0.75rem;
             font-family: 'Poppins', sans-serif;
             font-size: 1.5rem;
-            font-weight: 700;
+            font-weight: 800;
             color: var(--primary);
             cursor: pointer;
             transition: var(--transition);
@@ -170,66 +177,83 @@
 
         @keyframes pulse {
             0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.8; transform: scale(1.05); }
+            50% { opacity: 0.85; transform: scale(1.08); }
         }
 
         .nav-links {
             display: flex;
             list-style: none;
-            gap: 0.5rem;
+            gap: 0.25rem;
             align-items: center;
         }
 
         .nav-links a {
             color: var(--dark);
             text-decoration: none;
-            padding: 0.6rem 1.2rem;
-            border-radius: 12px;
+            padding: 0.65rem 1.1rem;
+            border-radius: 10px;
             font-weight: 500;
             font-size: 0.95rem;
-            transition: var(--transition);
+            transition: var(--transition-fast);
             position: relative;
         }
 
-        body.dark-mode .nav-links a { color: var(--dark); }
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0.4rem;
+            left: 50%;
+            transform: translateX(-50%) scaleX(0);
+            width: 70%;
+            height: 2px;
+            background: var(--primary);
+            border-radius: 2px;
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover::after {
+            transform: translateX(-50%) scaleX(1);
+        }
 
         .nav-links a:hover {
             background: rgba(37, 99, 235, 0.08);
             color: var(--primary);
-            transform: translateY(-1px);
         }
 
         .whatsapp-btn {
             background: linear-gradient(135deg, #25d366 0%, #128c7e 100%);
             color: white !important;
-            padding: 0.7rem 1.5rem !important;
+            padding: 0.75rem 1.6rem !important;
             font-weight: 600;
-            box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+            box-shadow: 0 4px 14px rgba(37, 211, 102, 0.35);
             border-radius: 12px;
         }
 
+        .whatsapp-btn::after { display: none !important; }
+
         .whatsapp-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4);
+            box-shadow: 0 6px 20px rgba(37, 211, 102, 0.45);
+            background: linear-gradient(135deg, #20bd5a 0%, #0f7a6f 100%);
         }
 
         .dark-toggle {
-            background: rgba(37, 99, 235, 0.08);
+            background: rgba(37, 99, 235, 0.1);
             border: 1px solid rgba(37, 99, 235, 0.2);
             color: var(--primary);
-            width: 42px;
-            height: 42px;
+            width: 44px;
+            height: 44px;
             border-radius: 50%;
             cursor: pointer;
             transition: var(--transition);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.1rem;
+            font-size: 1.15rem;
         }
 
         .dark-toggle:hover {
-            background: rgba(37, 99, 235, 0.15);
+            background: rgba(37, 99, 235, 0.18);
             transform: rotate(180deg) scale(1.05);
         }
 
@@ -237,51 +261,48 @@
             display: none;
             flex-direction: column;
             cursor: pointer;
-            gap: 4px;
+            gap: 5px;
         }
 
         .hamburger span {
-            width: 25px;
+            width: 26px;
             height: 3px;
             background: var(--dark);
             border-radius: 3px;
             transition: var(--transition);
         }
 
-        body.dark-mode .hamburger span { background: var(--dark); }
-
-        .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(6px, 6px); }
+        .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(7px, 7px); }
         .hamburger.active span:nth-child(2) { opacity: 0; }
-        .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(6px, -6px); }
+        .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(7px, -7px); }
 
         .hero {
             margin-top: 70px;
-            padding: 120px 2rem 80px;
+            padding: 140px 2rem 100px;
             text-align: center;
             position: relative;
             overflow: hidden;
         }
 
         .hero-content {
-            max-width: 900px;
+            max-width: 950px;
             margin: 0 auto;
             position: relative;
             z-index: 1;
         }
 
         .hero h1 {
-    font-family: 'Poppins', sans-serif;
-    font-size: clamp(2.8rem, 7vw, 5rem);
-    font-weight: 800;
-    margin-bottom: 1.5rem;
-    background: var(--gradient-1);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    animation: fadeInUp 0.8s ease-out;
-    line-height: 1.1;
-    display: inline-block; /* Ensure h1 wraps tightly around content */
-    width: auto; /* Prevent full-width stretching */
-}
+            font-family: 'Poppins', sans-serif;
+            font-size: clamp(2.8rem, 7vw, 5.5rem);
+            font-weight: 900;
+            margin-bottom: 1.5rem;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: fadeInUp 0.8s ease-out;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+        }
 
         @keyframes fadeInUp {
             from { opacity: 0; transform: translateY(30px); }
@@ -289,26 +310,15 @@
         }
 
         .hero-subtitle {
-            font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+            font-size: clamp(1.15rem, 2.5vw, 1.5rem);
             color: var(--medium);
-            margin-bottom: 2.5rem;
-            max-width: 700px;
+            margin-bottom: 3rem;
+            max-width: 750px;
             margin-left: auto;
             margin-right: auto;
             animation: fadeInUp 0.8s ease-out 0.2s both;
-            position: relative;
-        }
-
-        .hero-subtitle::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 60px;
-            height: 3px;
-            background: var(--gradient-primary);
-            border-radius: 2px;
+            line-height: 1.8;
+            font-weight: 400;
         }
 
         .cta-button {
@@ -317,14 +327,14 @@
             gap: 0.75rem;
             background: linear-gradient(135deg, #25d366 0%, #128c7e 100%);
             color: white;
-            padding: 1.2rem 2.5rem;
-            border-radius: 16px;
-            font-size: 1.1rem;
+            padding: 1.3rem 2.8rem;
+            border-radius: 14px;
+            font-size: 1.15rem;
             font-weight: 600;
             text-decoration: none;
-            box-shadow: 0 8px 24px rgba(37, 211, 102, 0.3);
+            box-shadow: 0 8px 28px rgba(37, 211, 102, 0.35);
             transition: var(--transition);
-            animation: fadeInUp 0.8s ease-out 0.6s both;
+            animation: fadeInUp 0.8s ease-out 0.4s both;
             position: relative;
             overflow: hidden;
         }
@@ -336,30 +346,30 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transition: left 0.5s;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
+            transition: left 0.6s;
         }
 
         .cta-button:hover::before { left: 100%; }
         .cta-button:hover {
             transform: translateY(-4px);
-            box-shadow: 0 12px 32px rgba(37, 211, 102, 0.4);
+            box-shadow: 0 12px 36px rgba(37, 211, 102, 0.45);
         }
 
         .quick-links {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
             gap: 1rem;
-            margin-top: 3rem;
-            max-width: 600px;
+            margin-top: 3.5rem;
+            max-width: 650px;
             margin-left: auto;
             margin-right: auto;
         }
 
         .quick-link {
             background: var(--white);
-            padding: 1rem;
-            border-radius: 12px;
+            padding: 1.2rem 1rem;
+            border-radius: 14px;
             text-align: center;
             text-decoration: none;
             color: var(--dark);
@@ -369,42 +379,41 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 0.5rem;
-        }
-
-        body.dark-mode .quick-link { 
-            background: var(--white); 
-            border-color: var(--border);
-            color: var(--dark);
+            gap: 0.6rem;
         }
 
         .quick-link:hover {
-            transform: translateY(-4px);
-            box-shadow: var(--shadow-lg);
-            color: var(--primary);
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-xl);
+            border-color: var(--primary);
         }
 
-        .quick-link i { font-size: 1.5rem; color: var(--primary); }
+        .quick-link i { 
+            font-size: 1.6rem; 
+            color: var(--primary);
+            transition: var(--transition);
+        }
+
+        .quick-link:hover i {
+            transform: scale(1.15);
+        }
 
         .stats {
-            padding: 5rem 2rem;
+            padding: 6rem 2rem;
             max-width: 1280px;
             margin: 0 auto;
-            background: linear-gradient(135deg, var(--light) 0%, #f1f5f9 100%);
         }
-
-        body.dark-mode .stats { background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); }
 
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
             gap: 2rem;
         }
 
         .stat-card {
             background: var(--white);
-            padding: 2.5rem 2rem;
-            border-radius: 20px;
+            padding: 2.8rem 2rem;
+            border-radius: 24px;
             text-align: center;
             box-shadow: var(--shadow-md);
             transition: var(--transition);
@@ -413,18 +422,13 @@
             overflow: hidden;
         }
 
-        body.dark-mode .stat-card {
-            background: var(--white);
-            border-color: var(--border);
-        }
-
         .stat-card::before {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
-            height: 4px;
+            height: 5px;
             background: var(--gradient-primary);
             transform: scaleX(0);
             transition: var(--transition);
@@ -432,36 +436,36 @@
 
         .stat-card:hover::before { transform: scaleX(1); }
         .stat-card:hover {
-            transform: translateY(-8px);
-            box-shadow: var(--shadow-xl);
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-2xl);
         }
 
         .stat-icon {
-            width: 70px;
-            height: 70px;
+            width: 75px;
+            height: 75px;
             border-radius: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
             margin: 0 auto 1.5rem;
-            font-size: 2rem;
+            font-size: 2.2rem;
             transition: var(--transition);
             color: white;
+            box-shadow: 0 6px 16px rgba(0,0,0,0.15);
         }
 
         .stat-card:nth-child(1) .stat-icon { background: var(--gradient-1); }
         .stat-card:nth-child(2) .stat-icon { background: var(--gradient-2); }
         .stat-card:nth-child(3) .stat-icon { background: var(--gradient-3); }
-        .stat-card:nth-child(4) .stat-icon { background: linear-gradient(135deg, var(--secondary) 0%, var(--secondary-dark) 100%); }
+        .stat-card:nth-child(4) .stat-icon { background: var(--gradient-green); }
 
         .stat-card:hover .stat-icon { 
-            transform: rotate(360deg) scale(1.1); 
-            animation-duration: 0.5s;
+            transform: rotate(360deg) scale(1.15); 
         }
 
         .stat-number {
             font-family: 'Poppins', sans-serif;
-            font-size: clamp(2rem, 4vw, 3rem);
+            font-size: clamp(2.2rem, 4vw, 3.2rem);
             font-weight: 800;
             color: var(--primary);
             margin-bottom: 0.5rem;
@@ -469,7 +473,7 @@
 
         .stat-label {
             color: var(--medium);
-            font-size: 1rem;
+            font-size: 1.05rem;
             font-weight: 500;
         }
 
@@ -481,57 +485,45 @@
 
         .section-header {
             text-align: center;
-            margin-bottom: 4rem;
+            margin-bottom: 4.5rem;
         }
 
         .section-title {
             font-family: 'Poppins', sans-serif;
-            font-size: clamp(2.2rem, 5vw, 3.5rem);
-            font-weight: 700;
-            margin-bottom: 1rem;
+            font-size: clamp(2.4rem, 5vw, 3.8rem);
+            font-weight: 800;
+            margin-bottom: 1.2rem;
             background: var(--gradient-1);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             line-height: 1.2;
+            letter-spacing: -0.01em;
         }
 
         .section-subtitle {
-            font-size: 1.25rem;
+            font-size: 1.3rem;
             color: var(--medium);
-            max-width: 600px;
+            max-width: 650px;
             margin: 0 auto;
             font-weight: 400;
+            line-height: 1.7;
         }
 
         .features-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
             gap: 2.5rem;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        @media (min-width: 768px) {
-            .features-grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
         }
 
         .feature-card {
             background: var(--white);
             padding: 3rem 2.5rem;
-            border-radius: 24px;
+            border-radius: 28px;
             box-shadow: var(--shadow-md);
             transition: var(--transition);
             position: relative;
             overflow: hidden;
             border: 1px solid var(--border);
-            height: 100%;
-        }
-
-        body.dark-mode .feature-card {
-            background: var(--white);
-            border-color: var(--border);
         }
 
         .feature-card::before {
@@ -540,7 +532,7 @@
             top: 0;
             left: 0;
             width: 100%;
-            height: 4px;
+            height: 5px;
             background: var(--gradient-1);
             transform: scaleX(0);
             transition: var(--transition);
@@ -548,96 +540,88 @@
 
         .feature-card:nth-child(2)::before { background: var(--gradient-2); }
         .feature-card:nth-child(3)::before { background: var(--gradient-3); }
-        .feature-card:nth-child(4)::before { background: linear-gradient(135deg, var(--secondary) 0%, var(--secondary-dark) 100%); }
-        .feature-card:nth-child(5)::before { background: var(--gradient-1); }
+        .feature-card:nth-child(4)::before { background: var(--gradient-green); }
+        .feature-card:nth-child(5)::before { background: var(--gradient-purple); }
 
         .feature-card:hover {
-            transform: translateY(-10px);
-            box-shadow: var(--shadow-xl);
+            transform: translateY(-12px);
+            box-shadow: var(--shadow-2xl);
         }
 
         .feature-card:hover::before { transform: scaleX(1); }
 
         .feature-icon {
-            width: 80px;
-            height: 80px;
-            border-radius: 20px;
+            width: 85px;
+            height: 85px;
+            border-radius: 22px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 2.5rem;
-            margin-bottom: 1.5rem;
+            font-size: 2.6rem;
+            margin-bottom: 1.8rem;
             background: var(--gradient-1);
             color: white;
             transition: var(--transition);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.12);
         }
 
-        .feature-card:nth-child(1) .feature-icon { 
-            background: linear-gradient(135deg, #a855f7, #7c3aed); /* Purple for Vault */
-            font-size: 3rem;
-        }
+        .feature-card:nth-child(1) .feature-icon { background: var(--gradient-purple); }
         .feature-card:nth-child(2) .feature-icon { background: var(--gradient-2); }
-        .feature-card:nth-child(3) .feature-icon { 
-            background: linear-gradient(135deg, #3b82f6, #1d4ed8); /* Blue for Guide */
-        }
-        .feature-card:nth-child(4) .feature-icon { background: linear-gradient(135deg, var(--secondary) 0%, var(--secondary-dark) 100%); }
+        .feature-card:nth-child(3) .feature-icon { background: var(--gradient-3); }
+        .feature-card:nth-child(4) .feature-icon { background: var(--gradient-green); }
         .feature-card:nth-child(5) .feature-icon { background: var(--gradient-1); }
 
         .feature-card:hover .feature-icon { 
-            transform: scale(1.1) rotate(5deg); 
+            transform: scale(1.12) rotate(8deg); 
         }
 
         .feature-card h3 {
             font-family: 'Poppins', sans-serif;
-            font-size: 1.6rem;
-            font-weight: 600;
+            font-size: 1.7rem;
+            font-weight: 700;
             margin-bottom: 1rem;
             color: var(--dark);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
         }
-
-        body.dark-mode .feature-card h3 { color: var(--dark); }
 
         .feature-card p {
             color: var(--medium);
             line-height: 1.8;
-            margin-bottom: 1.5rem;
-            font-weight: 400;
+            margin-bottom: 1.8rem;
+            font-size: 1.05rem;
         }
 
         .feature-list {
             list-style: none;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1.8rem;
         }
 
         .feature-list li {
-            padding: 0.75rem 0;
+            padding: 0.85rem 0;
             display: flex;
             align-items: center;
-            gap: 0.75rem;
+            gap: 0.85rem;
             color: var(--medium);
             border-bottom: 1px solid var(--border);
+            font-size: 0.98rem;
         }
 
         .feature-list li:last-child { border-bottom: none; }
 
         .feature-list li i {
             color: var(--secondary);
-            font-size: 1rem;
-            width: 20px;
+            font-size: 1.05rem;
+            width: 22px;
         }
 
         .feature-link {
             display: inline-flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.6rem;
             color: var(--primary);
             text-decoration: none;
             font-weight: 600;
             transition: var(--transition);
-            font-size: 0.95rem;
+            font-size: 1rem;
         }
 
         .feature-link:hover { 
@@ -647,9 +631,9 @@
 
         .cta-banner {
             margin: 6rem 2rem;
-            padding: 5rem 3rem;
+            padding: 5.5rem 3rem;
             background: var(--gradient-1);
-            border-radius: 32px;
+            border-radius: 36px;
             text-align: center;
             color: white;
             position: relative;
@@ -657,7 +641,7 @@
             max-width: 1280px;
             margin-left: auto;
             margin-right: auto;
-            box-shadow: var(--shadow-xl);
+            box-shadow: var(--shadow-2xl);
         }
 
         .cta-banner::before {
@@ -667,29 +651,30 @@
             right: -50%;
             width: 200%;
             height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
-            animation: float 8s ease-in-out infinite;
+            background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%);
+            animation: float 10s ease-in-out infinite;
         }
 
         .cta-banner h2 {
             font-family: 'Poppins', sans-serif;
-            font-size: clamp(2.2rem, 5vw, 3.5rem);
-            font-weight: 700;
-            margin-bottom: 1rem;
+            font-size: clamp(2.4rem, 5vw, 3.8rem);
+            font-weight: 800;
+            margin-bottom: 1.2rem;
             position: relative;
             z-index: 1;
             line-height: 1.2;
         }
 
         .cta-banner p {
-            font-size: 1.25rem;
-            margin-bottom: 2.5rem;
-            opacity: 0.95;
+            font-size: 1.3rem;
+            margin-bottom: 2.8rem;
+            opacity: 0.96;
             position: relative;
             z-index: 1;
-            max-width: 600px;
+            max-width: 650px;
             margin-left: auto;
             margin-right: auto;
+            line-height: 1.7;
         }
 
         .cta-banner .cta-button {
@@ -697,8 +682,8 @@
             color: var(--primary);
             position: relative;
             z-index: 1;
-            font-size: 1.15rem;
-            padding: 1.3rem 2.7rem;
+            font-size: 1.2rem;
+            padding: 1.4rem 2.9rem;
         }
 
         .cta-banner .cta-button:hover { 
@@ -706,400 +691,24 @@
             color: var(--primary-dark);
         }
 
-        .resources {
-            padding: 6rem 2rem;
-            max-width: 1280px;
-            margin: 0 auto;
-            background: var(--light);
-        }
-
-        body.dark-mode .resources { background: #0f172a; }
-
-        .resources-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
-        }
-
-        .resource-card {
-            background: var(--white);
-            border-radius: 20px;
+        .typewriter {
+            display: inline-block;
+            min-width: 300px;
             overflow: hidden;
-            box-shadow: var(--shadow-md);
-            transition: var(--transition);
-            border: 1px solid var(--border);
-            cursor: pointer;
+            border-right: 0.15em solid var(--primary);
+            white-space: nowrap;
+            vertical-align: top;
+            animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
         }
 
-        body.dark-mode .resource-card { 
-            background: var(--white); 
-            border-color: var(--border);
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
         }
 
-        .resource-card:hover {
-            transform: translateY(-6px);
-            box-shadow: var(--shadow-xl);
-        }
-
-        .resource-header {
-            background: var(--gradient-primary);
-            padding: 2rem;
-            text-align: center;
-            color: white;
-        }
-
-        .resource-header h3 {
-            font-family: 'Poppins', sans-serif;
-            font-size: 1.4rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-        }
-
-        .resource-header p {
-            opacity: 0.9;
-            font-size: 0.95rem;
-        }
-
-        .resource-body {
-            padding: 2rem;
-        }
-
-        .resource-body ul {
-            list-style: none;
-        }
-
-        .resource-body li {
-            padding: 0.75rem 0;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            color: var(--medium);
-            border-bottom: 1px solid var(--border);
-        }
-
-        .resource-body li:last-child { border-bottom: none; }
-
-        .resource-body li i { color: var(--secondary); font-size: 1rem; width: 20px; }
-
-        .papers, .announcements, .books {
-            padding: 6rem 2rem;
-            max-width: 1280px;
-            margin: 0 auto;
-            background: var(--light);
-        }
-
-        body.dark-mode .papers, body.dark-mode .announcements, body.dark-mode .books { background: #0f172a; }
-
-        .filters {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 2rem;
-            flex-wrap: wrap;
-        }
-
-        .filters label {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .filters input, .filters select {
-            padding: 0.75rem;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            font-size: 1rem;
-        }
-
-        .filters button {
-            background: var(--gradient-primary);
-            color: white;
-            padding: 0.75rem 1.5rem;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-        }
-
-        .papers-list, .announcements-list, .books-list {
-            list-style: none;
-        }
-
-        .paper-item, .announcement-item, .book-item {
-            background: var(--white);
-            padding: 1.5rem;
-            border-radius: 12px;
-            margin-bottom: 1rem;
-            box-shadow: var(--shadow-sm);
-            border: 1px solid var(--border);
-            transition: var(--transition);
-        }
-
-        body.dark-mode .paper-item, body.dark-mode .announcement-item, body.dark-mode .book-item { 
-            background: var(--white); 
-            border-color: var(--border);
-        }
-
-        .paper-item:hover, .announcement-item:hover, .book-item:hover {
-            box-shadow: var(--shadow-md);
-            transform: translateY(-1px);
-        }
-
-        .paper-title, .announcement-title, .book-title {
-            font-weight: 600;
-            color: var(--primary);
-            margin-bottom: 0.5rem;
-            font-size: 1.1rem;
-        }
-
-        .paper-desc, .announcement-desc, .book-desc {
-            color: var(--medium);
-            margin-bottom: 1rem;
-        }
-
-        .paper-link, .book-link {
-            color: var(--secondary);
-            text-decoration: none;
-            font-weight: 500;
-        }
-
-        .announcement-item.top-ann {
-            background: rgba(37, 99, 235, 0.05);
-            border-left: 4px solid var(--primary);
-        }
-
-        .announcement-date {
-            color: var(--medium);
-            font-size: 0.9rem;
-            margin-bottom: 1rem;
-        }
-
-        .show-more {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            background: var(--gradient-primary);
-            color: white;
-            padding: 0.75rem 1.5rem;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: 600;
-            margin-top: 1.5rem;
-            transition: var(--transition);
-        }
-
-        .show-more:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-md);
-        }
-
-        .contact {
-            padding: 6rem 2rem;
-            max-width: 1280px;
-            margin: 0 auto;
-            text-align: center;
-            background: var(--light);
-        }
-
-        body.dark-mode .contact { background: #0f172a; }
-
-        .contact h2 {
-            font-family: 'Poppins', sans-serif;
-            font-size: clamp(2.2rem, 5vw, 3.5rem);
-            font-weight: 700;
-            margin-bottom: 1rem;
-            color: var(--dark);
-            background: var(--gradient-1);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .contact p {
-            color: var(--medium);
-            font-size: 1.25rem;
-            margin-bottom: 3rem;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .contact .cta-button {
-            background: var(--gradient-primary);
-            color: white;
-            font-size: 1.15rem;
-            padding: 1.3rem 2.7rem;
-        }
-
-        footer {
-            background: var(--dark);
-            color: white;
-            padding: 3rem 2rem 1rem;
-            text-align: center;
-        }
-
-        body.dark-mode footer {
-            background: var(--white);
-            color: var(--dark);
-        }
-
-        footer p {
-            opacity: 0.8;
-            margin-bottom: 1rem;
-            font-size: 0.95rem;
-        }
-
-        .footer-links {
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
-            margin-top: 2rem;
-            flex-wrap: wrap;
-        }
-
-        .footer-links a {
-            color: white;
-            text-decoration: none;
-            transition: var(--transition);
-            font-weight: 500;
-        }
-
-        body.dark-mode .footer-links a { color: var(--dark); }
-
-        .footer-links a:hover { 
-            color: var(--accent);
-            transform: translateY(-1px);
-        }
-
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 2000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(8px);
-            animation: fadeIn 0.3s ease-out;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        .modal-content {
-            background: var(--white);
-            margin: 5% auto;
-            padding: 3rem;
-            border-radius: 24px;
-            max-width: 550px;
-            width: 90%;
-            text-align: center;
-            box-shadow: var(--shadow-xl);
-            animation: slideUp 0.4s ease-out;
-            position: relative;
-            max-height: 90vh;
-            overflow-y: auto;
-        }
-
-        body.dark-mode .modal-content { background: var(--white); }
-
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(50px) scale(0.95); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
-        }
-
-        .modal-content h3 {
-            font-family: 'Poppins', sans-serif;
-            font-size: 2.2rem;
-            margin-bottom: 1rem;
-            color: var(--primary);
-        }
-
-        .modal-content p {
-            color: var(--medium);
-            margin-bottom: 2rem;
-            font-size: 1.1rem;
-        }
-
-        .close {
-            position: absolute;
-            top: 1.2rem;
-            right: 1.5rem;
-            font-size: 2.2rem;
-            color: var(--medium);
-            cursor: pointer;
-            transition: var(--transition);
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-        }
-
-        .close:hover {
-            color: var(--danger);
-            background: rgba(239, 68, 68, 0.1);
-            transform: rotate(90deg);
-        }
-
-        .form-group {
-            margin-bottom: 1.5rem;
-            text-align: left;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-            color: var(--dark);
-        }
-
-        .form-group input,
-        .form-group textarea {
-            width: 100%;
-            padding: 1rem;
-            border: 2px solid var(--border);
-            border-radius: 12px;
-            font-size: 1rem;
-            transition: var(--transition);
-            background: var(--white);
-            color: var(--dark);
-        }
-
-        body.dark-mode .form-group input,
-        body.dark-mode .form-group textarea {
-            background: var(--white);
-            border-color: var(--border);
-            color: var(--dark);
-        }
-
-        .form-group input:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
-        }
-
-        .form-group textarea { resize: vertical; min-height: 100px; }
-
-        .modal-submit {
-            background: var(--gradient-primary);
-            color: white;
-            padding: 1.2rem 3rem;
-            border: none;
-            border-radius: 12px;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 1.1rem;
-            transition: var(--transition);
-            width: 100%;
-        }
-
-        .modal-submit:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: var(--primary); }
         }
 
         .fade-in {
@@ -1113,24 +722,45 @@
             transform: translateY(0);
         }
 
-        .typewriter {
-    display: inline-block; /* Change from inline to inline-block for better size control */
-    min-width: 300px; /* Temporary fallback width, will be updated dynamically */
-    overflow: hidden;
-    border-right: 0.15em solid var(--primary);
-    white-space: nowrap;
-    vertical-align: top; /* Prevent vertical alignment issues */
-    animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
-}
-
-        @keyframes typing {
-            from { width: 0 }
-            to { width: 100% }
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 3.5rem 2rem 1.5rem;
+            text-align: center;
         }
 
-        @keyframes blink-caret {
-            from, to { border-color: transparent }
-            50% { border-color: var(--primary); }
+        body.dark-mode footer {
+            background: var(--white);
+            color: var(--dark);
+        }
+
+        footer p {
+            opacity: 0.85;
+            margin-bottom: 1.2rem;
+            font-size: 1rem;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2.5rem;
+            margin-top: 2.5rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            transition: var(--transition);
+            font-weight: 500;
+            font-size: 1.05rem;
+        }
+
+        body.dark-mode .footer-links a { color: var(--dark); }
+
+        .footer-links a:hover { 
+            color: var(--accent);
+            transform: translateY(-2px);
         }
 
         @media (max-width: 768px) {
@@ -1144,7 +774,7 @@
                 background: rgba(255, 255, 255, 0.98);
                 backdrop-filter: blur(20px);
                 flex-direction: column;
-                padding: 1.5rem;
+                padding: 2rem;
                 gap: 1rem;
                 box-shadow: var(--shadow-lg);
                 transform: translateY(-100%);
@@ -1161,34 +791,17 @@
                 visibility: visible;
             }
 
-            .hero { padding: 80px 1rem 40px; margin-top: 70px; }
-
-            .stats-grid,
-            .resources-grid { grid-template-columns: 1fr; }
-
-            .features-grid { grid-template-columns: repeat(2, 1fr); }
-
-            .cta-banner { 
-                margin: 3rem 1rem; 
-                padding: 3rem 1.5rem; 
-            }
-
-            nav { padding: 1rem; }
-
-            .quick-links { grid-template-columns: repeat(2, 1fr); gap: 0.75rem; }
+            .hero { padding: 100px 1.5rem 60px; }
+            .stats-grid { grid-template-columns: 1fr; }
+            .features-grid { grid-template-columns: 1fr; }
+            .cta-banner { margin: 3rem 1.5rem; padding: 3.5rem 2rem; }
+            .quick-links { grid-template-columns: repeat(2, 1fr); }
         }
 
         @media (max-width: 480px) {
-            .hero h1 { font-size: 2.5rem; }
-            .cta-button { padding: 1rem 2rem; font-size: 1rem; }
-            .features-grid { grid-template-columns: 1fr; }
+            .hero h1 { font-size: 2.8rem; }
+            .cta-button { padding: 1.1rem 2.2rem; font-size: 1.05rem; }
         }
-
-        /* Enhanced: Improved dark mode text contrasts and subtle glows */
-        body.dark-mode .nav-links a:hover { background: rgba(37, 99, 235, 0.2); }
-        body.dark-mode .feature-card p { line-height: 1.7; }
-        .feature-icon { box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
-        body.dark-mode .feature-icon { box-shadow: 0 4px 12px rgba(255,255,255,0.05); }
     </style>
 </head>
 <body>
@@ -1207,19 +820,18 @@
             <ul class="nav-links" id="navLinks">
                 <li><a href="https://gtu-verse.vercel.app">Home</a></li>
                 <li><a href="#features">Features</a></li>
-                <li><a href="#resources">Resources</a></li>
                 <li><a href="papers.html">Papers</a></li>
                 <li><a href="announcements.html">Announcements</a></li>
                 <li><a href="books.html">Books</a></li>
-                <li><a href="#contact" onclick="window.openModal(event)">Contact</a></li>
+                <li><a href="mailto:gtu.versebyij@gmail.com">Contact</a></li>
                 <li><a href="https://chat.whatsapp.com/LLq6Sn0gvqwHHIJxxNaNaM" target="_blank" class="whatsapp-btn">
                     <i class="fab fa-whatsapp"></i> Join Community
                 </a></li>
-                <li><button class="dark-toggle" onclick="window.toggleDarkMode()" aria-label="Toggle Dark Mode">
+                <li><button class="dark-toggle" onclick="toggleDarkMode()" aria-label="Toggle Dark Mode">
                     <i class="fas fa-moon" id="darkToggleIcon"></i>
                 </button></li>
             </ul>
-            <div class="hamburger" id="hamburger" onclick="window.toggleMenu()" aria-label="Toggle Menu">
+            <div class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Toggle Menu">
                 <span></span>
                 <span></span>
                 <span></span>
@@ -1230,7 +842,7 @@
     <section class="hero" id="home">
         <div class="hero-content">
             <h1>Empower Your <span class="typewriter" id="typewriter"></span></h1>
-            <p class="hero-subtitle">Access midsem papers, books, earn 100 activity points effortlessly, stay updated with instant announcements, and join 1000+ students excelling together in GTU.</p>
+            <p class="hero-subtitle">Access midsem papers, books, earn 100 activity points effortlessly, stay updated with instant announcements, and join 1500+ students excelling together in GTU.</p>
             <a href="https://chat.whatsapp.com/LLq6Sn0gvqwHHIJxxNaNaM" target="_blank" class="cta-button" aria-label="Join WhatsApp Community">
                 <i class="fab fa-whatsapp"></i>
                 Join & Start Winning Points
@@ -1285,16 +897,16 @@
         <div class="features-grid">
             <div class="feature-card fade-in">
                 <div class="feature-icon">
-                    <i class="fas fa-archive"></i> <!-- Added vault icon: fa-archive for square vault ref -->
+                    <i class="fas fa-archive"></i>
                 </div>
-                <h3> Midsem Paper Vault</h3>
+                <h3>Midsem Paper Vault</h3>
                 <p>Curated collection of GTU midsem and endsem papers with solutions. Filter by branch, semester, and subject for laser-focused prep.</p>
                 <ul class="feature-list">
                     <li><i class="fas fa-check"></i> 1200+ verified papers</li>
                     <li><i class="fas fa-check"></i> Instant PDF downloads</li>
                     <li><i class="fas fa-check"></i> AI-powered search & tags</li>
                 </ul>
-                <a href="papers.html" class="feature-link"><i class="fas fa-arrow-right"></i> View All Papers</a>
+                <a href="papers.html" class="feature-link">View All Papers <i class="fas fa-arrow-right"></i></a>
             </div>
             <div class="feature-card fade-in">
                 <div class="feature-icon">
@@ -1307,11 +919,11 @@
                     <li><i class="fas fa-check"></i> Branch-specific resources</li>
                     <li><i class="fas fa-check"></i> Free PDF downloads</li>
                 </ul>
-                <a href="books.html" class="feature-link"><i class="fas fa-arrow-right"></i> Explore Books</a>
+                <a href="books.html" class="feature-link">Explore Books <i class="fas fa-arrow-right"></i></a>
             </div>
             <div class="feature-card fade-in">
                 <div class="feature-icon">
-                    <i class="fas fa-clipboard-list"></i> <!-- Enhanced to clipboard for guide ref -->
+                    <i class="fas fa-clipboard-list"></i>
                 </div>
                 <h3>Activity Points Guide</h3>
                 <p>Comprehensive guide to earn 100+ GTU activity points through various activities, events, and contributions.</p>
@@ -1320,7 +932,7 @@
                     <li><i class="fas fa-check"></i> Verified activity suggestions</li>
                     <li><i class="fas fa-check"></i> Community-driven tips</li>
                 </ul>
-                <a href="https://chat.whatsapp.com/LLq6Sn0gvqwHHIJxxNaNaM" target="_blank" class="feature-link"><i class="fas fa-arrow-right"></i> Go here for GTU 100 Activity Points</a>
+                <a href="https://chat.whatsapp.com/LLq6Sn0gvqwHHIJxxNaNaM" target="_blank" class="feature-link">Get 100 Activity Points <i class="fas fa-arrow-right"></i></a>
             </div>
             <div class="feature-card fade-in">
                 <div class="feature-icon">
@@ -1333,20 +945,20 @@
                     <li><i class="fas fa-check"></i> Categorized feeds</li>
                     <li><i class="fas fa-check"></i> 1-year archive</li>
                 </ul>
-                <a href="announcements.html" class="feature-link"><i class="fas fa-arrow-right"></i> View Alerts</a>
+                <a href="announcements.html" class="feature-link">View Alerts <i class="fas fa-arrow-right"></i></a>
             </div>
             <div class="feature-card fade-in">
                 <div class="feature-icon">
                     <i class="fas fa-users"></i>
                 </div>
                 <h3>Thriving Community Hub</h3>
-                <p>Connect with 1500+ GTU peers for doubt-solving, group studies, and resource sharing. Your network = your net worth.</p>
+                <p>Connect with 1500+ GTU peers for doubt-solving, group studies, and resource sharing. Your network equals your net worth.</p>
                 <ul class="feature-list">
                     <li><i class="fas fa-check"></i> Branch-wise groups</li>
                     <li><i class="fas fa-check"></i> Live Q&A sessions</li>
                     <li><i class="fas fa-check"></i> Mentorship matches</li>
                 </ul>
-                <a href="https://chat.whatsapp.com/LLq6Sn0gvqwHHIJxxNaNaM" target="_blank" class="feature-link"><i class="fas fa-arrow-right"></i> Join Hub</a>
+                <a href="https://chat.whatsapp.com/LLq6Sn0gvqwHHIJxxNaNaM" target="_blank" class="feature-link">Join Hub <i class="fas fa-arrow-right"></i></a>
             </div>
         </div>
     </section>
@@ -1360,76 +972,6 @@
         </a>
     </div>
 
-    <section class="papers" id="papers">
-        <div class="section-header fade-in">
-            <h2 class="section-title">All GTU Papers</h2>
-            <p class="section-subtitle">Browse and download all available papers added via admin panel. Filter by college and branch.</p>
-        </div>
-        <div class="filters">
-            <label>College: <input id="filterCollege" placeholder="e.g., LDCE"></label>
-            <label>Branch: <select id="filterBranch">
-                <option value="">All</option>
-                <option value="CE">CE</option>
-                <option value="IT">IT</option>
-                <option value="ME">ME</option>
-                <option value="EC">EC</option>
-                <option value="EE">EE</option>
-                <option value="CS">CS</option>
-                <option value="CH">CH</option>
-                <option value="IN">IN</option>
-            </select></label>
-            <button onclick="filterPapers()">Filter</button>
-        </div>
-        <h3>Midsem Papers</h3>
-        <ul class="papers-list" id="midsemList"></ul>
-        <a href="papers.html" class="show-more">Show More Papers</a>
-        <h3>GTU Exam Papers</h3>
-        <ul class="papers-list" id="gtuList"></ul>
-        <a href="papers.html" class="show-more">Show More Papers</a>
-    </section>
-
-    <section class="books" id="books">
-        <div class="section-header fade-in">
-            <h2 class="section-title">Textbook Library</h2>
-            <p class="section-subtitle">Access GTU-recommended textbooks and reference materials for all branches and semesters.</p>
-        </div>
-        <div class="filters">
-            <label>College: <input id="filterBookCollege" placeholder="e.g., LDCE"></label>
-            <label>Branch: <select id="filterBookBranch">
-                <option value="">All</option>
-                <option value="CE">CE</option>
-                <option value="IT">IT</option>
-                <option value="ME">ME</option>
-                <option value="EC">EC</option>
-                <option value="EE">EE</option>
-                <option value="CS">CS</option>
-                <option value="CH">CH</option>
-                <option value="IN">IN</option>
-            </select></label>
-            <button onclick="filterBooks()">Filter</button>
-        </div>
-        <ul class="books-list" id="booksList"></ul>
-        <a href="books.html" class="show-more">Show More Books</a>
-    </section>
-
-    <section class="announcements" id="announcements">
-        <div class="section-header fade-in">
-            <h2 class="section-title">GTU Announcements</h2>
-            <p class="section-subtitle">Stay updated with the latest GTU news and alerts.</p>
-        </div>
-        <ul class="announcements-list" id="allAnnouncementsList"></ul>
-        <a href="announcements.html" class="show-more">Show More Announcements</a>
-    </section>
-
-    <section class="contact" id="contact">
-        <h2>Got a Question? Let's Chat!</h2>
-        <p>Whether it's a feature request, paper upload, or just a hello—our team of GTU alumni is here to make your journey smoother.</p>
-        <a href="mailto:gtu.versebyij@gmail.com?subject=GTUverse Inquiry" class="cta-button">
-            <i class="fas fa-envelope"></i>
-            Email Us Now
-        </a>
-    </section>
-
     <footer>
         <p>&copy; 2025 GTUverse. Built by GTU students, for GTU students. Empowering futures, one paper at a time.</p>
         <div class="footer-links">
@@ -1437,114 +979,61 @@
             <a href="papers.html">Papers</a>
             <a href="books.html">Books</a>
             <a href="announcements.html">Announcements</a>
-            <a href="#contact" onclick="window.openModal(event)">Contact</a>
+            <a href="mailto:gtu.versebyij@gmail.com">Contact</a>
         </div>
     </footer>
 
-    <div id="contactModal" class="modal" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
-        <div class="modal-content">
-            <span class="close" onclick="window.closeModal()" aria-label="Close modal">&times;</span>
-            <h3 id="modalTitle">Let's Connect!</h3>
-            <p>Share your thoughts, suggest resources, or report issues. We respond within 24 hours.</p>
-            <form id="contactForm" action="mailto:gtu.versebyij@gmail.com" method="post" enctype="text/plain">
-                <div class="form-group">
-                    <label for="name">Your Name</label>
-                    <input type="text" id="name" name="name" required aria-required="true">
-                </div>
-                <div class="form-group">
-                    <label for="email">Your Email</label>
-                    <input type="email" id="email" name="email" required aria-required="true">
-                </div>
-                <div class="form-group">
-                    <label for="message">Your Message</label>
-                    <textarea id="message" name="message" required aria-required="true"></textarea>
-                </div>
-                <button type="submit" class="modal-submit">Send Message</button>
-            </form>
-        </div>
-    </div>
+    <script>
+        // Typewriter Effect
+        const typewriterWords = ['GTU Journey', 'Success', 'Excellence', 'Mastery', 'Achievement'];
+        const typewriterEl = document.getElementById('typewriter');
+        let wordIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-        import { getFirestore, collection, getDocs, query, orderBy, where, limit } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+        function setTypewriterWidth() {
+            const tempSpan = document.createElement('span');
+            tempSpan.style.visibility = 'hidden';
+            tempSpan.style.position = 'absolute';
+            tempSpan.style.whiteSpace = 'nowrap';
+            tempSpan.style.font = window.getComputedStyle(typewriterEl).font;
+            document.body.appendChild(tempSpan);
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyC0QTiJoEIkS7rGDFrd057Kx3nMz7_s2EI",
-            authDomain: "gtu-verse.firebaseapp.com",
-            projectId: "gtu-verse",
-            storageBucket: "gtu-verse.firebasestorage.app",
-            messagingSenderId: "99377635087",
-            appId: "1:99377635087:web:05ba93798e36040cfe287a",
-            measurementId: "G-YV4W2LT96S"
-        };
+            let maxWidth = 0;
+            typewriterWords.forEach(word => {
+                tempSpan.textContent = word;
+                const width = tempSpan.offsetWidth;
+                if (width > maxWidth) maxWidth = width;
+            });
 
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
+            typewriterEl.style.minWidth = `${maxWidth + 10}px`;
+            document.body.removeChild(tempSpan);
+        }
 
-       // Typewriter Effect for Hero
-const typewriterWords = ['GTU Journey', 'Success', 'Excellence', 'Mastery', 'Achievement'];
-const typewriterEl = document.getElementById('typewriter');
-let wordIndex = 0;
-let charIndex = 0;
-let isDeleting = false;
+        function typeWriter() {
+            const currentWord = typewriterWords[wordIndex];
+            if (!isDeleting && charIndex < currentWord.length) {
+                typewriterEl.innerHTML = currentWord.substring(0, charIndex + 1);
+                charIndex++;
+                setTimeout(typeWriter, 100);
+            } else if (isDeleting && charIndex > 0) {
+                typewriterEl.innerHTML = currentWord.substring(0, charIndex - 1);
+                charIndex--;
+                setTimeout(typeWriter, 50);
+            } else if (!isDeleting && charIndex === currentWord.length) {
+                setTimeout(() => {
+                    isDeleting = true;
+                    typeWriter();
+                }, 1500);
+            } else if (isDeleting && charIndex === 0) {
+                isDeleting = false;
+                wordIndex = (wordIndex + 1) % typewriterWords.length;
+                setTimeout(typeWriter, 300);
+            }
+        }
 
-// Function to calculate and set the width of the typewriter element
-function setTypewriterWidth() {
-    // Create a temporary span to measure text width
-    const tempSpan = document.createElement('span');
-    tempSpan.style.visibility = 'hidden';
-    tempSpan.style.position = 'absolute';
-    tempSpan.style.whiteSpace = 'nowrap';
-    tempSpan.style.font = window.getComputedStyle(typewriterEl).font; // Match font styles
-    document.body.appendChild(tempSpan);
-
-    // Find the longest word's width
-    let maxWidth = 0;
-    typewriterWords.forEach(word => {
-        tempSpan.textContent = word;
-        const width = tempSpan.offsetWidth;
-        if (width > maxWidth) maxWidth = width;
-    });
-
-    // Set the typewriter element's min-width to the longest word's width
-    typewriterEl.style.minWidth = `${maxWidth + 10}px`; // Add padding for cursor
-    document.body.removeChild(tempSpan); // Clean up
-}
-
-function typeWriter() {
-    const currentWord = typewriterWords[wordIndex];
-    if (!isDeleting && charIndex < currentWord.length) {
-        // Typing characters
-        typewriterEl.innerHTML = currentWord.substring(0, charIndex + 1);
-        charIndex++;
-        setTimeout(typeWriter, 100);
-    } else if (isDeleting && charIndex > 0) {
-        // Deleting characters
-        typewriterEl.innerHTML = currentWord.substring(0, charIndex - 1);
-        charIndex--;
-        setTimeout(typeWriter, 50);
-    } else if (!isDeleting && charIndex === currentWord.length) {
-        // Pause at end of word
-        setTimeout(() => {
-            isDeleting = true;
-            typeWriter();
-        }, 1000);
-    } else if (isDeleting && charIndex === 0) {
-        // Move to next word
-        isDeleting = false;
-        wordIndex = (wordIndex + 1) % typewriterWords.length;
-        setTimeout(typeWriter, 200);
-    }
-}
-
-// Initialize typewriter and set width on load
-window.addEventListener('load', () => {
-    setTypewriterWidth();
-    typeWriter();
-});
-
-        // Dark Mode Toggle with Local Storage
-        window.toggleDarkMode = function() {
+        // Dark Mode Toggle
+        function toggleDarkMode() {
             document.body.classList.toggle('dark-mode');
             const isDark = document.body.classList.contains('dark-mode');
             const icon = document.getElementById('darkToggleIcon');
@@ -1554,16 +1043,16 @@ window.addEventListener('load', () => {
         }
 
         if (localStorage.getItem('darkMode') === 'true') {
-            window.toggleDarkMode();
+            toggleDarkMode();
         }
 
         // Mobile Menu Toggle
-        window.toggleMenu = function() {
+        function toggleMenu() {
             const navLinks = document.getElementById('navLinks');
             const hamburger = document.getElementById('hamburger');
             navLinks.classList.toggle('active');
             hamburger.classList.toggle('active');
-        };
+        }
 
         // Header Scroll Effect
         window.addEventListener('scroll', () => {
@@ -1590,7 +1079,7 @@ window.addEventListener('load', () => {
             });
         }
 
-        // Intersection Observer for Animations
+        // Intersection Observer
         const observerOptions = {
             threshold: 0.1,
             rootMargin: '0px 0px -100px 0px'
@@ -1611,147 +1100,30 @@ window.addEventListener('load', () => {
 
         document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 
-        // Load Papers with Limit
-        window.filterPapers = async function() {
-            const collegeInput = document.getElementById('filterCollege').value.trim().toLowerCase();
-            const branch = document.getElementById('filterBranch').value;
-            try {
-                let q = query(collection(db, 'papers'), orderBy('createdAt', 'desc'), limit(5));
-                if (branch) q = query(q, where('branch', '==', branch));
-                const snapshot = await getDocs(q);
-                let filtered = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
-                if (collegeInput) {
-                    filtered = filtered.filter(p => p.college && p.college.toLowerCase().includes(collegeInput));
-                }
-                const midsem = filtered.filter(p => p.type === 'midsem');
-                const gtu = filtered.filter(p => p.type === 'gtu');
-                document.getElementById('midsemList').innerHTML = midsem.length > 0 ? midsem.map(p => `
-                    <li class="paper-item">
-                        <span class="paper-title">${p.title || 'Untitled'} (${p.branch || 'N/A'} Sem ${p.sem || 'N/A'}, ${p.college || 'N/A'})</span>
-                        <p class="paper-desc">Download the paper and solutions.</p>
-                        <a href="${p.url || '#'}" target="_blank" class="paper-link">Download PDF <i class="fas fa-download"></i></a>
-                    </li>
-                `).join('') : '<li class="paper-item"><p>No midsem papers match the filters.</p></li>';
-                document.getElementById('gtuList').innerHTML = gtu.length > 0 ? gtu.map(p => `
-                    <li class="paper-item">
-                        <span class="paper-title">${p.title || 'Untitled'} (${p.branch || 'N/A'} Sem ${p.sem || 'N/A'}, ${p.college || 'N/A'})</span>
-                        <p class="paper-desc">Download the paper and solutions.</p>
-                        <a href="${p.url || '#'}" target="_blank" class="paper-link">Download PDF <i class="fas fa-download"></i></a>
-                    </li>
-                `).join('') : '<li class="paper-item"><p>No GTU exam papers match the filters.</p></li>';
-            } catch (error) {
-                console.error('Error filtering papers:', error);
-                document.getElementById('midsemList').innerHTML = '<li class="paper-item"><p>Error loading papers. Check console.</p></li>';
-                document.getElementById('gtuList').innerHTML = '<li class="paper-item"><p>Error loading papers. Check console.</p></li>';
-            }
-        };
-
-        // Load Books with Limit
-        window.filterBooks = async function() {
-            const collegeInput = document.getElementById('filterBookCollege').value.trim().toLowerCase();
-            const branch = document.getElementById('filterBookBranch').value;
-            try {
-                let q = query(collection(db, 'books'), orderBy('createdAt', 'desc'), limit(5));
-                if (branch) q = query(q, where('branch', '==', branch));
-                const snapshot = await getDocs(q);
-                let filtered = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
-                if (collegeInput) {
-                    filtered = filtered.filter(b => b.college && b.college.toLowerCase().includes(collegeInput));
-                }
-                document.getElementById('booksList').innerHTML = filtered.length > 0 ? filtered.map(b => `
-                    <li class="book-item">
-                        <span class="book-title">${b.title || 'Untitled'} (${b.branch || 'N/A'} Sem ${b.sem || 'N/A'}, ${b.college || 'N/A'})</span>
-                        <p class="book-desc">Download the textbook or reference material.</p>
-                        <a href="${b.url || '#'}" target="_blank" class="book-link">Download PDF <i class="fas fa-download"></i></a>
-                    </li>
-                `).join('') : '<li class="book-item"><p>No books match the filters.</p></li>';
-            } catch (error) {
-                console.error('Error filtering books:', error);
-                document.getElementById('booksList').innerHTML = '<li class="book-item"><p>Error loading books. Check console.</p></li>';
-            }
-        };
-
-        // Load Announcements with Limit
-        window.loadAllAnnouncements = async function() {
-            try {
-                const annQuery = query(collection(db, 'announcements'), orderBy('createdAt', 'desc'), limit(5));
-                const snapshot = await getDocs(annQuery);
-                let anns = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
-                const list = document.getElementById('allAnnouncementsList');
-                if (anns.length > 0) {
-                    list.innerHTML = anns.map((a, index) => `
-                        <li class="announcement-item ${index < 3 ? 'top-ann' : ''}">
-                            <span class="announcement-title">${a.title || 'Untitled'}</span>
-                            <p class="announcement-desc">${a.desc || ''}</p>
-                            <div class="announcement-date">Posted on: ${a.date || 'N/A'}</div>
-                        </li>
-                    `).join('');
-                } else {
-                    list.innerHTML = '<li class="announcement-item"><p>No announcements available yet. Add via admin panel.</p></li>';
-                }
-            } catch (error) {
-                console.error('Error loading announcements:', error);
-                document.getElementById('allAnnouncementsList').innerHTML = '<li class="announcement-item"><p>Error loading announcements. Check console.</p></li>';
-            }
-        };
-
-        // Modal Functions
-        window.openModal = function(e) {
-            e?.preventDefault();
-            document.getElementById('contactModal').style.display = 'block';
-            document.getElementById('contactModal').setAttribute('aria-hidden', 'false');
-            document.body.style.overflow = 'hidden';
-        }
-
-        window.closeModal = function() {
-            document.getElementById('contactModal').style.display = 'none';
-            document.getElementById('contactModal').setAttribute('aria-hidden', 'true');
-            document.body.style.overflow = 'auto';
-        }
-
-        // Close modal on outside click or ESC
-        window.addEventListener('click', (event) => {
-            const modal = document.getElementById('contactModal');
-            if (event.target === modal) window.closeModal();
-        });
-
-        window.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') window.closeModal();
-        });
-
-        // Smooth Scrolling for Internal Links
+        // Smooth Scrolling
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const targetId = this.getAttribute('href').substring(1);
-                const targetElement = document.getElementById(targetId);
-                if (targetElement) {
-                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                const href = this.getAttribute('href');
+                if (href !== '#' && href.length > 1) {
+                    e.preventDefault();
+                    const targetId = href.substring(1);
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                    const navLinks = document.getElementById('navLinks');
+                    const hamburger = document.getElementById('hamburger');
+                    navLinks.classList.remove('active');
+                    hamburger.classList.remove('active');
                 }
-                const navLinks = document.getElementById('navLinks');
-                const hamburger = document.getElementById('hamburger');
-                navLinks.classList.remove('active');
-                hamburger.classList.remove('active');
             });
         });
 
-        // Lazy Load Resources - Removed lazy, load immediately
-        const loadResources = async () => {
-            await filterPapers();
-            await filterBooks();
-            await loadAllAnnouncements();
-        };
-
-        // Initialize on Load
-        window.addEventListener('load', async () => {
+        // Initialize
+        window.addEventListener('load', () => {
+            setTypewriterWidth();
             typeWriter();
-            loadResources();
         });
-
-        // Enhanced: Preload critical resources for faster load
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('/sw.js');
-        }
     </script>
 </body>
 </html>
