@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Space Biology Knowledge Engine</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js" defer></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -107,6 +107,21 @@
         details > summary::-webkit-details-marker {
             display: none;
         }
+        .loading-spinner {
+            display: none;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--primary-blue);
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .loading .loading-spinner { display: block; }
     </style>
 </head>
 <body class="text-white min-h-screen">
@@ -140,7 +155,7 @@
         </nav>
 
         <!-- TAB 1: OVERVIEW -->
-        <section id="overview" class="tab-content active" role="tabpanel">
+        <section id="overview" class="tab-content active" role="tabpanel" aria-labelledby="overview-tab">
             <!-- Key Metrics -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
                 <div class="stat-card bg-gradient-to-br from-blue-900 to-blue-800 rounded-xl p-6 shadow-2xl border border-blue-700/50 animate-slide-up">
@@ -166,12 +181,14 @@
                 <div class="bg-gray-800/60 rounded-xl p-6 shadow-2xl border border-gray-700/50 backdrop-blur-sm animate-slide-up animation-delay-400">
                     <h3 class="text-2xl font-bold mb-6 text-blue-400">📈 Publications Timeline</h3>
                     <div class="chart-wrapper">
+                        <div class="loading-spinner"></div>
                         <canvas id="yearChart" aria-label="Timeline of publications from 2005 to 2025"></canvas>
                     </div>
                 </div>
                 <div class="bg-gray-800/60 rounded-xl p-6 shadow-2xl border border-gray-700/50 backdrop-blur-sm animate-slide-up animation-delay-500">
                     <h3 class="text-2xl font-bold mb-6 text-green-400">🦠 Organisms Distribution</h3>
                     <div class="chart-wrapper">
+                        <div class="loading-spinner"></div>
                         <canvas id="organismChart" aria-label="Distribution of organisms studied in research"></canvas>
                     </div>
                 </div>
@@ -182,12 +199,14 @@
                 <div class="bg-gray-800/60 rounded-xl p-6 shadow-2xl border border-gray-700/50 backdrop-blur-sm animate-slide-up animation-delay-600">
                     <h3 class="text-2xl font-bold mb-6 text-purple-400">🔬 Research Areas</h3>
                     <div class="chart-wrapper">
+                        <div class="loading-spinner"></div>
                         <canvas id="researchAreaChart" aria-label="Distribution of research areas"></canvas>
                     </div>
                 </div>
                 <div class="bg-gray-800/60 rounded-xl p-6 shadow-2xl border border-gray-700/50 backdrop-blur-sm animate-slide-up animation-delay-700">
                     <h3 class="text-2xl font-bold mb-6 text-orange-400">🚀 Space Conditions</h3>
                     <div class="chart-wrapper">
+                        <div class="loading-spinner"></div>
                         <canvas id="conditionChart" aria-label="Distribution of space conditions studied"></canvas>
                     </div>
                 </div>
@@ -195,9 +214,9 @@
         </section>
 
         <!-- TAB 2: SEARCH & EXPLORE -->
-        <section id="search" class="tab-content" role="tabpanel">
+        <section id="search" class="tab-content" role="tabpanel" aria-labelledby="search-tab">
             <!-- Search Bar -->
-            <div class="mb-8">
+            <div class="mb-8 relative">
                 <label for="searchInput" class="sr-only">Search publications</label>
                 <input 
                     type="text" 
@@ -208,11 +227,17 @@
                     aria-describedby="search-hint"
                 >
                 <p id="search-hint" class="text-gray-400 text-sm mt-2">Enter keywords to filter publications by title, abstract, organisms, areas, or specific sections like Results or Conclusions.</p>
+                <div class="loading-spinner absolute right-4 top-4"></div>
             </div>
 
             <!-- Filters -->
             <div class="bg-gray-800/60 rounded-xl p-6 mb-8 border border-gray-700 backdrop-blur-sm shadow-lg animate-slide-up">
-                <h3 class="text-xl font-bold mb-4 text-white">🎯 Filters</h3>
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-xl font-bold text-white">🎯 Filters</h3>
+                    <button onclick="clearFilters()" class="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg font-semibold transition-all duration-300 focus:outline-none focus:ring-2 ring-offset-2 ring-gray-500">
+                        Clear Filters
+                    </button>
+                </div>
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
                     <div>
                         <label for="organismFilter" class="block text-gray-400 text-sm mb-2">Organism</label>
@@ -274,7 +299,7 @@
         </section>
 
         <!-- TAB 3: AI INSIGHTS -->
-        <section id="insights" class="tab-content" role="tabpanel">
+        <section id="insights" class="tab-content" role="tabpanel" aria-labelledby="insights-tab">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
                 <!-- Research Gaps -->
                 <div class="bg-gray-800/60 rounded-xl p-6 shadow-2xl border border-gray-700/50 backdrop-blur-sm animate-slide-up">
@@ -309,6 +334,7 @@
                 <div class="bg-gray-800/60 rounded-xl p-6 shadow-2xl border border-gray-700/50 backdrop-blur-sm animate-slide-up animation-delay-300">
                     <h3 class="text-2xl font-bold mb-4 text-purple-400">🎯 Research Maturity</h3>
                     <div class="chart-wrapper h-64">
+                        <div class="loading-spinner"></div>
                         <canvas id="stageChart" aria-label="Distribution of research stages"></canvas>
                     </div>
                     <div class="space-y-2" id="stageDetails"></div>
@@ -353,15 +379,17 @@
         </section>
 
         <!-- TAB 4: KNOWLEDGE GRAPH -->
-        <section id="knowledge-graph" class="tab-content" role="tabpanel">
+        <section id="knowledge-graph" class="tab-content" role="tabpanel" aria-labelledby="knowledge-graph-tab">
             <div class="bg-gray-800/60 rounded-xl p-6 shadow-2xl border border-gray-700/50 mb-6 backdrop-blur-sm animate-slide-up">
                 <h3 class="text-2xl font-bold mb-4 text-purple-400">🕸️ Research Relationship Network</h3>
                 <p class="text-gray-400 mb-2">Interactive connections between organisms, research areas, and space conditions.</p>
-                <p class="text-gray-500 text-sm">Drag nodes to explore • Hover for details • Node size reflects publication count</p>
+                <p class="text-gray-500 text-sm">Drag nodes to explore • Hover for details • Node size reflects publication count • Scroll to zoom</p>
             </div>
 
             <div class="bg-gray-800/60 rounded-xl p-6 shadow-2xl border border-gray-700/50 mb-6 backdrop-blur-sm animate-slide-up animation-delay-100">
-                <div id="network-graph" role="img" aria-label="Interactive network graph of research connections"></div>
+                <div id="network-graph" role="img" aria-label="Interactive network graph of research connections">
+                    <div class="loading-spinner"></div>
+                </div>
             </div>
 
             <!-- Legend -->
@@ -389,7 +417,7 @@
         </section>
 
         <!-- TAB 5: BY AUDIENCE -->
-        <section id="audience" class="tab-content" role="tabpanel">
+        <section id="audience" class="tab-content" role="tabpanel" aria-labelledby="audience-tab">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
                 <!-- Scientists View -->
                 <div class="bg-gradient-to-br from-blue-900/80 to-blue-800/80 rounded-xl p-6 shadow-2xl border border-blue-700/50 backdrop-blur-sm animate-slide-up">
@@ -554,38 +582,65 @@
             }
         };
 
-        const allPublications = mockResponse.publications;
-        const statsData = mockResponse.statistics;
-        let displayedCount = 10;
-        let graphInitialized = false;
-        let timeoutId;
+        const state = {
+            allPublications: mockResponse.publications,
+            statsData: mockResponse.statistics,
+            displayedCount: 10,
+            graphInitialized: false,
+            timeoutId: null,
+            chartsInitialized: false
+        };
 
-        // Debounce utility
-        function debounce(func, delay) {
-            return function(...args) {
-                clearTimeout(timeoutId);
-                timeoutId = setTimeout(() => func.apply(this, args), delay);
-            };
-        }
+        // Utility Functions
+        const utils = {
+            debounce: (func, delay) => {
+                return (...args) => {
+                    clearTimeout(state.timeoutId);
+                    state.timeoutId = setTimeout(() => func.apply(null, args), delay);
+                };
+            },
+            showLoading: (element) => {
+                element.classList.add('loading');
+            },
+            hideLoading: (element) => {
+                element.classList.remove('loading');
+            },
+            handleError: (error, context) => {
+                console.error(`Error in ${context}:`, error);
+                alert(`An error occurred while ${context}. Please try again.`);
+            }
+        };
 
-        const debouncedFilterPublications = debounce(filterPublications, 300);
+        const debouncedFilterPublications = utils.debounce(filterPublications, 300);
 
         // Tab Navigation
         function showTab(tabId) {
-            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
-            document.querySelectorAll('.tab-btn').forEach(btn => {
-                btn.classList.remove('bg-blue-600', 'hover:bg-blue-700');
-                btn.classList.add('bg-gray-700', 'hover:bg-gray-600');
-                btn.setAttribute('aria-selected', 'false');
-            });
-            const activeTab = document.getElementById(tabId);
-            activeTab.classList.add('active');
-            document.querySelector(`button[aria-controls="${tabId}"]`).classList.add('bg-blue-600', 'hover:bg-blue-700');
-            document.querySelector(`button[aria-controls="${tabId}"]`).classList.remove('bg-gray-700', 'hover:bg-gray-600');
-            document.querySelector(`button[aria-controls="${tabId}"]`).setAttribute('aria-selected', 'true');
-            if (tabId === 'knowledge-graph' && !graphInitialized) {
-                initKnowledgeGraph();
-                graphInitialized = true;
+            try {
+                document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+                document.querySelectorAll('.tab-btn').forEach(btn => {
+                    btn.classList.remove('bg-blue-600', 'hover:bg-blue-700');
+                    btn.classList.add('bg-gray-700', 'hover:bg-gray-600');
+                    btn.setAttribute('aria-selected', 'false');
+                });
+                const activeTab = document.getElementById(tabId);
+                activeTab.classList.add('active');
+                document.querySelector(`button[aria-controls="${tabId}"]`).classList.add('bg-blue-600', 'hover:bg-blue-700');
+                document.querySelector(`button[aria-controls="${tabId}"]`).classList.remove('bg-gray-700', 'hover:bg-gray-600');
+                document.querySelector(`button[aria-controls="${tabId}"]`).setAttribute('aria-selected', 'true');
+                if (tabId === 'knowledge-graph' && !state.graphInitialized) {
+                    utils.showLoading(document.getElementById('network-graph'));
+                    setTimeout(() => {
+                        initKnowledgeGraph();
+                        state.graphInitialized = true;
+                        utils.hideLoading(document.getElementById('network-graph'));
+                    }, 100);
+                }
+                if (tabId === 'overview' && !state.chartsInitialized) {
+                    initCharts();
+                    state.chartsInitialized = true;
+                }
+            } catch (error) {
+                utils.handleError(error, 'switching tabs');
             }
         }
 
@@ -596,8 +651,9 @@
                      data-organisms='${JSON.stringify(pub.organisms)}'
                      data-areas='${JSON.stringify(pub.research_areas)}'
                      data-year="${pub.year}"
-                     role="article">
-                    <h3 class="text-xl font-bold mb-3 text-blue-400 line-clamp-2">${pub.title}</h3>
+                     role="article"
+                     aria-labelledby="pub-title-${pub.id}">
+                    <h3 class="text-xl font-bold mb-3 text-blue-400 line-clamp-2" id="pub-title-${pub.id}">${pub.title}</h3>
                     <div class="flex flex-wrap gap-2 mb-3">
                         <span class="px-3 py-1 bg-gray-700 text-gray-300 rounded-full text-xs">📅 ${pub.year}</span>
                         <span class="px-3 py-1 bg-gray-700 text-gray-300 rounded-full text-xs">📖 ${pub.journal}</span>
@@ -635,7 +691,7 @@
             const yearFilter = document.getElementById('yearFilter').value;
             const sectionFilter = document.getElementById('sectionFilter').value;
 
-            return allPublications.filter(pub => {
+            return state.allPublications.filter(pub => {
                 const searchFields = sectionFilter
                     ? [pub[sectionFilter]]
                     : [pub.title, pub.abstract, pub.introduction, pub.results, pub.conclusion, pub.organisms.join(' '), pub.research_areas.join(' ')];
@@ -656,400 +712,468 @@
 
         // Search & Filter Functions
         function filterPublications() {
-            const filtered = getFilteredPublications();
-            const container = document.getElementById('publicationsList');
-            container.innerHTML = filtered.slice(0, displayedCount).map(createPublicationCard).join('');
-            const totalFiltered = Math.round(filtered.length * (608 / 61));
-            const shown = Math.min(displayedCount, filtered.length) * (608 / 61);
-            document.getElementById('resultCount').textContent = `${Math.round(totalFiltered)} publication${totalFiltered !== 1 ? 's' : ''} (${Math.round(shown)} shown)`;
-            document.getElementById('loadMoreBtn').style.display = displayedCount >= filtered.length ? 'none' : 'block';
+            try {
+                utils.showLoading(document.getElementById('search'));
+                const filtered = getFilteredPublications();
+                const container = document.getElementById('publicationsList');
+                container.innerHTML = filtered.slice(0, state.displayedCount).map(createPublicationCard).join('');
+                const totalFiltered = Math.round(filtered.length * (608 / 61));
+                const shown = Math.min(state.displayedCount, filtered.length) * (608 / 61);
+                document.getElementById('resultCount').textContent = `${Math.round(totalFiltered)} publication${totalFiltered !== 1 ? 's' : ''} (${Math.round(shown)} shown)`;
+                document.getElementById('loadMoreBtn').style.display = state.displayedCount >= filtered.length ? 'none' : 'block';
+                utils.hideLoading(document.getElementById('search'));
+            } catch (error) {
+                utils.handleError(error, 'filtering publications');
+            }
         }
 
         function loadMore() {
-            const filtered = getFilteredPublications();
-            const container = document.getElementById('publicationsList');
-            const start = displayedCount;
-            displayedCount += 10;
-            const newPubs = filtered.slice(start, displayedCount);
-            newPubs.forEach(pub => container.insertAdjacentHTML('beforeend', createPublicationCard(pub)));
-            const totalFiltered = Math.round(filtered.length * (608 / 61));
-            const shown = Math.min(displayedCount, filtered.length) * (608 / 61);
-            document.getElementById('resultCount').textContent = `${Math.round(totalFiltered)} publication${totalFiltered !== 1 ? 's' : ''} (${Math.round(shown)} shown)`;
-            document.getElementById('loadMoreBtn').style.display = displayedCount >= filtered.length ? 'none' : 'block';
+            try {
+                const filtered = getFilteredPublications();
+                const container = document.getElementById('publicationsList');
+                const start = state.displayedCount;
+                state.displayedCount += 10;
+                const newPubs = filtered.slice(start, state.displayedCount);
+                newPubs.forEach(pub => container.insertAdjacentHTML('beforeend', createPublicationCard(pub)));
+                const totalFiltered = Math.round(filtered.length * (608 / 61));
+                const shown = Math.min(state.displayedCount, filtered.length) * (608 / 61);
+                document.getElementById('resultCount').textContent = `${Math.round(totalFiltered)} publication${totalFiltered !== 1 ? 's' : ''} (${Math.round(shown)} shown)`;
+                document.getElementById('loadMoreBtn').style.display = state.displayedCount >= filtered.length ? 'none' : 'block';
+            } catch (error) {
+                utils.handleError(error, 'loading more publications');
+            }
+        }
+
+        function clearFilters() {
+            try {
+                document.getElementById('searchInput').value = '';
+                document.getElementById('organismFilter').value = '';
+                document.getElementById('areaFilter').value = '';
+                document.getElementById('yearFilter').value = '';
+                document.getElementById('sectionFilter').value = '';
+                state.displayedCount = 10;
+                filterPublications();
+            } catch (error) {
+                utils.handleError(error, 'clearing filters');
+            }
         }
 
         function filterByAudience(audience) {
-            const relevanceField = audience === 'mission' ? 'mission_planner_relevance' : `${audience}_relevance`;
-            const filtered = allPublications.filter(pub => pub[relevanceField] >= 2).slice(0, 15);
-            const titles = {
-                scientist: '👨‍🔬 High-Relevance Publications for Scientists',
-                manager: '💼 High-Impact Publications for Managers',
-                mission: '🚀 Mission-Critical Publications for Architects'
-            };
-            document.getElementById('audienceTitle').textContent = titles[audience];
-            document.getElementById('audiencePublications').innerHTML = filtered.map(createPublicationCard).join('');
-            document.getElementById('audienceResults').style.display = 'block';
-            document.getElementById('audienceResults').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            try {
+                const relevanceField = audience === 'mission' ? 'mission_planner_relevance' : `${audience}_relevance`;
+                const filtered = state.allPublications.filter(pub => pub[relevanceField] >= 2).slice(0, 15);
+                const titles = {
+                    scientist: '👨‍🔬 High-Relevance Publications for Scientists',
+                    manager: '💼 High-Impact Publications for Managers',
+                    mission: '🚀 Mission-Critical Publications for Architects'
+                };
+                document.getElementById('audienceTitle').textContent = titles[audience];
+                document.getElementById('audiencePublications').innerHTML = filtered.map(createPublicationCard).join('');
+                document.getElementById('audienceResults').style.display = 'block';
+                document.getElementById('audienceResults').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            } catch (error) {
+                utils.handleError(error, 'filtering by audience');
+            }
         }
 
         function closeAudienceView() {
-            document.getElementById('audienceResults').style.display = 'none';
+            try {
+                document.getElementById('audienceResults').style.display = 'none';
+            } catch (error) {
+                utils.handleError(error, 'closing audience view');
+            }
         }
 
         // Chart Initialization
         function initCharts() {
-            const commonOptions = {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        labels: {
-                            color: '#D1D5DB',
-                            font: { size: 14, family: 'Inter' },
-                            padding: 20,
-                            usePointStyle: true
-                        }
-                    },
-                    tooltip: {
-                        backgroundColor: 'rgba(0,0,0,0.9)',
-                        titleColor: '#fff',
-                        bodyColor: '#fff',
-                        borderColor: '#3B82F6',
-                        borderWidth: 1,
-                        padding: 12,
-                        titleFont: { size: 14, family: 'Inter' },
-                        bodyFont: { size: 12, family: 'Inter' }
-                    }
-                },
-                animation: {
-                    duration: 1500,
-                    easing: 'easeInOutQuart'
-                }
-            };
+            try {
+                const chartCanvases = ['yearChart', 'organismChart', 'researchAreaChart', 'conditionChart', 'stageChart'];
+                chartCanvases.forEach(id => utils.showLoading(document.getElementById(id).parentElement));
 
-            // Year Timeline Chart
-            const yearLabels = Object.keys(statsData.year_distribution).sort();
-            new Chart(document.getElementById('yearChart'), {
-                type: 'line',
-                data: {
-                    labels: yearLabels,
-                    datasets: [{
-                        label: 'Publications per Year',
-                        data: yearLabels.map(y => statsData.year_distribution[y]),
-                        backgroundColor: 'rgba(59, 130, 246, 0.3)',
-                        borderColor: '#3B82F6',
-                        borderWidth: 3,
-                        fill: true,
-                        tension: 0.4,
-                        pointRadius: 5,
-                        pointHoverRadius: 8,
-                        pointBackgroundColor: '#fff',
-                        pointBorderColor: '#3B82F6',
-                        pointBorderWidth: 2
-                    }]
-                },
-                options: {
-                    ...commonOptions,
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            ticks: { color: '#9CA3AF', font: { family: 'Inter' } },
-                            grid: { color: '#374151', drawBorder: false }
-                        },
-                        x: {
-                            ticks: { color: '#9CA3AF', font: { family: 'Inter' } },
-                            grid: { display: false }
-                        }
-                    }
-                }
-            });
-
-            // Organism Distribution Chart
-            new Chart(document.getElementById('organismChart'), {
-                type: 'doughnut',
-                data: {
-                    labels: Object.keys(statsData.organism_counts),
-                    datasets: [{
-                        data: Object.values(statsData.organism_counts),
-                        backgroundColor: ['#10B981', '#8B5CF6', '#F59E0B', '#EF4444'],
-                        borderWidth: 2,
-                        borderColor: '#1F2937',
-                        hoverOffset: 20
-                    }]
-                },
-                options: {
-                    ...commonOptions,
+                const commonOptions = {
+                    responsive: true,
+                    maintainAspectRatio: false,
                     plugins: {
-                        ...commonOptions.plugins,
-                        legend: { position: 'bottom' }
-                    },
-                    cutout: '60%'
-                }
-            });
-
-            // Research Area Chart
-            const topAreas = Object.entries(statsData.research_area_counts).sort((a, b) => b[1] - a[1]);
-            new Chart(document.getElementById('researchAreaChart'), {
-                type: 'bar',
-                data: {
-                    labels: topAreas.map(([area]) => area),
-                    datasets: [{
-                        label: 'Publications',
-                        data: topAreas.map(([, count]) => count),
-                        backgroundColor: '#A855F7',
-                        borderColor: '#9333EA',
-                        borderWidth: 1,
-                        borderRadius: 8
-                    }]
-                },
-                options: {
-                    ...commonOptions,
-                    indexAxis: 'y',
-                    scales: {
-                        x: {
-                            beginAtZero: true,
-                            ticks: { color: '#9CA3AF', font: { family: 'Inter' } },
-                            grid: { color: '#374151', drawBorder: false }
+                        legend: {
+                            labels: {
+                                color: '#D1D5DB',
+                                font: { size: 14, family: 'Inter' },
+                                padding: 20,
+                                usePointStyle: true
+                            }
                         },
-                        y: {
-                            ticks: { color: '#9CA3AF', font: { family: 'Inter' } },
-                            grid: { display: false }
+                        tooltip: {
+                            backgroundColor: 'rgba(0,0,0,0.9)',
+                            titleColor: '#fff',
+                            bodyColor: '#fff',
+                            borderColor: '#3B82F6',
+                            borderWidth: 1,
+                            padding: 12,
+                            titleFont: { size: 14, family: 'Inter' },
+                            bodyFont: { size: 12, family: 'Inter' }
                         }
                     },
-                    plugins: { ...commonOptions.plugins, legend: { display: false } }
-                }
-            });
+                    animation: {
+                        duration: 1500,
+                        easing: 'easeInOutQuart',
+                        onComplete: () => chartCanvases.forEach(id => utils.hideLoading(document.getElementById(id).parentElement))
+                    }
+                };
 
-            // Space Conditions Chart
-            new Chart(document.getElementById('conditionChart'), {
-                type: 'polarArea',
-                data: {
-                    labels: Object.keys(statsData.condition_counts),
-                    datasets: [{
-                        data: Object.values(statsData.condition_counts),
-                        backgroundColor: [
-                            'rgba(59, 130, 246, 0.7)',
-                            'rgba(16, 185, 129, 0.7)',
-                            'rgba(245, 158, 11, 0.7)'
-                        ],
-                        borderWidth: 2,
-                        borderColor: '#1F2937'
-                    }]
-                },
-                options: {
-                    ...commonOptions,
-                    scales: {
-                        r: {
-                            ticks: { color: '#9CA3AF', backdropColor: 'transparent', font: { family: 'Inter' } },
-                            grid: { color: '#374151' }
+                // Year Timeline Chart
+                const yearLabels = Object.keys(state.statsData.year_distribution).sort();
+                new Chart(document.getElementById('yearChart'), {
+                    type: 'line',
+                    data: {
+                        labels: yearLabels,
+                        datasets: [{
+                            label: 'Publications per Year',
+                            data: yearLabels.map(y => state.statsData.year_distribution[y]),
+                            backgroundColor: 'rgba(59, 130, 246, 0.3)',
+                            borderColor: '#3B82F6',
+                            borderWidth: 3,
+                            fill: true,
+                            tension: 0.4,
+                            pointRadius: 5,
+                            pointHoverRadius: 8,
+                            pointBackgroundColor: '#fff',
+                            pointBorderColor: '#3B82F6',
+                            pointBorderWidth: 2
+                        }]
+                    },
+                    options: {
+                        ...commonOptions,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: { color: '#9CA3AF', font: { family: 'Inter' } },
+                                grid: { color: '#374151', drawBorder: false }
+                            },
+                            x: {
+                                ticks: { color: '#9CA3AF', font: { family: 'Inter' } },
+                                grid: { display: false }
+                            }
                         }
                     }
-                }
-            });
+                });
 
-            // Stage Distribution Chart
-            new Chart(document.getElementById('stageChart'), {
-                type: 'pie',
-                data: {
-                    labels: Object.keys(statsData.stage_distribution),
-                    datasets: [{
-                        data: Object.values(statsData.stage_distribution),
-                        backgroundColor: ['#3B82F6', '#8B5CF6', '#10B981'],
-                        borderWidth: 2,
-                        borderColor: '#1F2937',
-                        hoverOffset: 20
-                    }]
-                },
-                options: {
-                    ...commonOptions,
-                    plugins: {
-                        ...commonOptions.plugins,
-                        legend: { position: 'bottom' }
+                // Organism Distribution Chart
+                new Chart(document.getElementById('organismChart'), {
+                    type: 'doughnut',
+                    data: {
+                        labels: Object.keys(state.statsData.organism_counts),
+                        datasets: [{
+                            data: Object.values(state.statsData.organism_counts),
+                            backgroundColor: ['#10B981', '#8B5CF6', '#F59E0B', '#EF4444'],
+                            borderWidth: 2,
+                            borderColor: '#1F2937',
+                            hoverOffset: 20
+                        }]
+                    },
+                    options: {
+                        ...commonOptions,
+                        plugins: {
+                            ...commonOptions.plugins,
+                            legend: { position: 'bottom' }
+                        },
+                        cutout: '60%'
                     }
-                }
-            });
+                });
+
+                // Research Area Chart
+                const topAreas = Object.entries(state.statsData.research_area_counts).sort((a, b) => b[1] - a[1]);
+                new Chart(document.getElementById('researchAreaChart'), {
+                    type: 'bar',
+                    data: {
+                        labels: topAreas.map(([area]) => area),
+                        datasets: [{
+                            label: 'Publications',
+                            data: topAreas.map(([, count]) => count),
+                            backgroundColor: '#A855F7',
+                            borderColor: '#9333EA',
+                            borderWidth: 1,
+                            borderRadius: 8
+                        }]
+                    },
+                    options: {
+                        ...commonOptions,
+                        indexAxis: 'y',
+                        scales: {
+                            x: {
+                                beginAtZero: true,
+                                ticks: { color: '#9CA3AF', font: { family: 'Inter' } },
+                                grid: { color: '#374151', drawBorder: false }
+                            },
+                            y: {
+                                ticks: { color: '#9CA3AF', font: { family: 'Inter' } },
+                                grid: { display: false }
+                            }
+                        },
+                        plugins: { ...commonOptions.plugins, legend: { display: false } }
+                    }
+                });
+
+                // Space Conditions Chart
+                new Chart(document.getElementById('conditionChart'), {
+                    type: 'polarArea',
+                    data: {
+                        labels: Object.keys(state.statsData.condition_counts),
+                        datasets: [{
+                            data: Object.values(state.statsData.condition_counts),
+                            backgroundColor: [
+                                'rgba(59, 130, 246, 0.7)',
+                                'rgba(16, 185, 129, 0.7)',
+                                'rgba(245, 158, 11, 0.7)'
+                            ],
+                            borderWidth: 2,
+                            borderColor: '#1F2937'
+                        }]
+                    },
+                    options: {
+                        ...commonOptions,
+                        scales: {
+                            r: {
+                                ticks: { color: '#9CA3AF', backdropColor: 'transparent', font: { family: 'Inter' } },
+                                grid: { color: '#374151' }
+                            }
+                        }
+                    }
+                });
+
+                // Stage Distribution Chart
+                new Chart(document.getElementById('stageChart'), {
+                    type: 'pie',
+                    data: {
+                        labels: Object.keys(state.statsData.stage_distribution),
+                        datasets: [{
+                            data: Object.values(state.statsData.stage_distribution),
+                            backgroundColor: ['#3B82F6', '#8B5CF6', '#10B981'],
+                            borderWidth: 2,
+                            borderColor: '#1F2937',
+                            hoverOffset: 20
+                        }]
+                    },
+                    options: {
+                        ...commonOptions,
+                        plugins: {
+                            ...commonOptions.plugins,
+                            legend: { position: 'bottom' }
+                        }
+                    }
+                });
+            } catch (error) {
+                utils.handleError(error, 'initializing charts');
+            }
         }
 
         // Knowledge Graph
         function initKnowledgeGraph() {
-            const width = document.getElementById('network-graph').clientWidth;
-            const height = 600;
+            try {
+                const width = document.getElementById('network-graph').clientWidth;
+                const height = 600;
 
-            const nodes = [
-                ...Object.keys(statsData.organism_counts).map((org, i) => ({
-                    id: org,
-                    type: 'organism',
-                    value: statsData.organism_counts[org]
-                })),
-                ...Object.keys(statsData.research_area_counts).map((area, i) => ({
-                    id: area,
-                    type: 'area',
-                    value: statsData.research_area_counts[area]
-                })),
-                ...Object.keys(statsData.condition_counts).map((cond, i) => ({
-                    id: cond,
-                    type: 'condition',
-                    value: statsData.condition_counts[cond]
-                }))
-            ];
+                const nodes = [
+                    ...Object.keys(state.statsData.organism_counts).map((org, i) => ({
+                        id: org,
+                        type: 'organism',
+                        value: state.statsData.organism_counts[org]
+                    })),
+                    ...Object.keys(state.statsData.research_area_counts).map((area, i) => ({
+                        id: area,
+                        type: 'area',
+                        value: state.statsData.research_area_counts[area]
+                    })),
+                    ...Object.keys(state.statsData.condition_counts).map((cond, i) => ({
+                        id: cond,
+                        type: 'condition',
+                        value: state.statsData.condition_counts[cond]
+                    }))
+                ];
 
-            const links = [];
-            Object.keys(statsData.organism_counts).forEach(org => {
-                Object.keys(statsData.research_area_counts).forEach(area => {
-                    if (Math.random() > 0.4) {
-                        links.push({ source: org, target: area, value: Math.floor(Math.random() * 30) + 6 });
-                    }
-                });
-                Object.keys(statsData.condition_counts).forEach(cond => {
-                    if (Math.random() > 0.5) {
-                        links.push({ source: org, target: cond, value: Math.floor(Math.random() * 60) + 30 });
-                    }
-                });
-            });
-
-            const svg = d3.select('#network-graph')
-                .append('svg')
-                .attr('width', width)
-                .attr('height', height)
-                .attr('viewBox', `0 0 ${width} ${height}`)
-                .attr('preserveAspectRatio', 'xMidYMid meet');
-
-            const simulation = d3.forceSimulation(nodes)
-                .force('link', d3.forceLink(links).id(d => d.id).distance(150))
-                .force('charge', d3.forceManyBody().strength(-300))
-                .force('center', d3.forceCenter(width / 2, height / 2))
-                .force('collision', d3.forceCollide().radius(50));
-
-            const link = svg.append('g')
-                .selectAll('line')
-                .data(links)
-                .join('line')
-                .attr('stroke', '#6B7280')
-                .attr('stroke-opacity', 0.7)
-                .attr('stroke-width', d => Math.sqrt(d.value) / 2);
-
-            const node = svg.append('g')
-                .selectAll('g')
-                .data(nodes)
-                .join('g')
-                .call(d3.drag()
-                    .on('start', dragstarted)
-                    .on('drag', dragged)
-                    .on('end', dragended))
-                .on('mouseover', function(event, d) {
-                    d3.select(this).select('circle').attr('stroke-width', 4);
-                    d3.select(this).select('text').attr('font-size', '12px');
-                })
-                .on('mouseout', function(event, d) {
-                    d3.select(this).select('circle').attr('stroke-width', 2);
-                    d3.select(this).select('text').attr('font-size', '10px');
+                const links = [];
+                Object.keys(state.statsData.organism_counts).forEach(org => {
+                    Object.keys(state.statsData.research_area_counts).forEach(area => {
+                        if (Math.random() > 0.4) {
+                            links.push({ source: org, target: area, value: Math.floor(Math.random() * 30) + 6 });
+                        }
+                    });
+                    Object.keys(state.statsData.condition_counts).forEach(cond => {
+                        if (Math.random() > 0.5) {
+                            links.push({ source: org, target: cond, value: Math.floor(Math.random() * 60) + 30 });
+                        }
+                    });
                 });
 
-            node.append('circle')
-                .attr('r', d => Math.sqrt(d.value) * 1.2)
-                .attr('fill', d => {
-                    if (d.type === 'organism') return '#3B82F6';
-                    if (d.type === 'area') return '#A855F7';
-                    return '#10B981';
-                })
-                .attr('stroke', '#fff')
-                .attr('stroke-width', 2);
+                const svg = d3.select('#network-graph')
+                    .append('svg')
+                    .attr('width', width)
+                    .attr('height', height)
+                    .attr('viewBox', `0 0 ${width} ${height}`)
+                    .attr('preserveAspectRatio', 'xMidYMid meet')
+                    .call(d3.zoom().on('zoom', function(event) {
+                        svgGroup.attr('transform', event.transform);
+                    }));
 
-            node.append('text')
-                .text(d => d.id)
-                .attr('x', 0)
-                .attr('y', 5)
-                .attr('text-anchor', 'middle')
-                .attr('fill', '#fff')
-                .attr('font-size', '10px')
-                .attr('font-weight', 'bold')
-                .attr('font-family', 'Inter')
-                .attr('pointer-events', 'none');
+                const svgGroup = svg.append('g');
 
-            node.append('title')
-                .text(d => `${d.id}\n${d.value} publications`);
+                const simulation = d3.forceSimulation(nodes)
+                    .force('link', d3.forceLink(links).id(d => d.id).distance(150))
+                    .force('charge', d3.forceManyBody().strength(-300))
+                    .force('center', d3.forceCenter(width / 2, height / 2))
+                    .force('collision', d3.forceCollide().radius(50));
 
-            simulation.on('tick', () => {
-                link
-                    .attr('x1', d => Math.max(20, Math.min(width - 20, d.source.x)))
-                    .attr('y1', d => Math.max(20, Math.min(height - 20, d.source.y)))
-                    .attr('x2', d => Math.max(20, Math.min(width - 20, d.target.x)))
-                    .attr('y2', d => Math.max(20, Math.min(height - 20, d.target.y)));
+                const link = svgGroup.append('g')
+                    .selectAll('line')
+                    .data(links)
+                    .join('line')
+                    .attr('stroke', '#6B7280')
+                    .attr('stroke-opacity', 0.7)
+                    .attr('stroke-width', d => Math.sqrt(d.value) / 2);
 
-                node.attr('transform', d => `translate(${Math.max(20, Math.min(width - 20, d.x))},${Math.max(20, Math.min(height - 20, d.y))})`);
-            });
+                const node = svgGroup.append('g')
+                    .selectAll('g')
+                    .data(nodes)
+                    .join('g')
+                    .call(d3.drag()
+                        .on('start', dragstarted)
+                        .on('drag', dragged)
+                        .on('end', dragended))
+                    .on('mouseover', function(event, d) {
+                        d3.select(this).select('circle').attr('stroke-width', 4);
+                        d3.select(this).select('text').attr('font-size', '12px');
+                    })
+                    .on('mouseout', function(event, d) {
+                        d3.select(this).select('circle').attr('stroke-width', 2);
+                        d3.select(this).select('text').attr('font-size', '10px');
+                    });
 
-            function dragstarted(event, d) {
-                if (!event.active) simulation.alphaTarget(0.3).restart();
-                d.fx = d.x;
-                d.fy = d.y;
+                node.append('circle')
+                    .attr('r', d => Math.sqrt(d.value) * 1.2)
+                    .attr('fill', d => {
+                        if (d.type === 'organism') return '#3B82F6';
+                        if (d.type === 'area') return '#A855F7';
+                        return '#10B981';
+                    })
+                    .attr('stroke', '#fff')
+                    .attr('stroke-width', 2);
+
+                node.append('text')
+                    .text(d => d.id)
+                    .attr('x', 0)
+                    .attr('y', 5)
+                    .attr('text-anchor', 'middle')
+                    .attr('fill', '#fff')
+                    .attr('font-size', '10px')
+                    .attr('font-weight', 'bold')
+                    .attr('font-family', 'Inter')
+                    .attr('pointer-events', 'none');
+
+                node.append('title')
+                    .text(d => `${d.id}\n${d.value} publications`);
+
+                simulation.on('tick', () => {
+                    link
+                        .attr('x1', d => Math.max(20, Math.min(width - 20, d.source.x)))
+                        .attr('y1', d => Math.max(20, Math.min(height - 20, d.source.y)))
+                        .attr('x2', d => Math.max(20, Math.min(width - 20, d.target.x)))
+                        .attr('y2', d => Math.max(20, Math.min(height - 20, d.target.y)));
+
+                    node.attr('transform', d => `translate(${Math.max(20, Math.min(width - 20, d.x))},${Math.max(20, Math.min(height - 20, d.y))})`);
+                });
+
+                function dragstarted(event, d) {
+                    if (!event.active) simulation.alphaTarget(0.3).restart();
+                    d.fx = d.x;
+                    d.fy = d.y;
+                }
+
+                function dragged(event, d) {
+                    d.fx = event.x;
+                    d.fy = event.y;
+                }
+
+                function dragended(event, d) {
+                    if (!event.active) simulation.alphaTarget(0);
+                    d.fx = null;
+                    d.fy = null;
+                }
+
+                window.addEventListener('resize', () => {
+                    const newWidth = document.getElementById('network-graph').clientWidth;
+                    svg.attr('width', newWidth);
+                    simulation.force('center', d3.forceCenter(newWidth / 2, height / 2));
+                    simulation.alpha(0.5).restart();
+                });
+            } catch (error) {
+                utils.handleError(error, 'initializing knowledge graph');
             }
-
-            function dragged(event, d) {
-                d.fx = event.x;
-                d.fy = event.y;
-            }
-
-            function dragended(event, d) {
-                if (!event.active) simulation.alphaTarget(0);
-                d.fx = null;
-                d.fy = null;
-            }
-
-            window.addEventListener('resize', () => {
-                const newWidth = document.getElementById('network-graph').clientWidth;
-                svg.attr('width', newWidth);
-                simulation.force('center', d3.forceCenter(newWidth / 2, height / 2));
-                simulation.alpha(0.5).restart();
-            });
         }
 
         // Populate Insights Tab
         function populateInsights() {
-            document.getElementById('knowledgeGaps').innerHTML = statsData.knowledge_gaps.map(gap => `
-                <div class="bg-gray-700/50 rounded-lg p-4 border-l-4 border-yellow-500 animate-slide-up">
-                    <p class="font-semibold text-white">${gap.combination}</p>
-                    <p class="text-sm text-gray-400">${gap.publication_count} publication${gap.publication_count !== 1 ? 's' : ''}</p>
-                </div>
-            `).join('');
-
-            document.getElementById('consensusAreas').innerHTML = statsData.consensus_areas.map(area => `
-                <div class="bg-gray-700/50 rounded-lg p-4 border-l-4 border-green-500 animate-slide-up animation-delay-100">
-                    <div class="flex justify-between items-center">
-                        <p class="font-semibold text-white">${area.area}</p>
-                        <span class="px-3 py-1 bg-green-900 text-green-200 rounded-full text-xs font-bold">${area.publication_count}</span>
+            try {
+                document.getElementById('knowledgeGaps').innerHTML = state.statsData.knowledge_gaps.map(gap => `
+                    <div class="bg-gray-700/50 rounded-lg p-4 border-l-4 border-yellow-500 animate-slide-up">
+                        <p class="font-semibold text-white">${gap.combination}</p>
+                        <p class="text-sm text-gray-400">${gap.publication_count} publication${gap.publication_count !== 1 ? 's' : ''}</p>
                     </div>
-                </div>
-            `).join('');
+                `).join('');
 
-            const maxPubs = Math.max(...statsData.recent_trends.map(t => t.recent_publications));
-            document.getElementById('recentTrends').innerHTML = statsData.recent_trends.map((trend, i) => `
-                <div class="bg-gray-700/50 rounded-lg p-3 animate-slide-up animation-delay-${i * 50}">
-                    <div class="flex justify-between items-center mb-2">
-                        <p class="font-semibold text-white">${trend.area}</p>
-                        <span class="text-blue-400 font-bold">${trend.recent_publications}</span>
+                document.getElementById('consensusAreas').innerHTML = state.statsData.consensus_areas.map(area => `
+                    <div class="bg-gray-700/50 rounded-lg p-4 border-l-4 border-green-500 animate-slide-up animation-delay-100">
+                        <div class="flex justify-between items-center">
+                            <p class="font-semibold text-white">${area.area}</p>
+                            <span class="px-3 py-1 bg-green-900 text-green-200 rounded-full text-xs font-bold">${area.publication_count}</span>
+                        </div>
                     </div>
-                    <div class="w-full bg-gray-600 rounded-full h-2.5">
-                        <div class="bg-blue-500 h-2.5 rounded-full transition-all duration-500" style="width: ${(trend.recent_publications / maxPubs) * 100}%"></div>
-                    </div>
-                </div>
-            `).join('');
+                `).join('');
 
-            document.getElementById('stageDetails').innerHTML = Object.entries(statsData.stage_distribution).map(([stage, count]) => `
-                <div class="flex justify-between items-center animate-slide-up">
-                    <span class="text-gray-400">${stage}</span>
-                    <span class="text-white font-bold">${count} (${Math.round((count / statsData.total_publications) * 100)}%)</span>
-                </div>
-            `).join('');
+                const maxPubs = Math.max(...state.statsData.recent_trends.map(t => t.recent_publications));
+                document.getElementById('recentTrends').innerHTML = state.statsData.recent_trends.map((trend, i) => `
+                    <div class="bg-gray-700/50 rounded-lg p-3 animate-slide-up animation-delay-${i * 50}">
+                        <div class="flex justify-between items-center mb-2">
+                            <p class="font-semibold text-white">${trend.area}</p>
+                            <span class="text-blue-400 font-bold">${trend.recent_publications}</span>
+                        </div>
+                        <div class="w-full bg-gray-600 rounded-full h-2.5">
+                            <div class="bg-blue-500 h-2.5 rounded-full transition-all duration-500" style="width: ${(trend.recent_publications / maxPubs) * 100}%"></div>
+                        </div>
+                    </div>
+                `).join('');
+
+                document.getElementById('stageDetails').innerHTML = Object.entries(state.statsData.stage_distribution).map(([stage, count]) => `
+                    <div class="flex justify-between items-center animate-slide-up">
+                        <span class="text-gray-400">${stage}</span>
+                        <span class="text-white font-bold">${count} (${Math.round((count / state.statsData.total_publications) * 100)}%)</span>
+                    </div>
+                `).join('');
+            } catch (error) {
+                utils.handleError(error, 'populating insights');
+            }
+        }
+
+        // Keyboard Navigation
+        function initKeyboardNavigation() {
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        showTab(btn.getAttribute('aria-controls'));
+                    }
+                });
+            });
         }
 
         // Initialize Everything
         window.addEventListener('DOMContentLoaded', () => {
-            filterPublications();
-            initCharts();
-            populateInsights();
-            // Ensure initial tab state
-            showTab('overview');
+            try {
+                filterPublications();
+                populateInsights();
+                initKeyboardNavigation();
+                showTab('overview');
+            } catch (error) {
+                utils.handleError(error, 'initializing application');
+            }
         });
     </script>
 </body>
