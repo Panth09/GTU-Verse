@@ -1,0 +1,986 @@
+// Fetch data from the data ingestion workflow
+const response = $input.first().json;
+const publications = response.publications || [];
+const stats = response.statistics || {};
+
+const html = `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NASA Bioscience Research Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+    <style>
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        .stat-card { transition: transform 0.2s; }
+        .stat-card:hover { transform: translateY(-5px); }
+        #network-graph { width: 100%; height: 600px; border: 1px solid #374151; border-radius: 12px; }
+    </style>
+</head>
+<body class="bg-gray-900 text-white">
+    <div class="container mx-auto px-4 py-8">
+        
+        <!-- Header -->
+        <header class="text-center mb-12">
+            <h1 class="text-6xl font-bold mb-4 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 bg-clip-text text-transparent">
+                🚀 NASA Bioscience Research Explorer
+            </h1>
+            <p class="text-gray-400 text-xl">Analyzing ${stats.total_publications || 608} Space Biology Publications</p>
+            <p class="text-gray-500 text-sm mt-2">For Scientists • Mission Planners • Research Managers</p>
+        </header>
+
+        <!-- Navigation Tabs -->
+        <div class="flex flex-wrap justify-center gap-4 mb-12">
+            <button onclick="showTab('overview')" class="tab-btn px-6 py-3 bg-blue-600 hover:bg-blue-700 rounded-lg font-semibold transition">
+                📊 Overview
+            </button>
+            <button onclick="showTab('search')" class="tab-btn px-6 py-3 bg-gray-700 hover:bg-gray-600 rounded-lg font-semibold transition">
+                🔍 Search & Explore
+            </button>
+            <button onclick="showTab('insights')" class="tab-btn px-6 py-3 bg-gray-700 hover:bg-gray-600 rounded-lg font-semibold transition">
+                💡 AI Insights
+            </button>
+            <button onclick="showTab('knowledge-graph')" class="tab-btn px-6 py-3 bg-gray-700 hover:bg-gray-600 rounded-lg font-semibold transition">
+                🕸️ Knowledge Graph
+            </button>
+            <button onclick="showTab('audience')" class="tab-btn px-6 py-3 bg-gray-700 hover:bg-gray-600 rounded-lg font-semibold transition">
+                👥 By Audience
+            </button>
+        </div>
+
+        <!-- TAB 1: OVERVIEW -->
+        <div id="overview" class="tab-content active">
+            
+            <!-- Key Metrics -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+                <div class="stat-card bg-gradient-to-br from-blue-900 to-blue-800 rounded-xl p-6 shadow-xl">
+                    <h3 class="text-blue-300 text-sm mb-2">📚 Total Publications</h3>
+                    <p class="text-5xl font-bold">${stats.total_publications || 0}</p>
+                </div>
+                <div class="stat-card bg-gradient-to-br from-green-900 to-green-800 rounded-xl p-6 shadow-xl">
+                    <h3 class="text-green-300 text-sm mb-2">🧬 Organisms Studied</h3>
+                    <p class="text-5xl font-bold">${Object.keys(stats.organism_counts || {}).length}</p>
+                </div>
+                <div class="stat-card bg-gradient-to-br from-purple-900 to-purple-800 rounded-xl p-6 shadow-xl">
+                    <h3 class="text-purple-300 text-sm mb-2">🔬 Research Areas</h3>
+                    <p class="text-5xl font-bold">${Object.keys(stats.research_area_counts || {}).length}</p>
+                </div>
+                <div class="stat-card bg-gradient-to-br from-orange-900 to-orange-800 rounded-xl p-6 shadow-xl">
+                    <h3 class="text-orange-300 text-sm mb-2">📅 Year Span</h3>
+                    <p class="text-5xl font-bold">${Object.keys(stats.year_distribution || {}).length > 0 ? 
+                        Math.min(...Object.keys(stats.year_distribution).map(y => parseInt(y))) + '-' + 
+                        Math.max(...Object.keys(stats.year_distribution).map(y => parseInt(y))) : 'N/A'}</p>
+                </div>
+            </div>
+
+            <!-- Charts Row 1 -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+                <div class="bg-gray-800 rounded-xl p-6 shadow-xl border border-gray-700">
+                    <h3 class="text-2xl font-bold mb-6 text-blue-400">📈 Publications Timeline</h3>
+                    <canvas id="yearChart"></canvas>
+                </div>
+                <div class="bg-gray-800 rounded-xl p-6 shadow-xl border border-gray-700">
+                    <h3 class="text-2xl font-bold mb-6 text-green-400">🦠 Organisms Distribution</h3>
+                    <canvas id="organismChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Charts Row 2 -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+                <div class="bg-gray-800 rounded-xl p-6 shadow-xl border border-gray-700">
+                    <h3 class="text-2xl font-bold mb-6 text-purple-400">🔬 Research Areas</h3>
+                    <canvas id="researchAreaChart"></canvas>
+                </div>
+                <div class="bg-gray-800 rounded-xl p-6 shadow-xl border border-gray-700">
+                    <h3 class="text-2xl font-bold mb-6 text-orange-400">🚀 Space Conditions</h3>
+                    <canvas id="conditionChart"></canvas>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- TAB 2: SEARCH & EXPLORE -->
+        <div id="search" class="tab-content">
+            
+            <!-- Search Bar -->
+            <div class="mb-8">
+                <input 
+                    type="text" 
+                    id="searchInput" 
+                    placeholder="🔍 Search by title, abstract, organism, research area..." 
+                    class="w-full px-6 py-5 bg-gray-800 border-2 border-gray-700 rounded-xl text-white text-lg focus:outline-none focus:border-blue-500 transition"
+                    oninput="filterPublications()"
+                >
+            </div>
+
+            <!-- Filters -->
+            <div class="bg-gray-800 rounded-xl p-6 mb-8 border border-gray-700">
+                <h3 class="text-xl font-bold mb-4">🎯 Filters</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
+                        <label class="text-gray-400 text-sm">Organism</label>
+                        <select id="organismFilter" onchange="filterPublications()" class="w-full mt-2 px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white">
+                            <option value="">All Organisms</option>
+                            ${Object.keys(stats.organism_counts || {}).map(org => 
+                                `<option value="${org}">${org} (${stats.organism_counts[org]})</option>`
+                            ).join('')}
+                        </select>
+                    </div>
+                    <div>
+                        <label class="text-gray-400 text-sm">Research Area</label>
+                        <select id="areaFilter" onchange="filterPublications()" class="w-full mt-2 px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white">
+                            <option value="">All Areas</option>
+                            ${Object.keys(stats.research_area_counts || {}).map(area => 
+                                `<option value="${area}">${area} (${stats.research_area_counts[area]})</option>`
+                            ).join('')}
+                        </select>
+                    </div>
+                    <div>
+                        <label class="text-gray-400 text-sm">Year Range</label>
+                        <select id="yearFilter" onchange="filterPublications()" class="w-full mt-2 px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white">
+                            <option value="">All Years</option>
+                            <option value="recent">Last 5 Years</option>
+                            <option value="2015-2020">2015-2020</option>
+                            <option value="2010-2015">2010-2015</option>
+                            <option value="before-2010">Before 2010</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results -->
+            <div class="mb-4">
+                <h2 class="text-3xl font-bold text-gray-300">Publications</h2>
+                <p class="text-gray-500" id="resultCount">${publications.length} publications</p>
+            </div>
+            
+            <div id="publicationsList" class="space-y-6">
+                ${publications.slice(0, 20).map(pub => `
+                    <div class="publication-card bg-gray-800 rounded-xl p-6 border-2 border-gray-700 hover:border-blue-500 transition-all shadow-lg"
+                         data-organisms='${JSON.stringify(pub.organisms)}'
+                         data-areas='${JSON.stringify(pub.research_areas)}'
+                         data-year="${pub.year}">
+                        <h3 class="text-2xl font-bold mb-3 text-blue-400">${pub.title || 'Untitled'}</h3>
+                        <div class="flex flex-wrap gap-2 mb-3">
+                            <span class="px-3 py-1 bg-gray-700 text-gray-300 rounded-full text-sm">
+                                📅 ${pub.year || 'N/A'}
+                            </span>
+                            <span class="px-3 py-1 bg-gray-700 text-gray-300 rounded-full text-sm">
+                                📖 ${pub.journal || 'Unknown Journal'}
+                            </span>
+                            ${pub.pmcid ? `<span class="px-3 py-1 bg-gray-700 text-gray-300 rounded-full text-sm">
+                                🔗 PMC${pub.pmcid}
+                            </span>` : ''}
+                        </div>
+                        <p class="text-gray-400 text-sm mb-4">
+                            👥 ${pub.authors || 'Unknown'}
+                        </p>
+                        <p class="text-gray-300 mb-4 leading-relaxed">
+                            ${(pub.abstract || 'No abstract available').substring(0, 400)}${(pub.abstract || '').length > 400 ? '...' : ''}
+                        </p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            ${(pub.organisms || []).map(org => 
+                                `<span class="px-4 py-2 bg-green-900 text-green-200 rounded-full text-sm font-medium">🦠 ${org}</span>`
+                            ).join('')}
+                            ${(pub.research_areas || []).map(area => 
+                                `<span class="px-4 py-2 bg-purple-900 text-purple-200 rounded-full text-sm font-medium">🔬 ${area}</span>`
+                            ).join('')}
+                        </div>
+                        <div class="flex gap-2 text-sm">
+                          <span class="px-3 py-1 bg-blue-900 text-blue-200 rounded-full">
+                                👨‍🔬 Scientist: ${'⭐'.repeat(pub.scientist_relevance)}
+                            </span>
+                            <span class="px-3 py-1 bg-purple-900 text-purple-200 rounded-full">
+                                💼 Manager: ${'⭐'.repeat(pub.manager_relevance)}
+                            </span>
+                            <span class="px-3 py-1 bg-orange-900 text-orange-200 rounded-full">
+                                🚀 Mission Planner: ${'⭐'.repeat(pub.mission_planner_relevance)}
+                            </span>
+                        </div>
+                    </div>
+                `).join('')}
+            </div>
+
+            <!-- Load More Button -->
+            <div class="text-center mt-8">
+                <button onclick="loadMore()" class="px-8 py-4 bg-blue-600 hover:bg-blue-700 rounded-lg font-semibold transition">
+                    Load More Publications
+                </button>
+            </div>
+
+        </div>
+
+        <!-- TAB 3: AI INSIGHTS -->
+        <div id="insights" class="tab-content">
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                
+                <!-- Research Gaps -->
+                <div class="bg-gray-800 rounded-xl p-6 shadow-xl border border-gray-700">
+                    <h3 class="text-2xl font-bold mb-4 text-yellow-400">🔍 Knowledge Gaps</h3>
+                    <p class="text-gray-400 mb-4">Underrepresented research combinations (&lt;5 publications)</p>
+                    <div class="space-y-3">
+                        ${(stats.knowledge_gaps || []).slice(0, 10).map(gap => `
+                            <div class="bg-gray-700 rounded-lg p-4 border-l-4 border-yellow-500">
+                                <p class="font-semibold text-white">${gap.combination}</p>
+                                <p class="text-sm text-gray-400">${gap.publication_count} publication${gap.publication_count !== 1 ? 's' : ''}</p>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="mt-6 bg-yellow-900 bg-opacity-30 rounded-lg p-4 border border-yellow-700">
+                        <p class="text-yellow-200 text-sm">
+                            💡 <strong>Investment Opportunity:</strong> These combinations represent potential areas for future research funding
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Consensus Areas -->
+                <div class="bg-gray-800 rounded-xl p-6 shadow-xl border border-gray-700">
+                    <h3 class="text-2xl font-bold mb-4 text-green-400">✅ Consensus Areas</h3>
+                    <p class="text-gray-400 mb-4">Well-established research areas (&gt;50 publications)</p>
+                    <div class="space-y-3">
+                        ${(stats.consensus_areas || []).map(area => `
+                            <div class="bg-gray-700 rounded-lg p-4 border-l-4 border-green-500">
+                                <div class="flex justify-between items-center">
+                                    <p class="font-semibold text-white">${area.area}</p>
+                                    <span class="px-3 py-1 bg-green-900 text-green-200 rounded-full text-sm font-bold">
+                                        ${area.publication_count}
+                                    </span>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="mt-6 bg-green-900 bg-opacity-30 rounded-lg p-4 border border-green-700">
+                        <p class="text-green-200 text-sm">
+                            💡 <strong>High Confidence:</strong> These areas have substantial research backing
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Recent Trends -->
+                <div class="bg-gray-800 rounded-xl p-6 shadow-xl border border-gray-700">
+                    <h3 class="text-2xl font-bold mb-4 text-blue-400">📈 Recent Trends</h3>
+                    <p class="text-gray-400 mb-4">Emerging focus areas (Last 5 years)</p>
+                    <div class="space-y-3">
+                        ${(stats.recent_trends || []).map(trend => `
+                            <div class="bg-gray-700 rounded-lg p-4">
+                                <div class="flex justify-between items-center mb-2">
+                                    <p class="font-semibold text-white">${trend.area}</p>
+                                    <span class="text-blue-400 font-bold">${trend.recent_publications}</span>
+                                </div>
+                                <div class="w-full bg-gray-600 rounded-full h-2">
+                                    <div class="bg-blue-500 h-2 rounded-full" style="width: ${(trend.recent_publications / Math.max(...(stats.recent_trends || []).map(t => t.recent_publications))) * 100}%"></div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+
+                <!-- Research Stage Distribution -->
+                <div class="bg-gray-800 rounded-xl p-6 shadow-xl border border-gray-700">
+                    <h3 class="text-2xl font-bold mb-4 text-purple-400">🎯 Research Maturity</h3>
+                    <canvas id="stageChart"></canvas>
+                    <div class="mt-4 space-y-2">
+                        ${Object.entries(stats.stage_distribution || {}).map(([stage, count]) => `
+                            <div class="flex justify-between items-center text-sm">
+                                <span class="text-gray-400">${stage}</span>
+                                <span class="text-white font-bold">${count} (${Math.round(count / stats.total_publications * 100)}%)</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Actionable Insights Section -->
+            <div class="mt-8 bg-gradient-to-r from-blue-900 to-purple-900 rounded-xl p-8 shadow-xl border border-blue-700">
+                <h3 class="text-3xl font-bold mb-6 text-white">🎯 Actionable Insights</h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    
+                    <!-- For Scientists -->
+                    <div class="bg-gray-800 bg-opacity-70 rounded-lg p-6">
+                        <h4 class="text-xl font-bold mb-3 text-blue-400">👨‍🔬 For Scientists</h4>
+                        <ul class="space-y-3 text-gray-300">
+                            <li class="flex items-start">
+                                <span class="mr-2">•</span>
+                                <span>${stats.high_scientist_relevance} publications identified as high-relevance for hypothesis generation</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="mr-2">•</span>
+                                <span>Focus on ${(stats.knowledge_gaps || []).length} underexplored combinations for novel research</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="mr-2">•</span>
+                                <span>Gene expression and molecular mechanisms are frequently studied - good foundation for new work</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- For Managers -->
+                    <div class="bg-gray-800 bg-opacity-70 rounded-lg p-6">
+                        <h4 class="text-xl font-bold mb-3 text-purple-400">💼 For Managers</h4>
+                        <ul class="space-y-3 text-gray-300">
+                            <li class="flex items-start">
+                                <span class="mr-2">•</span>
+                                <span>${stats.high_manager_relevance} high-impact publications identified for investment decisions</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="mr-2">•</span>
+                                <span>Knowledge gaps represent ${(stats.knowledge_gaps || []).length} potential funding opportunities</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="mr-2">•</span>
+                                <span>${(stats.consensus_areas || []).length} well-established areas show research maturity</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- For Mission Planners -->
+                    <div class="bg-gray-800 bg-opacity-70 rounded-lg p-6">
+                        <h4 class="text-xl font-bold mb-3 text-orange-400">🚀 For Mission Planners</h4>
+                        <ul class="space-y-3 text-gray-300">
+                            <li class="flex items-start">
+                                <span class="mr-2">•</span>
+                                <span>${stats.high_mission_planner_relevance} critical publications for human spaceflight safety</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="mr-2">•</span>
+                                <span>Focus on bone, muscle, and radiation countermeasures for long-duration missions</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="mr-2">•</span>
+                                <span>ISS research provides operational data for Moon/Mars mission planning</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+        <!-- TAB 4: KNOWLEDGE GRAPH -->
+        <div id="knowledge-graph" class="tab-content">
+            
+            <div class="bg-gray-800 rounded-xl p-6 shadow-xl border border-gray-700 mb-6">
+                <h3 class="text-2xl font-bold mb-4 text-purple-400">🕸️ Research Relationship Network</h3>
+                <p class="text-gray-400 mb-4">
+                    Interactive visualization showing connections between organisms, research areas, and publications. 
+                    Larger nodes = more publications. Click and drag to explore.
+                </p>
+            </div>
+
+            <div class="bg-gray-800 rounded-xl p-6 shadow-xl border border-gray-700">
+                <div id="network-graph" class="bg-gray-900"></div>
+            </div>
+
+            <!-- Legend -->
+            <div class="mt-6 bg-gray-800 rounded-xl p-6 shadow-xl border border-gray-700">
+                <h4 class="font-bold mb-3">Legend</h4>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="flex items-center gap-2">
+                        <div class="w-4 h-4 rounded-full bg-blue-500"></div>
+                        <span class="text-sm text-gray-300">Organisms</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <div class="w-4 h-4 rounded-full bg-purple-500"></div>
+                        <span class="text-sm text-gray-300">Research Areas</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <div class="w-4 h-4 rounded-full bg-green-500"></div>
+                        <span class="text-sm text-gray-300">Space Conditions</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <div class="w-3 h-0.5 bg-gray-500"></div>
+                        <span class="text-sm text-gray-300">Connections</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- TAB 5: BY AUDIENCE -->
+        <div id="audience" class="tab-content">
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                
+                <!-- Scientists View -->
+                <div class="bg-gradient-to-br from-blue-900 to-blue-800 rounded-xl p-6 shadow-xl border border-blue-700">
+                    <h3 class="text-2xl font-bold mb-4 text-white">👨‍🔬 Scientists</h3>
+                    <p class="text-blue-200 mb-6">Publications for hypothesis generation and mechanistic research</p>
+                    
+                    <div class="bg-blue-950 bg-opacity-50 rounded-lg p-4 mb-4">
+                        <p class="text-3xl font-bold text-white mb-2">${stats.high_scientist_relevance}</p>
+                        <p class="text-blue-200 text-sm">High Relevance Publications</p>
+                    </div>
+
+                    <button onclick="filterByAudience('scientist')" class="w-full px-6 py-3 bg-blue-600 hover:bg-blue-700 rounded-lg font-semibold transition">
+                        View Publications
+                    </button>
+
+                    <div class="mt-6 space-y-2">
+                        <h4 class="font-semibold text-blue-200 mb-2">Top Research Areas:</h4>
+                        ${Object.entries(stats.research_area_counts || {})
+                            .sort((a, b) => b[1] - a[1])
+                            .slice(0, 5)
+                            .map(([area, count]) => `
+                                <div class="flex justify-between text-sm">
+                                    <span class="text-blue-300">${area}</span>
+                                    <span class="text-white font-bold">${count}</span>
+                                </div>
+                            `).join('')}
+                    </div>
+                </div>
+
+                <!-- Managers View -->
+                <div class="bg-gradient-to-br from-purple-900 to-purple-800 rounded-xl p-6 shadow-xl border border-purple-700">
+                    <h3 class="text-2xl font-bold mb-4 text-white">💼 Managers</h3>
+                    <p class="text-purple-200 mb-6">Investment opportunities and research portfolio analysis</p>
+                    
+                    <div class="bg-purple-950 bg-opacity-50 rounded-lg p-4 mb-4">
+                        <p class="text-3xl font-bold text-white mb-2">${stats.high_manager_relevance}</p>
+                        <p class="text-purple-200 text-sm">High Impact Publications</p>
+                    </div>
+
+                    <button onclick="filterByAudience('manager')" class="w-full px-6 py-3 bg-purple-600 hover:bg-purple-700 rounded-lg font-semibold transition">
+                        View Publications
+                    </button>
+
+                    <div class="mt-6 space-y-2">
+                        <h4 class="font-semibold text-purple-200 mb-2">Investment Gaps:</h4>
+                        ${(stats.knowledge_gaps || [])
+                            .slice(0, 5)
+                            .map(gap => `
+                                <div class="flex justify-between text-sm">
+                                    <span class="text-purple-300">${gap.combination.substring(0, 30)}...</span>
+                                    <span class="text-yellow-400 font-bold">${gap.publication_count}</span>
+                                </div>
+                            `).join('')}
+                    </div>
+                </div>
+
+                <!-- Mission Planners View -->
+                <div class="bg-gradient-to-br from-orange-900 to-orange-800 rounded-xl p-6 shadow-xl border border-orange-700">
+                    <h3 class="text-2xl font-bold mb-4 text-white">🚀 Mission Planners</h3>
+                    <p class="text-orange-200 mb-6">Human health and operational safety data</p>
+                    
+                    <div class="bg-orange-950 bg-opacity-50 rounded-lg p-4 mb-4">
+                        <p class="text-3xl font-bold text-white mb-2">${stats.high_mission_planner_relevance}</p>
+                        <p class="text-orange-200 text-sm">Mission-Critical Publications</p>
+                    </div>
+
+                    <button onclick="filterByAudience('mission')" class="w-full px-6 py-3 bg-orange-600 hover:bg-orange-700 rounded-lg font-semibold transition">
+                        View Publications
+                    </button>
+
+                    <div class="mt-6 space-y-2">
+                        <h4 class="font-semibold text-orange-200 mb-2">Critical Areas:</h4>
+                        ${['Bone & Skeletal Health', 'Muscle & Cardiovascular', 'Radiation Effects', 'Immune System', 'Neurological']
+                            .map(area => `
+                                <div class="flex justify-between text-sm">
+                                    <span class="text-orange-300">${area}</span>
+                                    <span class="text-white font-bold">${stats.research_area_counts?.[area] || 0}</span>
+                                </div>
+                            `).join('')}
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Detailed Audience View -->
+            <div id="audienceResults" class="mt-8" style="display: none;">
+                <div class="bg-gray-800 rounded-xl p-6 shadow-xl border border-gray-700">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-2xl font-bold" id="audienceTitle"></h3>
+                        <button onclick="document.getElementById('audienceResults').style.display='none'" 
+                                class="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg">
+                            Close
+                        </button>
+                    </div>
+                    <div id="audiencePublications" class="space-y-4"></div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <script>
+        // Global data
+        const allPublications = ${JSON.stringify(publications)};
+        const stats = ${JSON.stringify(stats)};
+        let displayedCount = 20;
+
+        // Tab switching
+        function showTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('bg-blue-600');
+                btn.classList.add('bg-gray-700');
+            });
+            
+            document.getElementById(tabId).classList.add('active');
+            event.target.classList.remove('bg-gray-700');
+            event.target.classList.add('bg-blue-600');
+
+            // Initialize knowledge graph when tab is shown
+            if (tabId === 'knowledge-graph') {
+                initKnowledgeGraph();
+            }
+        }
+
+        // Search and filter
+        function filterPublications() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const organismFilter = document.getElementById('organismFilter').value;
+            const areaFilter = document.getElementById('areaFilter').value;
+            const yearFilter = document.getElementById('yearFilter').value;
+
+            const cards = document.querySelectorAll('.publication-card');
+            let visibleCount = 0;
+
+            cards.forEach(card => {
+                const text = card.textContent.toLowerCase();
+                const organisms = JSON.parse(card.dataset.organisms || '[]');
+                const areas = JSON.parse(card.dataset.areas || '[]');
+                const year = parseInt(card.dataset.year);
+
+                let show = true;
+
+                // Search term
+                if (searchTerm && !text.includes(searchTerm)) {
+                    show = false;
+                }
+
+                // Organism filter
+                if (organismFilter && !organisms.includes(organismFilter)) {
+                    show = false;
+                }
+
+                // Area filter
+                if (areaFilter && !areas.includes(areaFilter)) {
+                    show = false;
+                }
+
+                // Year filter
+                if (yearFilter) {
+                    const currentYear = new Date().getFullYear();
+                    if (yearFilter === 'recent' && year < currentYear - 5) show = false;
+                    if (yearFilter === '2015-2020' && (year < 2015 || year > 2020)) show = false;
+                    if (yearFilter === '2010-2015' && (year < 2010 || year > 2015)) show = false;
+                    if (yearFilter === 'before-2010' && year >= 2010) show = false;
+                }
+
+                card.style.display = show ? 'block' : 'none';
+                if (show) visibleCount++;
+            });
+
+            document.getElementById('resultCount').textContent = 
+                visibleCount + ' publication' + (visibleCount !== 1 ? 's' : '') + ' found';
+        }
+
+        // Load more publications
+        function loadMore() {
+            displayedCount += 20;
+            const container = document.getElementById('publicationsList');
+            
+            allPublications.slice(container.children.length, displayedCount).forEach(pub => {
+                const card = createPublicationCard(pub);
+                container.insertAdjacentHTML('beforeend', card);
+            });
+
+            if (displayedCount >= allPublications.length) {
+                event.target.style.display = 'none';
+            }
+        }
+
+        // Create publication card HTML
+        function createPublicationCard(pub) {
+            return \`
+                <div class="publication-card bg-gray-800 rounded-xl p-6 border-2 border-gray-700 hover:border-blue-500 transition-all shadow-lg"
+                     data-organisms='\${JSON.stringify(pub.organisms)}'
+                     data-areas='\${JSON.stringify(pub.research_areas)}'
+                     data-year="\${pub.year}">
+                    <h3 class="text-2xl font-bold mb-3 text-blue-400">\${pub.title || 'Untitled'}</h3>
+                    <div class="flex flex-wrap gap-2 mb-3">
+                        <span class="px-3 py-1 bg-gray-700 text-gray-300 rounded-full text-sm">
+                            📅 \${pub.year || 'N/A'}
+                        </span>
+                        <span class="px-3 py-1 bg-gray-700 text-gray-300 rounded-full text-sm">
+                            📖 \${pub.journal || 'Unknown Journal'}
+                        </span>
+                    </div>
+                    <p class="text-gray-400 text-sm mb-4">
+                        👥 \${pub.authors || 'Unknown'}
+                    </p>
+                    <p class="text-gray-300 mb-4 leading-relaxed">
+                        \${(pub.abstract || 'No abstract available').substring(0, 400)}\${(pub.abstract || '').length > 400 ? '...' : ''}
+                    </p>
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        \${(pub.organisms || []).map(org => 
+                            \`<span class="px-4 py-2 bg-green-900 text-green-200 rounded-full text-sm font-medium">🦠 \${org}</span>\`
+                        ).join('')}
+                        \${(pub.research_areas || []).map(area => 
+                            \`<span class="px-4 py-2 bg-purple-900 text-purple-200 rounded-full text-sm font-medium">🔬 \${area}</span>\`
+                        ).join('')}
+                    </div>
+                </div>
+            \`;
+        }
+
+        // Filter by audience
+        function filterByAudience(audience) {
+            const relevanceField = audience + '_relevance';
+            const filtered = allPublications.filter(pub => pub[relevanceField] === 3).slice(0, 20);
+            
+            const titles = {
+                'scientist': '👨‍🔬 High-Relevance Publications for Scientists',
+                'manager': '💼 High-Impact Publications for Managers',
+                'mission': '🚀 Mission-Critical Publications for Planners'
+            };
+
+            document.getElementById('audienceTitle').textContent = titles[audience];
+            document.getElementById('audiencePublications').innerHTML = filtered.map(pub => createPublicationCard(pub)).join('');
+            document.getElementById('audienceResults').style.display = 'block';
+            document.getElementById('audienceResults').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Initialize charts
+        function initCharts() {
+            // Year Chart
+            if (stats.year_distribution && Object.keys(stats.year_distribution).length > 0) {
+                const yearCtx = document.getElementById('yearChart').getContext('2d');
+                new Chart(yearCtx, {
+                    type: 'line',
+                    data: {
+                        labels: Object.keys(stats.year_distribution).sort(),
+                        datasets: [{
+                            label: 'Publications',
+                            data: Object.keys(stats.year_distribution).sort().map(year => stats.year_distribution[year]),
+                            backgroundColor: 'rgba(59, 130, 246, 0.2)',
+                            borderColor: 'rgba(59, 130, 246, 1)',
+                            borderWidth: 3,
+                            fill: true,
+                            tension: 0.4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: { legend: { labels: { color: '#9CA3AF' } } },
+                        scales: {
+                            y: { ticks: { color: '#9CA3AF' }, grid: { color: '#374151' } },
+                            x: { ticks: { color: '#9CA3AF' }, grid: { color: '#374151' } }
+                        }
+                    }
+                });
+            }
+
+            // Organism Chart
+            if (stats.organism_counts && Object.keys(stats.organism_counts).length > 0) {
+                const orgCtx = document.getElementById('organismChart').getContext('2d');
+                new Chart(orgCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: Object.keys(stats.organism_counts),
+                        datasets: [{
+                            data: Object.values(stats.organism_counts),
+                            backgroundColor: [
+                                '#10B981', '#8B5CF6', '#F59E0B', '#EF4444', 
+                                '#3B82F6', '#EC4899', '#14B8A6', '#F97316'
+                            ]
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: { legend: { position: 'bottom', labels: { color: '#9CA3AF', padding: 15 } } }
+                    }
+                });
+            }
+
+            // Research Area Chart
+            if (stats.research_area_counts && Object.keys(stats.research_area_counts).length > 0) {
+                const areaCtx = document.getElementById('researchAreaChart').getContext('2d');
+                const topAreas = Object.entries(stats.research_area_counts)
+                    .sort((a, b) => b[1] - a[1])
+                    .slice(0, 10);
+                
+                new Chart(areaCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: topAreas.map(([area]) => area),
+                        datasets: [{
+                            label: 'Publications',
+                            data: topAreas.map(([_, count]) => count),
+                            backgroundColor: 'rgba(168, 85, 247, 0.8)',
+                            borderColor: 'rgba(168, 85, 247, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        indexAxis: 'y',
+                        responsive: true,
+                        plugins: { legend: { display: false } },
+                        scales: {
+                            y: { ticks: { color: '#9CA3AF' }, grid: { color: '#374151' } },
+                            x: { ticks: { color: '#9CA3AF' }, grid: { color: '#374151' } }
+                        }
+                    }
+                });
+            }
+
+            // Space Condition Chart
+            if (stats.condition_counts && Object.keys(stats.condition_counts).length > 0) {
+                const condCtx = document.getElementById('conditionChart').getContext('2d');
+                new Chart(condCtx, {
+                    type: 'polarArea',
+                    data: {
+                        labels: Object.keys(stats.condition_counts),
+                        datasets: [{
+                            data: Object.values(stats.condition_counts),
+                            backgroundColor: [
+                                'rgba(59, 130, 246, 0.7)',
+                                'rgba(16, 185, 129, 0.7)',
+                                'rgba(245, 158, 11, 0.7)',
+                                'rgba(239, 68, 68, 0.7)',
+                                'rgba(139, 92, 246, 0.7)'
+                            ]
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: { legend: { position: 'bottom', labels: { color: '#9CA3AF' } } },
+                        scales: { r: { ticks: { color: '#9CA3AF' }, grid: { color: '#374151' } } }
+                    }
+                });
+            }
+
+            // Stage Chart
+            if (stats.stage_distribution && Object.keys(stats.stage_distribution).length > 0) {
+                const stageCtx = document.getElementById('stageChart').getContext('2d');
+                new Chart(stageCtx, {
+                    type: 'pie',
+                    data: {
+                        labels: Object.keys(stats.stage_distribution),
+                        datasets: [{
+                            data: Object.values(stats.stage_distribution),
+                            backgroundColor: [
+                                '#3B82F6', '#10B981', '#F59E0B', '#EF4444'
+                            ]
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: { legend: { position: 'bottom', labels: { color: '#9CA3AF' } } }
+                    }
+                });
+            }
+        }
+
+        // Initialize Knowledge Graph
+        function initKnowledgeGraph() {
+            const graphData = buildGraphData();
+            renderGraph(graphData);
+        }
+
+        function buildGraphData() {
+            const nodes = [];
+            const links = [];
+            const nodeMap = new Map();
+
+            // Add organism nodes
+            Object.entries(stats.organism_counts || {}).forEach(([organism, count]) => {
+                const id = 'org_' + organism;
+                nodes.push({
+                    id,
+                    name: organism,
+                    type: 'organism',
+                    size: Math.sqrt(count) * 3,
+                    count
+                });
+                nodeMap.set(id, nodes.length - 1);
+            });
+
+            // Add research area nodes
+            Object.entries(stats.research_area_counts || {}).forEach(([area, count]) => {
+                const id = 'area_' + area;
+                nodes.push({
+                    id,
+                    name: area,
+                    type: 'research_area',
+                    size: Math.sqrt(count) * 3,
+                    count
+                });
+                nodeMap.set(id, nodes.length - 1);
+            });
+
+            // Add space condition nodes
+            Object.entries(stats.condition_counts || {}).forEach(([condition, count]) => {
+                const id = 'cond_' + condition;
+                nodes.push({
+                    id,
+                    name: condition,
+                    type: 'condition',
+                    size: Math.sqrt(count) * 2,
+                    count
+                });
+                nodeMap.set(id, nodes.length - 1);
+            });
+
+            // Create links based on co-occurrence
+            const connections = new Map();
+            allPublications.forEach(pub => {
+                // Connect organisms to research areas
+                pub.organisms.forEach(org => {
+                    pub.research_areas.forEach(area => {
+                        const key = \`org_\${org}|area_\${area}\`;
+                        connections.set(key, (connections.get(key) || 0) + 1);
+                    });
+                });
+
+                // Connect research areas to conditions
+                pub.research_areas.forEach(area => {
+                    pub.space_conditions.forEach(cond => {
+                        const key = \`area_\${area}|cond_\${cond}\`;
+                        connections.set(key, (connections.get(key) || 0) + 1);
+                    });
+                });
+            });
+
+            // Convert connections to links
+            connections.forEach((count, key) => {
+                const [source, target] = key.split('|');
+                if (nodeMap.has(source) && nodeMap.has(target)) {
+                    links.push({
+                        source,
+                        target,
+                        value: count
+                    });
+                }
+            });
+
+            return { nodes, links };
+        }
+
+        function renderGraph(graphData) {
+            const container = document.getElementById('network-graph');
+            const width = container.clientWidth;
+            const height = 600;
+
+            // Clear existing
+            container.innerHTML = '';
+
+            // Create SVG
+            const svg = d3.select('#network-graph')
+                .append('svg')
+                .attr('width', width)
+                .attr('height', height);
+
+            // Create color scale
+            const colorScale = {
+                'organism': '#3B82F6',
+                'research_area': '#8B5CF6',
+                'condition': '#10B981'
+            };
+
+            // Create force simulation
+            const simulation = d3.forceSimulation(graphData.nodes)
+                .force('link', d3.forceLink(graphData.links).id(d => d.id).distance(100))
+                .force('charge', d3.forceManyBody().strength(-200))
+                .force('center', d3.forceCenter(width / 2, height / 2))
+                .force('collision', d3.forceCollide().radius(d => d.size + 5));
+
+            // Create links
+            const link = svg.append('g')
+                .selectAll('line')
+                .data(graphData.links)
+                .enter()
+                .append('line')
+                .attr('stroke', '#4B5563')
+                .attr('stroke-width', d => Math.sqrt(d.value))
+                .attr('stroke-opacity', 0.6);
+
+            // Create nodes
+            const node = svg.append('g')
+                .selectAll('circle')
+                .data(graphData.nodes)
+                .enter()
+                .append('circle')
+                .attr('r', d => d.size)
+                .attr('fill', d => colorScale[d.type])
+                .attr('stroke', '#fff')
+                .attr('stroke-width', 2)
+                .call(d3.drag()
+                    .on('start', dragstarted)
+                    .on('drag', dragged)
+                    .on('end', dragended));
+
+            // Add labels
+            const labels = svg.append('g')
+                .selectAll('text')
+                .data(graphData.nodes)
+                .enter()
+                .append('text')
+                .text(d => d.name)
+                .attr('font-size', d => Math.max(10, d.size / 2))
+                .attr('fill', '#E5E7EB')
+                .attr('text-anchor', 'middle')
+                .attr('dy', '.35em')
+                .style('pointer-events', 'none');
+
+            // Add tooltips
+            node.append('title')
+                .text(d => \`\${d.name}\\n\${d.count} publications\`);
+
+            // Update positions
+            simulation.on('tick', () => {
+                link
+                    .attr('x1', d => d.source.x)
+                    .attr('y1', d => d.source.y)
+                    .attr('x2', d => d.target.x)
+                    .attr('y2', d => d.target.y);
+
+                node
+                    .attr('cx', d => d.x)
+                    .attr('cy', d => d.y);
+
+                labels
+                    .attr('x', d => d.x)
+                    .attr('y', d => d.y);
+            });
+
+            // Drag functions
+            function dragstarted(event, d) {
+                if (!event.active) simulation.alphaTarget(0.3).restart();
+                d.fx = d.x;
+                d.fy = d.y;
+            }
+
+            function dragged(event, d) {
+                d.fx = event.x;
+                d.fy = event.y;
+            }
+
+            function dragended(event, d) {
+                if (!event.active) simulation.alphaTarget(0);
+                d.fx = null;
+                d.fy = null;
+            }
+        }
+
+        // Initialize on load
+        window.addEventListener('DOMContentLoaded', () => {
+            initCharts();
+        });
+    </script>
+</body>
+</html>
+<!-- `;
+
+return [{ json: { html } }]; -->
