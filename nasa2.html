@@ -30,6 +30,7 @@
     .animate-fade-in{animation:fadeIn .8s ease-out}
     .chart-wrapper{height:20rem; position:relative}
     #network-graph{width:100%;height:600px;background:var(--card-bg);border-radius:16px;overflow:hidden}
+    #jsonModal { backdrop-filter: blur(8px); }
   </style>
 </head>
 <body class="text-white min-h-screen">
@@ -43,10 +44,10 @@
     </header>
     <nav class="flex flex-wrap justify-center gap-4 mb-12" role="tablist">
       <button onclick="app.showTab('overview')" class="tab-btn px-6 py-3 bg-blue-600 hover:bg-blue-700 rounded-xl font-semibold transition-all shadow-lg focus:outline-none focus:ring-2 ring-offset-2 ring-blue-500" role="tab" aria-selected="true">Overview</button>
-      <button onclick="app.showTab('search')" class="tab-btn px-6 py-3 bg-gray-700 hover:bg-gray-600 rounded-xl font-semibold transition-all shadow-lg focus:outline-none focus:ring-2 ring-offset-2 ring-blue-500" role="tab">Search & Explore</button>
-      <button onclick="app.showTab('insights')" class="tab-btn px-6 py-3 bg-gray-700 hover:bg-gray-600 rounded-xl font-semibold transition-all shadow-lg focus:outline-none focus:ring-2 ring-offset-2 ring-blue-500" role="tab">AI Insights</button>
-      <button onclick="app.showTab('knowledge-graph')" class="tab-btn px-6 py-3 bg-gray-700 hover:bg-gray-600 rounded-xl font-semibold transition-all shadow-lg focus:outline-none focus:ring-2 ring-offset-2 ring-blue-500" role="tab">Knowledge Graph</button>
-      <button onclick="app.showTab('audience')" class="tab-btn px-6 py-3 bg-gray-700 hover:bg-gray-600 rounded-xl font-semibold transition-all shadow-lg focus:outline-none focus:ring-2 ring-offset-2 ring-blue-500" role="tab">By Audience</button>
+      <button onclick="app.showTab('search')" class="tab-btn px-6 py-3 bg-gray-700 hover:bg-gray-600 rounded-xl font-semibold transition-all shadow-lg focus:outline-none focus:ring-2 ring-offset-2 ring-blue-500" role="tab" aria-selected="false">Search & Explore</button>
+      <button onclick="app.showTab('insights')" class="tab-btn px-6 py-3 bg-gray-700 hover:bg-gray-600 rounded-xl font-semibold transition-all shadow-lg focus:outline-none focus:ring-2 ring-offset-2 ring-blue-500" role="tab" aria-selected="false">AI Insights</button>
+      <button onclick="app.showTab('knowledge-graph')" class="tab-btn px-6 py-3 bg-gray-700 hover:bg-gray-600 rounded-xl font-semibold transition-all shadow-lg focus:outline-none focus:ring-2 ring-offset-2 ring-blue-500" role="tab" aria-selected="false">Knowledge Graph</button>
+      <button onclick="app.showTab('audience')" class="tab-btn px-6 py-3 bg-gray-700 hover:bg-gray-600 rounded-xl font-semibold transition-all shadow-lg focus:outline-none focus:ring-2 ring-offset-2 ring-blue-500" role="tab" aria-selected="false">By Audience</button>
     </nav>
     <!-- TAB 1: OVERVIEW -->
     <section id="overview" class="tab-content active" role="tabpanel">
@@ -392,7 +393,6 @@
         if (p.manager_relevance>=2) high_manager_relevance++;
         if (p.mission_planner_relevance>=2) high_mission_planner_relevance++;
       });
-      // Knowledge gaps / consensus
       const knowledge_gaps = [];
       const consensus_areas = [];
       const organisms = Object.keys(organism_counts);
@@ -404,13 +404,11 @@
           if (count>=5) consensus_areas.push({ area:`${a} in ${o}`, publication_count:count });
         });
       });
-      // Recent trends (>=2020)
       const trendMap = {};
       publications.filter(p=>p.year>=2020).forEach(p=>p.research_areas.forEach(a=>trendMap[a]=(trendMap[a]||0)+1));
       const recent_trends = Object.entries(trendMap)
         .map(([area,count])=>({area, recent_publications:count}))
         .sort((a,b)=>b.recent_publications-a.recent_publications).slice(0,8);
-      // Stage distribution (mock but stable)
       const stage_distribution = { Exploratory: 12, Applied: 20, Translational: 13 };
       return {
         total_publications: publications.length,
@@ -427,7 +425,6 @@
     let filtered = [...DataModule.publications];
     let page = 1;
     const pageSize = 8;
-    // Elements
     const els = {
       totalPubs: document.getElementById('totalPubs'),
       statTotal: document.getElementById('statTotal'),
@@ -471,7 +468,6 @@
     function showTab(id){
       document.querySelectorAll('.tab-content').forEach(x=>x.classList.remove('active'));
       document.getElementById(id).classList.add('active');
-      // Update tab buttons
       document.querySelectorAll('.tab-btn').forEach(btn => {
         btn.classList.remove('bg-blue-600', 'hover:bg-blue-700');
         btn.classList.add('bg-gray-700', 'hover:bg-gray-600');
@@ -482,7 +478,6 @@
           btn.setAttribute('aria-selected', 'true');
         }
       });
-      // Lazy render heavy things
       if (id==='knowledge-graph' && !els.network.dataset.rendered){ renderGraph(); els.network.dataset.rendered='1'; }
     }
     /* ---- JSON Modal ---- */
@@ -512,19 +507,14 @@
       const yr = els.yearFilter.value;
       const sec = els.sectionFilter.value;
       filtered = DataModule.publications.filter(p=>{
-        // search
         const hay = [p.title, p.abstract, p.research_areas.join(' '), p.organisms.join(' ')].join(' ').toLowerCase();
         if (q && !hay.includes(q)) return false;
-        // organism filter
         if (org && !p.organisms.includes(org)) return false;
-        // area filter
         if (area && !p.research_areas.includes(area)) return false;
-        // year filter
         if (yr==='recent' && !(p.year>=2020)) return false;
         if (yr==='2015-2020' && !(p.year>=2015 && p.year<=2020)) return false;
         if (yr==='2010-2015' && !(p.year>=2010 && p.year<=2015)) return false;
         if (yr==='before-2010' && !(p.year<2010)) return false;
-        // section focus (for demo, match presence of text)
         if (sec && !((p[sec]||'').length>0)) return false;
         return true;
       });
@@ -544,7 +534,6 @@
       const start = (page-1)*pageSize;
       const slice = filtered.slice(start, start+pageSize);
       slice.forEach(renderPublicationCard);
-      // toggle load more
       if (start + pageSize >= filtered.length) {
         els.loadMoreBtn.style.display='none';
       } else {
@@ -636,7 +625,6 @@
       });
       els.stageDetails.innerHTML = Object.entries(s.stage_distribution)
         .map(([k,v])=>`<div class="flex justify-between p-2 rounded bg-purple-900/30 border border-purple-700/30"><span>${k}</span><span class="text-purple-300 font-semibold">${v}</span></div>`).join('');
-      // Audience quick insights
       els.scientistCount.textContent = s.high_scientist_relevance;
       els.managerCount.textContent = s.high_manager_relevance;
       els.missionCount.textContent = s.high_mission_planner_relevance;
@@ -648,7 +636,6 @@
       els.missionTopAreas.innerHTML = missionAreas
         .filter(a=>s.research_area_counts[a])
         .map(a=>`<div class="flex justify-between text-orange-200"><span>${a}</span><span>${s.research_area_counts[a]}</span></div>`).join('');
-      // Actionable bullets
       els.scientistInsights.innerHTML = `
         <li>Prioritize gaps: ${s.knowledge_gaps.slice(0,2).map(g=>g.combination).join(' & ')}.</li>
         <li>Cross-validate radiation findings with omics (GeneLab datasets).</li>
@@ -703,7 +690,6 @@
         ...Array.from(areaSet.entries()).map(([name,count])=>({ id:nodeId('area',name), label:name, group:'area', count })),
         ...Array.from(condSet.entries()).map(([name,count])=>({ id:nodeId('cond',name), label:name, group:'cond', count }))
       ];
-      // SVG setup
       const width = els.network.clientWidth;
       const height = els.network.clientHeight;
       const svg = d3.select(els.network).append('svg').attr('width', width).attr('height', height);
@@ -760,7 +746,6 @@
       renderStatsAndCharts();
       renderInsights();
     }
-    // Public API
     return {
       init,
       showTab,
@@ -772,7 +757,6 @@
       closeJsonModal
     };
   })();
-  // Boot
   window.addEventListener('DOMContentLoaded', app.init);
   </script>
 </body>
