@@ -41,7 +41,6 @@
       <p class="text-gray-200 text-xl md:text-2xl mb-2">NASA Space Apps Challenge 2025</p>
       <p class="text-gray-400 text-base">Analyzing <span id="totalPubs">0</span> Real Bioscience Publications</p>
     </header>
-
     <nav class="flex flex-wrap justify-center gap-4 mb-12" role="tablist">
       <button onclick="app.showTab('overview')" class="tab-btn px-6 py-3 bg-blue-600 hover:bg-blue-700 rounded-xl font-semibold transition-all shadow-lg focus:outline-none focus:ring-2 ring-offset-2 ring-blue-500" role="tab" aria-selected="true">Overview</button>
       <button onclick="app.showTab('search')" class="tab-btn px-6 py-3 bg-gray-700 hover:bg-gray-600 rounded-xl font-semibold transition-all shadow-lg focus:outline-none focus:ring-2 ring-offset-2 ring-blue-500" role="tab">Search & Explore</button>
@@ -49,7 +48,6 @@
       <button onclick="app.showTab('knowledge-graph')" class="tab-btn px-6 py-3 bg-gray-700 hover:bg-gray-600 rounded-xl font-semibold transition-all shadow-lg focus:outline-none focus:ring-2 ring-offset-2 ring-blue-500" role="tab">Knowledge Graph</button>
       <button onclick="app.showTab('audience')" class="tab-btn px-6 py-3 bg-gray-700 hover:bg-gray-600 rounded-xl font-semibold transition-all shadow-lg focus:outline-none focus:ring-2 ring-offset-2 ring-blue-500" role="tab">By Audience</button>
     </nav>
-
     <!-- TAB 1: OVERVIEW -->
     <section id="overview" class="tab-content active" role="tabpanel">
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
@@ -70,7 +68,6 @@
           <p class="text-5xl font-bold text-white" id="statYears">—</p>
         </div>
       </div>
-
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
         <div class="bg-gray-800/60 rounded-xl p-6 shadow-2xl border border-gray-700/50 backdrop-blur-sm">
           <h3 class="text-2xl font-bold mb-6 text-blue-400">Publications Timeline</h3>
@@ -81,7 +78,6 @@
           <div class="chart-wrapper"><canvas id="organismChart"></canvas></div>
         </div>
       </div>
-
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <div class="bg-gray-800/60 rounded-xl p-6 shadow-2xl border border-gray-700/50 backdrop-blur-sm">
           <h3 class="text-2xl font-bold mb-6 text-purple-400">Research Areas</h3>
@@ -93,14 +89,12 @@
         </div>
       </div>
     </section>
-
     <!-- TAB 2: SEARCH & EXPLORE -->
     <section id="search" class="tab-content" role="tabpanel">
       <div class="mb-8">
         <input type="text" id="searchInput" placeholder="Search by title, abstract, organism, or research area..."
           class="w-full px-6 py-4 bg-gray-800/60 border-2 border-gray-700 rounded-xl text-white focus:outline-none focus:border-blue-500 transition-all backdrop-blur-sm shadow-lg"/>
       </div>
-
       <div class="bg-gray-800/60 rounded-xl p-6 mb-8 border border-gray-700 backdrop-blur-sm shadow-lg">
         <div class="flex justify-between items-center mb-4">
           <h3 class="text-xl font-bold text-white">Filters</h3>
@@ -140,21 +134,17 @@
           </div>
         </div>
       </div>
-
       <div class="mb-6">
         <h2 class="text-3xl font-bold text-white">Publications</h2>
         <p class="text-gray-400 mt-1" id="resultCount">0 publications</p>
       </div>
-
       <div id="publicationsList" class="space-y-6 max-h-[600px] overflow-y-auto pr-2 scrollbar-thin"></div>
-
       <div class="text-center mt-8">
         <button onclick="app.loadMore()" id="loadMoreBtn" class="px-8 py-3 bg-blue-600 hover:bg-blue-700 rounded-lg font-semibold transition-all shadow-lg">
           Load More Publications
         </button>
       </div>
     </section>
-
     <!-- TAB 3: AI INSIGHTS -->
     <section id="insights" class="tab-content" role="tabpanel">
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
@@ -163,28 +153,24 @@
           <p class="text-gray-400 mb-4">Underrepresented combinations</p>
           <div class="space-y-3 max-h-80 overflow-y-auto scrollbar-thin" id="knowledgeGaps"></div>
         </div>
-
         <div class="bg-gray-800/60 rounded-xl p-6 shadow-2xl border border-gray-700/50 backdrop-blur-sm">
           <h3 class="text-2xl font-bold mb-4 text-green-400">Consensus Areas</h3>
           <p class="text-gray-400 mb-4">Well-established research areas</p>
           <div class="space-y-3 max-h-80 overflow-y-auto scrollbar-thin" id="consensusAreas"></div>
         </div>
       </div>
-
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
         <div class="bg-gray-800/60 rounded-xl p-6 shadow-2xl border border-gray-700/50 backdrop-blur-sm">
           <h3 class="text-2xl font-bold mb-4 text-blue-400">Recent Trends</h3>
           <p class="text-gray-400 mb-4">Emerging areas (Last 5 years)</p>
           <div class="space-y-3" id="recentTrends"></div>
         </div>
-
         <div class="bg-gray-800/60 rounded-xl p-6 shadow-2xl border border-gray-700/50 backdrop-blur-sm">
           <h3 class="text-2xl font-bold mb-4 text-purple-400">Research Maturity</h3>
           <div class="chart-wrapper h-64"><canvas id="stageChart"></canvas></div>
           <div class="space-y-2 mt-4" id="stageDetails"></div>
         </div>
       </div>
-
       <section class="bg-gradient-to-r from-blue-900/80 to-purple-900/80 rounded-xl p-8 shadow-2xl border border-blue-700/50 backdrop-blur-sm">
         <h3 class="text-3xl font-bold mb-6 text-white text-center">Actionable Insights</h3>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -203,7 +189,6 @@
         </div>
       </section>
     </section>
-
     <!-- TAB 4: KNOWLEDGE GRAPH -->
     <section id="knowledge-graph" class="tab-content" role="tabpanel">
       <div class="bg-gray-800/60 rounded-xl p-6 shadow-2xl border border-gray-700/50 mb-6 backdrop-blur-sm">
@@ -211,11 +196,9 @@
         <p class="text-gray-400 mb-2">Interactive connections between organisms, research areas, and space conditions.</p>
         <p class="text-gray-500 text-sm">Drag nodes to explore • Hover for details • Node size reflects publication count</p>
       </div>
-
       <div class="bg-gray-800/60 rounded-xl p-6 shadow-2xl border border-gray-700/50 mb-6 backdrop-blur-sm">
         <div id="network-graph"></div>
       </div>
-
       <div class="bg-gray-800/60 rounded-xl p-6 shadow-2xl border border-gray-700/50 backdrop-blur-sm">
         <h4 class="font-bold mb-3 text-white">Legend</h4>
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -226,7 +209,6 @@
         </div>
       </div>
     </section>
-
     <!-- TAB 5: BY AUDIENCE -->
     <section id="audience" class="tab-content" role="tabpanel">
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
@@ -240,7 +222,6 @@
           <button onclick="app.filterByAudience('scientist')" class="w-full px-4 py-3 bg-blue-600 hover:bg-blue-700 rounded-lg font-semibold transition-all mb-6 shadow-lg">View Publications</button>
           <div class="space-y-2 text-sm" id="scientistTopAreas"></div>
         </div>
-
         <div class="bg-gradient-to-br from-purple-900/80 to-purple-800/80 rounded-xl p-6 shadow-2xl border border-purple-700/50 backdrop-blur-sm">
           <h3 class="text-2xl font-bold mb-4 text-white">Managers</h3>
           <p class="text-purple-200 mb-6">Investment & portfolio analysis</p>
@@ -251,7 +232,6 @@
           <button onclick="app.filterByAudience('manager')" class="w-full px-4 py-3 bg-purple-600 hover:bg-purple-700 rounded-lg font-semibold transition-all mb-6 shadow-lg">View Publications</button>
           <div class="space-y-2 text-sm" id="managerGaps"></div>
         </div>
-
         <div class="bg-gradient-to-br from-orange-900/80 to-orange-800/80 rounded-xl p-6 shadow-2xl border border-orange-700/50 backdrop-blur-sm">
           <h3 class="text-2xl font-bold mb-4 text-white">Mission Architects</h3>
           <p class="text-orange-200 mb-6">Health & safety for Moon/Mars</p>
@@ -263,7 +243,6 @@
           <div class="space-y-2 text-sm" id="missionTopAreas"></div>
         </div>
       </div>
-
       <div id="audienceResults" class="mt-8" style="display:none;">
         <div class="bg-gray-800/60 rounded-xl p-6 shadow-2xl border border-gray-700/50 backdrop-blur-sm">
           <div class="flex justify-between items-center mb-6">
@@ -275,7 +254,6 @@
       </div>
     </section>
   </div>
-
   <footer class="bg-gray-900/80 border-t border-gray-700/50 py-8 mt-16">
     <div class="container mx-auto px-4 max-w-7xl">
       <h3 class="text-2xl font-bold mb-6 text-center text-white">Additional Resources</h3>
@@ -299,7 +277,16 @@
       <p class="text-center text-gray-500 mt-8 text-sm">Built for NASA Space Apps Challenge 2025</p>
     </div>
   </footer>
-
+  <!-- JSON Modal -->
+  <div id="jsonModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50">
+    <div class="bg-gray-800 rounded-xl p-6 max-w-4xl w-full max-h-[80vh] overflow-auto">
+      <div class="flex justify-between mb-4">
+        <h3 class="text-xl font-bold text-white">Publication JSON</h3>
+        <button onclick="app.closeJsonModal()" class="text-gray-400 hover:text-white">✕</button>
+      </div>
+      <pre id="jsonContent" class="text-gray-300 bg-gray-900 p-4 rounded-lg overflow-auto"></pre>
+    </div>
+  </div>
   <script>
   /*************** Data Module (clean + merged) ***************/
   const DataModule = (() => {
@@ -349,20 +336,17 @@
       { title:"Manipulating the permeation of charged compounds through the MscL nanovalve", url:"https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3005423/", pmcid:"PMC3005423", year:2011 },
       { title:"The oligomeric state of the truncated mechanosensitive channel of large conductance shows no variance in vivo", url:"https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3190158/", pmcid:"PMC3190158", year:2011 }
     ];
-
     const classifyPublication = (pub) => {
       const t = pub.title.toLowerCase();
       const organisms = [];
       const areas = [];
       const conditions = ['Microgravity'];
-
       if (t.includes('mouse')||t.includes('mice')||t.includes('murine')) organisms.push('Mouse');
       if (t.includes('human')||t.includes('astronaut')) organisms.push('Human');
       if (t.includes('yeast')||t.includes('s. aureus')||t.includes('microbiome')||t.includes('microbial')) organisms.push('Microbe');
       if (t.includes('plant')||t.includes('arabidopsis')||t.includes('root')||t.includes('pollen')) organisms.push('Plant');
       if (t.includes('drosophila')) organisms.push('Drosophila');
       if (organisms.length===0) organisms.push('Other');
-
       if (t.includes('gene')||t.includes('expression')||t.includes('rna')||t.includes('mirna')) areas.push('Gene Expression');
       if (t.includes('bone')||t.includes('skeletal')||t.includes('vertebrae')||t.includes('osteoc')) areas.push('Bone Health');
       if (t.includes('muscle')||t.includes('atrophy')||t.includes('cardiac')||t.includes('heart')) areas.push('Muscle & Cardiac');
@@ -372,11 +356,9 @@
       if (t.includes('metabolic')||t.includes('lipid')) areas.push('Metabolism');
       if (t.includes('ethic')) areas.push('Policy & Ethics');
       if (areas.length===0) areas.push('General Biology');
-
       const scientist_relevance = (areas.includes('Gene Expression') || areas.includes('Radiation Effects')) ? 3 : 2;
       const manager_relevance = (pub.year>=2020) ? 3 : 2;
       const mission_planner_relevance = (areas.includes('Bone Health')||areas.includes('Muscle & Cardiac')||areas.includes('Radiation Effects')) ? 3 : 2;
-
       return {
         ...pub,
         id: cryptoRandomId(),
@@ -394,16 +376,13 @@
         conclusion: `Findings inform risks and countermeasures for long-duration missions.`
       };
     };
-
     const publications = realPublications.map(classifyPublication);
-
     const stats = (() => {
       const organism_counts = {};
       const research_area_counts = {};
       const condition_counts = { Microgravity: 0, Radiation: 0 };
       const year_distribution = {};
       let high_scientist_relevance=0, high_manager_relevance=0, high_mission_planner_relevance=0;
-
       publications.forEach(p=>{
         p.organisms.forEach(o=>organism_counts[o]=(organism_counts[o]||0)+1);
         p.research_areas.forEach(a=>research_area_counts[a]=(research_area_counts[a]||0)+1);
@@ -413,7 +392,6 @@
         if (p.manager_relevance>=2) high_manager_relevance++;
         if (p.mission_planner_relevance>=2) high_mission_planner_relevance++;
       });
-
       // Knowledge gaps / consensus
       const knowledge_gaps = [];
       const consensus_areas = [];
@@ -426,17 +404,14 @@
           if (count>=5) consensus_areas.push({ area:`${a} in ${o}`, publication_count:count });
         });
       });
-
       // Recent trends (>=2020)
       const trendMap = {};
       publications.filter(p=>p.year>=2020).forEach(p=>p.research_areas.forEach(a=>trendMap[a]=(trendMap[a]||0)+1));
       const recent_trends = Object.entries(trendMap)
         .map(([area,count])=>({area, recent_publications:count}))
         .sort((a,b)=>b.recent_publications-a.recent_publications).slice(0,8);
-
       // Stage distribution (mock but stable)
       const stage_distribution = { Exploratory: 12, Applied: 20, Translational: 13 };
-
       return {
         total_publications: publications.length,
         organism_counts, research_area_counts, condition_counts, year_distribution,
@@ -444,18 +419,14 @@
         high_scientist_relevance, high_manager_relevance, high_mission_planner_relevance
       };
     })();
-
     function cryptoRandomId(){ return 'p'+Math.random().toString(36).slice(2)+Date.now().toString(36); }
-
     return { publications, stats };
   })();
-
   /*************** App (UI + Logic) ***************/
   const app = (() => {
     let filtered = [...DataModule.publications];
     let page = 1;
     const pageSize = 8;
-
     // Elements
     const els = {
       totalPubs: document.getElementById('totalPubs'),
@@ -493,16 +464,35 @@
       audienceTitle: document.getElementById('audienceTitle'),
       audiencePublications: document.getElementById('audiencePublications'),
       network: document.getElementById('network-graph'),
+      jsonModal: document.getElementById('jsonModal'),
+      jsonContent: document.getElementById('jsonContent'),
     };
-
     /* ---- Tabs ---- */
     function showTab(id){
       document.querySelectorAll('.tab-content').forEach(x=>x.classList.remove('active'));
       document.getElementById(id).classList.add('active');
+      // Update tab buttons
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.remove('bg-blue-600', 'hover:bg-blue-700');
+        btn.classList.add('bg-gray-700', 'hover:bg-gray-600');
+        btn.setAttribute('aria-selected', 'false');
+        if (btn.getAttribute('onclick').includes(`'${id}'`)) {
+          btn.classList.remove('bg-gray-700', 'hover:bg-gray-600');
+          btn.classList.add('bg-blue-600', 'hover:bg-blue-700');
+          btn.setAttribute('aria-selected', 'true');
+        }
+      });
       // Lazy render heavy things
       if (id==='knowledge-graph' && !els.network.dataset.rendered){ renderGraph(); els.network.dataset.rendered='1'; }
     }
-
+    /* ---- JSON Modal ---- */
+    function showJsonModal(json) {
+      els.jsonContent.textContent = json;
+      els.jsonModal.classList.remove('hidden');
+    }
+    function closeJsonModal() {
+      els.jsonModal.classList.add('hidden');
+    }
     /* ---- Filters/Search ---- */
     function bindFilters(){
       els.searchInput.addEventListener('input', resetAndRender);
@@ -510,20 +500,17 @@
         sel.addEventListener('change', resetAndRender);
       });
     }
-
     function resetAndRender(){
       page = 1;
       applyFilters();
       renderPublications(true);
     }
-
     function applyFilters(){
       const q = els.searchInput.value.trim().toLowerCase();
       const org = els.organismFilter.value;
       const area = els.areaFilter.value;
       const yr = els.yearFilter.value;
       const sec = els.sectionFilter.value;
-
       filtered = DataModule.publications.filter(p=>{
         // search
         const hay = [p.title, p.abstract, p.research_areas.join(' '), p.organisms.join(' ')].join(' ').toLowerCase();
@@ -543,7 +530,6 @@
       });
       els.resultCount.textContent = `${filtered.length} publication${filtered.length!==1?'s':''}`;
     }
-
     function clearFilters(){
       els.searchInput.value = '';
       els.organismFilter.value = '';
@@ -552,7 +538,6 @@
       els.sectionFilter.value = '';
       resetAndRender();
     }
-
     /* ---- Publications list + Pagination ---- */
     function renderPublications(reset=false){
       if (reset) els.publicationsList.innerHTML='';
@@ -566,10 +551,10 @@
         els.loadMoreBtn.style.display='inline-block';
       }
     }
-
     function renderPublicationCard(p){
       const card = document.createElement('div');
       card.className = 'publication-card bg-gray-800/70 rounded-xl p-5 border border-gray-700';
+      const prettyJson = JSON.stringify(p, null, 2);
       card.innerHTML = `
         <div class="flex flex-col md:flex-row gap-4 md:items-center">
           <div class="flex-1">
@@ -584,15 +569,13 @@
           </div>
           <div class="md:w-56 flex md:block gap-2">
             <a href="${p.url}" target="_blank" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg font-semibold transition">Open</a>
-            <button class="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg transition" onclick='alert(${JSON.stringify(JSON.stringify(p, null, 2))})'>Quick JSON</button>
+            <button class="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg transition" onclick='app.showJsonModal(${JSON.stringify(prettyJson)})'>Quick JSON</button>
           </div>
         </div>
       `;
       els.publicationsList.appendChild(card);
     }
-
     function loadMore(){ page++; renderPublications(); }
-
     /* ---- Overview stats + Charts ---- */
     function renderStatsAndCharts(){
       const s = DataModule.stats;
@@ -600,30 +583,25 @@
       els.statTotal.textContent = s.total_publications;
       els.statOrganisms.textContent = Object.keys(s.organism_counts).length;
       els.statAreas.textContent = Object.keys(s.research_area_counts).length;
-
       const years = Object.keys(s.year_distribution).map(Number).sort((a,b)=>a-b);
       els.statYears.textContent = `${Math.min(...years)}–${Math.max(...years)}`;
-
       new Chart(els.yearChart, {
         type:'line',
         data:{ labels:years, datasets:[{ label:'Publications', data:years.map(y=>s.year_distribution[y]||0), tension:.3, fill:false }] },
         options:{ responsive:true, plugins:{ legend:{display:false} } }
       });
-
       const orgLabels = Object.keys(s.organism_counts);
       new Chart(els.organismChart, {
         type:'doughnut',
         data:{ labels:orgLabels, datasets:[{ data:orgLabels.map(k=>s.organism_counts[k]) }] },
         options:{ responsive:true, plugins:{ legend:{ position:'bottom' } } }
       });
-
       const areaLabels = Object.keys(s.research_area_counts).sort((a,b)=>s.research_area_counts[b]-s.research_area_counts[a]).slice(0,10);
       new Chart(els.researchAreaChart, {
         type:'bar',
         data:{ labels:areaLabels, datasets:[{ label:'Count', data:areaLabels.map(k=>s.research_area_counts[k]) }] },
         options:{ responsive:true, plugins:{ legend:{display:false} }, scales:{ x:{ticks:{autoSkip:false}} } }
       });
-
       const condLabels = Object.keys(s.condition_counts);
       new Chart(els.conditionChart, {
         type:'pie',
@@ -631,56 +609,45 @@
         options:{ responsive:true, plugins:{ legend:{ position:'bottom' } } }
       });
     }
-
     /* ---- Insights ---- */
     function renderInsights(){
       const s = DataModule.stats;
-
       els.knowledgeGaps.innerHTML = s.knowledge_gaps
         .sort((a,b)=>a.publication_count-b.publication_count)
         .slice(0,12)
         .map(g=>`<div class="p-3 rounded bg-yellow-900/40 border border-yellow-700/40 flex justify-between">
           <span>${g.combination}</span><span class="text-yellow-300 font-semibold">${g.publication_count}</span>
         </div>`).join('');
-
       els.consensusAreas.innerHTML = s.consensus_areas
         .sort((a,b)=>b.publication_count-a.publication_count)
         .slice(0,12)
         .map(c=>`<div class="p-3 rounded bg-green-900/40 border border-green-700/40 flex justify-between">
           <span>${c.area}</span><span class="text-green-300 font-semibold">${c.publication_count}</span>
         </div>`).join('');
-
       els.recentTrends.innerHTML = s.recent_trends
         .map(t=>`<div class="p-3 rounded bg-blue-900/40 border border-blue-700/40 flex justify-between">
           <span>${t.area}</span><span class="text-blue-300 font-semibold">${t.recent_publications}</span>
         </div>`).join('');
-
       new Chart(els.stageChart, {
         type:'radar',
         data:{ labels:Object.keys(s.stage_distribution),
           datasets:[{ label:'Studies', data:Object.values(s.stage_distribution) }] },
         options:{ responsive:true, plugins:{ legend:{display:false} } }
       });
-
       els.stageDetails.innerHTML = Object.entries(s.stage_distribution)
         .map(([k,v])=>`<div class="flex justify-between p-2 rounded bg-purple-900/30 border border-purple-700/30"><span>${k}</span><span class="text-purple-300 font-semibold">${v}</span></div>`).join('');
-
       // Audience quick insights
       els.scientistCount.textContent = s.high_scientist_relevance;
       els.managerCount.textContent = s.high_manager_relevance;
       els.missionCount.textContent = s.high_mission_planner_relevance;
-
       const topAreasForScientists = Object.entries(s.research_area_counts).sort((a,b)=>b[1]-a[1]).slice(0,5);
       els.scientistTopAreas.innerHTML = topAreasForScientists.map(([a,c])=>`<div class="flex justify-between text-blue-200"><span>${a}</span><span>${c}</span></div>`).join('');
-
       const topGapsForManagers = s.knowledge_gaps.slice(0,5);
       els.managerGaps.innerHTML = topGapsForManagers.map(g=>`<div class="flex justify-between text-purple-200"><span>${g.combination}</span><span>${g.publication_count}</span></div>`).join('');
-
       const missionAreas = ['Bone Health','Muscle & Cardiac','Radiation Effects'];
       els.missionTopAreas.innerHTML = missionAreas
         .filter(a=>s.research_area_counts[a])
         .map(a=>`<div class="flex justify-between text-orange-200"><span>${a}</span><span>${s.research_area_counts[a]}</span></div>`).join('');
-
       // Actionable bullets
       els.scientistInsights.innerHTML = `
         <li>Prioritize gaps: ${s.knowledge_gaps.slice(0,2).map(g=>g.combination).join(' & ')}.</li>
@@ -695,7 +662,6 @@
         <li>Target miRNA-based mitigations showing promise in 2024 studies.</li>
         <li>Plan flight validations for top translational candidates.</li>`;
     }
-
     /* ---- Audience view ---- */
     function filterByAudience(type){
       let list = [];
@@ -715,14 +681,12 @@
       showTab('audience');
     }
     function closeAudienceView(){ els.audienceResults.style.display='none'; }
-
     /* ---- Knowledge Graph (D3) ---- */
     function renderGraph(){
       const pubs = DataModule.publications;
       const orgSet = new Map(); const areaSet = new Map(); const condSet = new Map();
       const links = [];
       const nodeId = (type, name)=>`${type}:${name}`;
-
       pubs.forEach(p=>{
         p.organisms.forEach(o=>orgSet.set(o, (orgSet.get(o)||0)+1));
         p.research_areas.forEach(a=>areaSet.set(a, (areaSet.get(a)||0)+1));
@@ -734,23 +698,18 @@
           p.space_conditions.forEach(c=>links.push({ source:nodeId('area',a), target:nodeId('cond',c), weight:1 }));
         });
       });
-
       const nodes = [
         ...Array.from(orgSet.entries()).map(([name,count])=>({ id:nodeId('org',name), label:name, group:'org', count })),
         ...Array.from(areaSet.entries()).map(([name,count])=>({ id:nodeId('area',name), label:name, group:'area', count })),
         ...Array.from(condSet.entries()).map(([name,count])=>({ id:nodeId('cond',name), label:name, group:'cond', count }))
       ];
-
       // SVG setup
       const width = els.network.clientWidth;
       const height = els.network.clientHeight;
       const svg = d3.select(els.network).append('svg').attr('width', width).attr('height', height);
-
       const link = svg.append('g').attr('stroke','#9CA3AF').attr('stroke-opacity',0.5)
         .selectAll('line').data(links).join('line').attr('stroke-width', d=>Math.sqrt(d.weight));
-
       const color = (g)=> g==='org' ? '#3B82F6' : (g==='area' ? '#A855F7' : '#10B981');
-
       const node = svg.append('g').selectAll('circle').data(nodes).join('circle')
         .attr('r', d=> Math.max(6, Math.min(24, 6 + Math.sqrt(d.count)*3)))
         .attr('fill', d=>color(d.group))
@@ -761,17 +720,14 @@
           .on('drag', dragged)
           .on('end', dragended))
         .append('title').text(d=>`${d.label} (${d.count})`);
-
       const label = svg.append('g').selectAll('text').data(nodes).join('text')
         .text(d=>d.label).attr('font-size','10px').attr('fill','#D1D5DB');
-
       const simulation = d3.forceSimulation(nodes)
         .force('link', d3.forceLink(links).id(d=>d.id).distance(80).strength(0.2))
         .force('charge', d3.forceManyBody().strength(-160))
         .force('center', d3.forceCenter(width/2, height/2))
         .force('collision', d3.forceCollide().radius(d=> Math.max(10, Math.min(28, 8 + Math.sqrt(d.count)*4))))
         .on('tick', ticked);
-
       function ticked(){
         link.attr('x1', d=>d.source.x).attr('y1', d=>d.source.y).attr('x2', d=>d.target.x).attr('y2', d=>d.target.y);
         svg.selectAll('circle')
@@ -784,7 +740,6 @@
       function dragended(event, d){ if (!event.active) simulation.alphaTarget(0); d.fx=null; d.fy=null; }
       window.addEventListener('resize', ()=>{ /* simple: ignore resize for demo */ });
     }
-
     /* ---- Populate filter dropdowns ---- */
     function populateDropdowns(){
       const s = DataModule.stats;
@@ -796,7 +751,6 @@
         });
       }
     }
-
     /* ---- Init ---- */
     function init(){
       populateDropdowns();
@@ -806,7 +760,6 @@
       renderStatsAndCharts();
       renderInsights();
     }
-
     // Public API
     return {
       init,
@@ -814,10 +767,11 @@
       clearFilters,
       loadMore,
       filterByAudience,
-      closeAudienceView
+      closeAudienceView,
+      showJsonModal,
+      closeJsonModal
     };
   })();
-
   // Boot
   window.addEventListener('DOMContentLoaded', app.init);
   </script>
