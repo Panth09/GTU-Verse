@@ -893,6 +893,14 @@
             50% { border-color: var(--primary); }
         }
 
+        /* Mobile fix: Disable typewriter blink */
+        @media (max-width: 768px) {
+            .typewriter {
+                animation: typing 3.5s steps(40, end);
+                border-right: none;
+            }
+        }
+
         /* Fade In Animation */
         .fade-in {
             opacity: 0;
