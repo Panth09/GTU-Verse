@@ -63,7 +63,6 @@
             color: #f1f5f9;
         }
 
-        /* Background Animation */
         .bg-animation {
             position: fixed;
             top: 0;
@@ -130,7 +129,6 @@
             }
         }
 
-        /* Premium Header */
         header {
             position: fixed;
             top: 0;
@@ -294,7 +292,6 @@
         .hamburger.active span:nth-child(2) { opacity: 0; }
         .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(8px, -8px); }
 
-        /* Announcements Section */
         .announcements {
             padding: 8rem 2rem 4rem;
             max-width: 1200px;
@@ -328,7 +325,6 @@
             line-height: 1.8;
         }
 
-        /* Announcements List */
         .announcements-list {
             list-style: none;
             display: flex;
@@ -445,6 +441,7 @@
             color: var(--medium);
             line-height: 1.8;
             font-size: 1.05rem;
+            margin-bottom: 1.5rem;
         }
 
         .priority-badge {
@@ -460,6 +457,26 @@
             background: var(--gradient-primary);
             color: white;
             box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+
+        .announcement-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            background: var(--gradient-primary);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+        }
+
+        .announcement-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
         }
 
         .show-more {
@@ -531,7 +548,6 @@
             transform: translateY(0);
         }
 
-        /* Responsive */
         @media (max-width: 768px) {
             .hamburger { display: flex; }
 
@@ -714,7 +730,12 @@ try {
             if (reset) announcementsList.innerHTML = '';
             
             if (anns.length > 0) {
-                const newItems = anns.map((a, index) => `
+                const newItems = anns.map((a, index) => {
+                    const linkButton = a.link ? `<a href="${a.link}" target="_blank" class="announcement-link">
+                        <i class="fas fa-external-link-alt"></i> Read Full Announcement
+                    </a>` : '';
+                    
+                    return `
                     <li class="announcement-item fade-in ${index < 3 && reset ? 'top-ann' : ''}">
                         ${index < 3 && reset ? '<span class="priority-badge"><i class="fas fa-star"></i> Priority</span>' : ''}
                         <div class="announcement-header">
@@ -730,8 +751,9 @@ try {
                             </div>
                         </div>
                         <p class="announcement-desc">${a.desc || 'No description available for this announcement.'}</p>
+                        ${linkButton}
                     </li>
-                `).join('');
+                `}).join('');
                 announcementsList.innerHTML += newItems;
             } else if (reset) {
                 announcementsList.innerHTML = '<li class="empty-state"><i class="fas fa-inbox"></i><p>No announcements available at this time. Check back later for updates!</p></li>';
