@@ -827,7 +827,7 @@
         </div>
     </div>
 
-    <script type="module">
+   <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword, signOut as firebaseSignOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
         import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
@@ -862,9 +862,6 @@
             const header = document.getElementById('header');
             header.classList.toggle('scrolled', window.scrollY > 50);
         });
-    </script>
-</body>
-</html>
 
         function setLoading(btnId, isLoading) {
             const btn = document.getElementById(btnId);
@@ -1063,6 +1060,6 @@
                 }
             }
         });
-         </script>
+    </script>
 </body>
 </html>
