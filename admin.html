@@ -4,15 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GTUverse Admin Panel</title>
+    <meta name="description" content="Admin panel for GTUverse to manage papers, books, and announcements.">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎓</text></svg>">
     <style>
         :root {
             --primary: #3b82f6;
+            --primary-dark: #2563eb;
+            --primary-darker: #1d4ed8;
             --secondary: #10b981;
+            --secondary-dark: #059669;
             --danger: #ef4444;
+            --danger-dark: #dc2626;
+            --warning: #f59e0b;
+            --success: #10b981;
+            --purple: #a855f7;
             --dark: #0f172a;
+            --dark-light: #1e293b;
             --medium: #475569;
             --light: #f8fafc;
             --white: #ffffff;
@@ -20,20 +29,32 @@
             --gradient-hero: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             --gradient-primary: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
             --gradient-danger: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-            --gradient-gold: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            --gradient-success: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
             --shadow-md: 0 4px 12px rgba(0,0,0,0.1);
             --shadow-lg: 0 10px 30px rgba(0,0,0,0.12);
             --shadow-xl: 0 20px 40px rgba(0,0,0,0.15);
+            --shadow-2xl: 0 30px 60px rgba(0,0,0,0.2);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        html { scroll-behavior: smooth; }
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
 
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             background: var(--light);
             color: var(--dark);
-            line-height: 1.6;
+            line-height: 1.7;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
         body.dark-mode {
@@ -42,6 +63,8 @@
             --dark: #f1f5f9;
             --medium: #cbd5e1;
             --border: #334155;
+            background: #0f172a;
+            color: #f1f5f9;
         }
 
         .bg-animation {
@@ -58,7 +81,8 @@
             position: absolute;
             border-radius: 50%;
             filter: blur(100px);
-            opacity: 0.1;
+            opacity: 0.12;
+            will-change: transform;
         }
 
         .bg-shape:nth-child(1) {
@@ -67,21 +91,46 @@
             background: var(--gradient-hero);
             top: -300px;
             right: -300px;
-            animation: float 25s ease-in-out infinite;
+            animation: morph1 25s ease-in-out infinite;
         }
 
         .bg-shape:nth-child(2) {
             width: 500px;
             height: 500px;
-            background: var(--gradient-gold);
+            background: var(--gradient-primary);
             bottom: -250px;
             left: -250px;
-            animation: float 20s ease-in-out infinite reverse;
+            animation: morph2 30s ease-in-out infinite;
         }
 
-        @keyframes float {
-            0%, 100% { transform: translate(0, 0); }
-            50% { transform: translate(30px, -30px); }
+        @keyframes morph1 {
+            0%, 100% { 
+                transform: translate(0, 0) rotate(0deg) scale(1);
+                border-radius: 50%;
+            }
+            33% { 
+                transform: translate(50px, -50px) rotate(120deg) scale(1.15);
+                border-radius: 40% 60% 70% 30%;
+            }
+            66% { 
+                transform: translate(-40px, 40px) rotate(240deg) scale(0.9);
+                border-radius: 60% 40% 30% 70%;
+            }
+        }
+
+        @keyframes morph2 {
+            0%, 100% { 
+                transform: translate(0, 0) rotate(0deg) scale(1);
+                border-radius: 50%;
+            }
+            33% { 
+                transform: translate(-60px, 60px) rotate(-120deg) scale(1.2);
+                border-radius: 70% 30% 50% 50%;
+            }
+            66% { 
+                transform: translate(50px, -50px) rotate(-240deg) scale(0.85);
+                border-radius: 30% 70% 70% 30%;
+            }
         }
 
         header {
@@ -90,12 +139,23 @@
             width: 100%;
             z-index: 1000;
             background: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--border);
+            backdrop-filter: blur(30px) saturate(180%);
+            border-bottom: 1px solid rgba(226, 232, 240, 0.5);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         body.dark-mode header {
             background: rgba(15, 23, 42, 0.8);
+            border-bottom-color: rgba(51, 65, 85, 0.5);
+        }
+
+        header.scrolled { 
+            box-shadow: var(--shadow-lg);
+            background: rgba(255, 255, 255, 0.95);
+        }
+
+        body.dark-mode header.scrolled { 
+            background: rgba(15, 23, 42, 0.95);
         }
 
         nav {
@@ -104,42 +164,87 @@
             align-items: center;
             max-width: 1600px;
             margin: 0 auto;
-            padding: 1rem 2rem;
+            padding: 1.2rem 2.5rem;
         }
 
         .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
             font-family: 'Poppins', sans-serif;
-            font-size: 1.5rem;
+            font-size: 1.6rem;
             font-weight: 800;
             background: var(--gradient-primary);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            cursor: pointer;
+            transition: all 0.3s ease;
             text-decoration: none;
+        }
+
+        .logo:hover { 
+            transform: scale(1.05);
+            filter: brightness(1.2);
+        }
+
+        .logo i {
+            font-size: 2rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: float-icon 3s ease-in-out infinite;
+        }
+
+        @keyframes float-icon {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
         }
 
         .nav-actions {
             display: flex;
+            align-items: center;
             gap: 1rem;
-        }
-
-        .dark-toggle, .logout-btn {
-            padding: 0.7rem 1.5rem;
-            border-radius: 10px;
-            border: none;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s;
         }
 
         .dark-toggle {
             background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.2);
             color: var(--primary);
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .dark-toggle:hover {
+            background: rgba(59, 130, 246, 0.2);
+            transform: rotate(180deg) scale(1.1);
         }
 
         .logout-btn {
             background: var(--gradient-danger);
             color: white;
-            display: none;
+            padding: 0.8rem 1.8rem;
+            border-radius: 12px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+        }
+
+        .logout-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
         }
 
         .login-container {
@@ -151,89 +256,100 @@
         }
 
         .login-box {
-            max-width: 450px;
+            max-width: 480px;
             width: 100%;
             background: var(--white);
             padding: 3rem;
-            border-radius: 24px;
+            border-radius: 28px;
             box-shadow: var(--shadow-xl);
             border: 2px solid var(--border);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background: var(--gradient-hero);
         }
 
         .login-box h2 {
             font-family: 'Poppins', sans-serif;
-            font-size: 2.2rem;
+            font-size: 2.5rem;
             font-weight: 800;
-            text-align: center;
-            margin-bottom: 2rem;
             background: var(--gradient-hero);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+
+        .login-subtitle {
+            text-align: center;
+            color: var(--medium);
+            margin-bottom: 2.5rem;
+            font-size: 1.05rem;
         }
 
         .admin-container {
             max-width: 1600px;
             margin: 100px auto 2rem;
-            padding: 2rem;
+            padding: 2rem 2.5rem;
         }
 
         .admin-header {
-            text-align: center;
             margin-bottom: 3rem;
+            text-align: center;
         }
 
         .admin-header h1 {
             font-family: 'Poppins', sans-serif;
-            font-size: 3rem;
+            font-size: clamp(2.5rem, 5vw, 3.5rem);
             font-weight: 900;
             background: var(--gradient-hero);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        .admin-header p {
+            color: var(--medium);
+            font-size: 1.2rem;
         }
 
         .admin-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
-            gap: 2rem;
-        }
-
-        .admin-section {
-            background: var(--white);
-            padding: 2.5rem;
-            border-radius: 24px;
-            box-shadow: var(--shadow-md);
-            border: 2px solid var(--border);
-        }
-
-        .admin-section h2 {
-            font-family: 'Poppins', sans-serif;
-            font-size: 1.8rem;
-            font-weight: 700;
-            margin-bottom: 2rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
+            gap: 2.5rem;
         }
 
         .form-group {
-            margin-bottom: 1.5rem;
+            margin-bottom: 1.8rem;
         }
 
         .form-group label {
             display: block;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.7rem;
             font-weight: 600;
             color: var(--dark);
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .form-group input,
         .form-group select,
         .form-group textarea {
             width: 100%;
-            padding: 1rem;
+            padding: 1.1rem 1.3rem;
             border: 2px solid var(--border);
-            border-radius: 12px;
+            border-radius: 14px;
             font-size: 1rem;
+            transition: all 0.3s ease;
             background: var(--white);
             color: var(--dark);
             font-family: 'Inter', sans-serif;
@@ -244,34 +360,110 @@
         .form-group textarea:focus {
             outline: none;
             border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+            transform: translateY(-2px);
         }
 
-        .form-group textarea {
-            resize: vertical;
-            min-height: 100px;
+        .form-group textarea { 
+            resize: vertical; 
+            min-height: 120px; 
+            font-family: 'Inter', sans-serif;
         }
 
         .submit-btn {
             background: var(--gradient-primary);
             color: white;
-            padding: 1.2rem 2rem;
+            padding: 1.3rem 3rem;
             border: none;
-            border-radius: 12px;
+            border-radius: 14px;
             cursor: pointer;
             font-weight: 600;
-            font-size: 1rem;
+            font-size: 1.1rem;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             width: 100%;
-            transition: all 0.3s;
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .submit-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.6s;
+        }
+
+        .submit-btn:hover::before {
+            left: 100%;
         }
 
         .submit-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-lg);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(59, 130, 246, 0.4);
         }
 
-        .submit-btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
+        .submit-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .admin-section {
+            background: var(--white);
+            padding: 3rem;
+            border-radius: 28px;
+            box-shadow: var(--shadow-md);
+            border: 2px solid var(--border);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .admin-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background: var(--gradient-primary);
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+        }
+
+        .admin-section:hover {
+            box-shadow: var(--shadow-xl);
+            transform: translateY(-5px);
+        }
+
+        .admin-section:hover::before {
+            transform: scaleX(1);
+        }
+
+        .admin-section:nth-child(2)::before {
+            background: var(--gradient-success);
+        }
+
+        .admin-section:nth-child(3)::before {
+            background: var(--gradient-hero);
+        }
+
+        .admin-section h2 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .admin-section h2 i {
+            font-size: 1.8rem;
+            color: var(--primary);
         }
 
         .resource-list {
@@ -281,41 +473,91 @@
             overflow-y: auto;
         }
 
+        .resource-list::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .resource-list::-webkit-scrollbar-track {
+            background: var(--light);
+            border-radius: 10px;
+        }
+
+        .resource-list::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 10px;
+        }
+
         .resource-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 1rem;
+            padding: 1.3rem;
             border-bottom: 1px solid var(--border);
-            gap: 1rem;
+            transition: all 0.2s ease;
+            border-radius: 12px;
+            margin-bottom: 0.5rem;
+        }
+
+        .resource-item:hover {
+            background: rgba(59, 130, 246, 0.05);
+            transform: translateX(5px);
+        }
+
+        .resource-item:last-child { 
+            border-bottom: none; 
         }
 
         .resource-item span {
             flex: 1;
+            color: var(--dark);
+            font-weight: 500;
+        }
+
+        .resource-item a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            margin-left: 0.5rem;
+        }
+
+        .resource-item a:hover {
+            text-decoration: underline;
         }
 
         .delete-btn {
             background: var(--gradient-danger);
             color: white;
-            padding: 0.5rem 1rem;
-            border-radius: 8px;
+            padding: 0.6rem 1.3rem;
+            border-radius: 10px;
             border: none;
             cursor: pointer;
+            transition: all 0.3s ease;
             font-weight: 600;
             font-size: 0.9rem;
-            white-space: nowrap;
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
+        }
+
+        .delete-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(239, 68, 68, 0.3);
         }
 
         .empty-state {
             text-align: center;
-            padding: 2rem;
+            padding: 3rem;
             color: var(--medium);
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.3;
         }
 
         .loading {
             display: inline-block;
-            width: 18px;
-            height: 18px;
+            width: 20px;
+            height: 20px;
             border: 3px solid rgba(255,255,255,0.3);
             border-radius: 50%;
             border-top-color: white;
@@ -327,13 +569,91 @@
         }
 
         @media (max-width: 1200px) {
-            .admin-grid { grid-template-columns: 1fr; }
+            .admin-grid {
+                grid-template-columns: 1fr;
+            }
         }
 
         @media (max-width: 768px) {
-            nav { padding: 1rem; }
-            .admin-container { padding: 1rem; margin-top: 80px; }
-            .admin-section { padding: 1.5rem; }
+            nav { 
+                padding: 1rem 1.5rem; 
+                flex-wrap: wrap;
+                gap: 1rem;
+            }
+
+            .nav-actions {
+                order: 3;
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .admin-container { 
+                padding: 1.5rem; 
+                margin-top: 120px;
+            }
+
+            .admin-section { 
+                padding: 2rem 1.5rem; 
+            }
+
+            .login-box {
+                padding: 2rem;
+            }
+
+            .admin-grid {
+                gap: 2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .admin-section h2 {
+                font-size: 1.5rem;
+            }
+
+            .resource-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+
+            .delete-btn {
+                width: 100%;
+            }
+        }
+
+        .success-message {
+            background: var(--gradient-success);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            animation: slideDown 0.4s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .error-message {
+            background: var(--gradient-danger);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            animation: slideDown 0.4s ease-out;
         }
     </style>
 </head>
@@ -343,17 +663,19 @@
         <div class="bg-shape"></div>
     </div>
 
-    <header>
+    <header id="header">
         <nav>
             <a href="index.html" class="logo">
-                <i class="fas fa-graduation-cap"></i> GTUverse Admin
+                <i class="fas fa-graduation-cap"></i>
+                <span>GTUverse Admin</span>
             </a>
             <div class="nav-actions">
-                <button class="dark-toggle" onclick="toggleDarkMode()">
-                    <i class="fas fa-moon" id="darkIcon"></i>
+                <button class="dark-toggle" onclick="toggleDarkMode()" aria-label="Toggle Dark Mode">
+                    <i class="fas fa-moon" id="darkToggleIcon"></i>
                 </button>
-                <button class="logout-btn" id="logoutBtn" onclick="signOut()">
-                    <i class="fas fa-sign-out-alt"></i> Logout
+                <button class="logout-btn" onclick="signOut()" style="display: none;" id="logoutButton">
+                    <i class="fas fa-sign-out-alt"></i>
+                    Logout
                 </button>
             </div>
         </nav>
@@ -362,17 +684,18 @@
     <div class="login-container" id="loginContainer">
         <div class="login-box">
             <h2>Admin Portal</h2>
+            <p class="login-subtitle">Secure access for authorized administrators</p>
             <form id="loginForm">
                 <div class="form-group">
-                    <label>Email</label>
-                    <input type="email" id="email" required>
+                    <label for="email"><i class="fas fa-envelope"></i> Email</label>
+                    <input type="email" id="email" placeholder="admin@gtuverse.com" required aria-required="true">
                 </div>
                 <div class="form-group">
-                    <label>Password</label>
-                    <input type="password" id="password" required>
+                    <label for="password"><i class="fas fa-lock"></i> Password</label>
+                    <input type="password" id="password" placeholder="Enter your password" required aria-required="true">
                 </div>
-                <button type="submit" class="submit-btn" id="loginBtn">
-                    Access Dashboard
+                <button type="submit" class="submit-btn">
+                    <span id="loginBtnText">Access Dashboard</span>
                 </button>
             </form>
         </div>
@@ -381,372 +704,359 @@
     <div class="admin-container" id="adminContainer" style="display: none;">
         <div class="admin-header">
             <h1>Admin Dashboard</h1>
-            <p>Manage all GTUverse content</p>
+            <p>Manage papers, books, and announcements</p>
         </div>
 
         <div class="admin-grid">
-            <!-- Activities Section -->
             <div class="admin-section">
-                <h2><i class="fas fa-trophy"></i> 100 Points Activities</h2>
-                <form id="activityForm">
-                    <div class="form-group">
-                        <label>Title</label>
-                        <input type="text" id="actTitle" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Description</label>
-                        <textarea id="actDesc" required></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label>Points</label>
-                        <input type="number" id="actPoints" min="1" max="100" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Duration</label>
-                        <input type="text" id="actDuration" placeholder="e.g., 2-3 hours" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Icon Class</label>
-                        <input type="text" id="actIcon" placeholder="fas fa-briefcase" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Link</label>
-                        <input type="url" id="actLink" required>
-                    </div>
-                    <button type="submit" class="submit-btn">Add Activity</button>
-                </form>
-                <ul class="resource-list" id="activityList"></ul>
-            </div>
-
-            <!-- Papers Section -->
-            <div class="admin-section">
-                <h2><i class="fas fa-file-alt"></i> Papers</h2>
+                <h2><i class="fas fa-file-alt"></i> Manage Papers</h2>
                 <form id="paperForm">
                     <div class="form-group">
-                        <label>Title</label>
-                        <input type="text" id="paperTitle" required>
+                        <label for="paperTitle">Paper Title</label>
+                        <input type="text" id="paperTitle" placeholder="e.g., Data Structures Midsem" required>
                     </div>
                     <div class="form-group">
-                        <label>Type</label>
+                        <label for="paperType">Type</label>
                         <select id="paperType" required>
                             <option value="midsem">Midsem</option>
                             <option value="gtu">GTU Exam</option>
                         </select>
                     </div>
                     <div class="form-group">
-                        <label>Branch</label>
+                        <label for="paperBranch">Branch</label>
                         <select id="paperBranch" required>
-                            <option value="CE">Computer Engineering</option>
-                            <option value="IT">Information Technology</option>
-                            <option value="ME">Mechanical Engineering</option>
-                            <option value="EC">Electronics & Communication</option>
+                            <option value="CE">Computer Engineering (CE)</option>
+                            <option value="IT">Information Technology (IT)</option>
+                            <option value="ME">Mechanical Engineering (ME)</option>
+                            <option value="EC">Electronics & Communication (EC)</option>
+                            <option value="EE">Electrical Engineering (EE)</option>
+                            <option value="CS">Computer Science (CS)</option>
+                            <option value="CH">Chemical Engineering (CH)</option>
+                            <option value="IN">Instrumentation (IC)</option>
+                            <option value="CV">Civil Engineering (CV)</option>
+                            <option value="BM">Biomedical Engineering (BM)</option>
+                            <option value="RO">Robotics Engineering (RO)</option>
                         </select>
                     </div>
                     <div class="form-group">
-                        <label>Semester</label>
-                        <input type="number" id="paperSem" min="1" max="8" required>
+                        <label for="paperSem">Semester</label>
+                        <input type="number" id="paperSem" min="1" max="8" placeholder="1-8" required>
                     </div>
                     <div class="form-group">
-                        <label>College</label>
-                        <input type="text" id="paperCollege" required>
+                        <label for="paperCollege">College</label>
+                        <input type="text" id="paperCollege" placeholder="e.g., LDCE" required>
                     </div>
                     <div class="form-group">
-                        <label>PDF URL</label>
-                        <input type="url" id="paperUrl" required>
+                        <label for="paperUrl">PDF URL</label>
+                        <input type="url" id="paperUrl" placeholder="https://..." required>
                     </div>
-                    <button type="submit" class="submit-btn">Add Paper</button>
+                    <button type="submit" class="submit-btn">
+                        <span id="paperBtnText">Add Paper</span>
+                    </button>
                 </form>
                 <ul class="resource-list" id="paperList"></ul>
             </div>
 
-            <!-- Books Section -->
             <div class="admin-section">
-                <h2><i class="fas fa-book"></i> Books</h2>
+                <h2><i class="fas fa-book"></i> Manage Books</h2>
                 <form id="bookForm">
                     <div class="form-group">
-                        <label>Title</label>
-                        <input type="text" id="bookTitle" required>
+                        <label for="bookTitle">Book Title</label>
+                        <input type="text" id="bookTitle" placeholder="e.g., Introduction to Algorithms" required>
                     </div>
                     <div class="form-group">
-                        <label>Branch</label>
+                        <label for="bookBranch">Branch</label>
                         <select id="bookBranch" required>
-                            <option value="CE">Computer Engineering</option>
-                            <option value="IT">Information Technology</option>
-                            <option value="ME">Mechanical Engineering</option>
-                            <option value="EC">Electronics & Communication</option>
+                            <option value="CE">Computer Engineering (CE)</option>
+                            <option value="IT">Information Technology (IT)</option>
+                            <option value="ME">Mechanical Engineering (ME)</option>
+                            <option value="EC">Electronics & Communication (EC)</option>
+                            <option value="EE">Electrical Engineering (EE)</option>
+                            <option value="CS">Computer Science (CS)</option>
+                            <option value="CH">Chemical Engineering (CH)</option>
+                            <option value="IN">Instrumentation (IC)</option>
+                            <option value="CV">Civil Engineering (CV)</option>
+                            <option value="BM">Biomedical Engineering (BM)</option>
+                            <option value="RO">Robotics Engineering (RO)</option>
                         </select>
                     </div>
                     <div class="form-group">
-                        <label>Semester</label>
-                        <input type="number" id="bookSem" min="1" max="8" required>
+                        <label for="bookSem">Semester</label>
+                        <input type="number" id="bookSem" min="1" max="8" placeholder="1-8" required>
                     </div>
                     <div class="form-group">
-                        <label>College</label>
-                        <input type="text" id="bookCollege" required>
+                        <label for="bookCollege">College</label>
+                        <input type="text" id="bookCollege" placeholder="e.g., LDCE" required>
                     </div>
                     <div class="form-group">
-                        <label>PDF URL</label>
-                        <input type="url" id="bookUrl" required>
+                        <label for="bookUrl">PDF URL</label>
+                        <input type="url" id="bookUrl" placeholder="https://..." required>
                     </div>
-                    <button type="submit" class="submit-btn">Add Book</button>
+                    <button type="submit" class="submit-btn">
+                        <span id="bookBtnText">Add Book</span>
+                    </button>
                 </form>
                 <ul class="resource-list" id="bookList"></ul>
             </div>
 
-            <!-- Announcements Section -->
             <div class="admin-section">
-                <h2><i class="fas fa-bullhorn"></i> Announcements</h2>
-                <form id="annForm">
+                <h2><i class="fas fa-bullhorn"></i> Manage Announcements</h2>
+                <form id="announcementForm">
                     <div class="form-group">
-                        <label>Title</label>
-                        <input type="text" id="annTitle" required>
+                        <label for="annTitle">Title</label>
+                        <input type="text" id="annTitle" placeholder="e.g., Important Exam Update" required>
                     </div>
                     <div class="form-group">
-                        <label>Description</label>
-                        <textarea id="annDesc" required></textarea>
+                        <label for="annDesc">Description</label>
+                        <textarea id="annDesc" placeholder="Enter announcement details..." required></textarea>
                     </div>
                     <div class="form-group">
-                        <label>Date</label>
+                        <label for="annDate">Date</label>
                         <input type="date" id="annDate" required>
                     </div>
                     <div class="form-group">
-                        <label>Link (Optional)</label>
-                        <input type="url" id="annLink">
+                        <label for="annLink">Document Link (Optional)</label>
+                        <input type="url" id="annLink" placeholder="https://drive.google.com/...">
                     </div>
-                    <button type="submit" class="submit-btn">Add Announcement</button>
+                    <button type="submit" class="submit-btn">
+                        <span id="annBtnText">Add Announcement</span>
+                    </button>
                 </form>
-                <ul class="resource-list" id="annList"></ul>
+                <ul class="resource-list" id="announcementList"></ul>
             </div>
         </div>
     </div>
 
-    <script type="module">
+   <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, signOut as fbSignOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+        import { getAuth, signInWithEmailAndPassword, signOut as firebaseSignOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
         import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-        const app = initializeApp({
+        const firebaseConfig = {
             apiKey: "AIzaSyC0QTiJoEIkS7rGDFrd057Kx3nMz7_s2EI",
             authDomain: "gtu-verse.firebaseapp.com",
             projectId: "gtu-verse",
             storageBucket: "gtu-verse.firebasestorage.app",
             messagingSenderId: "99377635087",
-            appId: "1:99377635087:web:05ba93798e36040cfe287a"
-        });
+            appId: "1:99377635087:web:05ba93798e36040cfe287a",
+            measurementId: "G-YV4W2LT96S"
+        };
 
+        const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        window.toggleDarkMode = () => {
+        window.toggleDarkMode = function() {
             document.body.classList.toggle('dark-mode');
-            const icon = document.getElementById('darkIcon');
-            icon.className = document.body.classList.contains('dark-mode') ? 'fas fa-sun' : 'fas fa-moon';
-            localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
+            const isDark = document.body.classList.contains('dark-mode');
+            document.getElementById('darkToggleIcon').classList.toggle('fa-moon', !isDark);
+            document.getElementById('darkToggleIcon').classList.toggle('fa-sun', isDark);
+            localStorage.setItem('darkMode', isDark);
         };
 
-        if (localStorage.getItem('darkMode') === 'true') toggleDarkMode();
+        if (localStorage.getItem('darkMode') === 'true') {
+            window.toggleDarkMode();
+        }
 
-        function setBtnLoading(btn, loading) {
-            if (loading) {
-                btn.disabled = true;
+        window.addEventListener('scroll', () => {
+            const header = document.getElementById('header');
+            header.classList.toggle('scrolled', window.scrollY > 50);
+        });
+
+        function setLoading(btnId, isLoading) {
+            const btn = document.getElementById(btnId);
+            if (isLoading) {
                 btn.innerHTML = '<span class="loading"></span>';
+                btn.disabled = true;
             } else {
+                const texts = {
+                    loginBtnText: 'Access Dashboard',
+                    paperBtnText: 'Add Paper',
+                    bookBtnText: 'Add Book',
+                    annBtnText: 'Add Announcement'
+                };
+                btn.innerHTML = texts[btnId] || 'Submit';
                 btn.disabled = false;
-                btn.innerHTML = btn.dataset.text || 'Submit';
             }
         }
 
         document.getElementById('loginForm').addEventListener('submit', async (e) => {
             e.preventDefault();
-            const btn = document.getElementById('loginBtn');
-            btn.dataset.text = 'Access Dashboard';
-            setBtnLoading(btn, true);
+            setLoading('loginBtnText', true);
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
             try {
-                await signInWithEmailAndPassword(auth, 
-                    document.getElementById('email').value,
-                    document.getElementById('password').value
-                );
+                await signInWithEmailAndPassword(auth, email, password);
             } catch (error) {
                 alert('Login failed: ' + error.message);
-                setBtnLoading(btn, false);
+                setLoading('loginBtnText', false);
             }
         });
 
-        window.signOut = async () => {
-            if (confirm('Logout?')) {
+        window.signOut = async function() {
+            if (confirm('Are you sure you want to logout?')) {
                 try {
-                    await fbSignOut(auth);
+                    await firebaseSignOut(auth);
                 } catch (error) {
-                    alert('Error: ' + error.message);
+                    alert('Logout failed: ' + error.message);
                 }
             }
         };
 
-        async function loadAll() {
-            // Load Activities
-            const acts = await getDocs(query(collection(db, 'activities'), orderBy('createdAt', 'desc')));
-            document.getElementById('activityList').innerHTML = acts.empty 
-                ? '<li class="empty-state">No activities</li>'
-                : acts.docs.map(d => `
-                    <li class="resource-item">
-                        <span><strong>${d.data().title}</strong> (${d.data().points} pts)</span>
-                        <button class="delete-btn" onclick="deleteItem('activities','${d.id}')">Delete</button>
-                    </li>
-                `).join('');
-
-            // Load Papers
-            const papers = await getDocs(query(collection(db, 'papers'), orderBy('createdAt', 'desc')));
-            document.getElementById('paperList').innerHTML = papers.empty 
-                ? '<li class="empty-state">No papers</li>'
-                : papers.docs.map(d => `
-                    <li class="resource-item">
-                        <span><strong>${d.data().title}</strong> (${d.data().branch} Sem ${d.data().sem})</span>
-                        <button class="delete-btn" onclick="deleteItem('papers','${d.id}')">Delete</button>
-                    </li>
-                `).join('');
-
-            // Load Books
-            const books = await getDocs(query(collection(db, 'books'), orderBy('createdAt', 'desc')));
-            document.getElementById('bookList').innerHTML = books.empty 
-                ? '<li class="empty-state">No books</li>'
-                : books.docs.map(d => `
-                    <li class="resource-item">
-                        <span><strong>${d.data().title}</strong> (${d.data().branch} Sem ${d.data().sem})</span>
-                        <button class="delete-btn" onclick="deleteItem('books','${d.id}')">Delete</button>
-                    </li>
-                `).join('');
-
-            // Load Announcements
-            const anns = await getDocs(query(collection(db, 'announcements'), orderBy('createdAt', 'desc')));
-            document.getElementById('annList').innerHTML = anns.empty 
-                ? '<li class="empty-state">No announcements</li>'
-                : anns.docs.map(d => `
-                    <li class="resource-item">
-                        <span><strong>${d.data().title}</strong> (${d.data().date})</span>
-                        <button class="delete-btn" onclick="deleteItem('announcements','${d.id}')">Delete</button>
-                    </li>
-                `).join('');
-        }
-
-        document.getElementById('activityForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const btn = e.target.querySelector('.submit-btn');
-            btn.dataset.text = 'Add Activity';
-            setBtnLoading(btn, true);
+        async function loadResources() {
             try {
-                await addDoc(collection(db, 'activities'), {
-                    title: document.getElementById('actTitle').value,
-                    description: document.getElementById('actDesc').value,
-                    points: parseInt(document.getElementById('actPoints').value),
-                    duration: document.getElementById('actDuration').value,
-                    icon: document.getElementById('actIcon').value,
-                    link: document.getElementById('actLink').value,
-                    createdAt: new Date()
-                });
-                alert('Activity added!');
-                e.target.reset();
-                loadAll();
+                const paperQuery = query(collection(db, 'papers'), orderBy('createdAt', 'desc'));
+                const paperSnapshot = await getDocs(paperQuery);
+                const paperList = document.getElementById('paperList');
+                paperList.innerHTML = paperSnapshot.docs.length > 0 ? paperSnapshot.docs.map(d => {
+                    const p = d.data();
+                    return `
+                        <li class="resource-item">
+                            <span><strong>${p.title}</strong> (${p.branch} Sem ${p.sem}, ${p.college}, ${p.type})</span>
+                            <button class="delete-btn" onclick="deleteResource('papers', '${d.id}')">
+                                <i class="fas fa-trash"></i> Delete
+                            </button>
+                        </li>
+                    `;
+                }).join('') : '<li class="empty-state"><i class="fas fa-inbox"></i><p>No papers available.</p></li>';
+
+                const bookQuery = query(collection(db, 'books'), orderBy('createdAt', 'desc'));
+                const bookSnapshot = await getDocs(bookQuery);
+                const bookList = document.getElementById('bookList');
+                bookList.innerHTML = bookSnapshot.docs.length > 0 ? bookSnapshot.docs.map(d => {
+                    const b = d.data();
+                    return `
+                        <li class="resource-item">
+                            <span><strong>${b.title}</strong> (${b.branch} Sem ${b.sem}, ${b.college})</span>
+                            <button class="delete-btn" onclick="deleteResource('books', '${d.id}')">
+                                <i class="fas fa-trash"></i> Delete
+                            </button>
+                        </li>
+                    `;
+                }).join('') : '<li class="empty-state"><i class="fas fa-inbox"></i><p>No books available.</p></li>';
+
+                const annQuery = query(collection(db, 'announcements'), orderBy('createdAt', 'desc'));
+                const annSnapshot = await getDocs(annQuery);
+                const annList = document.getElementById('announcementList');
+                annList.innerHTML = annSnapshot.docs.length > 0 ? annSnapshot.docs.map(d => {
+                    const a = d.data();
+                    const linkDisplay = a.link ? ` - <a href="${a.link}" target="_blank">View Link</a>` : '';
+                    return `
+                        <li class="resource-item">
+                            <span><strong>${a.title}</strong> (${a.date})${linkDisplay}</span>
+                            <button class="delete-btn" onclick="deleteResource('announcements', '${d.id}')">
+                                <i class="fas fa-trash"></i> Delete
+                            </button>
+                        </li>
+                    `;
+                }).join('') : '<li class="empty-state"><i class="fas fa-inbox"></i><p>No announcements available.</p></li>';
             } catch (error) {
-                alert('Error: ' + error.message);
+                console.error('Error loading resources:', error);
+                alert('Error loading resources: ' + error.message);
             }
-            setBtnLoading(btn, false);
-        });
+        }
 
         document.getElementById('paperForm').addEventListener('submit', async (e) => {
             e.preventDefault();
-            const btn = e.target.querySelector('.submit-btn');
-            btn.dataset.text = 'Add Paper';
-            setBtnLoading(btn, true);
+            setLoading('paperBtnText', true);
+            const paper = {
+                title: document.getElementById('paperTitle').value,
+                type: document.getElementById('paperType').value,
+                branch: document.getElementById('paperBranch').value,
+                sem: parseInt(document.getElementById('paperSem').value),
+                college: document.getElementById('paperCollege').value,
+                url: document.getElementById('paperUrl').value,
+                createdAt: new Date()
+            };
             try {
-                await addDoc(collection(db, 'papers'), {
-                    title: document.getElementById('paperTitle').value,
-                    type: document.getElementById('paperType').value,
-                    branch: document.getElementById('paperBranch').value,
-                    sem: parseInt(document.getElementById('paperSem').value),
-                    college: document.getElementById('paperCollege').value,
-                    url: document.getElementById('paperUrl').value,
-                    createdAt: new Date()
-                });
-                alert('Paper added!');
-                e.target.reset();
-                loadAll();
+                await addDoc(collection(db, 'papers'), paper);
+                alert('Paper added successfully!');
+                document.getElementById('paperForm').reset();
+                loadResources();
             } catch (error) {
-                alert('Error: ' + error.message);
+                console.error('Error adding paper:', error);
+                alert('Error adding paper: ' + error.message);
+            } finally {
+                setLoading('paperBtnText', false);
             }
-            setBtnLoading(btn, false);
         });
 
         document.getElementById('bookForm').addEventListener('submit', async (e) => {
             e.preventDefault();
-            const btn = e.target.querySelector('.submit-btn');
-            btn.dataset.text = 'Add Book';
-            setBtnLoading(btn, true);
+            setLoading('bookBtnText', true);
+            const book = {
+                title: document.getElementById('bookTitle').value,
+                branch: document.getElementById('bookBranch').value,
+                sem: parseInt(document.getElementById('bookSem').value),
+                college: document.getElementById('bookCollege').value,
+                url: document.getElementById('bookUrl').value,
+                createdAt: new Date()
+            };
             try {
-                await addDoc(collection(db, 'books'), {
-                    title: document.getElementById('bookTitle').value,
-                    branch: document.getElementById('bookBranch').value,
-                    sem: parseInt(document.getElementById('bookSem').value),
-                    college: document.getElementById('bookCollege').value,
-                    url: document.getElementById('bookUrl').value,
-                    createdAt: new Date()
-                });
-                alert('Book added!');
-                e.target.reset();
-                loadAll();
+                await addDoc(collection(db, 'books'), book);
+                alert('Book added successfully!');
+                document.getElementById('bookForm').reset();
+                loadResources();
             } catch (error) {
-                alert('Error: ' + error.message);
+                console.error('Error adding book:', error);
+                alert('Error adding book: ' + error.message);
+            } finally {
+                setLoading('bookBtnText', false);
             }
-            setBtnLoading(btn, false);
         });
 
-        document.getElementById('annForm').addEventListener('submit', async (e) => {
+        document.getElementById('announcementForm').addEventListener('submit', async (e) => {
             e.preventDefault();
-            const btn = e.target.querySelector('.submit-btn');
-            btn.dataset.text = 'Add Announcement';
-            setBtnLoading(btn, true);
+            setLoading('annBtnText', true);
+            const announcement = {
+                title: document.getElementById('annTitle').value,
+                desc: document.getElementById('annDesc').value,
+                date: document.getElementById('annDate').value,
+                link: document.getElementById('annLink').value || null,
+                createdAt: new Date()
+            };
             try {
-                await addDoc(collection(db, 'announcements'), {
-                    title: document.getElementById('annTitle').value,
-                    desc: document.getElementById('annDesc').value,
-                    date: document.getElementById('annDate').value,
-                    link: document.getElementById('annLink').value || null,
-                    createdAt: new Date()
-                });
-                alert('Announcement added!');
-                e.target.reset();
-                loadAll();
+                await addDoc(collection(db, 'announcements'), announcement);
+                alert('Announcement added successfully!');
+                document.getElementById('announcementForm').reset();
+                loadResources();
             } catch (error) {
-                alert('Error: ' + error.message);
+                console.error('Error adding announcement:', error);
+                alert('Error adding announcement: ' + error.message);
+            } finally {
+                setLoading('annBtnText', false);
             }
-            setBtnLoading(btn, false);
         });
 
-        window.deleteItem = async (coll, id) => {
-            if (confirm('Delete this item?')) {
+        window.deleteResource = async function(collectionName, docId) {
+            if (confirm('Are you sure you want to delete this item? This action cannot be undone.')) {
                 try {
-                    await deleteDoc(doc(db, coll, id));
-                    alert('Deleted!');
-                    loadAll();
+                    await deleteDoc(doc(db, collectionName, docId));
+                    alert('Item deleted successfully!');
+                    loadResources();
                 } catch (error) {
-                    alert('Error: ' + error.message);
+                    console.error('Error deleting resource:', error);
+                    alert('Error deleting resource: ' + error.message);
                 }
             }
         };
 
         auth.onAuthStateChanged(user => {
-            const authorized = ['dax@gtuverse.com', 'simran@gtuverse.com', 'prachipp@gtuverse.com'];
-            if (user && authorized.includes(user.email)) {
+            const authorizedEmails = ['dax@gtuverse.com', 'simran@gtuverse.com', 'prachipp@gtuverse.com'];
+            
+            if (user && authorizedEmails.includes(user.email)) {
                 document.getElementById('loginContainer').style.display = 'none';
                 document.getElementById('adminContainer').style.display = 'block';
-                document.getElementById('logoutBtn').style.display = 'block';
-                loadAll();
+                document.getElementById('logoutButton').style.display = 'inline-flex';
+                loadResources();
             } else {
                 document.getElementById('loginContainer').style.display = 'flex';
                 document.getElementById('adminContainer').style.display = 'none';
-                document.getElementById('logoutBtn').style.display = 'none';
-                if (user && !authorized.includes(user.email)) {
-                    alert('Access denied!');
-                    fbSignOut(auth);
+                document.getElementById('logoutButton').style.display = 'none';
+                
+                if (user && !authorizedEmails.includes(user.email)) {
+                    alert('Access denied: You are not an authorized administrator.');
+                    window.signOut();
                 }
             }
         });
