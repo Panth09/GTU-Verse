@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GTUverse - Your Ultimate GTU Study Hub: Papers, Points & Updates</title>
-    <meta name="description content="Empower your GTU journey with instant access to midsem papers, books, activity points, real-time announcements, and a thriving student community. Join 1500+ GTU students today!">
+    <meta name="description" content="Empower your GTU journey with instant access to midsem papers, books, activity points, real-time announcements, and a thriving student community. Join 1500+ GTU students today!">
     <meta name="keywords" content="GTU, midsem papers, books, activity points, GTU announcements, GTU study resources, GTU community">
     <link rel="canonical" href="https://gtuverse.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎓</text></svg>">
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>graduation-cap</text></svg>">
     <style>
         :root {
             --primary: #3b82f6;
@@ -30,7 +30,7 @@
             --gradient-hero: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             --gradient-primary: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
             --gradient-secondary: linear-gradient(135deg, #10b981 0%, #059669 100%);
-            --gradient-purple: linear-gradient(135deg, #a855f7 0%, #7c3aed 100, 100%);
+            --gradient-purple: linear-gradient(135deg, #a855f7 0%, #7c3aed 100%);
             --gradient-orange: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
             --gradient-pink: linear-gradient(135deg, #ec4899 0%, #db2777 100%);
             --gradient-cyan: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
@@ -281,7 +281,7 @@
         .whatsapp-btn {
             background: linear-gradient(135deg, #25d366 0%, #128c7e 100%);
             color: white !important;
-            padding: 0.8.rem 1.8rem !important;
+            padding: 0.8rem 1.8rem !important;
             font-weight: 600;
             box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
             transition: all 0.3s ease;
@@ -402,7 +402,7 @@
             font-size: 1.2rem;
             font-weight: 600;
             text-decoration: none;
-            box-shadow: 0 10px 35.life rgba(37, 211, 102, 0.4);
+            box-shadow: 0 10px 35px rgba(37, 211, 102, 0.4);
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             animation: fadeInUp 0.8s ease-out 0.4s both;
             position: relative;
@@ -630,13 +630,13 @@
             color: var(--medium);
             max-width: 700px;
             margin: 0 auto;
-            font_WEIGHT: 400;
+            font-weight: 400;
             line-height: 1.8;
         }
 
         .features-grid {
             display: grid;
-            grid-template-columns: repeat/auto-fit, minmax(350px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
             gap: 3rem;
         }
 
@@ -655,7 +655,7 @@
             content: '';
             position: absolute;
             top: 0;
-            left: 00;
+            left: 0;
             width: 100%;
             height: 6px;
             background: var(--gradient-primary);
@@ -806,7 +806,7 @@
             margin: 7rem 2rem;
             padding: 6rem 4rem;
             background: var(--gradient-hero);
-            border-radius: 40 40px;
+            border-radius: 40px;
             text-align: center;
             color: white;
             position: relative;
@@ -948,14 +948,15 @@
             transform: translateY(0);
         }
 
-        /* Premium Footer */
+        /* Premium Footer - FULLY FIXED */
         footer {
             background: var(--dark);
-            color: white;
+            color: #e2e8f0;
             padding: 4rem 2rem 2rem;
             text-align: center;
             position: relative;
             overflow: hidden;
+            margin-top: 7rem;
         }
 
         footer::before {
@@ -965,30 +966,35 @@
             left: 0;
             width: 100%;
             height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            background: linear-gradient(90deg, transparent, rgba(226, 232, 240, 0.3), transparent);
         }
 
         body.dark-mode footer {
-            background: var Gonzales;
-            color: var(--dark);
+            background: #0f172a;
+            color: #cbd5e1;
+        }
+
+        body.dark-mode footer::before {
+            background: linear-gradient(90deg, transparent, rgba(148, 163, 184, 0.3), transparent);
         }
 
         footer p {
             opacity: 0.9;
             margin-bottom: 1.5rem;
             font-size: 1.05rem;
+            color: inherit;
         }
 
         .footer-links {
             display: flex;
             justify-content: center;
-            gap: 3rem;
-            margin-top: 2.5rem; 
+            gap: 2.5rem;
+            margin-top: 2.5rem;
             flex-wrap: wrap;
         }
 
         .footer-links a {
-            color: white;
+            color: #e2e8f0;
             text-decoration: none;
             transition: all 0.3s ease;
             font-weight: 500;
@@ -1007,15 +1013,21 @@
             transition: width 0.3s ease;
         }
 
+        .footer-links a:hover {
+            color: var(--accent);
+            transform: translateY(-2px);
+        }
+
         .footer-links a:hover::after {
             width: 100%;
         }
 
-        body.dark-mode .footer-links a { color: var(--dark); }
+        body.dark-mode .footer-links a {
+            color: #cbd5e1;
+        }
 
-        .footer-links a:hover { 
+        body.dark-mode .footer-links a:hover {
             color: var(--accent);
-            transform: translateY(-2px);
         }
 
         /* Responsive Design */
@@ -1199,7 +1211,6 @@
                 <span>GTUverse</span>
             </a>
             <ul class="nav-links" id="navLinks">
-                
                 <li><a href="papers.html">Papers</a></li>
                 <li><a href="announcements.html">Announcements</a></li>
                 <li><a href="books.html">Books</a></li>
@@ -1208,7 +1219,7 @@
                 <li><a href="https://chat.whatsapp.com/LLq6Sn0gvqwHHIJxxNaNaM" target="_blank" class="whatsapp-btn">
                     <i class="fab fa-whatsapp"></i> Join Community
                 </a></li>
-                <li><button class="dark-toggle" onclick="toggleDarkMode()" aria="Toggle Dark Mode">
+                <li><button class="dark-toggle" onclick="toggleDarkMode()" aria-label="Toggle Dark Mode">
                     <i class="fas fa-moon" id="darkToggleIcon"></i>
                 </button></li>
             </ul>
@@ -1254,7 +1265,6 @@
                 <div class="stat-number" data-target="1200">0</div>
                 <div class="stat-label">Midsem Papers</div>
             </div>
-           
             <div class="stat-card fade-in">
                 <div class="stat-icon">
                     <i class="fas fa-bell"></i>
@@ -1516,7 +1526,7 @@
         // Modal Functions
         function openPointsModal() {
             document.getElementById('pointsModal').classList.add('active');
-            document.body.style.overflow = 'hidden'; // Prevent background scroll
+            document.body.style.overflow = 'hidden';
         }
 
         function closePointsModal() {
@@ -1524,7 +1534,6 @@
             document.body.style.overflow = 'auto';
         }
 
-        // Close modal on overlay click
         document.getElementById('pointsModal').addEventListener('click', (e) => {
             if (e.target === document.getElementById('pointsModal')) {
                 closePointsModal();
@@ -1539,7 +1548,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => {
                 document.querySelectorAll('.fade-in').forEach(el => {
-                    el.style.transition = 'opacity 0.8  s ease-out, transform 0.8s ease-out';
+                    el.style.transition = 'opacity 0.8s ease-out, transform 0.8s ease-out';
                 });
             }, 100);
         });
