@@ -26,8 +26,10 @@
             --white: #ffffff;
             --border: #e2e8f0;
         }
+
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; }
+
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             background: #0a0a0f;
@@ -35,534 +37,296 @@
             line-height: 1.7;
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
-            transition: background 0.3s ease, color 0.3s ease;
+            transition: background .3s, color .3s;
         }
+
         body.light-mode {
             background: #f8fafc;
             color: #0f172a;
         }
+
+        /* ==== Background ==== */
+        .gradient-bg { position: fixed; inset: 0; z-index: -1;
+            background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 50%, #0a0a0f 100%); }
         body.light-mode .gradient-bg {
             background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 50%, #f8fafc 100%);
         }
-        body.light-mode .gradient-bg::before,
-        body.light-mode .gradient-bg::after {
-            opacity: 0.08;
-        }
-        body.light-mode header {
-            background: rgba(248, 250, 252, 0.8);
-            border-bottom-color: rgba(99, 102, 241, 0.2);
-        }
-        body.light-mode header.scrolled {
-            background: rgba(248, 250, 252, 0.95);
-        }
-        body.light-mode .nav-links a {
-            color: #475569;
-        }
-        body.light-mode .nav-links a:hover {
-            color: #6366f1;
-        }
-        body.light-mode .section-subtitle,
-        body.light-mode .book-desc,
-        body.light-mode .book-badge {
-            color: #64748b;
-        }
-        body.light-mode .book-item {
-            background: rgba(255, 255, 255, 0.8);
-            border-color: rgba(99, 102, 241, 0.15);
-        }
-
-        /* Animated Gradient Background */
-        .gradient-bg {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            z-index: -1;
-            background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 50%, #0a0a0f 100%);
-        }
-        .gradient-bg::before,
-        .gradient-bg::after {
-            content: '';
-            position: absolute;
-            width: 800px;
-            height: 800px;
-            border-radius: 50%;
-            filter: blur(120px);
-            opacity: 0.15;
+        .gradient-bg::before, .gradient-bg::after {
+            content: ''; position: absolute; width: 800px; height: 800px;
+            border-radius: 50%; filter: blur(120px); opacity: .15;
             animation: float 20s ease-in-out infinite;
         }
-        .gradient-bg::before {
-            background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
-            top: -400px;
-            left: -400px;
-        }
-        .gradient-bg::after {
-            background: linear-gradient(135deg, #ec4899 0%, #f59e0b 100%);
-            bottom: -400px;
-            right: -400px;
-            animation-delay: -10s;
-        }
+        .gradient-bg::before { background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%); top: -400px; left: -400px; }
+        .gradient-bg::after  { background: linear-gradient(135deg, #ec4899 0%, #f59e0b 100%); bottom: -400px; right: -400px; animation-delay: -10s; }
         @keyframes float {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            33% { transform: translate(100px, -100px) scale(1.2); }
-            66% { transform: translate(-80px, 80px) scale(0.9); }
+            0%,100%{transform:translate(0,0) scale(1)}
+            33%{transform:translate(100px,-100px) scale(1.2)}
+            66%{transform:translate(-80px,80px) scale(.9)}
         }
 
-        /* Particles */
-        .particles {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            z-index: -1;
-            overflow: hidden;
-        }
+        .particles { position: fixed; inset: 0; z-index: -1; overflow: hidden; }
         .particle {
-            position: absolute;
-            width: 3px;
-            height: 3px;
-            background: rgba(99, 102, 241, 0.5);
-            border-radius: 50%;
+            position: absolute; width: 3px; height: 3px;
+            background: rgba(99,102,241,.5); border-radius: 50%;
             animation: particle-float 15s linear infinite;
         }
         @keyframes particle-float {
-            0% { transform: translateY(100vh) translateX(0); opacity: 0; }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% { transform: translateY(-100vh) translateX(100px); opacity: 0; }
+            0%{transform:translateY(100vh) translateX(0);opacity:0}
+            10%{opacity:1}
+            90%{opacity:1}
+            100%{transform:translateY(-100vh) translateX(100px);opacity:0}
         }
 
-        /* Header */
+        /* ==== Header ==== */
         header {
-            position: fixed;
-            top: 0; width: 100%;
-            z-index: 1000;
-            background: rgba(10, 10, 15, 0.8);
+            position: fixed; inset-inline: 0; top: 0; z-index: 1000;
+            background: rgba(10,10,15,.8);
             backdrop-filter: blur(20px) saturate(180%);
-            border-bottom: 1px solid rgba(99, 102, 241, 0.1);
-            transition: all 0.3s ease;
+            border-bottom: 1px solid rgba(99,102,241,.1);
+            transition: .3s;
+        }
+        body.light-mode header {
+            background: rgba(248,250,252,.9);
+            border-bottom: 1px solid rgba(99,102,241,.2);
         }
         header.scrolled {
-            background: rgba(10, 10, 15, 0.95);
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            background: rgba(10,10,15,.95);
+            box-shadow: 0 10px 40px rgba(0,0,0,.5);
+            border-bottom-color: rgba(99,102,241,.3);
+        }
+        body.light-mode header.scrolled {
+            background: rgba(248,250,252,.98);
+            box-shadow: 0 10px 40px rgba(0,0,0,.1);
         }
         nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 1.2rem 2.5rem;
+            display: flex; justify-content: space-between; align-items: center;
+            max-width: 1400px; margin: 0 auto; padding: 1.2rem 2.5rem;
         }
         .logo {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 2rem;
-            font-weight: 800;
+            display: flex; align-items: center; gap: .8rem;
+            font-family: 'Space Grotesk', sans-serif; font-size: 2rem; font-weight: 800;
             background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            cursor: pointer;
-            transition: all 0.3s ease;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
             text-decoration: none;
-            letter-spacing: -0.02em;
         }
         .logo-icon {
-            width: 48px;
-            height: 48px;
+            width: 48px; height: 48px; border-radius: 14px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 2.2rem; font-weight: 900;
             background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            font-size: 2.2rem;
-            font-weight: 900;
-            font-family: 'Space Grotesk', sans-serif;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.5);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            box-shadow: 0 6px 20px rgba(99,102,241,.5), 0 0 0 2px rgba(99,102,241,.3);
             animation: logo-pulse 2s ease-in-out infinite;
         }
-        @keyframes logo-pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-        }
+        @keyframes logo-pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.1)} }
+
         .nav-links {
-            display: flex;
-            list-style: none;
-            gap: 0.3rem;
-            align-items: center;
+            display: flex; list-style: none; gap: .3rem; align-items: center;
         }
         .nav-links a {
-            color: #cbd5e1;
-            text-decoration: none;
-            padding: 0.8rem 1.3rem;
-            border-radius: 12px;
-            font-weight: 500;
-            font-size: 0.95rem;
-            transition: all 0.3s ease;
+            color: #cbd5e1; text-decoration: none; padding: .8rem 1.3rem;
+            border-radius: 12px; font-weight: 500; font-size: .95rem;
+            transition: .3s;
         }
         .nav-links a:hover {
-            color: #a855f7;
-            background: rgba(99, 102, 241, 0.1);
-            transform: translateY(-2px);
+            color: #a855f7; background: rgba(99,102,241,.1); transform: translateY(-2px);
         }
         .telegram-btn {
             background: linear-gradient(135deg, #229ED9 0%, #3B82F6 100%);
-            color: white !important;
-            padding: 0.85rem 1.8rem !important;
-            font-weight: 600;
-            box-shadow: 0 4px 20px rgba(34, 158, 217, 0.4);
-            transition: all 0.3s ease;
+            color: white !important; padding: .85rem 1.8rem !important;
+            font-weight: 600; box-shadow: 0 4px 20px rgba(34,158,217,.4);
+            transition: .3s;
         }
         .telegram-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 30px rgba(34, 158, 217, 0.6);
+            transform: translateY(-3px); box-shadow: 0 8px 30px rgba(34,158,217,.6);
         }
         .dark-toggle {
-            background: rgba(99, 102, 241, 0.15);
-            border: 1px solid rgba(99, 102, 241, 0.3);
-            color: #6366f1;
-            width: 46px; height: 46px;
-            border-radius: 50%;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
+            background: rgba(99,102,241,.15); border: 1px solid rgba(99,102,241,.3);
+            color: #6366f1; width: 46px; height: 46px; border-radius: 50%;
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+            transition: .3s; font-size: 1.2rem;
         }
-        .dark-toggle:hover {
-            background: rgba(99, 102, 241, 0.3);
-            transform: rotate(180deg) scale(1.1);
-        }
-        .hamburger {
-            display: none;
-            flex-direction: column;
-            cursor: pointer;
-            gap: 6px;
-        }
-        .hamburger span {
-            width: 28px; height: 3px;
-            background: #e2e8f0;
-            border-radius: 3px;
-            transition: all 0.3s ease;
-        }
-        .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(9px, 9px); }
+        .dark-toggle:hover { background: rgba(99,102,241,.3); transform: rotate(180deg) scale(1.1); }
+
+        .hamburger { display: none; flex-direction: column; cursor: pointer; gap: 6px; }
+        .hamburger span { width: 28px; height: 3px; background: #e2e8f0; border-radius: 3px; transition: .3s; }
+        .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(9px,9px); }
         .hamburger.active span:nth-child(2) { opacity: 0; }
-        .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(9px, -9px); }
+        .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(9px,-9px); }
 
-        /* Books Section */
-        .books {
-            padding: 8rem 2rem 4rem;
-            max-width: 1400px;
-            margin: 0 auto;
-            min-height: 100vh;
+        /* ==== Hero Section ==== */
+        .hero-section {
+            margin-top: 80px; padding: 160px 2rem 120px; text-align: center;
+            position: relative; overflow: hidden;
         }
-        .section-header {
-            text-align: center;
-            margin-bottom: 4rem;
+        .hero-section::before {
+            content: ''; position: absolute; inset: 50%; transform: translate(-50%,-50%);
+            width: 1000px; height: 1000px;
+            background: radial-gradient(circle, rgba(99,102,241,.1) 0%, transparent 70%);
         }
-        .section-title {
+        .hero-section h1 {
             font-family: 'Space Grotesk', sans-serif;
-            font-size: clamp(3rem, 7vw, 5rem);
-            font-weight: 800;
-            margin-bottom: 1.5rem;
+            font-size: clamp(3.5rem,10vw,6.5rem); font-weight: 800;
             background: linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #ec4899 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            line-height: 1.15;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            margin-bottom: 1.5rem; line-height: 1.05; letter-spacing: -.04em;
         }
-        .section-subtitle {
-            font-size: 1.4rem;
-            color: #94a3b8;
-            max-width: 750px;
-            margin: 0 auto;
-            line-height: 1.9;
+        .hero-section p {
+            font-size: clamp(1.25rem,2.8vw,1.7rem); color: #94a3b8;
+            max-width: 850px; margin: 0 auto 3rem; line-height: 1.9;
         }
+        body.light-mode .hero-section p { color: #475569; }
 
-        /* Filters */
+        /* ==== Filters & Books List ==== */
+        .container { max-width: 1400px; margin: 0 auto; padding: 0 2.5rem 4rem; }
         .filters {
-            display: flex;
-            gap: 1.5rem;
-            margin-bottom: 3rem;
-            flex-wrap: wrap;
-            justify-content: center;
-            padding: 2.5rem;
-            background: rgba(30, 41, 59, 0.6);
-            backdrop-filter: blur(20px);
-            border-radius: 28px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-            border: 2px solid rgba(99, 102, 241, 0.2);
+            display: flex; gap: 1.5rem; margin-bottom: 3rem; flex-wrap: wrap;
+            justify-content: center; padding: 2.5rem; background: rgba(30,41,59,.6);
+            backdrop-filter: blur(20px); border-radius: 28px;
+            box-shadow: 0 10px 40px rgba(0,0,0,.3); border: 2px solid rgba(99,102,241,.2);
         }
         .filter-group {
-            display: flex;
-            flex-direction: column;
-            gap: 0.6rem;
-            min-width: 200px;
+            display: flex; flex-direction: column; gap: .6rem; min-width: 200px;
         }
         .filter-group label {
-            font-weight: 600;
-            color: #cbd5e1;
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            font-weight: 600; color: #cbd5e1; font-size: .9rem;
+            text-transform: uppercase; letter-spacing: .5px;
         }
-        .filters input,
-        .filters select {
-            padding: 1rem 1.2rem;
-            border: 2px solid rgba(99, 102, 241, 0.3);
-            border-radius: 14px;
-            font-size: 1rem;
-            background: rgba(15, 23, 42, 0.7);
-            color: #e2e8f0;
-            transition: all 0.3s ease;
+        .filters input, .filters select {
+            padding: 1rem 1.2rem; border: 2px solid rgba(99,102,241,.3);
+            border-radius: 14px; font-size: 1rem; background: rgba(15,23,42,.7);
+            color: #e2e8f0; transition: .3s;
         }
-        .filters input:focus,
-        .filters select:focus {
-            outline: none;
-            border-color: #6366f1;
-            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.2);
-            transform: translateY(-2px);
+        .filters input:focus, .filters select:focus {
+            outline: none; border-color: #6366f1;
+            box-shadow: 0 0 0 4px rgba(99,102,241,.2); transform: translateY(-2px);
         }
         .filter-btn {
             background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
-            color: white;
-            padding: 1rem 2.5rem;
-            border: none;
-            border-radius: 14px;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 1.05rem;
-            transition: all 0.3s ease;
-            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.3);
+            color: white; padding: 1rem 2.5rem; border: none; border-radius: 14px;
+            cursor: pointer; font-weight: 600; font-size: 1.05rem;
+            transition: .3s; box-shadow: 0 6px 20px rgba(99,102,241,.3);
         }
         .filter-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 28px rgba(99, 102, 241, 0.4);
+            transform: translateY(-3px); box-shadow: 0 8px 28px rgba(99,102,241,.4);
         }
 
-        /* Books List */
         .books-list {
-            list-style: none;
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            list-style: none; display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px,1fr));
             gap: 2rem;
         }
         .book-item {
-            background: rgba(30, 41, 59, 0.6);
-            backdrop-filter: blur(20px);
-            padding: 2.5rem;
-            border-radius: 28px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-            border: 2px solid rgba(99, 102, 241, 0.2);
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            overflow: hidden;
+            background: rgba(30,41,59,.6); backdrop-filter: blur(20px);
+            padding: 2.5rem; border-radius: 28px;
+            border: 2px solid rgba(99,102,241,.2);
+            transition: .5s cubic-bezier(.4,0,.2,1);
+            position: relative; overflow: hidden;
+        }
+        body.light-mode .book-item {
+            background: rgba(255,255,255,.8);
+            border: 2px solid rgba(99,102,241,.2);
         }
         .book-item::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 5px;
-            background: linear-gradient(135deg, #10b981 0%, #06b6d4 100%);
-            transform: scaleX(0);
-            transition: transform 0.4s ease;
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(135deg, rgba(99,102,241,.05) 0%, rgba(168,85,247,.05) 100%);
+            opacity: 0; transition: opacity .3s;
         }
+        .book-item:hover::before { opacity: 1; }
         .book-item:hover {
-            transform: translateY(-15px);
-            box-shadow: 0 25px 60px rgba(99, 102, 241, 0.4);
+            transform: translateY(-12px); box-shadow: 0 25px 60px rgba(99,102,241,.4);
             border-color: #6366f1;
         }
-        .book-item:hover::before {
-            transform: scaleX(1);
-        }
         .book-icon {
-            width: 80px;
-            height: 80px;
-            border-radius: 20px;
+            width: 70px; height: 70px; border-radius: 18px;
             background: linear-gradient(135deg, #10b981 0%, #06b6d4 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 1.5rem;
-            color: white;
-            font-size: 2.2rem;
-            transition: all 0.3s ease;
-            box-shadow: 0 10px 30px rgba(16, 185, 129, 0.3);
-        }
-        .book-item:hover .book-icon {
-            transform: scale(1.15) rotate(8deg);
+            display: flex; align-items: center; justify-content: center;
+            color: #fff; font-size: 2rem; margin-bottom: 1.5rem;
+            box-shadow: 0 6px 20px rgba(0,0,0,.3);
         }
         .book-title {
-            font-family: 'Space Grotesk', sans-serif;
-            font-weight: 700;
-            color: #e2e8f0;
-            margin-bottom: 0.8rem;
-            font-size: 1.5rem;
-            line-height: 1.4;
+            font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700;
+            margin-bottom: .8rem; color: #e2e8f0;
         }
+        body.light-mode .book-title { color: #0f172a; }
         .book-meta {
-            display: flex;
-            gap: 0.8rem;
-            margin-bottom: 1.5rem;
-            flex-wrap: wrap;
+            display: flex; gap: .8rem; margin-bottom: 1.5rem; flex-wrap: wrap;
         }
         .book-badge {
-            padding: 0.4rem 1rem;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            background: rgba(99, 102, 241, 0.2);
-            color: #a855f7;
-            border: 1px solid rgba(99, 102, 241, 0.3);
+            padding: .4rem 1rem; border-radius: 20px; font-size: .85rem;
+            font-weight: 600; background: rgba(99,102,241,.2); color: #a855f7;
+            border: 1px solid rgba(99,102,241,.3);
         }
-        .book-desc {
-            color: #94a3b8;
-            margin-bottom: 1.5rem;
-            line-height: 1.8;
-        }
+        .book-desc { color: #94a3b8; margin-bottom: 1.5rem; }
+        body.light-mode .book-desc { color: #475569; }
         .book-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.6rem;
+            display: flex; align-items: center; justify-content: center; gap: .5rem;
             background: linear-gradient(135deg, #10b981 0%, #06b6d4 100%);
-            color: white;
-            padding: 0.9rem 1.8rem;
-            border-radius: 14px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+            color: #fff; padding: 1rem 2rem; border-radius: 12px;
+            text-decoration: none; font-weight: 600; transition: .3s;
         }
-        .book-link:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
-        }
+        .book-link:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(16,185,129,.4); }
+
         .show-more {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.8rem;
+            display: inline-flex; align-items: center; gap: .8rem;
             background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
-            color: white;
-            padding: 1.3rem 3rem;
-            border-radius: 16px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 1.15rem;
-            margin: 3rem auto 0;
-            transition: all 0.3s ease;
-            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.3);
-            display: flex;
-            width: fit-content;
-            justify-content: center;
+            color: white; padding: 1.3rem 3rem; border-radius: 16px;
+            text-decoration: none; font-weight: 600; font-size: 1.15rem;
+            margin: 3rem auto 0; transition: .3s;
+            box-shadow: 0 8px 25px rgba(99,102,241,.3); width: fit-content;
         }
         .show-more:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 35px rgba(99, 102, 241, 0.4);
-        }
-        .loading, .empty-state {
-            grid-column: 1 / -1;
-            text-align: center;
-            padding: 4rem;
-            color: #94a3b8;
-        }
-        .loading i {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            animation: spin 1s linear infinite;
-        }
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-        .fade-in {
-            opacity: 0;
-            transform: translateY(50px);
-            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
-        }
-        .fade-in.visible {
-            opacity: 1;
-            transform: translateY(0);
+            transform: translateY(-3px); box-shadow: 0 10px 35px rgba(99,102,241,.4);
         }
 
-        /* Floating CTA & Back to Top */
+        .loading-state, .empty-state {
+            grid-column: 1 / -1; text-align: center; padding: 4rem; color: #94a3b8;
+        }
+        body.light-mode .loading-state, body.light-mode .empty-state { color: #475569; }
+        .loading-state i { font-size: 3rem; margin-bottom: 1rem; animation: spin 1s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* ==== Floating CTA & Back-to-top ==== */
         .floating-cta {
-            position: fixed;
-            bottom: 2.5rem;
-            right: 2.5rem;
+            position: fixed; bottom: 2.5rem; right: 2.5rem;
             background: linear-gradient(135deg, #229ED9 0%, #3B82F6 100%);
-            color: white;
-            padding: 1.2rem 2rem;
-            border-radius: 60px;
-            box-shadow: 0 15px 40px rgba(34, 158, 217, 0.5);
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            font-weight: 600;
-            z-index: 999;
-            animation: float-btn 3s ease-in-out infinite;
-            text-decoration: none;
-            border: 2px solid rgba(255, 255, 255, 0.2);
+            color: #fff; padding: 1.2rem 2rem; border-radius: 60px;
+            box-shadow: 0 15px 40px rgba(34,158,217,.5);
+            display: flex; align-items: center; gap: 1rem; font-weight: 600;
+            z-index: 999; animation: float-btn 3s ease-in-out infinite;
+            text-decoration: none; border: 2px solid rgba(255,255,255,.2);
         }
-        .floating-cta:hover {
-            transform: translateY(-8px) scale(1.08);
-        }
-        @keyframes float-btn {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-12px); }
-        }
-        .back-to-top {
-            position: fixed;
-            bottom: 2.5rem;
-            left: 2.5rem;
-            background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
-            color: white;
-            width: 56px;
-            height: 56px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.6rem;
-            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.4);
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-            z-index: 998;
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            cursor: pointer;
-        }
-        .back-to-top.visible {
-            opacity: 1;
-            visibility: visible;
-        }
+        .floating-cta:hover { transform: translateY(-8px) scale(1.08); box-shadow: 0 20px 50px rgba(34,158,217,.7); }
+        @keyframes float-btn { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
 
-        /* Responsive */
+        .back-to-top {
+            position: fixed; bottom: 2.5rem; left: 2.5rem;
+            background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+            color: #fff; width: 56px; height: 56px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.6rem; box-shadow: 0 10px 30px rgba(99,102,241,.4);
+            opacity: 0; visibility: hidden; transition: .3s; z-index: 998;
+            border: 2px solid rgba(255,255,255,.2); cursor: pointer;
+        }
+        .back-to-top.visible { opacity: 1; visibility: visible; }
+        .back-to-top:hover { transform: translateY(-8px) scale(1.1); box-shadow: 0 15px 40px rgba(99,102,241,.6); }
+
+        /* ==== Responsive ==== */
         @media (max-width: 968px) {
-            .books-list { grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); }
+            .books-list { grid-template-columns: repeat(auto-fill, minmax(300px,1fr)); }
         }
         @media (max-width: 768px) {
             .hamburger { display: flex; }
             .nav-links {
-                position: absolute;
-                top: 100%; left: 0;
-                width: 100%;
-                background: rgba(10, 10, 15, 0.98);
-                backdrop-filter: blur(30px);
-                flex-direction: column;
-                padding: 2.5rem;
-                gap: 1.2rem;
-                box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-                transform: translateY(-100%);
-                opacity: 0;
-                visibility: hidden;
-                transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                position: absolute; top: 100%; left: 0; width: 100%;
+                background: rgba(10,10,15,.98); backdrop-filter: blur(30px);
+                flex-direction: column; padding: 2.5rem; gap: 1.2rem;
+                box-shadow: 0 20px 60px rgba(0,0,0,.5);
+                transform: translateY(-100%); opacity: 0; visibility: hidden;
+                transition: .4s cubic-bezier(.4,0,.2,1);
             }
-            .nav-links.active {
-                transform: translateY(0);
-                opacity: 1;
-                visibility: visible;
-            }
-            .books { padding: 6rem 1.5rem 3rem; }
+            .nav-links.active { transform: translateY(0); opacity: 1; visibility: visible; }
+            .hero-section { padding: 140px 1.5rem 100px; }
             .filters { flex-direction: column; padding: 2rem; }
             .filter-group { min-width: 100%; }
         }
@@ -576,6 +340,8 @@
     <a href="https://t.me/gtuverse" target="_blank" class="floating-cta">
         <i class="fab fa-telegram-plane"></i> Join Telegram
     </a>
+
+    <!-- Back to Top -->
     <button class="back-to-top" onclick="scrollToTop()" aria-label="Back to Top">
         <i class="fas fa-arrow-up"></i>
     </button>
@@ -595,24 +361,23 @@
                 <li><a href="https://t.me/gtuverse" target="_blank" class="telegram-btn">
                     <i class="fab fa-telegram-plane"></i> Join Telegram
                 </a></li>
-                <li><button class="dark-toggle" onclick="toggleTheme()" aria-label="Toggle Theme">
+                <li><button class="dark-toggle" id="themeToggle" aria-label="Toggle Theme">
                     <i class="fas fa-sun" id="themeIcon"></i>
                 </button></li>
             </ul>
             <div class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Toggle Menu">
-                <span></span>
-                <span></span>
-                <span></span>
+                <span></span><span></span><span></span>
             </div>
         </nav>
     </header>
 
-    <section class="books">
-        <div class="section-header fade-in">
-            <h2 class="section-title">Textbook Library</h2>
-            <p class="section-subtitle">Download GTU-recommended textbooks and reference materials. Filter by college, branch, and semester.</p>
-        </div>
-        <div class="filters fade-in">
+    <section class="hero-section">
+        <h1>Textbook Library</h1>
+        <p>Download GTU-recommended textbooks and reference materials. Filter by college, branch, and semester.</p>
+    </section>
+
+    <div class="container">
+        <div class="filters">
             <div class="filter-group">
                 <label><i class="fas fa-university"></i> College</label>
                 <input id="filterCollege" placeholder="e.g., LDCE">
@@ -642,16 +407,18 @@
                 <i class="fas fa-search"></i> Apply Filters
             </button>
         </div>
+
         <ul class="books-list" id="booksList">
-            <li class="loading">
+            <li class="loading-state">
                 <i class="fas fa-spinner"></i>
                 <p>Loading books...</p>
             </li>
         </ul>
+
         <a href="#" class="show-more" id="showMoreBtn" style="display: none;">
             Show More Books <i class="fas fa-arrow-down"></i>
         </a>
-    </section>
+    </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
@@ -667,145 +434,127 @@
             measurementId: "G-YV4W2LT96S"
         };
 
-        try {
-            const app = initializeApp(firebaseConfig);
-            const db = getFirestore(app);
-            let lastDoc = null;
-            const pageSize = 12;
+        let db, lastDoc = null, pageSize = 12;
+        let themeToggle, themeIcon;
 
-            // Theme Toggle
-            function toggleTheme() {
-                const body = document.body;
-                const icon = document.getElementById('themeIcon');
-                body.classList.toggle('light-mode');
-                const isLight = body.classList.contains('light-mode');
-                icon.classList.toggle('fa-sun', !isLight);
-                icon.classList.toggle('fa-moon', isLight);
-                localStorage.setItem('theme', isLight ? 'light' : 'dark');
-            }
-
-            function loadTheme() {
-                const saved = localStorage.getItem('theme');
-                if (saved === 'light') {
-                    document.body.classList.add('light-mode');
-                    document.getElementById('themeIcon').classList.replace('fa-sun', 'fa-moon');
-                }
-            }
-
-            // Mobile Menu
-            window.toggleMenu = () => {
-                document.getElementById('navLinks').classList.toggle('active');
-                document.getElementById('hamburger').classList.toggle('active');
-            };
-
-            // Scroll Effects
-            window.addEventListener('scroll', () => {
-                const header = document.getElementById('header');
-                const backToTop = document.querySelector('.back-to-top');
-                header.classList.toggle('scrolled', window.scrollY > 50);
-                backToTop.classList.toggle('visible', window.scrollY > 500);
-            });
-
-            window.scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
-
-            // Particles
-            function createParticles() {
-                const container = document.getElementById('particles');
-                for (let i = 0; i < 30; i++) {
-                    const p = document.createElement('div');
-                    p.className = 'particle';
-                    p.style.left = Math.random() * 100 + '%';
-                    p.style.animationDelay = Math.random() * 15 + 's';
-                    p.style.animationDuration = (15 + Math.random() * 10) + 's';
-                    container.appendChild(p);
-                }
-            }
-
-            // Fade In Observer
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(e => e.isIntersecting && e.target.classList.add('visible'));
-            }, { threshold: 0.1, rootMargin: '0px 0px -100px 0px' });
-            document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
-
-            // Firebase Book Loading
-            async function filterBooks(reset = true) {
-                const booksList = document.getElementById('booksList');
-                try {
-                    const collegeInput = document.getElementById('filterCollege')?.value.trim().toLowerCase() || '';
-                    const branch = document.getElementById('filterBranch')?.value || '';
-                    const sem = document.getElementById('filterSem')?.value || '';
-
-                    if (sem && (isNaN(parseInt(sem)) || parseInt(sem) < 1 || parseInt(sem) > 8)) {
-                        booksList.innerHTML = '<li class="empty-state"><i class="fas fa-exclamation-triangle"></i><p>Invalid semester (1-8).</p></li>';
-                        return;
-                    }
-
-                    let q = query(collection(db, 'books'), orderBy('createdAt', 'desc'), limit(pageSize));
-                    if (branch) q = query(q, where('branch', '==', branch));
-                    if (sem) q = query(q, where('sem', '==', parseInt(sem)));
-                    if (!reset && lastDoc) q = query(q, startAfter(lastDoc));
-
-                    const snapshot = await getDocs(q);
-                    let books = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
-                    if (collegeInput) {
-                        books = books.filter(b => b.college?.toLowerCase().includes(collegeInput));
-                    }
-
-                    lastDoc = snapshot.docs[snapshot.docs.length - 1] || null;
-                    document.getElementById('showMoreBtn').style.display = snapshot.docs.length < pageSize ? 'none' : 'flex';
-
-                    if (reset) booksList.innerHTML = '';
-                    if (books.length > 0) {
-                        const html = books.map(b => `
-                            <li class="book-item fade-in">
-                                <div class="book-icon"><i class="fas fa-book"></i></div>
-                                <h3 class="book-title">${b.title || 'Untitled'}</h3>
-                                <div class="book-meta">
-                                    <span class="book-badge"><i class="fas fa-code-branch"></i> ${b.branch || 'N/A'}</span>
-                                    <span class="book-badge"><i class="fas fa-layer-group"></i> Sem ${b.sem || 'N/A'}</span>
-                                    <span class="book-badge"><i class="fas fa-university"></i> ${b.college || 'N/A'}</span>
-                                </div>
-                                <p class="book-desc">Download the textbook or reference material for your studies.</p>
-                                <a href="${b.url || '#'}" target="_blank" class="book-link">
-                                    <i class="fas fa-download"></i> Download PDF
-                                </a>
-                            </li>
-                        `).join('');
-                        booksList.innerHTML += html;
-                    } else if (reset) {
-                        booksList.innerHTML = '<li class="empty-state"><i class="fas fa-inbox"></i><p>No books found. Try adjusting filters.</p></li>';
-                    }
-                    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
-                } catch (error) {
-                    console.error(error);
-                    booksList.innerHTML = `<li class="empty-state"><i class="fas fa-exclamation-circle"></i><p>Error loading books. Try again.</p></li>`;
-                }
-            }
-
-            function loadMoreBooks() {
-                const btn = document.getElementById('showMoreBtn');
-                btn.style.pointerEvents = 'none';
-                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading...';
-                filterBooks(false).finally(() => {
-                    btn.style.pointerEvents = 'auto';
-                    btn.innerHTML = 'Show More Books <i class="fas fa-arrow-down"></i>';
-                });
-            }
-
-            document.addEventListener('DOMContentLoaded', () => {
-                loadTheme();
-                createParticles();
-                document.getElementById('filterBtn').addEventListener('click', () => filterBooks(true));
-                document.getElementById('showMoreBtn').addEventListener('click', (e) => {
-                    e.preventDefault();
-                    loadMoreBooks();
-                });
-                filterBooks();
-            });
-        } catch (error) {
-            console.error('Firebase init failed:', error);
-            document.getElementById('booksList').innerHTML = '<li class="empty-state"><i class="fas fa-exclamation-circle"></i><p>Failed to load. Check connection.</p></li>';
+        function setTheme(isLight) {
+            document.body.classList.toggle('light-mode', isLight);
+            if (themeIcon) themeIcon.className = isLight ? 'fas fa-moon' : 'fas fa-sun';
+            localStorage.setItem('theme', isLight ? 'light' : 'dark');
         }
+
+        function toggleTheme() {
+            setTheme(!document.body.classList.contains('light-mode'));
+        }
+
+        function handleScroll() {
+            document.getElementById('header').classList.toggle('scrolled', window.scrollY > 50);
+            document.querySelector('.back-to-top').classList.toggle('visible', window.scrollY > 500);
+        }
+
+        window.scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+
+        function createParticles() {
+            const container = document.getElementById('particles');
+            for (let i = 0; i < 30; i++) {
+                const p = document.createElement('div');
+                p.className = 'particle';
+                p.style.left = Math.random() * 100 + '%';
+                p.style.animationDelay = Math.random() * 15 + 's';
+                p.style.animationDuration = (15 + Math.random() * 10) + 's';
+                container.appendChild(p);
+            }
+        }
+
+        window.toggleMenu = () => {
+            document.getElementById('navLinks').classList.toggle('active');
+            document.getElementById('hamburger').classList.toggle('active');
+        };
+
+        async function filterBooks(reset = true) {
+            const booksList = document.getElementById('booksList');
+            try {
+                const collegeInput = document.getElementById('filterCollege')?.value.trim().toLowerCase() || '';
+                const branch = document.getElementById('filterBranch')?.value || '';
+                const sem = document.getElementById('filterSem')?.value || '';
+
+                if (sem && (isNaN(parseInt(sem)) || parseInt(sem) < 1 || parseInt(sem) > 8)) {
+                    booksList.innerHTML = '<li class="empty-state"><i class="fas fa-exclamation-triangle"></i><p>Invalid semester (1-8).</p></li>';
+                    return;
+                }
+
+                let q = query(collection(db, 'books'), orderBy('createdAt', 'desc'), limit(pageSize));
+                if (branch) q = query(q, where('branch', '==', branch));
+                if (sem) q = query(q, where('sem', '==', parseInt(sem)));
+                if (!reset && lastDoc) q = query(q, startAfter(lastDoc));
+
+                const snapshot = await getDocs(q);
+                let books = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+                if (collegeInput) {
+                    books = books.filter(b => b.college?.toLowerCase().includes(collegeInput));
+                }
+
+                lastDoc = snapshot.docs[snapshot.docs.length - 1] || null;
+                document.getElementById('showMoreBtn').style.display = snapshot.docs.length < pageSize ? 'none' : 'flex';
+
+                if (reset) booksList.innerHTML = '';
+                if (books.length > 0) {
+                    const html = books.map(b => `
+                        <li class="book-item">
+                            <div class="book-icon"><i class="fas fa-book"></i></div>
+                            <h3 class="book-title">${b.title || 'Untitled'}</h3>
+                            <div class="book-meta">
+                                <span class="book-badge"><i class="fas fa-code-branch"></i> ${b.branch || 'N/A'}</span>
+                                <span class="book-badge"><i class="fas fa-layer-group"></i> Sem ${b.sem || 'N/A'}</span>
+                                <span class="book-badge"><i class="fas fa-university"></i> ${b.college || 'N/A'}</span>
+                            </div>
+                            <p class="book-desc">Download the textbook or reference material for your studies.</p>
+                            <a href="${b.url || '#'}" target="_blank" class="book-link">
+                                <i class="fas fa-download"></i> Download PDF
+                            </a>
+                        </li>
+                    `).join('');
+                    booksList.innerHTML += html;
+                } else if (reset) {
+                    booksList.innerHTML = '<li class="empty-state"><i class="fas fa-inbox"></i><p>No books found. Try adjusting filters.</p></li>';
+                }
+            } catch (error) {
+                console.error(error);
+                booksList.innerHTML = `<li class="empty-state"><i class="fas fa-exclamation-circle"></i><p>Error loading books. Try again.</p></li>`;
+            }
+        }
+
+        function loadMoreBooks() {
+            const btn = document.getElementById('showMoreBtn');
+            btn.style.pointerEvents = 'none';
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading...';
+            filterBooks(false).finally(() => {
+                btn.style.pointerEvents = 'auto';
+                btn.innerHTML = 'Show More Books <i class="fas fa-arrow-down"></i>';
+            });
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const app = initializeApp(firebaseConfig);
+            db = getFirestore(app);
+
+            themeToggle = document.getElementById('themeToggle');
+            themeIcon = document.getElementById('themeIcon');
+
+            const saved = localStorage.getItem('theme');
+            setTheme(saved === 'light');
+
+            themeToggle.addEventListener('click', toggleTheme);
+            window.addEventListener('scroll', handleScroll);
+            document.getElementById('filterBtn').addEventListener('click', () => filterBooks(true));
+            document.getElementById('showMoreBtn').addEventListener('click', (e) => {
+                e.preventDefault();
+                loadMoreBooks();
+            });
+
+            createParticles();
+            filterBooks();
+        });
     </script>
 </body>
 </html>
