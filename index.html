@@ -232,12 +232,14 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.4rem;
+            font-size: 1.6rem;
+            font-weight: 800;
             color: white;
             box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
             animation: logo-pulse 2s ease-in-out infinite;
             position: relative;
             overflow: hidden;
+            font-family: 'Space Grotesk', sans-serif;
         }
 
         .logo-icon::before {
@@ -249,6 +251,12 @@
             height: 200%;
             background: linear-gradient(45deg, transparent, rgba(255,255,255,0.3), transparent);
             animation: logo-shine 3s ease-in-out infinite;
+        }
+
+        .logo-icon::after {
+            content: 'G';
+            position: relative;
+            z-index: 1;
         }
 
         @keyframes logo-shine {
@@ -1618,6 +1626,7 @@
 
         // Initialize on Load
         window.addEventListener('load', () => {
+            loadTheme();
             createParticles();
             setTypewriterWidth();
             typeWriter();
