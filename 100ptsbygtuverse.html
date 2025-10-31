@@ -410,7 +410,9 @@
                 Contact us on WhatsApp to unlock all certificates instantly!
             </p>
         </div>
-    </div><script type="module">
+    </div>
+
+<script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
@@ -473,7 +475,7 @@
         else if (deleting && c === 0) { deleting = false; w = (w + 1) % words.length; setTimeout(type, 500); }
     }
 
-    /* ---------- Load Activities (FIXED) ---------- */
+    /* ---------- Load Activities (FULLY FIXED) ---------- */
     async function loadActivities() {
         const container = document.getElementById('activitiesContainer');
         try {
@@ -493,13 +495,13 @@
             container.innerHTML = snap.docs.map(doc => {
                 const d = doc.data();
 
-                // Validate link
-                const rawLink = d.link?.trim();
+                // ---- VALIDATE & ESCAPE LINK ----
+                const rawLink = (d.link || '').trim();
                 const isValidLink = rawLink && rawLink.startsWith('http');
-                const validLink = isValidLink ? rawLink : null;
+                const safeLink = isValidLink ? encodeURI(rawLink) : null;
 
-                // Fallbacks
-                const icon = d.icon && /^fa[srlb] fa-/.test(d.icon) ? d.icon : 'fas fa-star';
+                // ---- FALLBACK VALUES ----
+                const icon = (d.icon && /^fa[srlb] fa-/.test(d.icon)) ? d.icon : 'fas fa-star';
                 const title = d.title || 'Untitled Activity';
                 const desc = d.description || 'No description available.';
                 const points = d.points || 0;
@@ -514,8 +516,8 @@
                             <span class="points-tag"><i class="fas fa-trophy"></i> ${points} Points</span>
                             <span style="color:#94a3b8;font-size:.9rem;"><i class="fas fa-clock"></i> ${duration}</span>
                         </div>
-                        ${validLink 
-                            ? `<a href="${validLink}" target="_blank" rel="noopener noreferrer" class="activity-link">
+                        ${safeLink 
+                            ? `<a href="${safeLink}" target="_blank" rel="noopener noreferrer" class="activity-link">
                                 Start Activity <i class="fas fa-arrow-right"></i>
                                </a>`
                             : `<button class="activity-link" disabled style="opacity:0.6; cursor:not-allowed; background:linear-gradient(135deg,#94a3b8,#64748b);">
