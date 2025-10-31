@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GTUverse - All Announcements</title>
-    <meta name="description" content="Stay updated with all GTU announcements and alerts.">
+    <meta name="description" content="Stay updated with all GTU announcements, exam schedules, results, and alerts.">
+    <meta name="keywords" content="GTU announcements, GTU exam, GTU results, GTU updates, GTUverse">
+    <meta name="author" content="GTUverse">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎓</text></svg>">
@@ -25,17 +27,15 @@
             --gradient-hero: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             --gradient-primary: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
             --gradient-info: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
-            --gradient-warning: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
             --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
             --shadow-md: 0 4px 12px rgba(0,0,0,0.1);
             --shadow-lg: 0 10px 30px rgba(0,0,0,0.12);
             --shadow-xl: 0 20px 40px rgba(0,0,0,0.15);
-            --shadow-2xl: 0 30px 60px rgba(0,0,0,0.2);
         }
 
-        * { 
-            margin: 0; 
-            padding: 0; 
+        * {
+            margin: 0;
+            padding: 0;
             box-sizing: border-box;
         }
 
@@ -50,7 +50,6 @@
             line-height: 1.7;
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
         }
 
         body.dark-mode {
@@ -63,12 +62,11 @@
             color: #f1f5f9;
         }
 
+        /* Animated Background */
         .bg-animation {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
             z-index: -1;
             overflow: hidden;
         }
@@ -78,80 +76,57 @@
             border-radius: 50%;
             filter: blur(120px);
             opacity: 0.15;
-            will-change: transform;
         }
 
         .bg-shape:nth-child(1) {
-            width: 700px;
-            height: 700px;
+            width: 700px; height: 700px;
             background: var(--gradient-info);
-            top: -350px;
-            left: -350px;
+            top: -350px; left: -350px;
             animation: morph1 25s ease-in-out infinite;
         }
 
         .bg-shape:nth-child(2) {
-            width: 600px;
-            height: 600px;
+            width: 600px; height: 600px;
             background: var(--gradient-warning);
-            bottom: -300px;
-            right: -300px;
+            bottom: -300px; right: -300px;
             animation: morph2 30s ease-in-out infinite;
         }
 
         @keyframes morph1 {
-            0%, 100% { 
-                transform: translate(0, 0) rotate(0deg) scale(1);
-                border-radius: 50%;
-            }
-            33% { 
-                transform: translate(50px, -50px) rotate(120deg) scale(1.15);
-                border-radius: 40% 60% 70% 30%;
-            }
-            66% { 
-                transform: translate(-40px, 40px) rotate(240deg) scale(0.9);
-                border-radius: 60% 40% 30% 70%;
-            }
+            0%, 100% { transform: translate(0,0) rotate(0deg) scale(1); border-radius: 50%; }
+            33% { transform: translate(50px,-50px) rotate(120deg) scale(1.15); border-radius: 40% 60% 70% 30%; }
+            66% { transform: translate(-40px,40px) rotate(240deg) scale(0.9); border-radius: 60% 40% 30% 70%; }
         }
 
         @keyframes morph2 {
-            0%, 100% { 
-                transform: translate(0, 0) rotate(0deg) scale(1);
-                border-radius: 50%;
-            }
-            33% { 
-                transform: translate(-60px, 60px) rotate(-120deg) scale(1.2);
-                border-radius: 70% 30% 50% 50%;
-            }
-            66% { 
-                transform: translate(50px, -50px) rotate(-240deg) scale(0.85);
-                border-radius: 30% 70% 70% 30%;
-            }
+            0%, 100% { transform: translate(0,0) rotate(0deg) scale(1); border-radius: 50%; }
+            33% { transform: translate(-60px,60px) rotate(-120deg) scale(1.2); border-radius: 70% 30% 50% 50%; }
+            66% { transform: translate(50px,-50px) rotate(-240deg) scale(0.85); border-radius: 30% 70% 70% 30%; }
         }
 
+        /* Header */
         header {
             position: fixed;
-            top: 0;
-            width: 100%;
+            top: 0; width: 100%;
             z-index: 1000;
-            background: rgba(255, 255, 255, 0.7);
+            background: rgba(255,255,255,0.7);
             backdrop-filter: blur(30px) saturate(180%);
-            border-bottom: 1px solid rgba(226, 232, 240, 0.5);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-bottom: 1px solid rgba(226,232,240,0.5);
+            transition: all 0.3s ease;
         }
 
         body.dark-mode header {
-            background: rgba(15, 23, 42, 0.8);
-            border-bottom-color: rgba(51, 65, 85, 0.5);
+            background: rgba(15,23,42,0.8);
+            border-bottom-color: rgba(51,65,85,0.5);
         }
 
-        header.scrolled { 
+        header.scrolled {
             box-shadow: var(--shadow-lg);
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(255,255,255,0.9);
         }
 
-        body.dark-mode header.scrolled { 
-            background: rgba(15, 23, 42, 0.95);
+        body.dark-mode header.scrolled {
+            background: rgba(15,23,42,0.95);
         }
 
         nav {
@@ -173,14 +148,12 @@
             background: var(--gradient-primary);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            cursor: pointer;
-            transition: all 0.3s ease;
             text-decoration: none;
+            transition: all 0.3s ease;
         }
 
-        .logo:hover { 
+        .logo:hover {
             transform: scale(1.05);
-            filter: brightness(1.2);
         }
 
         .logo i {
@@ -219,10 +192,10 @@
             position: absolute;
             bottom: 0.5rem;
             left: 50%;
-            transform: translateX(-50%) scaleX(0);
             width: 60%;
             height: 2px;
             background: var(--gradient-primary);
+            transform: translateX(-50%) scaleX(0);
             border-radius: 2px;
             transition: transform 0.3s ease;
         }
@@ -232,7 +205,7 @@
         }
 
         .nav-links a:hover {
-            background: rgba(59, 130, 246, 0.1);
+            background: rgba(59,130,246,0.1);
             color: var(--primary);
         }
 
@@ -241,35 +214,31 @@
             color: white !important;
             padding: 0.8rem 1.8rem !important;
             font-weight: 600;
-            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
+            box-shadow: 0 4px 15px rgba(37,211,102,0.4);
             transition: all 0.3s ease;
         }
-
-        .whatsapp-btn::before { display: none !important; }
 
         .whatsapp-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 25px rgba(37, 211, 102, 0.5);
-            background: linear-gradient(135deg, #20bd5a 0%, #0f7a6f 100%);
+            box-shadow: 0 6px 25px rgba(37,211,102,0.5);
         }
 
         .dark-toggle {
-            background: rgba(59, 130, 246, 0.1);
-            border: 1px solid rgba(59, 130, 246, 0.2);
+            background: rgba(59,130,246,0.1);
+            border: 1px solid rgba(59,130,246,0.2);
             color: var(--primary);
-            width: 46px;
-            height: 46px;
+            width: 46px; height: 46px;
             border-radius: 50%;
             cursor: pointer;
-            transition: all 0.3s ease;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 1.2rem;
+            transition: all 0.3s ease;
         }
 
         .dark-toggle:hover {
-            background: rgba(59, 130, 246, 0.2);
+            background: rgba(59,130,246,0.2);
             transform: rotate(180deg) scale(1.1);
         }
 
@@ -281,17 +250,17 @@
         }
 
         .hamburger span {
-            width: 28px;
-            height: 3px;
+            width: 28px; height: 3px;
             background: var(--dark);
             border-radius: 3px;
             transition: all 0.3s ease;
         }
 
-        .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(8px, 8px); }
+        .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(8px,8px); }
         .hamburger.active span:nth-child(2) { opacity: 0; }
-        .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(8px, -8px); }
+        .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(8px,-8px); }
 
+        /* Announcements Section */
         .announcements {
             padding: 8rem 2rem 4rem;
             max-width: 1200px;
@@ -313,7 +282,6 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             line-height: 1.2;
-            letter-spacing: -0.02em;
         }
 
         .section-subtitle {
@@ -332,13 +300,32 @@
             gap: 1.5rem;
         }
 
+        /* Skeleton Loader */
+        .skeleton {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+            border-radius: 16px;
+            height: 120px;
+        }
+
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        body.dark-mode .skeleton {
+            background: linear-gradient(90deg, #1e293b 25%, #334155 50%, #1e293b 75%);
+        }
+
+        /* Announcement Item */
         .announcement-item {
             background: var(--white);
             padding: 2.5rem;
             border-radius: 20px;
             box-shadow: var(--shadow-md);
             border: 2px solid var(--border);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.4s ease;
             position: relative;
             overflow: hidden;
         }
@@ -346,10 +333,8 @@
         .announcement-item::before {
             content: '';
             position: absolute;
-            left: 0;
-            top: 0;
-            width: 6px;
-            height: 100%;
+            left: 0; top: 0;
+            width: 6px; height: 100%;
             background: var(--gradient-info);
             transform: scaleY(0);
             transition: transform 0.4s ease;
@@ -366,7 +351,7 @@
         }
 
         .announcement-item.top-ann {
-            background: linear-gradient(135deg, rgba(6, 182, 212, 0.05) 0%, rgba(59, 130, 246, 0.05) 100%);
+            background: linear-gradient(135deg, rgba(6,182,212,0.05), rgba(59,130,246,0.05));
             border-color: var(--info);
         }
 
@@ -384,8 +369,7 @@
         }
 
         .announcement-icon {
-            width: 60px;
-            height: 60px;
+            width: 60px; height: 60px;
             border-radius: 16px;
             background: var(--gradient-info);
             display: flex;
@@ -394,15 +378,15 @@
             color: white;
             font-size: 1.8rem;
             flex-shrink: 0;
-            transition: all 0.3s ease;
+            transition: transform 0.3s ease;
         }
 
         .announcement-item.top-ann .announcement-icon {
             background: var(--gradient-primary);
-            animation: pulse-icon 2s ease-in-out infinite;
+            animation: pulse 2s ease-in-out infinite;
         }
 
-        @keyframes pulse-icon {
+        @keyframes pulse {
             0%, 100% { transform: scale(1); }
             50% { transform: scale(1.05); }
         }
@@ -411,30 +395,22 @@
             transform: rotate(10deg) scale(1.1);
         }
 
-        .announcement-title-wrapper {
-            flex: 1;
-        }
-
         .announcement-title {
             font-family: 'Poppins', sans-serif;
             font-weight: 700;
+            font-size: 1.5rem;
             color: var(--dark);
             margin-bottom: 0.5rem;
-            font-size: 1.5rem;
             line-height: 1.4;
         }
 
         .announcement-date {
-            display: inline-flex;
+            display: flex;
             align-items: center;
             gap: 0.5rem;
             color: var(--medium);
             font-size: 0.9rem;
             font-weight: 500;
-        }
-
-        .announcement-date i {
-            font-size: 0.85rem;
         }
 
         .announcement-desc {
@@ -446,8 +422,7 @@
 
         .priority-badge {
             position: absolute;
-            top: 1.5rem;
-            right: 1.5rem;
+            top: 1.5rem; right: 1.5rem;
             padding: 0.5rem 1.2rem;
             border-radius: 20px;
             font-size: 0.8rem;
@@ -456,7 +431,7 @@
             letter-spacing: 0.5px;
             background: var(--gradient-primary);
             color: white;
-            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+            box-shadow: 0 4px 12px rgba(59,130,246,0.3);
         }
 
         .announcement-link {
@@ -471,16 +446,16 @@
             font-weight: 600;
             font-size: 0.95rem;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+            box-shadow: 0 4px 15px rgba(59,130,246,0.3);
         }
 
         .announcement-link:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+            box-shadow: 0 6px 20px rgba(59,130,246,0.4);
         }
 
         .show-more {
-            display: inline-flex;
+            display: flex;
             align-items: center;
             gap: 0.8rem;
             background: var(--gradient-primary);
@@ -491,56 +466,33 @@
             font-weight: 600;
             font-size: 1.15rem;
             margin: 3rem auto 0;
-            transition: all 0.3s ease;
-            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
-            display: flex;
             width: fit-content;
-            justify-content: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(59,130,246,0.3);
         }
 
         .show-more:hover {
             transform: translateY(-3px);
-            box-shadow: 0 10px 35px rgba(59, 130, 246, 0.4);
+            box-shadow: 0 10px 35px rgba(59,130,246,0.4);
         }
 
-        .loading {
+        .empty-state, .error-state {
             text-align: center;
             padding: 4rem;
             color: var(--medium);
-            font-size: 1.2rem;
         }
 
-        .loading i {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 4rem;
-        }
-
-        .empty-state i {
+        .empty-state i, .error-state i {
             font-size: 4rem;
-            color: var(--medium);
             opacity: 0.3;
             margin-bottom: 1.5rem;
-        }
-
-        .empty-state p {
-            color: var(--medium);
-            font-size: 1.2rem;
+            display: block;
         }
 
         .fade-in {
             opacity: 0;
-            transform: translateY(50px);
-            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
         }
 
         .fade-in.visible {
@@ -550,13 +502,10 @@
 
         @media (max-width: 768px) {
             .hamburger { display: flex; }
-
             .nav-links {
                 position: absolute;
-                top: 100%;
-                left: 0;
-                width: 100%;
-                background: rgba(255, 255, 255, 0.98);
+                top: 100%; left: 0; width: 100%;
+                background: rgba(255,255,255,0.98);
                 backdrop-filter: blur(30px);
                 flex-direction: column;
                 padding: 2rem;
@@ -565,10 +514,10 @@
                 transform: translateY(-100%);
                 opacity: 0;
                 visibility: hidden;
-                transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                transition: all 0.4s ease;
             }
 
-            body.dark-mode .nav-links { background: rgba(15, 23, 42, 0.98); }
+            body.dark-mode .nav-links { background: rgba(15,23,42,0.98); }
 
             .nav-links.active {
                 transform: translateY(0);
@@ -577,18 +526,8 @@
             }
 
             .announcements { padding: 6rem 1.5rem 3rem; }
-            .announcement-item { padding: 2rem; }
-            
-            .announcement-header {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            .priority-badge {
-                position: static;
-                margin-top: 1rem;
-                display: inline-block;
-            }
+            .announcement-header { flex-direction: column; align-items: flex-start; }
+            .priority-badge { position: static; margin-top: 1rem; display: inline-block; }
         }
 
         @media (max-width: 480px) {
@@ -609,7 +548,6 @@
                 <span>GTUverse</span>
             </a>
             <ul class="nav-links" id="navLinks">
-                
                 <li><a href="papers.html">Papers</a></li>
                 <li><a href="announcements.html">Announcements</a></li>
                 <li><a href="books.html">Books</a></li>
@@ -618,14 +556,14 @@
                 <li><a href="https://chat.whatsapp.com/LLq6Sn0gvqwHHIJxxNaNaM" target="_blank" class="whatsapp-btn">
                     <i class="fab fa-whatsapp"></i> Join Community
                 </a></li>
-                <li><button class="dark-toggle" onclick="toggleDarkMode()" aria-label="Toggle Dark Mode">
-                    <i class="fas fa-moon" id="darkToggleIcon"></i>
-                </button></li>
+                <li>
+                    <button class="dark-toggle" id="darkToggle" aria-label="Toggle Dark Mode">
+                        <i class="fas fa-moon" id="darkIcon"></i>
+                    </button>
+                </li>
             </ul>
-            <div class="hamburger" id="hamburger" aria-label="Toggle Menu">
-                <span></span>
-                <span></span>
-                <span></span>
+            <div class="hamburger" id="hamburger" aria-label="Menu">
+                <span></span><span></span><span></span>
             </div>
         </nav>
     </header>
@@ -637,10 +575,10 @@
         </div>
 
         <ul class="announcements-list" id="announcementsList">
-            <li class="loading">
-                <i class="fas fa-spinner"></i>
-                <p>Loading announcements...</p>
-            </li>
+            <!-- Skeleton Loaders -->
+            <li class="skeleton"></li>
+            <li class="skeleton"></li>
+            <li class="skeleton"></li>
         </ul>
 
         <a href="#" class="show-more" id="showMoreBtn" style="display: none;">
@@ -649,163 +587,171 @@
     </section>
 
     <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getFirestore, collection, getDocs, query, orderBy, limit, startAfter } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getFirestore, collection, getDocs, query, orderBy, limit, startAfter } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-const firebaseConfig = {
-    apiKey: "AIzaSyC0QTiJoEIkS7rGDFrd057Kx3nMz7_s2EI",
-    authDomain: "gtu-verse.firebaseapp.com",
-    projectId: "gtu-verse",
-    storageBucket: "gtu-verse.firebasestorage.app",
-    messagingSenderId: "99377635087",
-    appId: "1:99377635087:web:05ba93798e36040cfe287a",
-    measurementId: "G-YV4W2LT96S"
-};
+        const firebaseConfig = {
+            apiKey: "AIzaSyC0QTiJoEIkS7rGDFrd057Kx3nMz7_s2EI",
+            authDomain: "gtu-verse.firebaseapp.com",
+            projectId: "gtu-verse",
+            storageBucket: "gtu-verse.firebasestorage.app",
+            messagingSenderId: "99377635087",
+            appId: "1:99377635087:web:05ba93798e36040cfe287a",
+            measurementId: "G-YV4W2LT96S"
+        };
 
-try {
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
+        let lastDoc = null;
+        const PAGE_SIZE = 10;
+        let isLoading = false;
 
-    let lastDoc = null;
-    const pageSize = 10;
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
 
-    function toggleDarkMode() {
-        document.body.classList.toggle('dark-mode');
-        const isDark = document.body.classList.contains('dark-mode');
-        const icon = document.getElementById('darkToggleIcon');
-        if (icon) {
-            icon.classList.toggle('fa-moon', !isDark);
-            icon.classList.toggle('fa-sun', isDark);
-        }
-        localStorage.setItem('darkMode', isDark);
-    }
-
-    if (localStorage.getItem('darkMode') === 'true') {
-        toggleDarkMode();
-    }
-
-    function toggleMenu() {
-        const navLinks = document.getElementById('navLinks');
+        // DOM Elements
+        const announcementsList = document.getElementById('announcementsList');
+        const showMoreBtn = document.getElementById('showMoreBtn');
+        const darkToggle = document.getElementById('darkToggle');
+        const darkIcon = document.getElementById('darkIcon');
         const hamburger = document.getElementById('hamburger');
-        if (navLinks && hamburger) {
+        const navLinks = document.getElementById('navLinks');
+        const header = document.getElementById('header');
+
+        // Dark Mode
+        function initDarkMode() {
+            const isDark = localStorage.getItem('darkMode') === 'true';
+            document.body.classList.toggle('dark-mode', isDark);
+            darkIcon.classList.toggle('fa-moon', !isDark);
+            darkIcon.classList.toggle('fa-sun', isDark);
+        }
+
+        darkToggle?.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            const isDark = document.body.classList.contains('dark-mode');
+            localStorage.setItem('darkMode', isDark);
+            darkIcon.classList.toggle('fa-moon', !isDark);
+            darkIcon.classList.toggle('fa-sun', isDark);
+        });
+
+        // Mobile Menu
+        hamburger?.addEventListener('click', () => {
             navLinks.classList.toggle('active');
             hamburger.classList.toggle('active');
-        }
-    }
-
-    window.addEventListener('scroll', () => {
-        const header = document.getElementById('header');
-        if (header) {
-            header.classList.toggle('scrolled', window.scrollY > 50);
-        }
-    });
-
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -100px 0px'
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('visible');
-            }
         });
-    }, observerOptions);
 
-    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+        // Header Scroll
+        window.addEventListener('scroll', () => {
+            header.classList.toggle('scrolled', window.scrollY > 50);
+        });
 
-    async function loadAnnouncements(reset = true) {
-        const announcementsList = document.getElementById('announcementsList');
-        try {
-            let q = query(collection(db, 'announcements'), orderBy('createdAt', 'desc'), limit(pageSize));
-            if (!reset && lastDoc) q = query(q, startAfter(lastDoc));
+        // Intersection Observer for Fade-in
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
 
-            const snapshot = await getDocs(q);
-            const anns = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 
-            lastDoc = snapshot.docs[snapshot.docs.length - 1] || null;
-            document.getElementById('showMoreBtn').style.display = snapshot.docs.length < pageSize ? 'none' : 'flex';
+        // Format Date
+        function formatDate(dateStr) {
+            if (!dateStr) return 'Date not specified';
+            try {
+                const date = new Date(dateStr);
+                return date.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
+            } catch {
+                return dateStr;
+            }
+        }
 
+        // Render Announcements
+        function renderAnnouncements(anns, reset = false) {
             if (reset) announcementsList.innerHTML = '';
-            
-            if (anns.length > 0) {
-                const newItems = anns.map((a, index) => {
-                    const linkButton = a.link ? `<a href="${a.link}" target="_blank" class="announcement-link">
-                        <i class="fas fa-external-link-alt"></i> Read Full Announcement
-                    </a>` : '';
-                    
-                    return `
-                    <li class="announcement-item fade-in ${index < 3 && reset ? 'top-ann' : ''}">
-                        ${index < 3 && reset ? '<span class="priority-badge"><i class="fas fa-star"></i> Priority</span>' : ''}
-                        <div class="announcement-header">
-                            <div class="announcement-icon">
-                                <i class="fas fa-bullhorn"></i>
-                            </div>
-                            <div class="announcement-title-wrapper">
-                                <h3 class="announcement-title">${a.title || 'Untitled Announcement'}</h3>
-                                <div class="announcement-date">
-                                    <i class="far fa-calendar-alt"></i>
-                                    ${a.date || 'Date not specified'}
-                                </div>
+
+            const fragment = document.createDocumentFragment();
+            anns.forEach((a, i) => {
+                const isTop = reset && i < 3;
+                const item = document.createElement('li');
+                item.className = `announcement-item fade-in ${isMeteor ? 'top-ann' : ''}`;
+                item.innerHTML = `
+                    ${isTop ? '<span class="priority-badge"><i class="fas fa-star"></i> Priority</span>' : ''}
+                    <div class="announcement-header">
+                        <div class="announcement-icon">
+                            <i class="fas fa-bullhorn"></i>
+                        </div>
+                        <div class="announcement-title-wrapper">
+                            <h3 class="announcement-title">${a.title || 'Untitled'}</h3>
+                            <div class="announcement-date">
+                                <i class="far fa-calendar-alt"></i> ${formatDate(a.date)}
                             </div>
                         </div>
-                        <p class="announcement-desc">${a.desc || 'No description available for this announcement.'}</p>
-                        ${linkButton}
-                    </li>
-                `}).join('');
-                announcementsList.innerHTML += newItems;
-            } else if (reset) {
-                announcementsList.innerHTML = '<li class="empty-state"><i class="fas fa-inbox"></i><p>No announcements available at this time. Check back later for updates!</p></li>';
-            }
-
-            document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
-        } catch (error) {
-            console.error('Error loading announcements:', error);
-            let errorMessage = 'Unable to load announcements. Please try again later.';
-            if (error.code === 'failed-precondition') {
-                errorMessage = 'Database index required. Please contact support.';
-            } else if (error.code === 'permission-denied') {
-                errorMessage = 'Permission denied. Please check your connection.';
-            }
-            announcementsList.innerHTML = `<li class="empty-state"><i class="fas fa-exclamation-circle"></i><p>${errorMessage}</p></li>`;
+                    </div>
+                    <p class="announcement-desc">${a.desc || 'No description available.'}</p>
+                    ${a.link ? `<a href="${a.link}" target="_blank" class="announcement-link">
+                        <i class="fas fa-external-link-alt"></i> Read Full Announcement
+                    </a>` : ''}
+                `;
+                fragment.appendChild(item);
+            });
+            announcementsList.appendChild(fragment);
+            document.querySelectorAll('.announcement-item.fade-in').forEach(el => observer.observe(el));
         }
-    }
 
-    function loadMoreAnnouncements() {
-        const showMoreBtn = document.getElementById('showMoreBtn');
-        if (showMoreBtn) {
-            showMoreBtn.style.pointerEvents = 'none';
+        // Load Announcements
+        async function loadAnnouncements(reset = true) {
+            if (isLoading) return;
+            isLoading = true;
+
+            try {
+                let q = query(collection(db, 'announcements'), orderBy('createdAt', 'desc'), limit(PAGE_SIZE));
+                if (!reset && lastDoc) q = query(q, startAfter(lastDoc));
+
+                const snapshot = await getDocs(q);
+                const docs = snapshot.docs;
+                const anns = docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
+                lastDoc = docs.length > 0 ? docs[docs.length - 1] : null;
+                showMoreBtn.style.display = docs.length < PAGE_SIZE ? 'none' : 'flex';
+
+                if (anns.length === 0 && reset) {
+                    announcementsList.innerHTML = `
+                        <li class="empty-state">
+                            <i class="fas fa-inbox"></i>
+                            <p>No announcements available. Check back later!</p>
+                        </li>`;
+                    showMoreBtn.style.display = 'none';
+                    return;
+                }
+
+                renderAnnouncements(anns, reset);
+            } catch (error) {
+                console.error("Firestore Error:", error);
+                announcementsList.innerHTML = `
+                    <li class="error-state">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <p>Failed to load announcements. Please try again later.</p>
+                    </li>`;
+            } finally {
+                isLoading = false;
+            }
+        }
+
+        // Show More
+        showMoreBtn.addEventListener('click', async (e) => {
+            e.preventDefault();
             showMoreBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading...';
-            loadAnnouncements(false).then(() => {
-                showMoreBtn.style.pointerEvents = 'auto';
-                showMoreBtn.innerHTML = 'Show More Announcements <i class="fas fa-arrow-down"></i>';
-            }).catch(() => {
-                showMoreBtn.style.pointerEvents = 'auto';
-                showMoreBtn.innerHTML = 'Show More Announcements <i class="fas fa-arrow-down"></i>';
-            });
-        }
-    }
+            await loadAnnouncements(false);
+            showMoreBtn.innerHTML = 'Show More Announcements <i class="fas fa-arrow-down"></i>';
+        });
 
-    document.addEventListener('DOMContentLoaded', async () => {
-        try {
-            document.getElementById('darkToggleBtn')?.addEventListener('click', toggleDarkMode);
-            document.getElementById('showMoreBtn')?.addEventListener('click', (e) => {
-                e.preventDefault();
-                loadMoreAnnouncements();
-            });
-            document.getElementById('hamburger')?.addEventListener('click', toggleMenu);
-            
-            await loadAnnouncements();
-        } catch (error) {
-            console.error('Error in initialization:', error);
-            document.getElementById('announcementsList').innerHTML = '<li class="empty-state"><i class="fas fa-exclamation-circle"></i><p>Error loading page. Please refresh.</p></li>';
-        }
-    });
-} catch (error) {
-    console.error('Error initializing Firebase:', error);
-    document.getElementById('announcementsList').innerHTML = '<li class="empty-state"><i class="fas fa-exclamation-circle"></i><p>Failed to initialize. Please check your connection.</p></li>';
-}
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            initDarkMode();
+            loadAnnouncements();
+        });
     </script>
 </body>
 </html>
