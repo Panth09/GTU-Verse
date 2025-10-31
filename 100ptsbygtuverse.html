@@ -201,8 +201,14 @@
             content: ''; position: absolute; inset: 0;
             background: linear-gradient(135deg, rgba(99,102,241,.05) 0%, rgba(168,85,247,.05) 100%);
             opacity: 0; transition: opacity .3s;
+            pointer-events: none;
+            z-index: 0;
         }
         .activity-card:hover::before { opacity: 1; }
+        .activity-card > * {
+            position: relative;
+            z-index: 1;
+        }
         .activity-card:hover {
             transform: translateY(-12px); box-shadow: 0 25px 60px rgba(99,102,241,.4);
             border-color: #6366f1;
@@ -242,8 +248,13 @@
             color: #fff; padding: 1rem 2rem; border-radius: 12px;
             text-decoration: none; font-weight: 600; transition: .3s;
             border: none; cursor: pointer; width: 100%;
+            position: relative;
+            z-index: 10;
         }
-        .activity-link:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(99,102,241,.4); }
+        .activity-link:hover { 
+            transform: translateY(-2px); 
+            box-shadow: 0 10px 30px rgba(99,102,241,.4); 
+        }
         .activity-link:disabled {
             opacity: 0.6; cursor: not-allowed;
             background: linear-gradient(135deg, #94a3b8, #64748b);
@@ -499,6 +510,13 @@
 
             container.innerHTML = snap.docs.map(doc => {
                 const d = doc.data();
+                
+                // Debug logging
+                console.log('Activity data:', {
+                    title: d.title,
+                    link: d.link,
+                    hasLink: d.link && d.link.trim() !== ''
+                });
 
                 // Fallback values
                 const icon = (d.icon && /^fa[srlb] fa-/.test(d.icon)) ? d.icon : 'fas fa-star';
