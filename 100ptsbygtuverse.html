@@ -478,8 +478,8 @@
         }
     }
 
-    /* ---------- Init ---------- */
-    window.addEventListener('load', () => {
+   /* ---------- Init ---------- */
+    window.addEventListener('DOMContentLoaded', () => {
         // Cache DOM elements
         themeToggle = document.getElementById('themeToggle');
         themeIcon   = document.getElementById('themeIcon');
@@ -490,13 +490,16 @@
         setTheme(saved === 'light');
 
         // Set up event listeners
-        themeToggle.addEventListener('click', toggleTheme);
+        if (themeToggle) {
+            themeToggle.addEventListener('click', toggleTheme);
+        }
         window.addEventListener('scroll', handleScroll);
 
         // Initialize other features
         createParticles();
         type();
         loadActivities();
+    });s
     });
 </script>
 </body>
