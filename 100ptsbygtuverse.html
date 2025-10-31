@@ -46,10 +46,8 @@
         }
 
         /* ==== Background ==== */
-        .gradient-bg {
-            position: fixed; inset: 0; z-index: -1;
-            background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 50%, #0a0a0f 100%);
-        }
+        .gradient-bg { position: fixed; inset: 0; z-index: -1;
+            background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 50%, #0a0a0f 100%); }
         .gradient-bg::before, .gradient-bg::after {
             content: ''; position: absolute; width: 800px; height: 800px;
             border-radius: 50%; filter: blur(120px); opacity: .15;
@@ -325,7 +323,7 @@
                 <span>GTUverse</span>
             </a>
             <div class="nav-actions">
-                <button class="dark-toggle" onclick="toggleTheme()" aria-label="Toggle Theme">
+                <button class="dark-toggle" id="themeToggle" aria-label="Toggle Theme">
                     <i class="fas fa-sun" id="themeIcon"></i>
                 </button>
                 <a href="index.html" class="back-btn">
@@ -336,7 +334,7 @@
     </header>
 
     <section class="hero-section">
-        <h1>Get <span class="typewriter" id="typewriter"></span> FREE! <i class="fas fa-trophy"></i></h1>
+        <h1>Get <span class="typewriter" id="typewriter"></span> FREE!</h1>
         <p>Complete job simulations, participate in events, and earn activity points effortlessly. No hassle, just results!</p>
         <div class="points-badge">
             <i class="fas fa-trophy"></i>
@@ -400,26 +398,36 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        /* ==== Theme Toggle ==== */
-        function toggleTheme() {
-            const body = document.body;
-            const icon = document.getElementById('themeIcon');
-            body.classList.toggle('light-mode');
-            const isLight = body.classList.contains('light-mode');
-            icon.classList.toggle('fa-sun', !isLight);
-            icon.classList.toggle('fa-moon', isLight);
+        /* ---------- Theme Toggle (fixed) ---------- */
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon   = document.getElementById('themeIcon');
+
+        function setTheme(isLight) {
+            document.body.classList.toggle('light-mode', isLight);
+            themeIcon.classList.toggle('fa-sun', !isLight);
+            themeIcon.classList.toggle('fa-moon', isLight);
             localStorage.setItem('theme', isLight ? 'light' : 'dark');
         }
-        if (localStorage.getItem('theme') === 'light') toggleTheme();
 
-        /* ==== Header Scroll ==== */
+        function toggleTheme() {
+            const willBeLight = !document.body.classList.contains('light-mode');
+            setTheme(willBeLight);
+        }
+
+        // Apply saved theme on load
+        const saved = localStorage.getItem('theme');
+        setTheme(saved === 'light');
+
+        themeToggle.addEventListener('click', toggleTheme);
+
+        /* ---------- Header Scroll ---------- */
         window.addEventListener('scroll', () => {
             document.getElementById('header').classList.toggle('scrolled', window.scrollY > 50);
             document.querySelector('.back-to-top').classList.toggle('visible', window.scrollY > 500);
         });
-        function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
+        window.scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
 
-        /* ==== Particles ==== */
+        /* ---------- Particles ---------- */
         function createParticles() {
             const container = document.getElementById('particles');
             for (let i = 0; i < 30; i++) {
@@ -432,7 +440,7 @@
             }
         }
 
-        /* ==== Typewriter ==== */
+        /* ---------- Typewriter ---------- */
         const words = ['100 Activity Points', 'GTU Success', 'Certificates', 'Your Future'];
         const el = document.getElementById('typewriter');
         let w = 0, c = 0, deleting = false;
@@ -444,7 +452,7 @@
             else if (deleting && c === 0) { deleting = false; w = (w + 1) % words.length; setTimeout(type, 500); }
         }
 
-        /* ==== Load Activities ==== */
+        /* ---------- Load Activities ---------- */
         async function loadActivities() {
             const container = document.getElementById('activitiesContainer');
             try {
@@ -476,7 +484,7 @@
             }
         }
 
-        /* ==== Init ==== */
+        /* ---------- Init ---------- */
         window.addEventListener('load', () => {
             createParticles();
             type();
