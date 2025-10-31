@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GTUverse - Your Ultimate GTU Study Hub: Papers, Points & Updates</title>
     <meta name="description" content="Empower your GTU journey with instant access to midsem papers, books, activity points, real-time announcements, and a thriving student community. Join 2500+ GTU students today!">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><linearGradient id='grad' x1='0%25' y1='0%25' x2='100%25' y2='100%25'><stop offset='0%25' style='stop-color:%236366f1;stop-opacity:1'/><stop offset='100%25' style='stop-color:%23a855f7;stop-opacity:1'/></linearGradient></defs><circle cx='50' cy='50' r='45' fill='url(%23grad)'/><path d='M30 45 L45 30 L70 55 L45 80 Z' fill='white' opacity='0.9'/><circle cx='45' cy='55' r='8' fill='white'/></svg>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
@@ -160,15 +161,46 @@
 
         .logo:hover::after { width: 100%; }
 
-        .logo i {
-            font-size: 2.2rem;
+        .logo-icon {
+            width: 42px;
+            height: 42px;
+            background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            color: white;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
             animation: logo-pulse 2s ease-in-out infinite;
-            filter: drop-shadow(0 0 10px rgba(99, 102, 241, 0.5));
+            position: relative;
+            overflow: hidden;
+        }
+
+        .logo-icon::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: logo-shine 3s ease-in-out infinite;
+        }
+
+        @keyframes logo-shine {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
         }
 
         @keyframes logo-pulse {
             0%, 100% { transform: scale(1); }
             50% { transform: scale(1.1); }
+        }
+
+        .logo:hover .logo-icon {
+            transform: rotate(360deg) scale(1.15);
+            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.6);
         }
 
         .nav-links {
@@ -296,6 +328,12 @@
             line-height: 1.05;
             letter-spacing: -0.04em;
             text-shadow: 0 0 80px rgba(99, 102, 241, 0.3);
+        }
+
+        .typewriter {
+            display: inline-block;
+            min-width: 400px;
+            text-align: left;
         }
 
         @keyframes fadeInUp {
@@ -532,6 +570,24 @@
             color: white;
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
             transition: all 0.5s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-icon::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+            animation: icon-shine 3s ease-in-out infinite;
+        }
+
+        @keyframes icon-shine {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
         }
 
         .stat-card:nth-child(1) .stat-icon {
@@ -646,6 +702,19 @@
             color: white;
             transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-icon::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.2), transparent);
+            animation: icon-shine 3s ease-in-out infinite;
         }
 
         .feature-card:nth-child(1) .feature-icon {
@@ -1097,7 +1166,9 @@
     <header id="header">
         <nav>
             <a href="https://gtu-verse.vercel.app" class="logo">
-                <i class="fas fa-graduation-cap"></i>
+                <div class="logo-icon">
+                    <i class="fas fa-rocket"></i>
+                </div>
                 <span>GTUverse</span>
             </a>
             <ul class="nav-links" id="navLinks">
@@ -1142,19 +1213,19 @@
 
             <div class="quick-links">
                 <a href="papers.html" class="quick-link">
-                    <i class="fas fa-file-alt"></i>
+                    <i class="fas fa-file-pdf"></i>
                     <span>Papers</span>
                 </a>
                 <a href="books.html" class="quick-link">
-                    <i class="fas fa-book"></i>
+                    <i class="fas fa-book-open"></i>
                     <span>Books</span>
                 </a>
                 <a href="announcements.html" class="quick-link">
-                    <i class="fas fa-bullhorn"></i>
+                    <i class="fas fa-megaphone"></i>
                     <span>Announcements</span>
                 </a>
                 <a href="100ptsbygtuverse.html" class="quick-link">
-                    <i class="fas fa-trophy"></i>
+                    <i class="fas fa-award"></i>
                     <span>100 Points</span>
                 </a>
                 <div class="quick-link community-full">
@@ -1174,17 +1245,17 @@
     <section class="stats">
         <div class="stats-grid">
             <div class="stat-card fade-in">
-                <div class="stat-icon"><i class="fas fa-users"></i></div>
+                <div class="stat-icon"><i class="fas fa-user-graduate"></i></div>
                 <div class="stat-number" data-target="2500">0</div>
                 <div class="stat-label">Active GTU Students</div>
             </div>
             <div class="stat-card fade-in">
-                <div class="stat-icon"><i class="fas fa-file-alt"></i></div>
+                <div class="stat-icon"><i class="fas fa-file-pdf"></i></div>
                 <div class="stat-number" data-target="1200">0</div>
                 <div class="stat-label">Midsem Papers</div>
             </div>
             <div class="stat-card fade-in">
-                <div class="stat-icon"><i class="fas fa-bell"></i></div>
+                <div class="stat-icon"><i class="fas fa-bolt"></i></div>
                 <div class="stat-number" data-target="75">0</div>
                 <div class="stat-label">Live Updates</div>
             </div>
@@ -1198,7 +1269,7 @@
         </div>
         <div class="features-grid">
             <div class="feature-card fade-in">
-                <div class="feature-icon"><i class="fas fa-archive"></i></div>
+                <div class="feature-icon"><i class="fas fa-folder-open"></i></div>
                 <h3>Midsem Paper Vault</h3>
                 <p>Curated collection of GTU midsem and endsem papers with solutions. Filter by branch, semester, and subject for laser-focused prep.</p>
                 <ul class="feature-list">
@@ -1209,7 +1280,7 @@
                 <a href="papers.html" class="feature-link">View All Papers <i class="fas fa-arrow-right"></i></a>
             </div>
             <div class="feature-card fade-in">
-                <div class="feature-icon"><i class="fas fa-book"></i></div>
+                <div class="feature-icon"><i class="fas fa-book-open"></i></div>
                 <h3>Textbook Library</h3>
                 <p>Access a wide range of GTU-recommended textbooks and reference materials for all branches and semesters.</p>
                 <ul class="feature-list">
@@ -1220,7 +1291,7 @@
                 <a href="books.html" class="feature-link">Explore Books <i class="fas fa-arrow-right"></i></a>
             </div>
             <div class="feature-card fade-in">
-                <div class="feature-icon"><i class="fas fa-clipboard-list"></i></div>
+                <div class="feature-icon"><i class="fas fa-star"></i></div>
                 <h3>Activity Points Guide</h3>
                 <p>Comprehensive guide to earn 100+ GTU activity points through various activities, events, and contributions.</p>
                 <ul class="feature-list">
@@ -1231,7 +1302,7 @@
                 <a href="100ptsbygtuverse.html" class="feature-link">Get 100 Points <i class="fas fa-arrow-right"></i></a>
             </div>
             <div class="feature-card fade-in">
-                <div class="feature-icon"><i class="fas fa-bullhorn"></i></div>
+                <div class="feature-icon"><i class="fas fa-bell-on"></i></div>
                 <h3>Real-Time GTU Alerts</h3>
                 <p>Push notifications for exam dates, result alerts, syllabus changes, and college events. Stay ahead, never behind.</p>
                 <ul class="feature-list">
@@ -1242,7 +1313,7 @@
                 <a href="announcements.html" class="feature-link">View Alerts <i class="fas fa-arrow-right"></i></a>
             </div>
             <div class="feature-card fade-in">
-                <div class="feature-icon"><i class="fas fa-users"></i></div>
+                <div class="feature-icon"><i class="fas fa-user-friends"></i></div>
                 <h3>Thriving Community Hub</h3>
                 <p>Connect with 2500+ GTU peers on Telegram for doubt-solving, group studies, and resource sharing.</p>
                 <ul class="feature-list">
@@ -1318,6 +1389,26 @@
         const typewriterWords = ['GTU Journey', 'Success Story', 'Excellence', 'Academic Mastery', 'Achievement'];
         const typewriterEl = document.getElementById('typewriter');
         let wordIndex = 0, charIndex = 0, isDeleting = false;
+
+        // Set fixed width based on longest word
+        function setTypewriterWidth() {
+            const tempSpan = document.createElement('span');
+            tempSpan.style.visibility = 'hidden';
+            tempSpan.style.position = 'absolute';
+            tempSpan.style.whiteSpace = 'nowrap';
+            tempSpan.style.font = window.getComputedStyle(typewriterEl).font;
+            document.body.appendChild(tempSpan);
+            
+            let maxWidth = 0;
+            typewriterWords.forEach(word => {
+                tempSpan.textContent = word;
+                const width = tempSpan.offsetWidth;
+                if (width > maxWidth) maxWidth = width;
+            });
+            
+            typewriterEl.style.minWidth = `${maxWidth + 20}px`;
+            document.body.removeChild(tempSpan);
+        }
 
         function typeWriter() {
             const currentWord = typewriterWords[wordIndex];
@@ -1440,6 +1531,7 @@
         // Initialize on Load
         window.addEventListener('load', () => {
             createParticles();
+            setTypewriterWidth();
             typeWriter();
         });
     </script>
