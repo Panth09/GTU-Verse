@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GTUverse - Your Ultimate GTU Study Hub: Papers, Points & Updates</title>
-    <meta name="description" content="Empower your GTU journey with instant access to midsem papers, books, activity points, real-time announcements, and a thriving student community. Join 1500+ GTU students today!">
+    <meta name="description" content="Empower your GTU journey with instant access to midsem papers, books, activity points, real-time announcements, and a thriving student community. Join 2500+ GTU students today!">
     <meta name="keywords" content="GTU, midsem papers, books, activity points, GTU announcements, GTU study resources, GTU community">
     <link rel="canonical" href="https://gtuverse.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -279,11 +279,11 @@
         }
 
         .whatsapp-btn {
-            background: linear-gradient(135deg, #25d366 0%, #128c7e 100%);
+            background: linear-gradient(135deg, #229ED9 0%, #3B82F6 100%);
             color: white !important;
             padding: 0.8rem 1.8rem !important;
             font-weight: 600;
-            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
+            box-shadow: 0 4px 15px rgba(34, 158, 217, 0.4);
             transition: all 0.3s ease;
         }
 
@@ -291,8 +291,8 @@
 
         .whatsapp-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 25px rgba(37, 211, 102, 0.5);
-            background: linear-gradient(135deg, #20bd5a 0%, #0f7a6f 100%);
+            box-shadow: 0 6px 25px rgba(34, 158, 217, 0.5);
+            background: linear-gradient(135deg, #1e90d0 0%, #2563eb 100%);
         }
 
         .dark-toggle {
@@ -334,7 +334,7 @@
         .hamburger.active span:nth-child(2) { opacity: 0; }
         .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(8px, -8px); }
 
-        /* Hero Section with Advanced Effects */
+        /* Hero Section */
         .hero {
             margin-top: 80px;
             padding: 160px 2rem 120px;
@@ -382,7 +382,7 @@
         .hero-subtitle {
             font-size: clamp(1.2rem, 2.5vw, 1.6rem);
             color: var(--medium);
-            margin-bottom: 3.5rem;
+            margin-bottom: 2rem;
             max-width: 800px;
             margin-left: auto;
             margin-right: auto;
@@ -395,14 +395,14 @@
             display: inline-flex;
             align-items: center;
             gap: 0.8rem;
-            background: linear-gradient(135deg, #25d366 0%, #128c7e 100%);
+            background: linear-gradient(135deg, #229ED9 0%, #3B82F6 100%);
             color: white;
             padding: 1.4rem 3rem;
             border-radius: 16px;
             font-size: 1.2rem;
             font-weight: 600;
             text-decoration: none;
-            box-shadow: 0 10px 35px rgba(37, 211, 102, 0.4);
+            box-shadow: 0 10px 35px rgba(34, 158, 217, 0.4);
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             animation: fadeInUp 0.8s ease-out 0.4s both;
             position: relative;
@@ -424,14 +424,14 @@
         
         .cta-button:hover {
             transform: translateY(-4px) scale(1.02);
-            box-shadow: 0 15px 45px rgba(37, 211, 102, 0.5);
+            box-shadow: 0 15px 45px rgba(34, 158, 217, 0.5);
         }
 
         .cta-button:active {
             transform: translateY(-2px) scale(0.98);
         }
 
-        /* Premium Quick Links */
+        /* Quick Links */
         .quick-links {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
@@ -492,7 +492,89 @@
             transform: scale(1.2) rotate(5deg);
         }
 
-        /* Premium Stats Section */
+        /* Community Group Styling */
+        .community-group {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%) !important;
+            border: 2px dashed #f59e0b !important;
+            cursor: not-allowed;
+            opacity: 0.9;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .community-group::after {
+            content: "FULL";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-15deg);
+            font-size: 2.8rem;
+            font-weight: 900;
+            color: #dc2626;
+            opacity: 0.2;
+            pointer-events: none;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .full-badge {
+            background: #dc2626;
+            color: white;
+            font-size: 0.65rem;
+            padding: 0.15rem 0.5rem;
+            border-radius: 12px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .telegram-link {
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%) !important;
+            border-color: #3b82f6 !important;
+            color: #1e40af !important;
+        }
+
+        .telegram-link:hover {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%) !important;
+            color: white !important;
+            transform: translateY(-8px) scale(1.05) !important;
+        }
+
+        .telegram-link i {
+            color: #3b82f6;
+        }
+
+        .telegram-link:hover i {
+            color: white;
+        }
+
+        .active-badge {
+            background: #10b981;
+            color: white;
+            font-size: 0.65rem;
+            padding: 0.15rem 0.5rem;
+            border-radius: 12px;
+            font-weight: 700;
+        }
+
+        .group-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+            font-size: 0.85rem;
+            line-height: 1.2;
+        }
+
+        .group-info strong {
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        /* Pulse Animation */
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        /* Stats Section */
         .stats {
             padding: 7rem 2rem;
             max-width: 1400px;
@@ -574,7 +656,6 @@
         .stat-card:nth-child(1) .stat-icon { background: var(--gradient-hero); }
         .stat-card:nth-child(2) .stat-icon { background: var(--gradient-pink); }
         .stat-card:nth-child(3) .stat-icon { background: var(--gradient-cyan); }
-        .stat-card:nth-child(4) .stat-icon { background: var(--gradient-secondary); }
 
         .stat-card:hover .stat-icon { 
             transform: rotate(360deg) scale(1.2);
@@ -601,7 +682,7 @@
             z-index: 1;
         }
 
-        /* Premium Features Section */
+        /* Features Section */
         .features {
             padding: 7rem 2rem;
             max-width: 1400px;
@@ -664,25 +745,6 @@
             transition: transform 0.4s ease;
         }
 
-        .feature-card::after {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(59, 130, 246, 0.05) 0%, transparent 70%);
-            opacity: 0;
-            transition: opacity 0.4s ease;
-        }
-
-        .feature-card:nth-child(1)::before { background: var(--gradient-purple); }
-        .feature-card:nth-child(2)::before { background: var(--gradient-pink); }
-        .feature-card:nth-child(3)::before { background: var(--gradient-cyan); }
-        .feature-card:nth-child(4)::before { background: var(--gradient-secondary); }
-        .feature-card:nth-child(5)::before { background: var(--gradient-orange); }
-        .feature-card:nth-child(6)::before { background: var(--gradient-orange); }
-
         .feature-card:hover {
             transform: translateY(-15px);
             box-shadow: var(--shadow-2xl);
@@ -691,10 +753,6 @@
 
         .feature-card:hover::before { 
             transform: scaleX(1); 
-        }
-
-        .feature-card:hover::after {
-            opacity: 1;
         }
 
         .feature-icon {
@@ -718,7 +776,6 @@
         .feature-card:nth-child(3) .feature-icon { background: var(--gradient-cyan); }
         .feature-card:nth-child(4) .feature-icon { background: var(--gradient-secondary); }
         .feature-card:nth-child(5) .feature-icon { background: var(--gradient-orange); }
-        .feature-card:nth-child(6) .feature-icon { background: var(--gradient-orange); }
 
         .feature-card:hover .feature-icon { 
             transform: scale(1.15) rotate(10deg);
@@ -801,7 +858,7 @@
             transform: translateX(5px);
         }
 
-        /* Premium CTA Banner */
+        /* CTA Banner */
         .cta-banner {
             margin: 7rem 2rem;
             padding: 6rem 4rem;
@@ -815,22 +872,6 @@
             margin-left: auto;
             margin-right: auto;
             box-shadow: var(--shadow-2xl);
-        }
-
-        .cta-banner::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%);
-            animation: rotate 20s linear infinite;
-        }
-
-        @keyframes rotate {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
         }
 
         .cta-banner h2 {
@@ -874,7 +915,7 @@
             box-shadow: 0 15px 50px rgba(0,0,0,0.3);
         }
 
-        /* 100 Points Section */
+        /* Points Section */
         .points-section {
             padding: 7rem 2rem;
             max-width: 1400px;
@@ -924,19 +965,7 @@
             50% { border-color: var(--primary); }
         }
 
-        /* Mobile fix: Disable typewriter blink */
-        @media (max-width: 768px) {
-            .typewriter {
-                animation: typing 3.5s steps(40, end);
-                border-right: none;
-            }
-
-            .quick-links {
-                grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-            }
-        }
-
-        /* Fade In Animation */
+        /* Fade In */
         .fade-in {
             opacity: 0;
             transform: translateY(50px);
@@ -948,7 +977,7 @@
             transform: translateY(0);
         }
 
-        /* Premium Footer - FULLY FIXED */
+        /* Footer */
         footer {
             background: var(--dark);
             color: #e2e8f0;
@@ -957,25 +986,6 @@
             position: relative;
             overflow: hidden;
             margin-top: 7rem;
-        }
-
-        footer::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(226, 232, 240, 0.3), transparent);
-        }
-
-        body.dark-mode footer {
-            background: #0f172a;
-            color: #cbd5e1;
-        }
-
-        body.dark-mode footer::before {
-            background: linear-gradient(90deg, transparent, rgba(148, 163, 184, 0.3), transparent);
         }
 
         footer p {
@@ -1022,78 +1032,11 @@
             width: 100%;
         }
 
-        body.dark-mode .footer-links a {
-            color: #cbd5e1;
-        }
-
         body.dark-mode .footer-links a:hover {
             color: var(--accent);
         }
 
-        /* Responsive Design */
-        @media (max-width: 968px) {
-            nav { padding: 1rem 1.5rem; }
-            .features-grid { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
-            .cta-banner { padding: 4rem 2.5rem; }
-        }
-
-        @media (max-width: 768px) {
-            .hamburger { display: flex; }
-
-            .nav-links {
-                position: absolute;
-                top: 100%;
-                left: 0;
-                width: 100%;
-                background: rgba(255, 255, 255, 0.98);
-                backdrop-filter: blur(30px);
-                flex-direction: column;
-                padding: 2rem;
-                gap: 1rem;
-                box-shadow: var(--shadow-lg);
-                transform: translateY(-100%);
-                opacity: 0;
-                visibility: hidden;
-                transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            }
-
-            body.dark-mode .nav-links { background: rgba(15, 23, 42, 0.98); }
-
-            .nav-links.active {
-                transform: translateY(0);
-                opacity: 1;
-                visibility: visible;
-            }
-
-            .hero { padding: 120px 1.5rem 80px; }
-            .stats { padding: 5rem 1.5rem; }
-            .features { padding: 5rem 1.5rem; }
-            .stats-grid { grid-template-columns: 1fr; }
-            .features-grid { grid-template-columns: 1fr; }
-            .cta-banner { margin: 4rem 1.5rem; padding: 3.5rem 2rem; }
-            .quick-links { grid-template-columns: repeat(2, 1fr); }
-        }
-
-        @media (max-width: 480px) {
-            .hero h1 { font-size: 2.8rem; }
-            .cta-button { padding: 1.2rem 2.4rem; font-size: 1.1rem; }
-            .feature-card { padding: 2.5rem 2rem; }
-            .stat-card { padding: 2.5rem 1.5rem; }
-        }
-
-        /* Loading Animation */
-        @keyframes shimmer {
-            0% { background-position: -1000px 0; }
-            100% { background-position: 1000px 0; }
-        }
-
-        .loading {
-            animation: shimmer 2s infinite linear;
-            background: linear-gradient(90deg, var(--border) 0%, var(--light) 50%, var(--border) 100%);
-            background-size: 1000px 100%;
-        }
-
-        /* Popup Modal Styles */
+        /* Modal */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -1194,6 +1137,53 @@
             transform: translateY(-2px);
             box-shadow: var(--shadow-lg);
         }
+
+        /* Responsive */
+        @media (max-width: 968px) {
+            nav { padding: 1rem 1.5rem; }
+            .features-grid { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+            .cta-banner { padding: 4rem 2.5rem; }
+        }
+
+        @media (max-width: 768px) {
+            .hamburger { display: flex; }
+            .nav-links {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: rgba(255, 255, 255, 0.98);
+                backdrop-filter: blur(30px);
+                flex-direction: column;
+                padding: 2rem;
+                gap: 1rem;
+                box-shadow: var(--shadow-lg);
+                transform: translateY(-100%);
+                opacity: 0;
+                visibility: hidden;
+                transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+            body.dark-mode .nav-links { background: rgba(15, 23, 42, 0.98); }
+            .nav-links.active {
+                transform: translateY(0);
+                opacity: 1;
+                visibility: visible;
+            }
+            .hero { padding: 120px 1.5rem 80px; }
+            .stats { padding: 5rem 1.5rem; }
+            .features { padding: 5rem 1.5rem; }
+            .stats-grid { grid-template-columns: 1fr; }
+            .features-grid { grid-template-columns: 1fr; }
+            .cta-banner { margin: 4rem 1.5rem; padding: 3.5rem 2rem; }
+            .quick-links { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 { font-size: 2.8rem; }
+            .cta-button { padding: 1.2rem 2.4rem; font-size: 1.1rem; }
+            .feature-card { padding: 2.5rem 2rem; }
+            .stat-card { padding: 2.5rem 1.5rem; }
+        }
     </style>
 </head>
 <body>
@@ -1216,9 +1206,11 @@
                 <li><a href="books.html">Books</a></li>
                 <li><a href="100ptsbygtuverse.html">100 Activity Points</a></li>
                 <li><a href="mailto:gtu.versebyij@gmail.com">Contact</a></li>
-                <li><a href="https://chat.whatsapp.com/LLq6Sn0gvqwHHIJxxNaNaM" target="_blank" class="whatsapp-btn">
-                    <i class="fab fa-whatsapp"></i> Join Community
-                </a></li>
+                <li>
+                    <a href="https://t.me/gtuverse" target="_blank" class="whatsapp-btn">
+                        <i class="fab fa-telegram-plane"></i> Join Telegram
+                    </a>
+                </li>
                 <li><button class="dark-toggle" onclick="toggleDarkMode()" aria-label="Toggle Dark Mode">
                     <i class="fas fa-moon" id="darkToggleIcon"></i>
                 </button></li>
@@ -1234,17 +1226,50 @@
     <section class="hero" id="home">
         <div class="hero-content">
             <h1>Empower Your <span class="typewriter" id="typewriter"></span></h1>
-            <p class="hero-subtitle">Access midsem papers, books, earn 100 activity points effortlessly, stay updated with instant announcements, and join 1500+ students excelling together in GTU.</p>
-            <a href="https://chat.whatsapp.com/LLq6Sn0gvqwHHIJxxNaNaM" target="_blank" class="cta-button" aria-label="Join WhatsApp Community">
-                <i class="fab fa-whatsapp"></i>
-                Join & Start Winning Points
-            </a>
+            <p class="hero-subtitle">Access midsem papers, books, earn 100 activity points effortlessly, stay updated with instant announcements, and join 2500+ students excelling together in GTU.</p>
+
+            <!-- WhatsApp FULL + Telegram CTA -->
+            <div style="margin: 3rem 0 2rem; text-align: center;">
+                <p style="font-size: 1.15rem; font-weight: 700; margin-bottom: 1rem; animation: pulse 2s infinite; color: #dc2626;">
+                    WhatsApp Group is FULL! Join Telegram Channel Now!
+                </p>
+                <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                    <a href="https://chat.whatsapp.com/LLq6Sn0gvqwHHIJxxNaNaM" target="_blank" 
+                       class="cta-button" 
+                       style="background: #94a3b8; cursor: not-allowed; opacity: 0.7; position: relative;" 
+                       aria-disabled="true">
+                        <i class="fab fa-whatsapp"></i> WhatsApp (Full)
+                        <span style="position: absolute; top: -8px; right: -8px; background: #dc2626; color: white; font-size: 0.7rem; padding: 0.2rem 0.5rem; border-radius: 12px; font-weight: 700;">FULL</span>
+                    </a>
+                    <a href="https://t.me/gtuverse" target="_blank" 
+                       class="cta-button" 
+                       style="background: linear-gradient(135deg, #229ED9 0%, #3B82F6 100%); box-shadow: 0 10px 35px rgba(34, 158, 217, 0.4);">
+                        <i class="fab fa-telegram-plane"></i> Join Telegram Now
+                    </a>
+                </div>
+            </div>
+
             <div class="quick-links">
                 <a href="papers.html" class="quick-link"><i class="fas fa-file-alt"></i> Papers</a>
                 <a href="books.html" class="quick-link"><i class="fas fa-book"></i> Books</a>
                 <a href="announcements.html" class="quick-link"><i class="fas fa-bullhorn"></i> Announcements</a>
                 <a href="100ptsbygtuverse.html" class="quick-link"><i class="fas fa-trophy"></i> 100 Points</a>
-                <a href="https://chat.whatsapp.com/LLq6Sn0gvqwHHIJxxNaNaM" target="_blank" class="quick-link"><i class="fab fa-whatsapp"></i> Community</a>
+                
+                <div class="quick-link community-group">
+                    <i class="fab fa-whatsapp"></i>
+                    <div class="group-info">
+                        <strong>WhatsApp</strong>
+                        <span class="full-badge">FULL</span>
+                    </div>
+                </div>
+                
+                <a href="https://t.me/gtuverse" target="_blank" class="quick-link telegram-link">
+                    <i class="fab fa-telegram-plane"></i>
+                    <div class="group-info">
+                        <strong>Telegram</strong>
+                        <span class="active-badge">Join Now!</span>
+                    </div>
+                </a>
             </div>
         </div>
     </section>
@@ -1327,7 +1352,7 @@
                 <h3>Real-Time GTU Alerts</h3>
                 <p>Push notifications for exam dates, result alerts, syllabus changes, and college events. Stay ahead, never behind.</p>
                 <ul class="feature-list">
-                    <li><i class="fas fa-check"></i> Instant WhatsApp sync</li>
+                    <li><i class="fas fa-check"></i> Instant Telegram sync</li>
                     <li><i class="fas fa-check"></i> Categorized feeds</li>
                     <li><i class="fas fa-check"></i> 1-year archive</li>
                 </ul>
@@ -1338,13 +1363,13 @@
                     <i class="fas fa-users"></i>
                 </div>
                 <h3>Thriving Community Hub</h3>
-                <p>Connect with 1500+ GTU peers for doubt-solving, group studies, and resource sharing. Your network equals your net worth.</p>
+                <p>Connect with 2500+ GTU peers on <strong>Telegram</strong> for doubt-solving, group studies, and resource sharing.</p>
                 <ul class="feature-list">
-                    <li><i class="fas fa-check"></i> Branch-wise groups</li>
+                    <li><i class="fas fa-check"></i> Branch-wise channels</li>
                     <li><i class="fas fa-check"></i> Live Q&A sessions</li>
                     <li><i class="fas fa-check"></i> Mentorship matches</li>
                 </ul>
-                <a href="https://chat.whatsapp.com/LLq6Sn0gvqwHHIJxxNaNaM" target="_blank" class="feature-link">Join Hub <i class="fas fa-arrow-right"></i></a>
+                <a href="https://t.me/gtuverse" target="_blank" class="feature-link">Join Telegram Hub <i class="fas fa-arrow-right"></i></a>
             </div>
         </div>
     </section>
@@ -1360,14 +1385,13 @@
 
     <div class="cta-banner fade-in">
         <h2>Ready to Ace GTU Like Never Before?</h2>
-        <p>Thousands of students are transforming their academic game. Free access, zero ads, and results that speak for themselves. Start your journey in under 30 seconds.</p>
-        <a href="https://chat.whatsapp.com/LLq6Sn0gvqwHHIJxxNaNaM" target="_blank" class="cta-button">
-            <i class="fab fa-whatsapp"></i>
-            Get Started Free - Join 2500+ Students
+        <p>WhatsApp is full — but <strong>Telegram is open 24/7</strong>! Join 2500+ students getting papers, alerts, and points daily.</p>
+        <a href="https://t.me/gtuverse" target="_blank" class="cta-button" style="background: linear-gradient(135deg, #229ED9 0%, #3B82F6 100%);">
+            <i class="fab fa-telegram-plane"></i> Join Telegram - 2500+ Students
         </a>
     </div>
 
-    <!-- 100 Points Popup Modal -->
+    <!-- 100 Points Modal -->
     <div class="modal-overlay" id="pointsModal">
         <div class="modal-content">
             <button class="modal-close" onclick="closePointsModal()" aria-label="Close Modal">×</button>
@@ -1375,7 +1399,7 @@
                 <i class="fas fa-trophy"></i>
             </div>
             <h3 class="modal-title">Unlock 100 Activity Points</h3>
-            <p class="modal-text">Explore our detailed guide on earning GTU activity points. Step-by-step strategies, verified events, and tips from 1500+ students!</p>
+            <p class="modal-text">Explore our detailed guide on earning GTU activity points. Step-by-step strategies, verified events, and tips from 2500+ students!</p>
             <button class="modal-btn" onclick="window.location.href='100ptsbygtuverse.html'; closePointsModal();">
                 Go to 100 Points Guide
             </button>
@@ -1390,6 +1414,7 @@
             <a href="books.html">Books</a>
             <a href="announcements.html">Announcements</a>
             <a href="100ptsbygtuverse.html">100 Points</a>
+            <a href="https://t.me/gtuverse" target="_blank">Telegram</a>
             <a href="mailto:gtu.versebyij@gmail.com">Contact</a>
         </div>
     </footer>
@@ -1523,7 +1548,6 @@
             });
         });
 
-        // Modal Functions
         function openPointsModal() {
             document.getElementById('pointsModal').classList.add('active');
             document.body.style.overflow = 'hidden';
@@ -1554,4 +1578,4 @@
         });
     </script>
 </body>
-</html>
+    </html>
