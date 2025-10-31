@@ -382,114 +382,122 @@
         </div>
     </div>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-        import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyC0QTiJoEIkS7rGDFrd057Kx3nMz7_s2EI",
-            authDomain: "gtu-verse.firebaseapp.com",
-            projectId: "gtu-verse",
-            storageBucket: "gtu-verse.firebasestorage.app",
-            messagingSenderId: "99377635087",
-            appId: "1:99377635087:web:05ba93798e36040cfe287a",
-            measurementId: "G-YV4W2LT96S"
-        };
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
+    const firebaseConfig = {
+        apiKey: "AIzaSyC0QTiJoEIkS7rGDFrd057Kx3nMz7_s2EI",
+        authDomain: "gtu-verse.firebaseapp.com",
+        projectId: "gtu-verse",
+        storageBucket: "gtu-verse.firebasestorage.app",
+        messagingSenderId: "99377635087",
+        appId: "1:99377635087:web:05ba93798e36040cfe287a",
+        measurementId: "G-YV4W2LT96S"
+    };
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
 
-        /* ---------- Theme Toggle (fixed) ---------- */
-        const themeToggle = document.getElementById('themeToggle');
-        const themeIcon   = document.getElementById('themeIcon');
+    /* ---------- Theme Toggle (FIXED) ---------- */
+    let themeToggle, themeIcon;
 
-        function setTheme(isLight) {
-            document.body.classList.toggle('light-mode', isLight);
+    function setTheme(isLight) {
+        document.body.classList.toggle('light-mode', isLight);
+        if (themeIcon) {
             themeIcon.classList.toggle('fa-sun', !isLight);
             themeIcon.classList.toggle('fa-moon', isLight);
-            localStorage.setItem('theme', isLight ? 'light' : 'dark');
         }
+        localStorage.setItem('theme', isLight ? 'light' : 'dark');
+    }
 
-        function toggleTheme() {
-            const willBeLight = !document.body.classList.contains('light-mode');
-            setTheme(willBeLight);
+    function toggleTheme() {
+        const willBeLight = !document.body.classList.contains('light-mode');
+        setTheme(willBeLight);
+    }
+
+    /* ---------- Header Scroll ---------- */
+    function handleScroll() {
+        document.getElementById('header').classList.toggle('scrolled', window.scrollY > 50);
+        document.querySelector('.back-to-top').classList.toggle('visible', window.scrollY > 500);
+    }
+    window.scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    /* ---------- Particles ---------- */
+    function createParticles() {
+        const container = document.getElementById('particles');
+        for (let i = 0; i < 30; i++) {
+            const p = document.createElement('div');
+            p.className = 'particle';
+            p.style.left = Math.random() * 100 + '%';
+            p.style.animationDelay = Math.random() * 15 + 's';
+            p.style.animationDuration = (15 + Math.random() * 10) + 's';
+            container.appendChild(p);
         }
+    }
 
-        // Apply saved theme on load
+    /* ---------- Typewriter ---------- */
+    const words = ['100 Activity Points', 'GTU Success', 'Certificates', 'Your Future'];
+    let el, w = 0, c = 0, deleting = false;
+    function type() {
+        const word = words[w];
+        if (!deleting && c < word.length) { el.textContent = word.substring(0, ++c); setTimeout(type, 100); }
+        else if (deleting && c > 0) { el.textContent = word.substring(0, --c); setTimeout(type, 50); }
+        else if (!deleting && c === word.length) { setTimeout(() => { deleting = true; type(); }, 2000); }
+        else if (deleting && c === 0) { deleting = false; w = (w + 1) % words.length; setTimeout(type, 500); }
+    }
+
+    /* ---------- Load Activities ---------- */
+    async function loadActivities() {
+        const container = document.getElementById('activitiesContainer');
+        try {
+            const q = query(collection(db, 'activities'), orderBy('createdAt', 'desc'));
+            const snap = await getDocs(q);
+            if (snap.empty) {
+                container.innerHTML = `<div class="empty-state"><i class="fas fa-inbox"></i><h3>No Activities Available Yet</h3><p>Check back soon!</p></div>`;
+                return;
+            }
+            container.innerHTML = snap.docs.map(doc => {
+                const d = doc.data();
+                return `
+                    <div class="activity-card">
+                        <div class="activity-icon"><i class="${d.icon || 'fas fa-star'}"></i></div>
+                        <h3>${d.title}</h3>
+                        <p>${d.description}</p>
+                        <div class="activity-meta">
+                            <span class="points-tag"><i class="fas fa-trophy"></i> ${d.points} Points</span>
+                            <span style="color:#94a3b8;font-size:.9rem;"><i class="fas fa-clock"></i> ${d.duration || 'Flexible'}</span>
+                        </div>
+                        <a href="${d.link}" target="_blank" class="activity-link">
+                            Start Activity <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>`;
+            }).join('');
+        } catch (e) {
+            console.error(e);
+            container.innerHTML = `<div class="empty-state"><i class="fas fa-exclamation-triangle"></i><h3>Error Loading</h3><p>Try refreshing.</p></div>`;
+        }
+    }
+
+    /* ---------- Init ---------- */
+    window.addEventListener('load', () => {
+        // Cache DOM elements
+        themeToggle = document.getElementById('themeToggle');
+        themeIcon   = document.getElementById('themeIcon');
+        el          = document.getElementById('typewriter');
+
+        // Apply saved theme
         const saved = localStorage.getItem('theme');
         setTheme(saved === 'light');
 
+        // Set up event listeners
         themeToggle.addEventListener('click', toggleTheme);
+        window.addEventListener('scroll', handleScroll);
 
-        /* ---------- Header Scroll ---------- */
-        window.addEventListener('scroll', () => {
-            document.getElementById('header').classList.toggle('scrolled', window.scrollY > 50);
-            document.querySelector('.back-to-top').classList.toggle('visible', window.scrollY > 500);
-        });
-        window.scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
-
-        /* ---------- Particles ---------- */
-        function createParticles() {
-            const container = document.getElementById('particles');
-            for (let i = 0; i < 30; i++) {
-                const p = document.createElement('div');
-                p.className = 'particle';
-                p.style.left = Math.random() * 100 + '%';
-                p.style.animationDelay = Math.random() * 15 + 's';
-                p.style.animationDuration = (15 + Math.random() * 10) + 's';
-                container.appendChild(p);
-            }
-        }
-
-        /* ---------- Typewriter ---------- */
-        const words = ['100 Activity Points', 'GTU Success', 'Certificates', 'Your Future'];
-        const el = document.getElementById('typewriter');
-        let w = 0, c = 0, deleting = false;
-        function type() {
-            const word = words[w];
-            if (!deleting && c < word.length) { el.textContent = word.substring(0, ++c); setTimeout(type, 100); }
-            else if (deleting && c > 0) { el.textContent = word.substring(0, --c); setTimeout(type, 50); }
-            else if (!deleting && c === word.length) { setTimeout(() => { deleting = true; type(); }, 2000); }
-            else if (deleting && c === 0) { deleting = false; w = (w + 1) % words.length; setTimeout(type, 500); }
-        }
-
-        /* ---------- Load Activities ---------- */
-        async function loadActivities() {
-            const container = document.getElementById('activitiesContainer');
-            try {
-                const q = query(collection(db, 'activities'), orderBy('createdAt', 'desc'));
-                const snap = await getDocs(q);
-                if (snap.empty) {
-                    container.innerHTML = `<div class="empty-state"><i class="fas fa-inbox"></i><h3>No Activities Available Yet</h3><p>Check back soon!</p></div>`;
-                    return;
-                }
-                container.innerHTML = snap.docs.map(doc => {
-                    const d = doc.data();
-                    return `
-                        <div class="activity-card">
-                            <div class="activity-icon"><i class="${d.icon || 'fas fa-star'}"></i></div>
-                            <h3>${d.title}</h3>
-                            <p>${d.description}</p>
-                            <div class="activity-meta">
-                                <span class="points-tag"><i class="fas fa-trophy"></i> ${d.points} Points</span>
-                                <span style="color:#94a3b8;font-size:.9rem;"><i class="fas fa-clock"></i> ${d.duration || 'Flexible'}</span>
-                            </div>
-                            <a href="${d.link}" target="_blank" class="activity-link">
-                                Start Activity <i class="fas fa-arrow-right"></i>
-                            </a>
-                        </div>`;
-                }).join('');
-            } catch (e) {
-                console.error(e);
-                container.innerHTML = `<div class="empty-state"><i class="fas fa-exclamation-triangle"></i><h3>Error Loading</h3><p>Try refreshing.</p></div>`;
-            }
-        }
-
-        /* ---------- Init ---------- */
-        window.addEventListener('load', () => {
-            createParticles();
-            type();
-            loadActivities();
-        });
-    </script>
+        // Initialize other features
+        createParticles();
+        type();
+        loadActivities();
+    });
+</script>
 </body>
 </html>
