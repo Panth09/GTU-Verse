@@ -500,17 +500,18 @@
             container.innerHTML = snap.docs.map(doc => {
                 const d = doc.data();
 
-                // Validate and get link
-                const rawLink = (d.link || '').trim();
-                const isValidLink = rawLink && (rawLink.startsWith('http://') || rawLink.startsWith('https://'));
-                const safeLink = isValidLink ? rawLink : null;
-
                 // Fallback values
                 const icon = (d.icon && /^fa[srlb] fa-/.test(d.icon)) ? d.icon : 'fas fa-star';
                 const title = d.title || 'Untitled Activity';
                 const desc = d.description || 'No description available.';
                 const points = d.points || 0;
                 const duration = d.duration || 'Flexible';
+                
+                // Link handling - exact same as announcements
+                const hasLink = d.link && d.link.trim() !== '';
+                const linkHTML = hasLink
+                    ? `<a href="${d.link}" target="_blank" rel="noopener" class="activity-link">Start Activity <i class="fas fa-arrow-right"></i></a>`
+                    : `<button class="activity-link" disabled>Coming Soon <i class="fas fa-lock"></i></button>`;
 
                 return `
                     <div class="activity-card">
@@ -521,14 +522,7 @@
                             <span class="points-tag"><i class="fas fa-trophy"></i> ${points} Points</span>
                             <span style="color:#94a3b8;font-size:.9rem;"><i class="fas fa-clock"></i> ${duration}</span>
                         </div>
-                        ${safeLink 
-                            ? `<a href="${safeLink}" target="_blank" rel="noopener noreferrer" class="activity-link">
-                                Start Activity <i class="fas fa-arrow-right"></i>
-                               </a>`
-                            : `<button class="activity-link" disabled>
-                                Coming Soon <i class="fas fa-lock"></i>
-                               </button>`
-                        }
+                        ${linkHTML}
                     </div>`;
             }).join('');
 
