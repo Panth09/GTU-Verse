@@ -3,105 +3,120 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GTUverse - All Announcements</title>
-    <meta name="description" content="Stay updated with all GTU announcements, exam schedules, results, and alerts.">
-    <meta name="keywords" content="GTU announcements, GTU exam, GTU results, GTU updates, GTUverse">
-    <meta name="author" content="GTUverse">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎓</text></svg>">
+    <title>GTUverse - Real-Time GTU Announcements</title>
+    <meta name="description" content="Get instant GTU exam alerts, result updates, syllabus changes, and college notifications. Join 2500+ students staying ahead.">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><linearGradient id='grad' x1='0%25' y1='0%25' x2='100%25' y2='100%25'><stop offset='0%25' style='stop-color:%236366f1;stop-opacity:1'/><stop offset='100%25' style='stop-color:%23a855f7;stop-opacity:1'/></linearGradient></defs><circle cx='50' cy='50' r='45' fill='url(%23grad)'/><path d='M30 45 L45 30 L70 55 L45 80 Z' fill='white' opacity='0.9'/><circle cx='45' cy='55' r='8' fill='white'/></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
         :root {
-            --primary: #3b82f6;
-            --primary-dark: #2563eb;
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
             --secondary: #10b981;
-            --danger: #ef4444;
-            --warning: #f59e0b;
-            --info: #06b6d4;
+            --accent: #f59e0b;
             --purple: #a855f7;
+            --pink: #ec4899;
+            --cyan: #06b6d4;
             --dark: #0f172a;
+            --dark-light: #1e293b;
             --medium: #475569;
             --light: #f8fafc;
             --white: #ffffff;
             --border: #e2e8f0;
-            --gradient-hero: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            --gradient-primary: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-            --gradient-info: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
-            --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
-            --shadow-md: 0 4px 12px rgba(0,0,0,0.1);
-            --shadow-lg: 0 10px 30px rgba(0,0,0,0.12);
-            --shadow-xl: 0 20px 40px rgba(0,0,0,0.15);
         }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: var(--light);
-            color: var(--dark);
+            background: #0a0a0f;
+            color: #e2e8f0;
             line-height: 1.7;
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        body.light-mode {
+            background: #f8fafc;
+            color: #0f172a;
+        }
+        body.light-mode .gradient-bg {
+            background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 50%, #f8fafc 100%);
+        }
+        body.light-mode .gradient-bg::before,
+        body.light-mode .gradient-bg::after { opacity: 0.08; }
+        body.light-mode header {
+            background: rgba(248, 250, 252, 0.8);
+            border-bottom-color: rgba(99, 102, 241, 0.2);
+        }
+        body.light-mode header.scrolled { background: rgba(248, 250, 252, 0.95); }
+        body.light-mode .nav-links a { color: #475569; }
+        body.light-mode .nav-links a:hover { color: #6366f1; }
+        body.light-mode .announcement-item { background: rgba(255, 255, 255, 0.8); border-color: rgba(99, 102, 241, 0.15); }
+        body.light-mode .announcement-desc,
+        body.light-mode .announcement-date,
+        body.light-mode .section-subtitle { color: #64748b; }
+        body.light-mode .announcement-title { color: #0f172a; }
+        body.light-mode .priority-badge { background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%); }
+
+        /* Animated Gradient Background */
+        .gradient-bg {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: -1;
+            background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 50%, #0a0a0f 100%);
+        }
+        .gradient-bg::before,
+        .gradient-bg::after {
+            content: '';
+            position: absolute;
+            width: 800px;
+            height: 800px;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.15;
+            animation: float 20s ease-in-out infinite;
+        }
+        .gradient-bg::before {
+            background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+            top: -400px;
+            left: -400px;
+        }
+        .gradient-bg::after {
+            background: linear-gradient(135deg, #ec4899 0%, #f59e0b 100%);
+            bottom: -400px;
+            right: -400px;
+            animation-delay: -10s;
+        }
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(100px, -100px) scale(1.2); }
+            66% { transform: translate(-80px, 80px) scale(0.9); }
         }
 
-        body.dark-mode {
-            --light: #0f172a;
-            --white: #1e293b;
-            --dark: #f1f5f9;
-            --medium: #cbd5e1;
-            --border: #334155;
-            background: #0f172a;
-            color: #f1f5f9;
-        }
-
-        /* Animated Background */
-        .bg-animation {
+        /* Particles */
+        .particles {
             position: fixed;
             top: 0; left: 0;
             width: 100%; height: 100%;
             z-index: -1;
             overflow: hidden;
         }
-
-        .bg-shape {
+        .particle {
             position: absolute;
+            width: 3px;
+            height: 3px;
+            background: rgba(99, 102, 241, 0.5);
             border-radius: 50%;
-            filter: blur(120px);
-            opacity: 0.15;
+            animation: particle-float 15s linear infinite;
         }
-
-        .bg-shape:nth-child(1) {
-            width: 700px; height: 700px;
-            background: var(--gradient-info);
-            top: -350px; left: -350px;
-            animation: morph1 25s ease-in-out infinite;
-        }
-
-        .bg-shape:nth-child(2) {
-            width: 600px; height: 600px;
-            background: var(--gradient-warning);
-            bottom: -300px; right: -300px;
-            animation: morph2 30s ease-in-out infinite;
-        }
-
-        @keyframes morph1 {
-            0%, 100% { transform: translate(0,0) rotate(0deg) scale(1); border-radius: 50%; }
-            33% { transform: translate(50px,-50px) rotate(120deg) scale(1.15); border-radius: 40% 60% 70% 30%; }
-            66% { transform: translate(-40px,40px) rotate(240deg) scale(0.9); border-radius: 60% 40% 30% 70%; }
-        }
-
-        @keyframes morph2 {
-            0%, 100% { transform: translate(0,0) rotate(0deg) scale(1); border-radius: 50%; }
-            33% { transform: translate(-60px,60px) rotate(-120deg) scale(1.2); border-radius: 70% 30% 50% 50%; }
-            66% { transform: translate(50px,-50px) rotate(-240deg) scale(0.85); border-radius: 30% 70% 70% 30%; }
+        @keyframes particle-float {
+            0% { transform: translateY(100vh) translateX(0); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100vh) translateX(100px); opacity: 0; }
         }
 
         /* Header */
@@ -109,26 +124,16 @@
             position: fixed;
             top: 0; width: 100%;
             z-index: 1000;
-            background: rgba(255,255,255,0.7);
-            backdrop-filter: blur(30px) saturate(180%);
-            border-bottom: 1px solid rgba(226,232,240,0.5);
+            background: rgba(10, 10, 15, 0.8);
+            backdrop-filter: blur(20px) saturate(180%);
+            border-bottom: 1px solid rgba(99, 102, 241, 0.1);
             transition: all 0.3s ease;
         }
-
-        body.dark-mode header {
-            background: rgba(15,23,42,0.8);
-            border-bottom-color: rgba(51,65,85,0.5);
-        }
-
         header.scrolled {
-            box-shadow: var(--shadow-lg);
-            background: rgba(255,255,255,0.9);
+            background: rgba(10, 10, 15, 0.95);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            border-bottom-color: rgba(99, 102, 241, 0.3);
         }
-
-        body.dark-mode header.scrolled {
-            background: rgba(15,23,42,0.95);
-        }
-
         nav {
             display: flex;
             justify-content: space-between;
@@ -137,433 +142,483 @@
             margin: 0 auto;
             padding: 1.2rem 2.5rem;
         }
-
         .logo {
             display: flex;
             align-items: center;
-            gap: 0.8rem;
-            font-family: 'Poppins', sans-serif;
-            font-size: 1.6rem;
-            font-weight: 800;
-            background: var(--gradient-primary);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-decoration: none;
-            transition: all 0.3s ease;
-        }
-
-        .logo:hover {
-            transform: scale(1.05);
-        }
-
-        .logo i {
+            gap: 1rem;
+            font-family: 'Space Grotesk', sans-serif;
             font-size: 2rem;
-            background: var(--gradient-primary);
+            font-weight: 800;
+            background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            animation: float-icon 3s ease-in-out infinite;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            letter-spacing: -0.02em;
         }
-
-        @keyframes float-icon {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-5px); }
+        .logo::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #6366f1, #a855f7);
+            transition: width 0.3s ease;
+            border-radius: 2px;
         }
-
+        .logo:hover::after { width: 100%; }
+        .logo-icon {
+            width: 48px;
+            height: 48px;
+            background: #ffffff;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.2rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.5), 0 0 0 2px rgba(99, 102, 241, 0.3);
+            animation: logo-pulse 2s ease-in-out infinite;
+            position: relative;
+            overflow: hidden;
+            font-family: 'Space Grotesk', sans-serif;
+            line-height: 1;
+            letter-spacing: -0.02em;
+        }
+        .logo-icon::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(99, 102, 241, 0.2), transparent);
+            animation: logo-shine 3s ease-in-out infinite;
+            z-index: -1;
+        }
+        @keyframes logo-shine {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+        @keyframes logo-pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        .logo:hover .logo-icon {
+            transform: rotate(360deg) scale(1.15);
+            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.6);
+        }
         .nav-links {
             display: flex;
             list-style: none;
-            gap: 0.5rem;
+            gap: 0.3rem;
             align-items: center;
         }
-
         .nav-links a {
-            color: var(--dark);
+            color: #cbd5e1;
             text-decoration: none;
-            padding: 0.7rem 1.2rem;
+            padding: 0.8rem 1.3rem;
             border-radius: 12px;
             font-weight: 500;
             font-size: 0.95rem;
-            transition: all 0.2s ease;
+            transition: all 0.3s ease;
             position: relative;
+            overflow: hidden;
         }
-
         .nav-links a::before {
             content: '';
             position: absolute;
-            bottom: 0.5rem;
-            left: 50%;
-            width: 60%;
-            height: 2px;
-            background: var(--gradient-primary);
-            transform: translateX(-50%) scaleX(0);
-            border-radius: 2px;
-            transition: transform 0.3s ease;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(168, 85, 247, 0.1) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
-
-        .nav-links a:hover::before {
-            transform: translateX(-50%) scaleX(1);
-        }
-
-        .nav-links a:hover {
-            background: rgba(59,130,246,0.1);
-            color: var(--primary);
-        }
-
-        .whatsapp-btn {
-            background: linear-gradient(135deg, #25d366 0%, #128c7e 100%);
+        .nav-links a:hover::before { opacity: 1; }
+        .nav-links a:hover { color: #a855f7; transform: translateY(-2px); }
+        .telegram-btn {
+            background: linear-gradient(135deg, #229ED9 0%, #3B82F6 100%);
             color: white !important;
-            padding: 0.8rem 1.8rem !important;
+            padding: 0.85rem 1.8rem !important;
             font-weight: 600;
-            box-shadow: 0 4px 15px rgba(37,211,102,0.4);
+            box-shadow: 0 4px 20px rgba(34, 158, 217, 0.4);
             transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
-
-        .whatsapp-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 25px rgba(37,211,102,0.5);
+        .telegram-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(34, 158, 217, 0.6);
         }
-
         .dark-toggle {
-            background: rgba(59,130,246,0.1);
-            border: 1px solid rgba(59,130,246,0.2);
-            color: var(--primary);
+            background: rgba(99, 102, 241, 0.15);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            color: #6366f1;
             width: 46px; height: 46px;
             border-radius: 50%;
             cursor: pointer;
+            transition: all 0.3s ease;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 1.2rem;
-            transition: all 0.3s ease;
         }
-
         .dark-toggle:hover {
-            background: rgba(59,130,246,0.2);
+            background: rgba(99, 102, 241, 0.3);
             transform: rotate(180deg) scale(1.1);
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.5);
         }
-
         .hamburger {
             display: none;
             flex-direction: column;
             cursor: pointer;
-            gap: 5px;
+            gap: 6px;
         }
-
         .hamburger span {
             width: 28px; height: 3px;
-            background: var(--dark);
+            background: #e2e8f0;
             border-radius: 3px;
             transition: all 0.3s ease;
         }
-
-        .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(8px,8px); }
+        .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(9px, 9px); }
         .hamburger.active span:nth-child(2) { opacity: 0; }
-        .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(8px,-8px); }
+        .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(9px, -9px); }
 
         /* Announcements Section */
         .announcements {
-            padding: 8rem 2rem 4rem;
+            padding: 10rem 2rem 6rem;
             max-width: 1200px;
             margin: 0 auto;
             min-height: 100vh;
         }
-
         .section-header {
             text-align: center;
-            margin-bottom: 4rem;
+            margin-bottom: 5rem;
         }
-
         .section-title {
-            font-family: 'Poppins', sans-serif;
-            font-size: clamp(2.6rem, 6vw, 4.2rem);
-            font-weight: 900;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(3rem, 7vw, 5rem);
+            font-weight: 800;
             margin-bottom: 1.5rem;
-            background: var(--gradient-hero);
+            background: linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #ec4899 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            line-height: 1.2;
+            line-height: 1.15;
+            letter-spacing: -0.03em;
         }
-
         .section-subtitle {
-            font-size: 1.35rem;
-            color: var(--medium);
-            max-width: 700px;
+            font-size: 1.4rem;
+            color: #94a3b8;
+            max-width: 750px;
             margin: 0 auto;
-            font-weight: 400;
-            line-height: 1.8;
+            line-height: 1.9;
         }
-
         .announcements-list {
             list-style: none;
             display: flex;
             flex-direction: column;
-            gap: 1.5rem;
+            gap: 2rem;
         }
-
-        /* Skeleton Loader */
-        .skeleton {
-            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-            background-size: 200% 100%;
-            animation: loading 1.5s infinite;
-            border-radius: 16px;
-            height: 120px;
-        }
-
-        @keyframes loading {
-            0% { background-position: 200% 0; }
-            100% { background-position: -200% 0; }
-        }
-
-        body.dark-mode .skeleton {
-            background: linear-gradient(90deg, #1e293b 25%, #334155 50%, #1e293b 75%);
-        }
-
-        /* Announcement Item */
         .announcement-item {
-            background: var(--white);
-            padding: 2.5rem;
-            border-radius: 20px;
-            box-shadow: var(--shadow-md);
-            border: 2px solid var(--border);
-            transition: all 0.4s ease;
+            background: rgba(30, 41, 59, 0.6);
+            backdrop-filter: blur(20px);
+            padding: 3rem;
+            border-radius: 32px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            border: 2px solid rgba(99, 102, 241, 0.2);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             overflow: hidden;
         }
-
         .announcement-item::before {
             content: '';
             position: absolute;
-            left: 0; top: 0;
-            width: 6px; height: 100%;
-            background: var(--gradient-info);
-            transform: scaleY(0);
-            transition: transform 0.4s ease;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.05) 0%, rgba(168, 85, 247, 0.05) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
-
+        .announcement-item:hover::before { opacity: 1; }
         .announcement-item:hover {
-            transform: translateX(8px);
-            box-shadow: var(--shadow-xl);
-            border-color: var(--info);
+            transform: translateY(-12px);
+            box-shadow: 0 25px 60px rgba(99, 102, 241, 0.4);
+            border-color: #6366f1;
         }
-
-        .announcement-item:hover::before {
-            transform: scaleY(1);
-        }
-
         .announcement-item.top-ann {
-            background: linear-gradient(135deg, rgba(6,182,212,0.05), rgba(59,130,246,0.05));
-            border-color: var(--info);
+            border-color: #6366f1;
+            background: rgba(99, 102, 241, 0.1);
         }
-
-        .announcement-item.top-ann::before {
-            background: var(--gradient-primary);
-            transform: scaleY(1);
-            width: 8px;
-        }
-
         .announcement-header {
             display: flex;
             align-items: center;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
+            gap: 1.5rem;
+            margin-bottom: 1.8rem;
         }
-
         .announcement-icon {
-            width: 60px; height: 60px;
-            border-radius: 16px;
-            background: var(--gradient-info);
+            width: 80px;
+            height: 80px;
+            border-radius: 20px;
+            background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
-            font-size: 1.8rem;
+            font-size: 2.2rem;
             flex-shrink: 0;
-            transition: transform 0.3s ease;
+            transition: all 0.5s ease;
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.4);
         }
-
         .announcement-item.top-ann .announcement-icon {
-            background: var(--gradient-primary);
-            animation: pulse 2s ease-in-out infinite;
+            background: linear-gradient(135deg, #ec4899 0%, #f59e0b 100%);
+            animation: pulse-icon 2s ease-in-out infinite;
         }
-
-        @keyframes pulse {
+        @keyframes pulse-icon {
             0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
+            50% { transform: scale(1.1); }
         }
-
         .announcement-item:hover .announcement-icon {
-            transform: rotate(10deg) scale(1.1);
+            transform: rotate(360deg) scale(1.2);
         }
-
+        .announcement-title-wrapper {
+            flex: 1;
+        }
         .announcement-title {
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Space Grotesk', sans-serif;
             font-weight: 700;
-            font-size: 1.5rem;
-            color: var(--dark);
-            margin-bottom: 0.5rem;
+            color: #e2e8f0;
+            margin-bottom: 0.6rem;
+            font-size: 1.7rem;
             line-height: 1.4;
         }
-
         .announcement-date {
-            display: flex;
+            display: inline-flex;
             align-items: center;
             gap: 0.5rem;
-            color: var(--medium);
-            font-size: 0.9rem;
+            color: #94a3b8;
+            font-size: 0.95rem;
             font-weight: 500;
         }
-
-        .announcement-desc {
-            color: var(--medium);
-            line-height: 1.8;
-            font-size: 1.05rem;
-            margin-bottom: 1.5rem;
+        .announcement-date i {
+            font-size: 0.9rem;
         }
-
+        .announcement-desc {
+            color: #94a3b8;
+            line-height: 1.9;
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+        }
         .priority-badge {
             position: absolute;
-            top: 1.5rem; right: 1.5rem;
+            top: 1.5rem;
+            right: 1.5rem;
             padding: 0.5rem 1.2rem;
             border-radius: 20px;
             font-size: 0.8rem;
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            background: var(--gradient-primary);
+            background: linear-gradient(135deg, #ec4899 0%, #f59e0b 100%);
             color: white;
-            box-shadow: 0 4px 12px rgba(59,130,246,0.3);
+            box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+            animation: badge-pulse 2s ease-in-out infinite;
         }
-
+        @keyframes badge-pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
         .announcement-link {
             display: inline-flex;
             align-items: center;
-            gap: 0.6rem;
-            background: var(--gradient-primary);
+            gap: 0.8rem;
+            background: linear-gradient(135deg, #229ED9 0%, #3B82F6 100%);
             color: white;
-            padding: 0.8rem 1.5rem;
-            border-radius: 12px;
+            padding: 1rem 2rem;
+            border-radius: 16px;
             text-decoration: none;
             font-weight: 600;
-            font-size: 0.95rem;
+            font-size: 1.05rem;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(59,130,246,0.3);
+            box-shadow: 0 8px 25px rgba(34, 158, 217, 0.4);
         }
-
         .announcement-link:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(59,130,246,0.4);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(34, 158, 217, 0.6);
         }
-
         .show-more {
-            display: flex;
+            display: inline-flex;
             align-items: center;
             gap: 0.8rem;
-            background: var(--gradient-primary);
+            background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
             color: white;
             padding: 1.3rem 3rem;
-            border-radius: 14px;
+            border-radius: 16px;
             text-decoration: none;
             font-weight: 600;
             font-size: 1.15rem;
-            margin: 3rem auto 0;
-            width: fit-content;
+            margin: 4rem auto 0;
             transition: all 0.3s ease;
-            box-shadow: 0 8px 25px rgba(59,130,246,0.3);
+            box-shadow: 0 10px 35px rgba(99, 102, 241, 0.4);
+            width: fit-content;
+            justify-content: center;
         }
-
         .show-more:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 35px rgba(59,130,246,0.4);
+            transform: translateY(-4px);
+            box-shadow: 0 15px 45px rgba(99, 102, 241, 0.5);
         }
-
-        .empty-state, .error-state {
+        .loading {
             text-align: center;
-            padding: 4rem;
-            color: var(--medium);
+            padding: 5rem;
+            color: #94a3b8;
+            font-size: 1.3rem;
         }
-
-        .empty-state i, .error-state i {
-            font-size: 4rem;
+        .loading i {
+            font-size: 3.5rem;
+            margin-bottom: 1.2rem;
+            animation: spin 1s linear infinite;
+            background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        .empty-state {
+            text-align: center;
+            padding: 5rem;
+        }
+        .empty-state i {
+            font-size: 4.5rem;
+            color: #475569;
             opacity: 0.3;
             margin-bottom: 1.5rem;
-            display: block;
         }
-
+        .empty-state p {
+            color: #94a3b8;
+            font-size: 1.3rem;
+        }
         .fade-in {
             opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.6s ease, transform 0.6s ease;
+            transform: translateY(60px);
+            transition: opacity 1s ease-out, transform 1s ease-out;
         }
-
         .fade-in.visible {
             opacity: 1;
             transform: translateY(0);
         }
 
+        /* Floating CTA */
+        .floating-cta {
+            position: fixed;
+            bottom: 2.5rem;
+            right: 2.5rem;
+            background: linear-gradient(135deg, #229ED9 0%, #3B82F6 100%);
+            color: white;
+            padding: 1.2rem 2rem;
+            border-radius: 60px;
+            box-shadow: 0 15px 40px rgba(34, 158, 217, 0.5);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-weight: 600;
+            z-index: 999;
+            animation: float-btn 3s ease-in-out infinite;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+        .floating-cta:hover {
+            transform: translateY(-8px) scale(1.08);
+            box-shadow: 0 20px 50px rgba(34, 158, 217, 0.7);
+        }
+        @keyframes float-btn {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-12px); }
+        }
+
+        /* Responsive */
         @media (max-width: 768px) {
             .hamburger { display: flex; }
             .nav-links {
                 position: absolute;
-                top: 100%; left: 0; width: 100%;
-                background: rgba(255,255,255,0.98);
+                top: 100%; left: 0;
+                width: 100%;
+                background: rgba(10, 10, 15, 0.98);
                 backdrop-filter: blur(30px);
                 flex-direction: column;
-                padding: 2rem;
-                gap: 1rem;
-                box-shadow: var(--shadow-lg);
+                padding: 2.5rem;
+                gap: 1.2rem;
+                box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
                 transform: translateY(-100%);
                 opacity: 0;
                 visibility: hidden;
-                transition: all 0.4s ease;
+                transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                border-bottom: 1px solid rgba(99, 102, 241, 0.2);
             }
-
-            body.dark-mode .nav-links { background: rgba(15,23,42,0.98); }
-
             .nav-links.active {
                 transform: translateY(0);
                 opacity: 1;
                 visibility: visible;
             }
-
-            .announcements { padding: 6rem 1.5rem 3rem; }
-            .announcement-header { flex-direction: column; align-items: flex-start; }
-            .priority-badge { position: static; margin-top: 1rem; display: inline-block; }
+            .announcements { padding: 8rem 1.8rem 4rem; }
+            .announcement-item { padding: 2.5rem; }
+            .announcement-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .priority-badge {
+                position: static;
+                margin-top: 1rem;
+                display: inline-block;
+            }
+            .floating-cta { bottom: 2rem; right: 2rem; padding: 1rem 1.5rem; font-size: 0.95rem; }
         }
-
         @media (max-width: 480px) {
-            .announcement-item { padding: 1.5rem; }
+            .announcement-item { padding: 2rem; }
+            .section-title { font-size: 2.8rem; }
         }
     </style>
 </head>
 <body>
-    <div class="bg-animation">
-        <div class="bg-shape"></div>
-        <div class="bg-shape"></div>
-    </div>
+    <div class="gradient-bg"></div>
+    <div class="particles" id="particles"></div>
+
+    <!-- Floating CTA -->
+    <a href="https://t.me/gtuverse" target="_blank" class="floating-cta">
+        <i class="fab fa-telegram-plane"></i> Join Telegram
+    </a>
 
     <header id="header">
         <nav>
             <a href="index.html" class="logo">
-                <i class="fas fa-graduation-cap"></i>
+                <div class="logo-icon"><span>G</span></div>
                 <span>GTUverse</span>
             </a>
             <ul class="nav-links" id="navLinks">
                 <li><a href="papers.html">Papers</a></li>
                 <li><a href="announcements.html">Announcements</a></li>
                 <li><a href="books.html">Books</a></li>
-                <li><a href="100ptsbygtuverse.html">100 Activity Points</a></li>
+                <li><a href="100ptsbygtuverse.html">100 Points</a></li>
                 <li><a href="mailto:gtu.versebyij@gmail.com">Contact</a></li>
-                <li><a href="https://chat.whatsapp.com/LLq6Sn0gvqwHHIJxxNaNaM" target="_blank" class="whatsapp-btn">
-                    <i class="fab fa-whatsapp"></i> Join Community
-                </a></li>
                 <li>
-                    <button class="dark-toggle" id="darkToggle" aria-label="Toggle Dark Mode">
-                        <i class="fas fa-moon" id="darkIcon"></i>
+                    <a href="https://t.me/gtuverse" target="_blank" class="telegram-btn">
+                        <i class="fab fa-telegram-plane"></i> Join Telegram
+                    </a>
+                </li>
+                <li>
+                    <button class="dark-toggle" onclick="toggleTheme()" aria-label="Toggle Theme">
+                        <i class="fas fa-sun" id="themeIcon"></i>
                     </button>
                 </li>
             </ul>
-            <div class="hamburger" id="hamburger" aria-label="Menu">
-                <span></span><span></span><span></span>
+            <div class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Toggle Menu">
+                <span></span>
+                <span></span>
+                <span></span>
             </div>
         </nav>
     </header>
@@ -571,16 +626,14 @@
     <section class="announcements">
         <div class="section-header fade-in">
             <h2 class="section-title">GTU Announcements</h2>
-            <p class="section-subtitle">Stay updated with the latest GTU news, exam schedules, result alerts, and important updates.</p>
+            <p class="section-subtitle">Real-time updates on exam schedules, results, syllabus changes, and important alerts. Never miss a beat.</p>
         </div>
-
         <ul class="announcements-list" id="announcementsList">
-            <!-- Skeleton Loaders -->
-            <li class="skeleton"></li>
-            <li class="skeleton"></li>
-            <li class="skeleton"></li>
+            <li class="loading">
+                <i class="fas fa-spinner"></i>
+                <p>Loading announcements...</p>
+            </li>
         </ul>
-
         <a href="#" class="show-more" id="showMoreBtn" style="display: none;">
             Show More Announcements <i class="fas fa-arrow-down"></i>
         </a>
@@ -600,158 +653,121 @@
             measurementId: "G-YV4W2LT96S"
         };
 
-        let lastDoc = null;
-        const PAGE_SIZE = 10;
-        let isLoading = false;
+        try {
+            const app = initializeApp(firebaseConfig);
+            const db = getFirestore(app);
+            let lastDoc = null;
+            const pageSize = 10;
 
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-
-        // DOM Elements
-        const announcementsList = document.getElementById('announcementsList');
-        const showMoreBtn = document.getElementById('showMoreBtn');
-        const darkToggle = document.getElementById('darkToggle');
-        const darkIcon = document.getElementById('darkIcon');
-        const hamburger = document.getElementById('hamburger');
-        const navLinks = document.getElementById('navLinks');
-        const header = document.getElementById('header');
-
-        // Dark Mode
-        function initDarkMode() {
-            const isDark = localStorage.getItem('darkMode') === 'true';
-            document.body.classList.toggle('dark-mode', isDark);
-            darkIcon.classList.toggle('fa-moon', !isDark);
-            darkIcon.classList.toggle('fa-sun', isDark);
-        }
-
-        darkToggle?.addEventListener('click', () => {
-            document.body.classList.toggle('dark-mode');
-            const isDark = document.body.classList.contains('dark-mode');
-            localStorage.setItem('darkMode', isDark);
-            darkIcon.classList.toggle('fa-moon', !isDark);
-            darkIcon.classList.toggle('fa-sun', isDark);
-        });
-
-        // Mobile Menu
-        hamburger?.addEventListener('click', () => {
-            navLinks.classList.toggle('active');
-            hamburger.classList.toggle('active');
-        });
-
-        // Header Scroll
-        window.addEventListener('scroll', () => {
-            header.classList.toggle('scrolled', window.scrollY > 50);
-        });
-
-        // Intersection Observer for Fade-in
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.1 });
-
-        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
-
-        // Format Date
-        function formatDate(dateStr) {
-            if (!dateStr) return 'Date not specified';
-            try {
-                const date = new Date(dateStr);
-                return date.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
-            } catch {
-                return dateStr;
+            function toggleTheme() {
+                const body = document.body;
+                const icon = document.getElementById('themeIcon');
+                body.classList.toggle('light-mode');
+                const isLight = body.classList.contains('light-mode');
+                icon.classList.toggle('fa-sun', !isLight);
+                icon.classList.toggle('fa-moon', isLight);
+                localStorage.setItem('theme', isLight ? 'light' : 'dark');
             }
-        }
 
-        // Render Announcements
-        function renderAnnouncements(anns, reset = false) {
-            if (reset) announcementsList.innerHTML = '';
-
-            const fragment = document.createDocumentFragment();
-            anns.forEach((a, i) => {
-                const isTop = reset && i < 3;
-                const item = document.createElement('li');
-                item.className = `announcement-item fade-in ${isMeteor ? 'top-ann' : ''}`;
-                item.innerHTML = `
-                    ${isTop ? '<span class="priority-badge"><i class="fas fa-star"></i> Priority</span>' : ''}
-                    <div class="announcement-header">
-                        <div class="announcement-icon">
-                            <i class="fas fa-bullhorn"></i>
-                        </div>
-                        <div class="announcement-title-wrapper">
-                            <h3 class="announcement-title">${a.title || 'Untitled'}</h3>
-                            <div class="announcement-date">
-                                <i class="far fa-calendar-alt"></i> ${formatDate(a.date)}
-                            </div>
-                        </div>
-                    </div>
-                    <p class="announcement-desc">${a.desc || 'No description available.'}</p>
-                    ${a.link ? `<a href="${a.link}" target="_blank" class="announcement-link">
-                        <i class="fas fa-external-link-alt"></i> Read Full Announcement
-                    </a>` : ''}
-                `;
-                fragment.appendChild(item);
-            });
-            announcementsList.appendChild(fragment);
-            document.querySelectorAll('.announcement-item.fade-in').forEach(el => observer.observe(el));
-        }
-
-        // Load Announcements
-        async function loadAnnouncements(reset = true) {
-            if (isLoading) return;
-            isLoading = true;
-
-            try {
-                let q = query(collection(db, 'announcements'), orderBy('createdAt', 'desc'), limit(PAGE_SIZE));
-                if (!reset && lastDoc) q = query(q, startAfter(lastDoc));
-
-                const snapshot = await getDocs(q);
-                const docs = snapshot.docs;
-                const anns = docs.map(doc => ({ id: doc.id, ...doc.data() }));
-
-                lastDoc = docs.length > 0 ? docs[docs.length - 1] : null;
-                showMoreBtn.style.display = docs.length < PAGE_SIZE ? 'none' : 'flex';
-
-                if (anns.length === 0 && reset) {
-                    announcementsList.innerHTML = `
-                        <li class="empty-state">
-                            <i class="fas fa-inbox"></i>
-                            <p>No announcements available. Check back later!</p>
-                        </li>`;
-                    showMoreBtn.style.display = 'none';
-                    return;
+            function loadTheme() {
+                const saved = localStorage.getItem('theme');
+                if (saved === 'light') {
+                    document.body.classList.add('light-mode');
+                    document.getElementById('themeIcon').classList.replace('fa-sun', 'fa-moon');
                 }
-
-                renderAnnouncements(anns, reset);
-            } catch (error) {
-                console.error("Firestore Error:", error);
-                announcementsList.innerHTML = `
-                    <li class="error-state">
-                        <i class="fas fa-exclamation-triangle"></i>
-                        <p>Failed to load announcements. Please try again later.</p>
-                    </li>`;
-            } finally {
-                isLoading = false;
             }
+
+            function toggleMenu() {
+                document.getElementById('navLinks').classList.toggle('active');
+                document.getElementById('hamburger').classList.toggle('active');
+            }
+
+            window.addEventListener('scroll', () => {
+                document.getElementById('header').classList.toggle('scrolled', window.scrollY > 50);
+            });
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) entry.target.classList.add('visible');
+                });
+            }, { threshold: 0.1, rootMargin: '0px 0px -100px 0px' });
+
+            document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+            async function loadAnnouncements(reset = true) {
+                const list = document.getElementById('announcementsList');
+                try {
+                    let q = query(collection(db, 'announcements'), orderBy('createdAt', 'desc'), limit(pageSize));
+                    if (!reset && lastDoc) q = query(q, startAfter(lastDoc));
+                    const snapshot = await getDocs(q);
+                    const anns = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+                    lastDoc = snapshot.docs[snapshot.docs.length - 1] || null;
+                    document.getElementById('showMoreBtn').style.display = snapshot.docs.length < pageSize ? 'none' : 'flex';
+
+                    if (reset) list.innerHTML = '';
+                    if (anns.length > 0) {
+                        const items = anns.map((a, i) => {
+                            const link = a.link ? `<a href="${a.link}" target="_blank" class="announcement-link">
+                                <i class="fas fa-external-link-alt"></i> Read Full
+                            </a>` : '';
+                            return `
+                            <li class="announcement-item fade-in ${i < 3 && reset ? 'top-ann' : ''}">
+                                ${i < 3 && reset ? '<span class="priority-badge"><i class="fas fa-star"></i> Priority</span>' : ''}
+                                <div class="announcement-header">
+                                    <div class="announcement-icon"><i class="fas fa-bullhorn"></i></div>
+                                    <div class="announcement-title-wrapper">
+                                        <h3 class="announcement-title">${a.title || 'Untitled'}</h3>
+                                        <div class="announcement-date"><i class="far fa-calendar-alt"></i> ${a.date || 'No date'}</div>
+                                    </div>
+                                </div>
+                                <p class="announcement-desc">${a.desc || 'No description.'}</p>
+                                ${link}
+                            </li>`;
+                        }).join('');
+                        list.innerHTML += items;
+                    } else if (reset) {
+                        list.innerHTML = '<li class="empty-state"><i class="fas fa-inbox"></i><p>No announcements yet. Check back soon!</p></li>';
+                    }
+                    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+                } catch (error) {
+                    console.error(error);
+                    list.innerHTML = `<li class="empty-state"><i class="fas fa-exclamation-circle"></i><p>Failed to load. Please try again.</p></li>`;
+                }
+            }
+
+            document.getElementById('showMoreBtn').addEventListener('click', e => {
+                e.preventDefault();
+                const btn = e.target;
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading...';
+                btn.style.pointerEvents = 'none';
+                loadAnnouncements(false).then(() => {
+                    btn.innerHTML = 'Show More Announcements <i class="fas fa-arrow-down"></i>';
+                    btn.style.pointerEvents = 'auto';
+                });
+            });
+
+            // Particles
+            function createParticles() {
+                const container = document.getElementById('particles');
+                for (let i = 0; i < 30; i++) {
+                    const p = document.createElement('div');
+                    p.className = 'particle';
+                    p.style.left = Math.random() * 100 + '%';
+                    p.style.animationDelay = Math.random() * 15 + 's';
+                    p.style.animationDuration = 15 + Math.random() * 10 + 's';
+                    container.appendChild(p);
+                }
+            }
+
+            window.addEventListener('load', () => {
+                loadTheme();
+                createParticles();
+                loadAnnouncements();
+            });
+        } catch (error) {
+            console.error('Firebase init failed:', error);
+            document.getElementById('announcementsList').innerHTML = '<li class="empty-state"><i class="fas fa-exclamation-circle"></i><p>Service unavailable.</p></li>';
         }
-
-        // Show More
-        showMoreBtn.addEventListener('click', async (e) => {
-            e.preventDefault();
-            showMoreBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading...';
-            await loadAnnouncements(false);
-            showMoreBtn.innerHTML = 'Show More Announcements <i class="fas fa-arrow-down"></i>';
-        });
-
-        // Initialize
-        document.addEventListener('DOMContentLoaded', () => {
-            initDarkMode();
-            loadAnnouncements();
-        });
     </script>
 </body>
 </html>
