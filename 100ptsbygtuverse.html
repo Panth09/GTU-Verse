@@ -410,8 +410,7 @@
                 Contact us on WhatsApp to unlock all certificates instantly!
             </p>
         </div>
-    </div>
-<script type="module">
+    </div><script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
@@ -482,64 +481,73 @@
             const snap = await getDocs(q);
 
             if (snap.empty) {
-                container.innerHTML = `<div class="empty-state"><i class="fas fa-inbox"></i><h3>No Activities Available Yet</h3><p>Check back soon!</p></div>`;
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-inbox"></i>
+                        <h3>No Activities Available Yet</h3>
+                        <p>Check back soon! More job simulations coming.</p>
+                    </div>`;
                 return;
             }
 
             container.innerHTML = snap.docs.map(doc => {
                 const d = doc.data();
 
-                // Sanitize and validate link
+                // Validate link
                 const rawLink = d.link?.trim();
-                const validLink = rawLink && rawLink.startsWith('http') ? rawLink : null;
+                const isValidLink = rawLink && rawLink.startsWith('http');
+                const validLink = isValidLink ? rawLink : null;
 
-                // Fallback icon
-                const icon = d.icon && d.icon.includes('fa-') ? d.icon : 'fas fa-star';
+                // Fallbacks
+                const icon = d.icon && /^fa[srlb] fa-/.test(d.icon) ? d.icon : 'fas fa-star';
+                const title = d.title || 'Untitled Activity';
+                const desc = d.description || 'No description available.';
+                const points = d.points || 0;
+                const duration = d.duration || 'Flexible';
 
                 return `
                     <div class="activity-card">
                         <div class="activity-icon"><i class="${icon}"></i></div>
-                        <h3>${d.title || 'Untitled Activity'}</h3>
-                        <p>${d.description || 'No description available.'}</p>
+                        <h3>${title}</h3>
+                        <p>${desc}</p>
                         <div class="activity-meta">
-                            <span class="points-tag"><i class="fas fa-trophy"></i> ${d.points || 0} Points</span>
-                            <span style="color:#94a3b8;font-size:.9rem;"><i class="fas fa-clock"></i> ${d.duration || 'Flexible'}</span>
+                            <span class="points-tag"><i class="fas fa-trophy"></i> ${points} Points</span>
+                            <span style="color:#94a3b8;font-size:.9rem;"><i class="fas fa-clock"></i> ${duration}</span>
                         </div>
                         ${validLink 
-                            ? `<a href="${validLink}" target="_blank" rel="noopener" class="activity-link">
+                            ? `<a href="${validLink}" target="_blank" rel="noopener noreferrer" class="activity-link">
                                 Start Activity <i class="fas fa-arrow-right"></i>
-                              </a>`
-                            : `<button class="activity-link" style="opacity:0.6; cursor:not-allowed;" disabled>
+                               </a>`
+                            : `<button class="activity-link" disabled style="opacity:0.6; cursor:not-allowed; background:linear-gradient(135deg,#94a3b8,#64748b);">
                                 Coming Soon <i class="fas fa-lock"></i>
-                              </button>`
+                               </button>`
                         }
                     </div>`;
             }).join('');
 
         } catch (e) {
             console.error("Firestore Error:", e);
-            container.innerHTML = `<div class="empty-state"><i class="fas fa-exclamation-triangle"></i><h3>Error Loading Activities</h3><p>Please try again later.</p></div>`;
+            container.innerHTML = `
+                <div class="empty-state">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <h3>Failed to Load</h3>
+                    <p>Please check your connection or try again later.</p>
+                </div>`;
         }
     }
 
     /* ---------- Init ---------- */
     window.addEventListener('DOMContentLoaded', () => {
-        // Cache DOM elements
         themeToggle = document.getElementById('themeToggle');
         themeIcon   = document.getElementById('themeIcon');
         el          = document.getElementById('typewriter');
 
-        // Apply saved theme
         const saved = localStorage.getItem('theme');
         setTheme(saved === 'light');
 
-        // Set up event listeners
-        if (themeToggle) {
-            themeToggle.addEventListener('click', toggleTheme);
-        }
+        if (themeToggle) themeToggle.addEventListener('click', toggleTheme);
         window.addEventListener('scroll', handleScroll);
 
-        // Initialize features
         createParticles();
         if (el) type();
         loadActivities();
