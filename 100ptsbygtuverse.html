@@ -411,7 +411,6 @@
             </p>
         </div>
     </div>
-
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
@@ -475,35 +474,51 @@
         else if (deleting && c === 0) { deleting = false; w = (w + 1) % words.length; setTimeout(type, 500); }
     }
 
-    /* ---------- Load Activities ---------- */
+    /* ---------- Load Activities (FIXED) ---------- */
     async function loadActivities() {
         const container = document.getElementById('activitiesContainer');
         try {
             const q = query(collection(db, 'activities'), orderBy('createdAt', 'desc'));
             const snap = await getDocs(q);
+
             if (snap.empty) {
                 container.innerHTML = `<div class="empty-state"><i class="fas fa-inbox"></i><h3>No Activities Available Yet</h3><p>Check back soon!</p></div>`;
                 return;
             }
+
             container.innerHTML = snap.docs.map(doc => {
                 const d = doc.data();
+
+                // Sanitize and validate link
+                const rawLink = d.link?.trim();
+                const validLink = rawLink && rawLink.startsWith('http') ? rawLink : null;
+
+                // Fallback icon
+                const icon = d.icon && d.icon.includes('fa-') ? d.icon : 'fas fa-star';
+
                 return `
                     <div class="activity-card">
-                        <div class="activity-icon"><i class="${d.icon || 'fas fa-star'}"></i></div>
-                        <h3>${d.title}</h3>
-                        <p>${d.description}</p>
+                        <div class="activity-icon"><i class="${icon}"></i></div>
+                        <h3>${d.title || 'Untitled Activity'}</h3>
+                        <p>${d.description || 'No description available.'}</p>
                         <div class="activity-meta">
-                            <span class="points-tag"><i class="fas fa-trophy"></i> ${d.points} Points</span>
+                            <span class="points-tag"><i class="fas fa-trophy"></i> ${d.points || 0} Points</span>
                             <span style="color:#94a3b8;font-size:.9rem;"><i class="fas fa-clock"></i> ${d.duration || 'Flexible'}</span>
                         </div>
-                        <a href="${d.link}" target="_blank" class="activity-link">
-                            Start Activity <i class="fas fa-arrow-right"></i>
-                        </a>
+                        ${validLink 
+                            ? `<a href="${validLink}" target="_blank" rel="noopener" class="activity-link">
+                                Start Activity <i class="fas fa-arrow-right"></i>
+                              </a>`
+                            : `<button class="activity-link" style="opacity:0.6; cursor:not-allowed;" disabled>
+                                Coming Soon <i class="fas fa-lock"></i>
+                              </button>`
+                        }
                     </div>`;
             }).join('');
+
         } catch (e) {
-            console.error(e);
-            container.innerHTML = `<div class="empty-state"><i class="fas fa-exclamation-triangle"></i><h3>Error Loading</h3><p>Try refreshing.</p></div>`;
+            console.error("Firestore Error:", e);
+            container.innerHTML = `<div class="empty-state"><i class="fas fa-exclamation-triangle"></i><h3>Error Loading Activities</h3><p>Please try again later.</p></div>`;
         }
     }
 
@@ -524,7 +539,7 @@
         }
         window.addEventListener('scroll', handleScroll);
 
-        // Initialize other features
+        // Initialize features
         createParticles();
         if (el) type();
         loadActivities();
