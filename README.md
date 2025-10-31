@@ -147,7 +147,7 @@ To make GTU students' lives easier by providing free access to quality study res
 
 1. **Clone the repository**
 ```bash
-git clone https://github.com/yourusername/gtuverse.git
+git clone https://github.com/panth09/gtuverse.git
 cd gtuverse
 ```
 
