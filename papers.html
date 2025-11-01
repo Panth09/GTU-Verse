@@ -88,6 +88,10 @@
             color: #0f172a;
         }
 
+        body.light-mode .paper-title {
+            color: #0f172a;
+        }
+
         /* Animated Gradient Background */
         .gradient-bg {
             position: fixed;
@@ -232,42 +236,9 @@
             letter-spacing: -0.02em;
         }
 
-        .logo-icon::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(168, 85, 247, 0.1) 100%);
-            z-index: -1;
-        }
-
-        .logo-icon::after {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(99, 102, 241, 0.2), transparent);
-            animation: logo-shine 3s ease-in-out infinite;
-            z-index: -1;
-        }
-
-        @keyframes logo-shine {
-            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
-            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
-        }
-
         @keyframes logo-pulse {
             0%, 100% { transform: scale(1); }
             50% { transform: scale(1.1); }
-        }
-
-        .logo:hover .logo-icon {
-            transform: rotate(360deg) scale(1.15);
-            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.6);
         }
 
         .nav-links {
@@ -289,17 +260,6 @@
             overflow: hidden;
         }
 
-        .nav-links a::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(168, 85, 247, 0.1) 100%);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .nav-links a:hover::before { opacity: 1; }
         .nav-links a:hover { color: #a855f7; transform: translateY(-2px); }
 
         .telegram-btn {
@@ -334,7 +294,6 @@
         .dark-toggle:hover {
             background: rgba(99, 102, 241, 0.3);
             transform: rotate(180deg) scale(1.1);
-            box-shadow: 0 0 20px rgba(99, 102, 241, 0.5);
         }
 
         .hamburger {
@@ -485,6 +444,8 @@
             background: linear-gradient(135deg, rgba(99, 102, 241, 0.05) 0%, rgba(168, 85, 247, 0.05) 100%);
             opacity: 0;
             transition: opacity 0.3s ease;
+            z-index: 0;
+            pointer-events: none;
         }
 
         .paper-item:hover::before { opacity: 1; }
@@ -507,23 +468,7 @@
             transition: all 0.5s ease;
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
             position: relative;
-            overflow: hidden;
-        }
-
-        .paper-icon::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
-            animation: icon-shine 3s ease-in-out infinite;
-        }
-
-        @keyframes icon-shine {
-            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
-            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+            z-index: 1;
         }
 
         .paper-item.midsem .paper-icon {
@@ -545,6 +490,8 @@
             font-weight: 700;
             margin-bottom: 1rem;
             color: #e2e8f0;
+            position: relative;
+            z-index: 1;
         }
 
         .paper-meta {
@@ -552,6 +499,8 @@
             gap: 1rem;
             margin-bottom: 1.5rem;
             flex-wrap: wrap;
+            position: relative;
+            z-index: 1;
         }
 
         .paper-badge {
@@ -579,6 +528,8 @@
             margin-bottom: 2rem;
             line-height: 1.8;
             font-size: 1.05rem;
+            position: relative;
+            z-index: 1;
         }
 
         .paper-link {
@@ -593,6 +544,12 @@
             font-weight: 600;
             transition: all 0.3s ease;
             box-shadow: 0 6px 20px rgba(99, 102, 241, 0.3);
+            position: relative;
+            z-index: 1;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            font-family: 'Inter', sans-serif;
         }
 
         .paper-item.gtu .paper-link {
@@ -600,9 +557,15 @@
             box-shadow: 0 6px 20px rgba(245, 158, 11, 0.3);
         }
 
-        .paper-link:hover {
+        .paper-link:hover:not(:disabled) {
             transform: translateY(-3px);
             box-shadow: 0 10px 30px rgba(99, 102, 241, 0.5);
+        }
+
+        .paper-link:disabled {
+            background: linear-gradient(135deg, #475569 0%, #64748b 100%);
+            cursor: not-allowed;
+            opacity: 0.6;
         }
 
         .show-more {
@@ -640,9 +603,6 @@
             font-size: 3.5rem;
             margin-bottom: 1.5rem;
             animation: spin 1.5s linear infinite;
-            background: linear-gradient(135deg, #6366f1, #a855f7);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
         }
 
         @keyframes spin {
@@ -653,17 +613,6 @@
             font-size: 4.5rem;
             margin-bottom: 1.5rem;
             opacity: 0.3;
-        }
-
-        .fade-in {
-            opacity: 0;
-            transform: translateY(60px);
-            transition: opacity 1s ease-out, transform 1s ease-out;
-        }
-
-        .fade-in.visible {
-            opacity: 1;
-            transform: translateY(0);
         }
 
         /* Floating CTA */
@@ -730,121 +679,6 @@
             box-shadow: 0 15px 40px rgba(99, 102, 241, 0.6);
         }
 
-        /* Footer */
-        footer {
-            background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 100%);
-            color: #cbd5e1;
-            padding: 7rem 2rem 3.5rem;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-            margin-top: 12rem;
-            border-top: 1px solid rgba(99, 102, 241, 0.2);
-        }
-
-        footer::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 4px;
-            background: linear-gradient(90deg, #6366f1, #a855f7, #ec4899);
-        }
-
-        .footer-brand {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 2.5rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 1.5rem;
-            display: inline-block;
-        }
-
-        footer p {
-            opacity: 0.85;
-            margin-bottom: 2rem;
-            font-size: 1.15rem;
-            max-width: 850px;
-            margin-left: auto;
-            margin-right: auto;
-            line-height: 1.9;
-        }
-
-        .footer-links {
-            display: flex;
-            justify-content: center;
-            gap: 3rem;
-            margin: 3.5rem 0;
-            flex-wrap: wrap;
-        }
-
-        .footer-links a {
-            color: #94a3b8;
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 1.1rem;
-            position: relative;
-            transition: all 0.3s ease;
-        }
-
-        .footer-links a::after {
-            content: '';
-            position: absolute;
-            bottom: -8px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: linear-gradient(90deg, #6366f1, #a855f7);
-            transition: width 0.3s ease;
-        }
-
-        .footer-links a:hover {
-            color: #a855f7;
-            transform: translateY(-4px);
-        }
-
-        .footer-links a:hover::after {
-            width: 100%;
-        }
-
-        .social-icons {
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
-            margin: 3rem 0;
-        }
-
-        .social-icons a {
-            width: 56px;
-            height: 56px;
-            background: rgba(99, 102, 241, 0.1);
-            color: #cbd5e1;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.4rem;
-            transition: all 0.4s ease;
-            backdrop-filter: blur(10px);
-            border: 2px solid rgba(99, 102, 241, 0.2);
-        }
-
-        .social-icons a:hover {
-            background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
-            color: white;
-            transform: translateY(-8px) scale(1.15);
-            box-shadow: 0 15px 40px rgba(99, 102, 241, 0.5);
-        }
-
-        .footer-bottom {
-            margin-top: 3.5rem;
-            padding-top: 2.5rem;
-            border-top: 1px solid rgba(99, 102, 241, 0.1);
-            font-size: 1rem;
-            color: #64748b;
-        }
-
         /* Responsive */
         @media (max-width: 968px) {
             .papers-list { grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); }
@@ -867,7 +701,6 @@
                 opacity: 0;
                 visibility: hidden;
                 transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-                border-bottom: 1px solid rgba(99, 102, 241, 0.2);
             }
 
             .nav-links.active {
@@ -880,11 +713,6 @@
             .papers-list { grid-template-columns: 1fr; }
             .filters { flex-direction: column; }
             .filter-group { min-width: 100%; }
-        }
-
-        @media (max-width: 480px) {
-            .paper-item { padding: 2.5rem 2rem; }
-            .filters { padding: 1.8rem; }
         }
     </style>
 </head>
@@ -904,7 +732,7 @@
 
     <header id="header">
         <nav>
-            <a href="https://gtu-verse.vercel.app" class="logo">
+            <a href="index.html" class="logo">
                 <div class="logo-icon"><span>G</span></div>
                 <span>GTUverse</span>
             </a>
@@ -934,12 +762,12 @@
     </header>
 
     <section class="papers">
-        <div class="section-header fade-in">
+        <div class="section-header">
             <h2 class="section-title">Exam Papers Vault</h2>
             <p class="section-subtitle">Browse and download GTU midsem and exam papers. Filter by college, branch, semester, and type for laser-focused preparation.</p>
         </div>
 
-        <div class="filters fade-in">
+        <div class="filters">
             <div class="filter-group">
                 <label><i class="fas fa-university"></i> College</label>
                 <input id="filterCollege" placeholder="e.g., LDCE">
@@ -990,39 +818,11 @@
         </a>
     </section>
 
-    <footer>
-        <div class="footer-brand">GTUverse</div>
-        <p>Built by GTU students, for GTU students. Empowering futures, one paper at a time.</p>
-        
-        <div class="footer-links">
-            <a href="https://gtu-verse.vercel.app">Home</a>
-            <a href="papers.html">Papers</a>
-            <a href="books.html">Books</a>
-            <a href="announcements.html">Announcements</a>
-            <a href="100ptsbygtuverse.html">100 Points</a>
-            <a href="https://t.me/gtuverse" target="_blank">Telegram</a>
-            <a href="mailto:gtu.versebyij@gmail.com">Contact</a>
-        </div>
-
-        <div class="social-icons">
-            <a href="https://t.me/gtuverse" target="_blank" aria-label="Telegram"><i class="fab fa-telegram-plane"></i></a>
-            <a href="mailto:gtu.versebyij@gmail.com" aria-label="Email"><i class="fas fa-envelope"></i></a>
-        </div>
-
-        <div class="footer-bottom">
-            &copy; <span id="year">2025</span> GTUverse. All rights reserved.
-        </div>
-    </footer>
-
     <script>
-        // Update Year
-        document.getElementById('year').textContent = new Date().getFullYear();
-
         // Create Particles
         function createParticles() {
             const container = document.getElementById('particles');
-            const particleCount = 30;
-            for (let i = 0; i < particleCount; i++) {
+            for (let i = 0; i < 30; i++) {
                 const particle = document.createElement('div');
                 particle.className = 'particle';
                 particle.style.left = Math.random() * 100 + '%';
@@ -1038,13 +838,7 @@
             const icon = document.getElementById('themeIcon');
             body.classList.toggle('light-mode');
             const isLight = body.classList.contains('light-mode');
-            if (isLight) {
-                icon.classList.remove('fa-sun');
-                icon.classList.add('fa-moon');
-            } else {
-                icon.classList.remove('fa-moon');
-                icon.classList.add('fa-sun');
-            }
+            icon.className = isLight ? 'fas fa-moon' : 'fas fa-sun';
             localStorage.setItem('theme', isLight ? 'light' : 'dark');
         }
 
@@ -1053,8 +847,7 @@
             const icon = document.getElementById('themeIcon');
             if (savedTheme === 'light') {
                 document.body.classList.add('light-mode');
-                icon.classList.remove('fa-sun');
-                icon.classList.add('fa-moon');
+                icon.className = 'fas fa-moon';
             }
         }
 
@@ -1068,32 +861,13 @@
         window.addEventListener('scroll', () => {
             const header = document.getElementById('header');
             const backToTop = document.querySelector('.back-to-top');
-            if (window.scrollY > 50) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
-            }
-            if (window.scrollY > 500) {
-                backToTop.classList.add('visible');
-            } else {
-                backToTop.classList.remove('visible');
-            }
+            header.classList.toggle('scrolled', window.scrollY > 50);
+            backToTop.classList.toggle('visible', window.scrollY > 500);
         });
 
         function scrollToTop() {
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
-
-        // Intersection Observer
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, { threshold: 0.1, rootMargin: '0px 0px -100px 0px' });
-
-        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 
         // Initialize
         window.addEventListener('load', () => {
@@ -1102,7 +876,6 @@
         });
     </script>
 
-    <!-- Firebase Integration (unchanged) -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
         import { getFirestore, collection, getDocs, query, orderBy, where, limit, startAfter } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
@@ -1117,110 +890,100 @@
             measurementId: "G-YV4W2LT96S"
         };
 
-        try {
-            const app = initializeApp(firebaseConfig);
-            const db = getFirestore(app);
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
 
-            let lastDoc = null;
-            const pageSize = 12;
+        let lastDoc = null;
+        const pageSize = 12;
 
-            async function filterPapers(reset = true) {
-                const papersList = document.getElementById('papersList');
-                try {
-                    const collegeInput = document.getElementById('filterCollege')?.value.trim().toLowerCase() || '';
-                    const branch = document.getElementById('filterBranch')?.value || '';
-                    const sem = document.getElementById('filterSem')?.value || '';
-                    const type = document.getElementById('filterType')?.value || '';
+        async function filterPapers(reset = true) {
+            const papersList = document.getElementById('papersList');
+            try {
+                const collegeInput = document.getElementById('filterCollege')?.value.trim().toLowerCase() || '';
+                const branch = document.getElementById('filterBranch')?.value || '';
+                const sem = document.getElementById('filterSem')?.value || '';
+                const type = document.getElementById('filterType')?.value || '';
 
-                    if (sem && (isNaN(parseInt(sem)) || parseInt(sem) < 1 || parseInt(sem) > 8)) {
-                        papersList.innerHTML = '<li class="empty-state"><i class="fas fa-exclamation-triangle"></i><p>Please enter a valid semester (1-8).</p></li>';
-                        return;
-                    }
+                if (sem && (isNaN(parseInt(sem)) || parseInt(sem) < 1 || parseInt(sem) > 8)) {
+                    papersList.innerHTML = '<li class="empty-state"><i class="fas fa-exclamation-triangle"></i><p>Please enter a valid semester (1-8).</p></li>';
+                    return;
+                }
 
-                    let q = query(collection(db, 'papers'), orderBy('createdAt', 'desc'), limit(pageSize));
-                    if (branch) q = query(q, where('branch', '==', branch));
-                    if (sem) q = query(q, where('sem', '==', parseInt(sem)));
-                    if (type) q = query(q, where('type', '==', type));
-                    if (!reset && lastDoc) q = query(q, startAfter(lastDoc));
+                let q = query(collection(db, 'papers'), orderBy('createdAt', 'desc'), limit(pageSize));
+                if (branch) q = query(q, where('branch', '==', branch));
+                if (sem) q = query(q, where('sem', '==', parseInt(sem)));
+                if (type) q = query(q, where('type', '==', type));
+                if (!reset && lastDoc) q = query(q, startAfter(lastDoc));
 
-                    const snapshot = await getDocs(q);
-                    let papers = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+                const snapshot = await getDocs(q);
+                let papers = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
 
-                    if (collegeInput) {
-                        papers = papers.filter(p => p.college && p.college.toLowerCase().includes(collegeInput));
-                    }
+                if (collegeInput) {
+                    papers = papers.filter(p => p.college?.toLowerCase().includes(collegeInput));
+                }
 
-                    lastDoc = snapshot.docs[snapshot.docs.length - 1] || null;
-                    document.getElementById('showMoreBtn').style.display = snapshot.docs.length < pageSize ? 'none' : 'flex';
+                lastDoc = snapshot.docs[snapshot.docs.length - 1] || null;
+                document.getElementById('showMoreBtn').style.display = snapshot.docs.length < pageSize ? 'none' : 'flex';
 
-                    if (reset) papersList.innerHTML = '';
-                    
-                    if (papers.length > 0) {
-                        const newItems = papers.map(p => `
-                            <li class="paper-item fade-in ${p.type || 'midsem'}">
-                                <div class="paper-icon">
-                                    <i class="fas fa-file-alt"></i>
-                                </div>
-                                <h3 class="paper-title">${p.title || 'Untitled'}</h3>
-                                <div class="paper-meta">
-                                    <span class="paper-badge"><i class="fas fa-code-branch"></i> ${p.branch || 'N/A'}</span>
-                                    <span class="paper-badge"><i class="fas fa-layer-group"></i> Sem ${p.sem || 'N/A'}</span>
-                                    <span class="paper-badge"><i class="fas fa-university"></i> ${p.college || 'N/A'}</span>
-                                    <span class="paper-badge type"><i class="fas fa-tag"></i> ${p.type ? (p.type === 'midsem' ? 'Midsem' : 'GTU Exam') : 'N/A'}</span>
-                                </div>
-                                <p class="paper-desc">Download the paper and solutions for your exam preparation.</p>
-                                <a href="${p.url || '#'}" target="_blank" class="paper-link">
+                if (reset) papersList.innerHTML = '';
+                
+                if (papers.length > 0) {
+                    const newItems = papers.map(p => {
+                        const downloadUrl = p.url || p.downloadUrl || p.link || p.fileUrl || '';
+                        const hasValidUrl = downloadUrl && downloadUrl !== '#' && downloadUrl.startsWith('http');
+                        
+                        return `
+                        <li class="paper-item ${p.type || 'midsem'}">
+                            <div class="paper-icon">
+                                <i class="fas fa-file-alt"></i>
+                            </div>
+                            <h3 class="paper-title">${p.title || 'Untitled'}</h3>
+                            <div class="paper-meta">
+                                <span class="paper-badge"><i class="fas fa-code-branch"></i> ${p.branch || 'N/A'}</span>
+                                <span class="paper-badge"><i class="fas fa-layer-group"></i> Sem ${p.sem || 'N/A'}</span>
+                                <span class="paper-badge"><i class="fas fa-university"></i> ${p.college || 'N/A'}</span>
+                                <span class="paper-badge type"><i class="fas fa-tag"></i> ${p.type ? (p.type === 'midsem' ? 'Midsem' : 'GTU Exam') : 'N/A'}</span>
+                            </div>
+                            <p class="paper-desc">Download the paper and solutions for your exam preparation.</p>
+                            ${hasValidUrl ? 
+                                `<a href="${downloadUrl}" target="_blank" rel="noopener noreferrer" class="paper-link">
                                     <i class="fas fa-download"></i> Download PDF
-                                </a>
-                            </li>
-                        `).join('');
-                        papersList.innerHTML += newItems;
-                    } else if (reset) {
-                        papersList.innerHTML = '<li class="empty-state"><i class="fas fa-inbox"></i><p>No papers match your filters. Try adjusting your search criteria.</p></li>';
-                    }
-
-                    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
-                } catch (error) {
-                    console.error('Error filtering papers:', error);
-                    let errorMessage = 'Unable to load papers. Please try again later.';
-                    papersList.innerHTML = `<li class="empty-state"><i class="fas fa-exclamation-circle"></i><p>${errorMessage}</p></li>`;
+                                </a>` :
+                                `<button class="paper-link" disabled>
+                                    <i class="fas fa-exclamation-circle"></i> URL Not Available
+                                </button>`
+                            }
+                        </li>
+                    `;
+                    }).join('');
+                    papersList.innerHTML += newItems;
+                } else if (reset) {
+                    papersList.innerHTML = '<li class="empty-state"><i class="fas fa-inbox"></i><p>No papers match your filters. Try adjusting your search criteria.</p></li>';
                 }
+            } catch (error) {
+                console.error('Error filtering papers:', error);
+                papersList.innerHTML = `<li class="empty-state"><i class="fas fa-exclamation-circle"></i><p>Unable to load papers. Please try again later.</p></li>`;
             }
-
-            function loadMorePapers() {
-                const showMoreBtn = document.getElementById('showMoreBtn');
-                if (showMoreBtn) {
-                    showMoreBtn.style.pointerEvents = 'none';
-                    showMoreBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading...';
-                    filterPapers(false).then(() => {
-                        showMoreBtn.style.pointerEvents = 'auto';
-                        showMoreBtn.innerHTML = 'Show More Papers <i class="fas fa-arrow-down"></i>';
-                    }).catch(() => {
-                        showMoreBtn.style.pointerEvents = 'auto';
-                        showMoreBtn.innerHTML = 'Show More Papers <i class="fas fa-arrow-down"></i>';
-                    });
-                }
-            }
-
-            document.addEventListener('DOMContentLoaded', async () => {
-                try {
-                    document.getElementById('filterBtn')?.addEventListener('click', () => filterPapers(true));
-                    document.getElementById('showMoreBtn')?.addEventListener('click', (e) => {
-                        e.preventDefault();
-                        loadMorePapers();
-                    });
-                    document.getElementById('hamburger')?.addEventListener('click', toggleMenu);
-                    
-                    await filterPapers();
-                } catch (error) {
-                    console.error('Error in initialization:', error);
-                    document.getElementById('papersList').innerHTML = '<li class="empty-state"><i class="fas fa-exclamation-circle"></i><p>Error loading papers. Please refresh the page.</p></li>';
-                }
-            });
-        } catch (error) {
-            console.error('Error initializing Firebase:', error);
-            document.getElementById('papersList').innerHTML = '<li class="empty-state"><i class="fas fa-exclamation-circle"></i><p>Failed to initialize. Please check your connection.</p></li>';
         }
+
+        function loadMorePapers() {
+            const showMoreBtn = document.getElementById('showMoreBtn');
+            showMoreBtn.style.pointerEvents = 'none';
+            showMoreBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading...';
+            filterPapers(false).finally(() => {
+                showMoreBtn.style.pointerEvents = 'auto';
+                showMoreBtn.innerHTML = 'Show More Papers <i class="fas fa-arrow-down"></i>';
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('filterBtn')?.addEventListener('click', () => filterPapers(true));
+            document.getElementById('showMoreBtn')?.addEventListener('click', (e) => {
+                e.preventDefault();
+                loadMorePapers();
+            });
+            filterPapers();
+        });
     </script>
 </body>
 </html>
