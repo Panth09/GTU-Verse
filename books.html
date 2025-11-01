@@ -264,8 +264,17 @@
             background: linear-gradient(135deg, #10b981 0%, #06b6d4 100%);
             color: #fff; padding: 1rem 2rem; border-radius: 12px;
             text-decoration: none; font-weight: 600; transition: .3s;
+            border: none; font-size: 1rem; cursor: pointer; width: 100%;
+            font-family: 'Inter', sans-serif;
         }
-        .book-link:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(16,185,129,.4); }
+        .book-link:hover:not(:disabled) { 
+            transform: translateY(-2px); 
+            box-shadow: 0 10px 30px rgba(16,185,129,.4); 
+        }
+        .book-link:disabled {
+            background: linear-gradient(135deg, #475569 0%, #64748b 100%);
+            cursor: not-allowed; opacity: 0.6;
+        }
 
         .show-more {
             display: inline-flex; align-items: center; gap: .8rem;
@@ -499,7 +508,12 @@
 
                 if (reset) booksList.innerHTML = '';
                 if (books.length > 0) {
-                    const html = books.map(b => `
+                    const html = books.map(b => {
+                        // Check multiple possible URL field names
+                        const downloadUrl = b.url || b.downloadUrl || b.link || b.fileUrl || '';
+                        const hasValidUrl = downloadUrl && downloadUrl !== '#' && downloadUrl.startsWith('http');
+                        
+                        return `
                         <li class="book-item">
                             <div class="book-icon"><i class="fas fa-book"></i></div>
                             <h3 class="book-title">${b.title || 'Untitled'}</h3>
@@ -509,11 +523,17 @@
                                 <span class="book-badge"><i class="fas fa-university"></i> ${b.college || 'N/A'}</span>
                             </div>
                             <p class="book-desc">Download the textbook or reference material for your studies.</p>
-                            <a href="${b.url || '#'}" target="_blank" class="book-link">
-                                <i class="fas fa-download"></i> Download PDF
-                            </a>
+                            ${hasValidUrl ? 
+                                `<a href="${downloadUrl}" target="_blank" rel="noopener noreferrer" class="book-link">
+                                    <i class="fas fa-download"></i> Download PDF
+                                </a>` :
+                                `<button class="book-link" disabled>
+                                    <i class="fas fa-exclamation-circle"></i> URL Not Available
+                                </button>`
+                            }
                         </li>
-                    `).join('');
+                    `;
+                    }).join('');
                     booksList.innerHTML += html;
                 } else if (reset) {
                     booksList.innerHTML = '<li class="empty-state"><i class="fas fa-inbox"></i><p>No books found. Try adjusting filters.</p></li>';
